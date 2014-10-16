@@ -1,6 +1,8 @@
 package com.lvg.weldercenter.models;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Victor Levchenko (LVG Corp.) on 16.10.2014.
@@ -12,6 +14,8 @@ public class Curriculum {
     private Long curriculumId;
     private String title;
     private String description;
+
+    private List<Section> sections = new ArrayList<Section>();
 
     //Getters and Setters
 
