@@ -46,4 +46,16 @@ public class Curriculum {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    @ManyToMany
+    @JoinTable(name = "curriculum_section",
+            joinColumns = {@JoinColumn(name = "id_curriculum")},
+            inverseJoinColumns = {@JoinColumn(name = "id_section")})
+    public List<Section> getSections() {
+        return sections;
+    }
+
+    public void setSections(List<Section> sections) {
+        this.sections = sections;
+    }
 }

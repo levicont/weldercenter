@@ -14,7 +14,7 @@ public class WeldMethod {
 	private String name;
 	
 	private List<Welder> welders = new  ArrayList<Welder>();
-
+    private List<WeldPattern> weldPatterns = new ArrayList<WeldPattern>();
 
     //Getters and Setters
 
@@ -57,5 +57,12 @@ public class WeldMethod {
 		this.name = name;
 	}
 
+    @OneToMany(targetEntity = WeldPattern.class, mappedBy = "weldMethod")
+    public List<WeldPattern> getWeldPatterns() {
+        return weldPatterns;
+    }
 
+    public void setWeldPatterns(List<WeldPattern> weldPatterns) {
+        this.weldPatterns = weldPatterns;
+    }
 }

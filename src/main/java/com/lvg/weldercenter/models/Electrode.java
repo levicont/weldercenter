@@ -1,41 +1,47 @@
 package com.lvg.weldercenter.models;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import org.hibernate.annotations.GenericGenerator;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "electrode")
 public class Electrode {
 	
-	@Id
-	@Column (name = "id_electrode", unique = true, nullable = false)
-	@GenericGenerator(name="kaugen", strategy = "increment")
-	@GeneratedValue(generator="kaugen")	
-	private Integer id;
-	
-	@Column(name = "type")
+	private Long electrodeId;
 	private String type;
-	
-	
-	
-	public Integer getId() {
-		return id;
+
+    private List<WeldPattern> weldPatterns = new ArrayList<WeldPattern>();
+
+
+    //Getters and Setters
+
+    @Id
+    @GeneratedValue
+    @Column (name = "id_electrode")
+    public Long getElectrodeId() {
+		return electrodeId;
 	}
-	public void setId(Integer id) {
-		this.id = id;
+	public void setElectrodeId(Long electrodeId) {
+		this.electrodeId = electrodeId;
 	}
-	public String getType() {
+
+    public String getType() {
 		return type;
 	}
 	public void setType(String type) {
 		this.type = type;
 	}
-	
-	
 
+    @OneToMany(targetEntity = WeldPattern.class, mappedBy = "electrode")
+    public List<WeldPattern> getWeldPatterns() {
+        return weldPatterns;
+    }
+
+    public void setWeldPatterns(List<WeldPattern> weldPatterns) {
+        this.weldPatterns = weldPatterns;
+    }
 }

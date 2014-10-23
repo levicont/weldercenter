@@ -19,6 +19,7 @@ public class Journal {
 
     private List<Welder> welders = new ArrayList<Welder>();
     private List<Teacher> teachers = new ArrayList<Teacher>();
+    private List<PersonalProtocol> personalProtocols = new ArrayList<PersonalProtocol>();
     //Getters and Setters
 
     @Id
@@ -57,6 +58,15 @@ public class Journal {
 
     public void setDateEnd(Date dateEnd) {
         this.dateEnd = dateEnd;
+    }
+
+    @OneToMany(targetEntity = PersonalProtocol.class, mappedBy = "journal")
+    public List<PersonalProtocol> getPersonalProtocols() {
+        return personalProtocols;
+    }
+
+    public void setPersonalProtocols(List<PersonalProtocol> personalProtocols) {
+        this.personalProtocols = personalProtocols;
     }
 
     @ManyToMany
