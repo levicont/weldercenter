@@ -1,6 +1,8 @@
 package com.lvg.weldercenter.models;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Victor Levchenko (LVG Corp.) on 16.10.2014.
@@ -15,6 +17,7 @@ public class Topic {
     private String description;
     private Double timelong;
 
+    private List<Section> sections = new ArrayList<Section>();
     //Getters and Setters
 
     @Id
@@ -58,5 +61,17 @@ public class Topic {
 
     public void setTimelong(Double timelong) {
         this.timelong = timelong;
+    }
+
+    @ManyToMany
+    @JoinTable(name = "section_topic",
+            joinColumns = {@JoinColumn(name = "id_topic")},
+            inverseJoinColumns = {@JoinColumn(name = "id_section")})
+    public List<Section> getSections() {
+        return sections;
+    }
+
+    public void setSections(List<Section> sections) {
+        this.sections = sections;
     }
 }

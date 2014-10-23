@@ -1,6 +1,8 @@
 package com.lvg.weldercenter.models;
 
 
+import com.sun.xml.internal.bind.v2.runtime.reflect.Lister;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;
@@ -25,6 +27,8 @@ public class Welder {
     private Job job;
     private List<WeldMethod> weldMethods = new ArrayList<WeldMethod>();
     private List<Journal> journals = new ArrayList<Journal>();
+    private List<PersonalProtocol> personalProtocols = new ArrayList<PersonalProtocol>();
+
     public Welder(){
 
     }
@@ -133,6 +137,16 @@ public class Welder {
 
     public void setJob(Job job) {
         this.job = job;
+    }
+
+    //TODO cascade CascadeType.ALL
+    @OneToMany(targetEntity = PersonalProtocol.class, mappedBy = "welder")
+    public List<PersonalProtocol> getPersonalProtocols() {
+        return personalProtocols;
+    }
+
+    public void setPersonalProtocols(List<PersonalProtocol> personalProtocols) {
+        this.personalProtocols = personalProtocols;
     }
 
     @ManyToMany

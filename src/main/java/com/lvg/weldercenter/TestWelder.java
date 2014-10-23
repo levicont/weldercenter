@@ -6,6 +6,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 
+import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -27,6 +28,7 @@ public class TestWelder {
         cfg.addAnnotatedClass(Curriculum.class);
         cfg.addAnnotatedClass(Section.class);
         cfg.addAnnotatedClass(Topic.class);
+        cfg.addAnnotatedClass(WeldWire.class);
         cfg.configure("hibernate.cfg.xml");
 
 
@@ -45,7 +47,7 @@ public class TestWelder {
         qualif1.setType("Электросварщик");
 
         Qualification qualif2 = new Qualification();
-        qualif2.setType("Электро-газосварщик");
+        qualif2.setType("Электрогазосварщик");
 
         Qualification qualif3 = new Qualification();
         qualif3.setType("Газосварщик");
@@ -67,7 +69,7 @@ public class TestWelder {
         job2.setName("Газосварщик");
 
         Job job3 = new Job();
-        job3.setName("Электро-газосварщик");
+        job3.setName("Электрогазосварщик");
 
         Job job4 = new Job();
         job4.setName("Аргонщик");
@@ -162,6 +164,9 @@ public class TestWelder {
         j1.getWelders().add(welder1);
         j1.getWelders().add(welder2);
 
+        curr.getSections().add(section1);
+        curr.getSections().add(section2);
+
         session.save(edu);
         session.save(welder1);
         session.save(welder2);
@@ -193,6 +198,7 @@ public class TestWelder {
         session.beginTransaction();
         Welder welder3 = (Welder) session.get(Welder.class,1L);
         SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+
         System.out.println("Welder was fetched from Db with name: "+welder3.getName()+
                 "\n qualification: "+welder3.getQualification().getType()+
                 "\n birthday: "+ format.format(welder3.getBirthday()));
