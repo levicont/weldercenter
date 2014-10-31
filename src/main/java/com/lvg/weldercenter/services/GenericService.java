@@ -1,13 +1,11 @@
 package com.lvg.weldercenter.services;
 
-import com.lvg.weldercenter.models.Welder;
-
 import java.util.List;
 
 /**
  * Created by Victor Levchenko LVG Corp. on 27.10.14.
  */
-public interface EntityService<T> {
+public interface GenericService<T> {
 
     List<T> getAll();
 
