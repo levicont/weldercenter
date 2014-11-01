@@ -14,13 +14,13 @@ public class Launcher {
     public void launch(){
         String[] contextPaths = new String[]{"app-context-db.xml"};
         ApplicationContext context = new ClassPathXmlApplicationContext(contextPaths);
-
+        JobService jobService = (JobService)context.getBean("jobService");
 
         Job job = new Job();
-        //job.setName("Сварщик-СО2");
+        job.setName("Сварщик-СО2");
 
+        //jobService.insert(job);
 
-        JobService jobService = (JobService)context.getBean("jobService");
         job = jobService.get(1L);
 
         System.out.println(job.getName());

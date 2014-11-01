@@ -13,7 +13,7 @@ public interface GenericDao<T> {
 
     void update(T record);
 
-    void add(T record);
+    Long add(T record);
 
     void delete(T record);
 }

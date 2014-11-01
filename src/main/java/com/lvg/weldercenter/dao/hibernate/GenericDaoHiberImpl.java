@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
  * Created by Victor Levchenko (LVG Corp.) on 30.10.2014.
  */
 @Repository
-public abstract class GenericDaoHibernateImpl{
+public abstract class GenericDaoHiberImpl {
 
     @Autowired
     private SessionFactory sessionFactory;

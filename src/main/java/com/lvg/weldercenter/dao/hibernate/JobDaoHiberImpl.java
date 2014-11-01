@@ -4,13 +4,14 @@ import com.lvg.weldercenter.dao.JobDao;
 import com.lvg.weldercenter.models.Job;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigInteger;
 import java.util.List;
 
 /**
  * Created by Victor Levchenko (LVG Corp.) on 30.10.2014.
  */
 @Repository
-public class JobDaoHibernateImpl extends GenericDaoHibernateImpl implements JobDao {
+public class JobDaoHiberImpl extends GenericDaoHiberImpl implements JobDao {
 
 
     //Implemented methods
@@ -31,8 +32,10 @@ public class JobDaoHibernateImpl extends GenericDaoHibernateImpl implements JobD
     }
 
     @Override
-    public void add(Job record) {
+    public Long add(Job record) {
+
         getSession().save(record);
+        return ((BigInteger)getSession().createSQLQuery("SELECT LAST_INSERT_ID()").uniqueResult()).longValue();
     }
 
     @Override

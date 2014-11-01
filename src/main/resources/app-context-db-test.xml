@@ -25,7 +25,7 @@
         <property name="maxActive" value="10"/>
     </bean>
 
-    <bean id="sessionFactory" 
+    <bean id="sessionFactory"
           class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
         <property name="dataSource" ref="dataSource"/>
         <property name="packagesToScan">
@@ -44,10 +44,16 @@
     <tx:annotation-driven transaction-manager="transactionManager"/>
     <bean id="transactionManager"
           class="org.springframework.orm.hibernate4.HibernateTransactionManager">
-            <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
 
     <!--Service beans -->
     <bean id="jobService" class="com.lvg.weldercenter.services.hibernate.JobServiceHiberImpl"/>
+    <bean id="teacherService" class="com.lvg.weldercenter.services.hibernate.TeacherServiceHiberImpl"/>
+    <bean id="organizationService" class="com.lvg.weldercenter.services.hibernate.OrganizationServiceHiberImpl"/>
+    <bean id="weldMethodService" class="com.lvg.weldercenter.services.hibernate.WeldMethodServiceHiberImpl"/>
+    <bean id="qualificatioService" class="com.lvg.weldercenter.services.hibernate.QualificationServiceHiberImpl"/>
+    <bean id="educationService" class="com.lvg.weldercenter.services.hibernate.EducationServiceHiberImpl"/>
+    <bean id="welderService" class="com.lvg.weldercenter.services.hibernate.WelderServiceHiberImpl"/>
 
 </beans>

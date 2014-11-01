@@ -4,6 +4,7 @@ import com.lvg.weldercenter.dao.WelderDao;
 import com.lvg.weldercenter.models.Welder;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,13 +12,13 @@ import java.util.List;
  * Created by Victor Levchenko (LVG Corp.) on 29.10.2014.
  */
 @Repository
-public class WelderDaoHibernateImpl extends GenericDaoHibernateImpl implements WelderDao {
+public class WelderDaoHiberImpl extends GenericDaoHiberImpl implements WelderDao {
 
 
     //Implemented methods
     @Override
     public List<Welder> getAll() {
-        return new ArrayList<Welder>();
+        return getSession().createQuery("from Welder").list();
     }
 
     @Override
@@ -31,8 +32,9 @@ public class WelderDaoHibernateImpl extends GenericDaoHibernateImpl implements W
     }
 
     @Override
-    public void add(Welder record) {
+    public Long add(Welder record) {
         getSession().save(record);
+        return ((BigInteger)getSession().createSQLQuery("SELECT LAST_INSERT_ID()").uniqueResult()).longValue();
     }
 
     @Override
