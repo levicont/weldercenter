@@ -1,6 +1,7 @@
 package com.lvg.weldercenter.models;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,8 +10,10 @@ import java.util.List;
  */
 @Entity
 @Table(name = "evaluation")
-public class Evaluation {
+public class Evaluation implements Serializable{
 
+
+    private static final long serialVersionUID = 4166254273280322087L;
     private Long evaluationId;
     private String type;
 
@@ -65,5 +68,33 @@ public class Evaluation {
 
     public void setMechanicalTests(List<MechanicalTest> mechanicalTests) {
         this.mechanicalTests = mechanicalTests;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Evaluation that = (Evaluation) o;
+
+        if (!evaluationId.equals(that.evaluationId)) return false;
+        if (!type.equals(that.type)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = evaluationId.hashCode();
+        result = 31 * result + type.hashCode();
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Evaluation{" +
+                "evaluationId=" + evaluationId +
+                ", type='" + type + '\'' +
+                '}';
     }
 }

@@ -1,6 +1,7 @@
 package com.lvg.weldercenter.models;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -8,8 +9,10 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "radiation_test")
-public class RadiationTest {
+public class RadiationTest implements Serializable{
 
+
+    private static final long serialVersionUID = -8173044539435304659L;
     private Long radiationTestId;
     private String defects;
     private String sensitivty;
@@ -17,6 +20,7 @@ public class RadiationTest {
     private Date protDate;
 
     private Evaluation evaluation;
+    private WeldPattern weldPattern;
 
     //Getters and Setters
 
@@ -65,6 +69,16 @@ public class RadiationTest {
         this.protDate = protDate;
     }
 
+    @OneToOne
+    @JoinColumn(name = "id_weld_pattern")
+    public WeldPattern getWeldPattern() {
+        return weldPattern;
+    }
+
+    public void setWeldPattern(WeldPattern weldPattern) {
+        this.weldPattern = weldPattern;
+    }
+
     @ManyToOne(targetEntity = Evaluation.class)
     @JoinColumn(name = "id_evaluation")
     public Evaluation getEvaluation() {
@@ -73,5 +87,36 @@ public class RadiationTest {
 
     public void setEvaluation(Evaluation evaluation) {
         this.evaluation = evaluation;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        RadiationTest that = (RadiationTest) o;
+
+        if (!number.equals(that.number)) return false;
+        if (protDate != null ? !protDate.equals(that.protDate) : that.protDate != null) return false;
+        if (!radiationTestId.equals(that.radiationTestId)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = radiationTestId.hashCode();
+        result = 31 * result + number.hashCode();
+        result = 31 * result + (protDate != null ? protDate.hashCode() : 0);
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "RadiationTest{" +
+                "radiationTestId=" + radiationTestId +
+                ", number='" + number + '\'' +
+                ", protDate=" + protDate +
+                '}';
     }
 }

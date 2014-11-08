@@ -1,6 +1,7 @@
 package com.lvg.weldercenter.models;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,8 +11,10 @@ import java.util.List;
 
 @Entity
 @Table(name = "qualification")
-public class Qualification {
+public class Qualification implements Serializable{
 
+
+    private static final long serialVersionUID = 5723986856620125609L;
     private Long qualificationId;
     private String type;
     private List<Welder> welders = new ArrayList<Welder>();
@@ -36,12 +39,40 @@ public class Qualification {
         this.type = type;
     }
 
-    @OneToMany(targetEntity = Welder.class, mappedBy = "qualification", cascade = CascadeType.ALL)
+    @OneToMany(targetEntity = Welder.class, mappedBy = "qualification")
     public List<Welder> getWelders() {
         return welders;
     }
 
     public void setWelders(List<Welder> welders) {
         this.welders = welders;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Qualification that = (Qualification) o;
+
+        if (!qualificationId.equals(that.qualificationId)) return false;
+        if (!type.equals(that.type)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = qualificationId.hashCode();
+        result = 31 * result + type.hashCode();
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Qualification{" +
+                "qualificationId=" + qualificationId +
+                ", type='" + type + '\'' +
+                '}';
     }
 }

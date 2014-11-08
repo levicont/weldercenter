@@ -1,6 +1,7 @@
 package com.lvg.weldercenter.models;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,7 +10,9 @@ import java.util.List;
  */
 @Entity
 @Table(name = "commission_certification")
-public class CommissionCertification {
+public class CommissionCertification implements Serializable{
+
+    private static final long serialVersionUID = 651755708864709869L;
 
     private Long commissionCertificationId;
 
@@ -80,5 +83,34 @@ public class CommissionCertification {
 
     public void setPersonalProtocols(List<PersonalProtocol> personalProtocols) {
         this.personalProtocols = personalProtocols;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        CommissionCertification that = (CommissionCertification) o;
+
+        if (!commissionCertificationId.equals(that.commissionCertificationId)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return commissionCertificationId.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return "CommissionCertification{" +
+                "commissionCertificationId=" + commissionCertificationId.longValue() +
+                ", head=" + head.toString() +
+                ", weldSpecialist=" + weldSpecialist.toString() +
+                ", ndtSpecialist=" + ndtSpecialist.toString() +
+                ", safetySpecialist=" + safetySpecialist.toString() +
+                '}';
     }
 }

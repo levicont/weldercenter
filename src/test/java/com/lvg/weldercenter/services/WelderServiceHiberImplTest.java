@@ -1,8 +1,11 @@
 package com.lvg.weldercenter.services;
 
 import com.lvg.weldercenter.GenericServiceHibernateTest;
+import com.lvg.weldercenter.models.Education;
 import com.lvg.weldercenter.models.Welder;
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -43,20 +46,7 @@ public class WelderServiceHiberImplTest extends GenericServiceHibernateTest {
 
     @Override
     public void testInsert() {
-        Welder record = new Welder();
-        record.setSurname("Захаров");
-        record.setName("Василий");
-        record.setSecname("Николаевич");
-        record.setBirthday(new Date());
-        record.setDateBegin(new Date());
-        record.setDocNumber("14-108");
-        record.setEducation(eduServ.get(1L));
-        record.setOrganization(orgServ.get(1L));
-        record.setQualification(qualifServ.get(1L));
-        record.setJob(jobServ.get(1L));
-        record.getWeldMethods().add(weldMethodServ.get(1L));
-        record.getWeldMethods().add(weldMethodServ.get(2L));
-
+        Welder record = getTestWelder();
         Long id = service.insert(record);
         assertNotNull(id);
 
@@ -87,5 +77,46 @@ public class WelderServiceHiberImplTest extends GenericServiceHibernateTest {
         record = service.get(1L);
         assertEquals("Захаров", record.getSurname());
 
+    }
+
+    @Test
+    @Transactional
+    public void testCascadeDelete(){
+        Welder welder = getTestWelder();
+        Long id = service.insert(welder);
+
+        welder = service.get(id);
+        assertNotNull(welder);
+
+        Education edu = eduServ.get(1l);
+        eduServ.delete(edu);
+
+        assertNotNull(welder.getEducation());
+
+        welder = service.get(id);
+        assertNotNull(welder);
+
+        edu = welder.getEducation();
+        assertNotNull(edu);
+
+
+    }
+
+    private Welder getTestWelder(){
+        Welder record = new Welder();
+        record.setSurname("Захаров");
+        record.setName("Василий");
+        record.setSecname("Николаевич");
+        record.setBirthday(new Date());
+        record.setDateBegin(new Date());
+        record.setDocNumber("14-108");
+        record.setEducation(eduServ.get(1L));
+        record.setOrganization(orgServ.get(1L));
+        record.setQualification(qualifServ.get(1L));
+        record.setJob(jobServ.get(1L));
+        record.getWeldMethods().add(weldMethodServ.get(1L));
+        record.getWeldMethods().add(weldMethodServ.get(2L));
+
+        return record;
     }
 }

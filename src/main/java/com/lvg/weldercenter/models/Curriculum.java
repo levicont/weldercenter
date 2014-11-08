@@ -1,6 +1,7 @@
 package com.lvg.weldercenter.models;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,13 +10,16 @@ import java.util.List;
  */
 @Entity
 @Table(name = "curriculum")
-public class Curriculum {
+public class Curriculum implements Serializable{
 
+
+    private static final long serialVersionUID = -4095312744432647608L;
     private Long curriculumId;
     private String title;
     private String description;
 
     private List<Section> sections = new ArrayList<Section>();
+    private List<Journal> journals = new ArrayList<Journal>();
 
     //Getters and Setters
 
@@ -47,6 +51,15 @@ public class Curriculum {
         this.description = description;
     }
 
+    @OneToMany(targetEntity = Journal.class, mappedBy = "curriculum")
+    public List<Journal> getJournals() {
+        return journals;
+    }
+
+    public void setJournals(List<Journal> journals) {
+        this.journals = journals;
+    }
+
     @ManyToMany
     @JoinTable(name = "curriculum_section",
             joinColumns = {@JoinColumn(name = "id_curriculum")},
@@ -57,5 +70,33 @@ public class Curriculum {
 
     public void setSections(List<Section> sections) {
         this.sections = sections;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Curriculum that = (Curriculum) o;
+
+        if (!curriculumId.equals(that.curriculumId)) return false;
+        if (!title.equals(that.title)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = curriculumId.hashCode();
+        result = 31 * result + title.hashCode();
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Curriculum{" +
+                "curriculumId=" + curriculumId +
+                ", title='" + title + '\'' +
+                '}';
     }
 }

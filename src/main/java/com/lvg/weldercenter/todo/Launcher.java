@@ -2,6 +2,8 @@ package com.lvg.weldercenter.todo;
 
 import com.lvg.weldercenter.models.Job;
 import com.lvg.weldercenter.services.JobService;
+import com.lvg.weldercenter.ui.MainFrame;
+import javafx.application.Application;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -13,28 +15,13 @@ import java.util.List;
 public class Launcher {
     public void launch(){
         String[] contextPaths = new String[]{"app-context-db.xml"};
+        System.out.println("\n Start loading spring application context... \n");
         ApplicationContext context = new ClassPathXmlApplicationContext(contextPaths);
-        JobService jobService = (JobService)context.getBean("jobService");
+        System.out.println("\n Loading spring application context is done... \n");
+        System.out.println("\n Start loading UI context... \n");
 
-        Job job = new Job();
-        job.setName("Сварщик-СО2");
-
-        //jobService.insert(job);
-
-        job = jobService.get(1L);
-
-        System.out.println(job.getName());
-
-        List<Job> jobList = jobService.getAll();
-        for (Job j : jobList){
-            System.out.println("id: "+j.getJobId()+" type: "+j.getName());
-        }
-
-        job = jobList.get(4);
-        job.setName("Сварщик - С2Н2 (ацетилен)");
-
-        jobService.update(job);
-
-
+    }
+    public void launchUI(String[] args){
+        Application.launch(MainFrame.class, args);
     }
 }

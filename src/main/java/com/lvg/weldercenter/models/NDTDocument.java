@@ -1,6 +1,7 @@
 package com.lvg.weldercenter.models;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,8 +10,10 @@ import java.util.List;
  */
 @Entity
 @Table(name = "ndt_document")
-public class NDTDocument {
+public class NDTDocument implements Serializable{
 
+
+    private static final long serialVersionUID = -3888270281942580260L;
     private Long ndtDocumentId;
     private String name;
     private String fullName;
@@ -57,5 +60,33 @@ public class NDTDocument {
 
     public void setPersonalProtocols(List<PersonalProtocol> personalProtocols) {
         this.personalProtocols = personalProtocols;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        NDTDocument that = (NDTDocument) o;
+
+        if (!name.equals(that.name)) return false;
+        if (!ndtDocumentId.equals(that.ndtDocumentId)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = ndtDocumentId.hashCode();
+        result = 31 * result + name.hashCode();
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "NDTDocument{" +
+                "ndtDocumentId=" + ndtDocumentId +
+                ", name='" + name + '\'' +
+                '}';
     }
 }

@@ -1,6 +1,7 @@
 package com.lvg.weldercenter.models;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,8 +10,9 @@ import java.util.List;
  */
 @Entity
 @Table(name = "steel_group")
-public class SteelGroup {
+public class SteelGroup implements Serializable{
 
+    private static final long serialVersionUID = -6892408262800146304L;
     private Long steelGroupId;
     private String stGroup;
     private String description;
@@ -49,12 +51,40 @@ public class SteelGroup {
         this.description = description;
     }
 
-    @OneToMany(targetEntity = SteelType.class, mappedBy = "steelGroup", cascade = CascadeType.ALL)
+    @OneToMany(targetEntity = SteelType.class, mappedBy = "steelGroup")
     public List<SteelType> getSteelTypes() {
         return steelTypes;
     }
 
     public void setSteelTypes(List<SteelType> steelTypes) {
         this.steelTypes = steelTypes;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        SteelGroup that = (SteelGroup) o;
+
+        if (!description.equals(that.description)) return false;
+        if (!steelGroupId.equals(that.steelGroupId)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = steelGroupId.hashCode();
+        result = 31 * result + description.hashCode();
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "SteelGroup{" +
+                "steelGroupId=" + steelGroupId +
+                ", stGroup='" + stGroup + '\'' +
+                '}';
     }
 }

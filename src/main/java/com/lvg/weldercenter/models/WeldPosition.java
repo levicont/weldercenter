@@ -1,6 +1,7 @@
 package com.lvg.weldercenter.models;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,8 +10,9 @@ import java.util.List;
  */
 @Entity
 @Table(name = "weld_position")
-public class WeldPosition {
+public class WeldPosition implements Serializable{
 
+    private static final long serialVersionUID = -7072879002003333464L;
     private Long weldPositionId;
     private String code;
     private String type;
@@ -53,5 +55,36 @@ public class WeldPosition {
 
     public void setWeldPatterns(List<WeldPattern> weldPatterns) {
         this.weldPatterns = weldPatterns;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        WeldPosition that = (WeldPosition) o;
+
+        if (!code.equals(that.code)) return false;
+        if (!type.equals(that.type)) return false;
+        if (!weldPositionId.equals(that.weldPositionId)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = weldPositionId.hashCode();
+        result = 31 * result + code.hashCode();
+        result = 31 * result + type.hashCode();
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "WeldPosition{" +
+                "weldPositionId=" + weldPositionId +
+                ", code='" + code + '\'' +
+                ", type='" + type + '\'' +
+                '}';
     }
 }

@@ -1,14 +1,16 @@
 package com.lvg.weldercenter.models;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * Created by Victor Levchenko LVG Corp. on 20.10.14.
  */
 @Entity
 @Table(name = "weld_pattern")
-public class WeldPattern {
+public class WeldPattern implements Serializable{
 
+    private static final long serialVersionUID = -1618937671254365956L;
     private Long weldPatternId;
     private Double thickness;
     private Double diameter;
@@ -166,7 +168,7 @@ public class WeldPattern {
         this.weldPosition = weldPosition;
     }
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn(name = "id_radiation_test")
     public RadiationTest getRadiationTest() {
         return radiationTest;
@@ -176,7 +178,7 @@ public class WeldPattern {
         this.radiationTest = radiationTest;
     }
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn(name = "id_visual_test")
     public VisualTest getVisualTest() {
         return visualTest;
@@ -186,7 +188,7 @@ public class WeldPattern {
         this.visualTest = visualTest;
     }
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn(name = "id_mechanical_test")
     public MechanicalTest getMechanicalTest() {
         return mechanicalTest;
@@ -194,5 +196,37 @@ public class WeldPattern {
 
     public void setMechanicalTest(MechanicalTest mechanicalTest) {
         this.mechanicalTest = mechanicalTest;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        WeldPattern that = (WeldPattern) o;
+
+        if (!mark.equals(that.mark)) return false;
+        if (!weldPatternId.equals(that.weldPatternId)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = weldPatternId.hashCode();
+        result = 31 * result + mark.hashCode();
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "WeldPattern{" +
+                "weldPatternId=" + weldPatternId +
+                ", thickness=" + thickness +
+                ", diameter=" + diameter +
+                ", mark='" + mark + '\'' +
+                ", weldMethod=" + weldMethod +
+                ", personalProtocol=" + personalProtocol +
+                '}';
     }
 }

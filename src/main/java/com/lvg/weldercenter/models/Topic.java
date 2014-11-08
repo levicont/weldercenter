@@ -1,6 +1,7 @@
 package com.lvg.weldercenter.models;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,8 +10,10 @@ import java.util.List;
  */
 @Entity
 @Table(name = "topic")
-public class Topic {
+public class Topic implements Serializable{
 
+
+    private static final long serialVersionUID = 2400513036359077252L;
     private Long topicId;
     private Integer orderIndex;
     private String title;
@@ -73,5 +76,36 @@ public class Topic {
 
     public void setSections(List<Section> sections) {
         this.sections = sections;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Topic topic = (Topic) o;
+
+        if (!timelong.equals(topic.timelong)) return false;
+        if (!title.equals(topic.title)) return false;
+        if (!topicId.equals(topic.topicId)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = topicId.hashCode();
+        result = 31 * result + title.hashCode();
+        result = 31 * result + timelong.hashCode();
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Topic{" +
+                "topicId=" + topicId +
+                ", title='" + title + '\'' +
+                ", timelong=" + timelong +
+                '}';
     }
 }

@@ -1,6 +1,7 @@
 package com.lvg.weldercenter.models;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,8 +10,10 @@ import java.util.List;
  */
 @Entity
 @Table(name = "teacher")
-public class Teacher {
+public class Teacher implements Serializable{
 
+
+    private static final long serialVersionUID = 94300681078874266L;
     private Long teacherId;
     private String name;
     private String surname;
@@ -66,5 +69,39 @@ public class Teacher {
 
     public void setJournals(List<Journal> journals) {
         this.journals = journals;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Teacher teacher = (Teacher) o;
+
+        if (!name.equals(teacher.name)) return false;
+        if (!secname.equals(teacher.secname)) return false;
+        if (!surname.equals(teacher.surname)) return false;
+        if (!teacherId.equals(teacher.teacherId)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = teacherId.hashCode();
+        result = 31 * result + name.hashCode();
+        result = 31 * result + surname.hashCode();
+        result = 31 * result + secname.hashCode();
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Teacher{" +
+                "teacherId=" + teacherId +
+                ", name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                ", secname='" + secname + '\'' +
+                '}';
     }
 }

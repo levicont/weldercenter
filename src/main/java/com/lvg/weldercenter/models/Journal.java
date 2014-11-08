@@ -1,6 +1,7 @@
 package com.lvg.weldercenter.models;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -10,12 +11,16 @@ import java.util.List;
  */
 @Entity
 @Table(name = "journal")
-public class Journal {
+public class Journal implements Serializable{
 
+
+    private static final long serialVersionUID = 523878238992105131L;
     private Long journalId;
     private String number;
     private Date dateBegin;
     private Date dateEnd;
+
+    private Curriculum curriculum;
 
     private List<Welder> welders = new ArrayList<Welder>();
     private List<Teacher> teachers = new ArrayList<Teacher>();
@@ -69,6 +74,16 @@ public class Journal {
         this.personalProtocols = personalProtocols;
     }
 
+    @ManyToOne(targetEntity = Curriculum.class)
+    @JoinColumn(name = "id_curriculum")
+    public Curriculum getCurriculum() {
+        return curriculum;
+    }
+
+    public void setCurriculum(Curriculum curriculum) {
+        this.curriculum = curriculum;
+    }
+
     @ManyToMany
     @JoinTable(name = "journal_welder",
         joinColumns = {@JoinColumn(name = "id_journal")},
@@ -91,5 +106,39 @@ public class Journal {
 
     public void setTeachers(List<Teacher> teachers) {
         this.teachers = teachers;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Journal journal = (Journal) o;
+
+        if (!dateBegin.equals(journal.dateBegin)) return false;
+        if (!dateEnd.equals(journal.dateEnd)) return false;
+        if (!journalId.equals(journal.journalId)) return false;
+        if (!number.equals(journal.number)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = journalId.hashCode();
+        result = 31 * result + number.hashCode();
+        result = 31 * result + dateBegin.hashCode();
+        result = 31 * result + dateEnd.hashCode();
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Journal{" +
+                "journalId=" + journalId +
+                ", number='" + number + '\'' +
+                ", dateBegin=" + dateBegin +
+                ", dateEnd=" + dateEnd +
+                '}';
     }
 }

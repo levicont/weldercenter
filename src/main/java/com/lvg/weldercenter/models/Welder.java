@@ -4,16 +4,18 @@ package com.lvg.weldercenter.models;
 import com.sun.xml.internal.bind.v2.runtime.reflect.Lister;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 @Entity
 @Table(name="welder")
-public class Welder {
-	 
+public class Welder implements Serializable{
 
-	private Long welderId;
+
+    private static final long serialVersionUID = -3429383776890313501L;
+    private Long welderId;
 	private String name;
 	private String surname;
     private String secname;
@@ -139,7 +141,7 @@ public class Welder {
         this.job = job;
     }
 
-    //TODO cascade CascadeType.ALL
+
     @OneToMany(targetEntity = PersonalProtocol.class, mappedBy = "welder")
     public List<PersonalProtocol> getPersonalProtocols() {
         return personalProtocols;
@@ -171,5 +173,42 @@ public class Welder {
 
     public void setJournals(List<Journal> journals) {
         this.journals = journals;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Welder welder = (Welder) o;
+
+        if (!birthday.equals(welder.birthday)) return false;
+        if (!name.equals(welder.name)) return false;
+        if (!secname.equals(welder.secname)) return false;
+        if (!surname.equals(welder.surname)) return false;
+        if (!welderId.equals(welder.welderId)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = welderId.hashCode();
+        result = 31 * result + name.hashCode();
+        result = 31 * result + surname.hashCode();
+        result = 31 * result + secname.hashCode();
+        result = 31 * result + birthday.hashCode();
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Welder{" +
+                "welderId=" + welderId +
+                ", name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                ", secname='" + secname + '\'' +
+                ", birthday=" + birthday +
+                '}';
     }
 }

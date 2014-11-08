@@ -78,6 +78,8 @@ public class TestPersonalProtocol {
         gas1.setType("CO2");
         WeldGas gas2 = new WeldGas();
         gas2.setType("C2Н2");
+        WeldGas gas3 = new WeldGas();
+        gas3.setType("Ar");
 
         SteelGroup sg = new SteelGroup();
         sg.setStGroup("W1");
@@ -85,6 +87,9 @@ public class TestPersonalProtocol {
 
         SteelType st = new SteelType();
         st.setType("Сталь 20");
+        st.setSteelGroup(sg);
+        SteelType st2 = new SteelType();
+        st2.setType("Ст. 2пс");
         st.setSteelGroup(sg);
 
         WeldDetail wdPlane = new WeldDetail();
@@ -163,6 +168,11 @@ public class TestPersonalProtocol {
         weldPattern.setWeldGas(gas1);
         weldPattern.setWeldDetail(wdPlane);
         weldPattern.setWeldPosition(wp1);
+
+
+        mechT.setWeldPattern(weldPattern);
+        rt.setWeldPattern(weldPattern);
+        vt.setWeldPattern(weldPattern);
 
         //welder test
 
@@ -253,6 +263,7 @@ public class TestPersonalProtocol {
         j1.setNumber("14-001");
         j1.getTeachers().add(tAshukin);
         j1.getTeachers().add(tChuyko);
+        j1.setCurriculum(curr);
 
         Welder welder1 = new Welder();
         welder1.setName("Иван");
@@ -323,6 +334,7 @@ public class TestPersonalProtocol {
         pp.getNdtDocuments().add(ndtDBN);
         pp.getNdtDocuments().add(ndtNPAOP);
 
+        weldPattern.setPersonalProtocol(pp);
         //personal protocol test
 
 
@@ -333,8 +345,10 @@ public class TestPersonalProtocol {
         session.save(wire2);
         session.save(gas1);
         session.save(gas2);
+        session.save(gas3);
         session.save(sg);
         session.save(st);
+        session.save(st2);
         session.save(wdPlane);
         session.save(wdTube);
         session.save(wp1);
@@ -391,7 +405,7 @@ public class TestPersonalProtocol {
         session.save(pp);
 
         //personal_protocol save
-
+        System.out.println("\n SYSOUT \n");
         session.getTransaction().commit();
     }
 

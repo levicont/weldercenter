@@ -4,15 +4,22 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:jdbc="http://www.springframework.org/schema/jdbc"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
             http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
             http://www.springframework.org/schema/tx
             http://www.springframework.org/schema/tx/spring-tx.xsd
             http://www.springframework.org/schema/context
-            http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+            http://www.springframework.org/schema/context/spring-context-3.0.xsd
+            http://www.springframework.org/schema/jdbc
+            http://www.springframework.org/schema/jdbc/spring-jdbc-3.0.xsd">
 
     <context:component-scan base-package="com.lvg.weldercenter.dao.hibernate"/>
     <context:property-placeholder location="classpath:jdbc.properties"/>
+
+    <jdbc:initialize-database data-source="dataSource">
+        <jdbc:script location="classpath:weldercenter-test-schema.sql"/>
+    </jdbc:initialize-database>
 
     <bean class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor"/>
 
@@ -24,6 +31,7 @@
         <property name="initialSize" value="5"/>
         <property name="maxActive" value="10"/>
     </bean>
+
 
     <bean id="sessionFactory"
           class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
@@ -56,4 +64,29 @@
     <bean id="educationService" class="com.lvg.weldercenter.services.hibernate.EducationServiceHiberImpl"/>
     <bean id="welderService" class="com.lvg.weldercenter.services.hibernate.WelderServiceHiberImpl"/>
 
+    <bean id="curriculumService" class="com.lvg.weldercenter.services.hibernate.CurriculumServiceHiberImpl"/>
+    <bean id="topicSrvice" class="com.lvg.weldercenter.services.hibernate.TopicServiceHiberImpl"/>
+    <bean id="sectionService" class="com.lvg.weldercenter.services.hibernate.SectionServiceHiberImpl"/>
+    <bean id="journalService" class="com.lvg.weldercenter.services.hibernate.JournalServiceHiberImpl"/>
+
+    <bean id="electrodeService" class="com.lvg.weldercenter.services.hibernate.ElectrodeServiceHiberImpl"/>
+    <bean id="weldWireService" class="com.lvg.weldercenter.services.hibernate.WeldWireServiceHiberImpl"/>
+    <bean id="weldGasService" class="com.lvg.weldercenter.services.hibernate.WeldGasServiceHiberImpl"/>
+    <bean id="steelGroupService" class="com.lvg.weldercenter.services.hibernate.SteelGroupServiceHiberImpl"/>
+    <bean id="steelTypeService" class="com.lvg.weldercenter.services.hibernate.SteelTypeServiceHiberImpl"/>
+    <bean id="weldDetailService" class="com.lvg.weldercenter.services.hibernate.WeldDetailServiceHiberImpl"/>
+    <bean id="weldPositionService" class="com.lvg.weldercenter.services.hibernate.WeldPositionServiceHiberImpl"/>
+    <bean id="patternDiameterService" class="com.lvg.weldercenter.services.hibernate.PatternDiameterServiceHiberImpl"/>
+    <bean id="patternThicknessService" class="com.lvg.weldercenter.services.hibernate.PatternThicknessServiceHiberImpl"/>
+    <bean id="evaluationService" class="com.lvg.weldercenter.services.hibernate.EvaluationServiceHiberImpl"/>
+    <bean id="mechanicalTestService" class="com.lvg.weldercenter.services.hibernate.MechanicalTestServiceHiberImpl"/>
+    <bean id="visualTestService" class="com.lvg.weldercenter.services.hibernate.VisualTestServiceHiberImpl"/>
+    <bean id="radiationTestService" class="com.lvg.weldercenter.services.hibernate.RadiationTestServiceHiberImpl"/>
+    <bean id="weldPatternService" class="com.lvg.weldercenter.services.hibernate.WeldPatternServiceHiberImpl"/>
+
+    <bean id="commissionCertificationService" class="com.lvg.weldercenter.services.hibernate.CommissionCertificationServiceHiberImpl"/>
+    <bean id="resolutionCertificationService" class="com.lvg.weldercenter.services.hibernate.ResolutionCertificationServiceHiberImpl"/>
+    <bean id="theoryTestService" class="com.lvg.weldercenter.services.hibernate.TheoryTestServiceHiberImpl"/>
+    <bean id="ndtDocumentService" class="com.lvg.weldercenter.services.hibernate.NDTDocumentServiceHiberImpl"/>
+    <bean id="personalProtocolService" class="com.lvg.weldercenter.services.hibernate.PersonalProtocolServiceHiberImpl"/>
 </beans>

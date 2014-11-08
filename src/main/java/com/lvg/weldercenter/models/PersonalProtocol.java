@@ -1,6 +1,7 @@
 package com.lvg.weldercenter.models;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -10,8 +11,10 @@ import java.util.List;
  */
 @Entity
 @Table(name = "personal_protocol")
-public class PersonalProtocol {
+public class PersonalProtocol implements Serializable{
 
+
+    private static final long serialVersionUID = 6810873579957924634L;
     private Long personalProtocolId;
     private Date datePeriodicalCert;
 
@@ -78,7 +81,7 @@ public class PersonalProtocol {
     }
 
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn(name = "id_resolution_certification")
     public ResolutionCertification getResolutionCertification() {
         return resolutionCertification;
@@ -98,7 +101,7 @@ public class PersonalProtocol {
         this.commissionCertification = commissionCertification;
     }
 
-    @OneToOne(targetEntity = TheoryTest.class, cascade = CascadeType.ALL)
+    @OneToOne(targetEntity = TheoryTest.class)
     @JoinColumn(name = "id_theory_test")
     public TheoryTest getTheoryTest() {
         return theoryTest;
@@ -118,5 +121,35 @@ public class PersonalProtocol {
 
     public void setNdtDocuments(List<NDTDocument> ndtDocuments) {
         this.ndtDocuments = ndtDocuments;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        PersonalProtocol that = (PersonalProtocol) o;
+
+        if (!personalProtocolId.equals(that.personalProtocolId)) return false;
+        if (theoryTest != null ? !theoryTest.equals(that.theoryTest) : that.theoryTest != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = personalProtocolId.hashCode();
+        result = 31 * result + (theoryTest != null ? theoryTest.hashCode() : 0);
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "PersonalProtocol{" +
+                "personalProtocolId=" + personalProtocolId +
+                ", datePeriodicalCert=" + datePeriodicalCert +
+                ", welder=" + welder +
+                ", journal=" + journal.getNumber() +
+                '}';
     }
 }

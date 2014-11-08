@@ -1,14 +1,16 @@
 package com.lvg.weldercenter.models;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "weld_method")
-public class WeldMethod {
-	
+public class WeldMethod implements Serializable{
 
+
+    private static final long serialVersionUID = 8767288205784425694L;
     private Long weldMethodId;
 	private String code;
 	private String name;
@@ -64,5 +66,36 @@ public class WeldMethod {
 
     public void setWeldPatterns(List<WeldPattern> weldPatterns) {
         this.weldPatterns = weldPatterns;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        WeldMethod that = (WeldMethod) o;
+
+        if (!code.equals(that.code)) return false;
+        if (name != null ? !name.equals(that.name) : that.name != null) return false;
+        if (!weldMethodId.equals(that.weldMethodId)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = weldMethodId.hashCode();
+        result = 31 * result + code.hashCode();
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "WeldMethod{" +
+                "weldMethodId=" + weldMethodId +
+                ", code='" + code + '\'' +
+                ", name='" + name + '\'' +
+                '}';
     }
 }
