@@ -151,7 +151,7 @@ public class Welder implements Serializable{
         this.personalProtocols = personalProtocols;
     }
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "welder_weld_method",
             joinColumns = {@JoinColumn(name = "id_welder")},
             inverseJoinColumns = {@JoinColumn(name = "id_weld_method")})
