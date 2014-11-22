@@ -8,10 +8,16 @@ import com.lvg.weldercenter.spring.factories.ServiceFactory;
 import com.lvg.weldercenter.ui.entities.WelderUI;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
+import org.apache.log4j.Logger;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -23,12 +29,16 @@ import java.util.ResourceBundle;
  * Created by Victor Levchenko LVG Corp. on 14.11.14.
  */
 public class WelderController implements Initializable {
+    private static final Logger LOGGER = Logger.getLogger(WelderController.class);
 
     private WelderService welderService = ServiceFactory.getWelderService();
     private WeldMethodService weldMethodService = ServiceFactory.getWeldMethodService();
 
     @FXML
     private TableView<WelderUI> welderTableView;
+
+    @FXML
+    private Button btUpdate;
 
     @FXML
     private TableColumn<WelderUI,Long> id;
@@ -45,15 +55,21 @@ public class WelderController implements Initializable {
     @FXML
     private MenuButton mbtWeldMethod;
     @FXML
+    private TextField txfWeldMethod;
+    @FXML
     private TableColumn<WelderUI, ObservableList<String>> weldMethods;
 
     private ObservableList<String> weldMethodsList;
+    private ObservableList<String> txfWeldMethodList;
     private ObservableList<WelderUI> welders;
 
     public WelderController(){
         weldMethodsList = FXCollections.observableArrayList(getWeldMethods(weldMethodService.getAll()));
 
+        txfWeldMethodList = FXCollections.observableArrayList();
+
         welders = FXCollections.observableArrayList(getWelders(welderService.getAll()));
+
     }
 
     @Override
@@ -74,6 +90,34 @@ public class WelderController implements Initializable {
         welderTableView.setItems(welders);
         welderTableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
+
+
+    }
+
+    private void updateTextFieldWeldMethodList(){
+        txfWeldMethodList.clear();
+        for(MenuItem item : mbtWeldMethod.getItems()){
+            CheckMenuItem chkItem = (CheckMenuItem)item;
+            if(chkItem.isSelected()){
+                txfWeldMethodList.add(chkItem.getText());
+            }
+        }
+    }
+
+    private void updateTextFieldWeldMethods(){
+        updateTextFieldWeldMethodList();
+        StringBuilder text = new StringBuilder();
+        for (int i = 0; i<txfWeldMethodList.size(); i++){
+            String sufix;
+            if(i == (txfWeldMethodList.size()-1)){
+                sufix="";
+            }else {
+                sufix="; ";
+            }
+            text.append(txfWeldMethodList.get(i)+sufix);
+
+        }
+        txfWeldMethod.setText(text.toString());
     }
 
 
@@ -99,7 +143,25 @@ public class WelderController implements Initializable {
         for (String title : list){
             CheckMenuItem checkMenuItem = new CheckMenuItem(title);
             mbt.getItems().add(checkMenuItem);
+            checkMenuItem.addEventHandler(ActionEvent.ACTION, new TextFieldListUpdater());
+
         }
 
+    }
+
+    private class TextFieldListUpdater implements EventHandler<ActionEvent>{
+        @Override
+        public void handle(ActionEvent event) {
+            LOGGER.debug("CheckMenuItem is clicked");
+            LOGGER.debug("WeldMethodList size is: "+txfWeldMethodList.size());
+            System.out.println();
+            System.out.println();
+            updateTextFieldWeldMethods();
+        }
+
+        @Override
+        public String toString() {
+            return super.toString();
+        }
     }
 }
