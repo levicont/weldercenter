@@ -1,6 +1,8 @@
 package com.lvg.weldercenter.ui;
 
 import com.lvg.weldercenter.models.Job;
+import com.lvg.weldercenter.ui.control.MainFrameController;
+import impl.org.controlsfx.i18n.Localization;
 import javafx.application.Application;
 import javafx.beans.InvalidationListener;
 import javafx.beans.value.ObservableListValue;
@@ -15,10 +17,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
+import java.util.*;
 import java.util.logging.Logger;
 
 /**
@@ -32,11 +31,14 @@ public class MainFrame extends Application {
     public void start(Stage stage) throws Exception {
         LOGGER.info(" **** in start() method");
         System.out.println(" **** in start() method");
-        Parent root  = FXMLLoader.load(getClass().getResource("/fxml/javafx-ui.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/javafx-ui.fxml"));
+
+        Parent root  = (Parent)loader.load();
+        Localization.setLocale(new Locale("ru","RU"));
         stage.setTitle("Welder center");
         stage.setScene(new Scene(root, Color.LIGHTBLUE));
-
-
+        MainFrameController controller = (MainFrameController)loader.getController();
+        controller.setStageAndListeners(stage);
         stage.show();
         System.out.println(" **** end of start() method");
     }

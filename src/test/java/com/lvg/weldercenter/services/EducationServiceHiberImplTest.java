@@ -2,6 +2,7 @@ package com.lvg.weldercenter.services;
 
 import com.lvg.weldercenter.GenericServiceHibernateTest;
 import com.lvg.weldercenter.models.Education;
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -64,6 +65,15 @@ public class EducationServiceHiberImplTest extends GenericServiceHibernateTest {
 
         record = service.get(1L);
         assertEquals("Бакалавр", record.getType());
+
+    }
+
+    @Test
+    public void testGetByType(){
+        Education record = service.get(1L);
+        Education record2 = service.getByType("Высшее");
+        assertNotNull(record2);
+        assertEquals(record.getEducationId(), record2.getEducationId());
 
     }
 }

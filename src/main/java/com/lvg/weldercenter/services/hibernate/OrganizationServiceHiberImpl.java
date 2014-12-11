@@ -2,6 +2,7 @@ package com.lvg.weldercenter.services.hibernate;
 
 import com.lvg.weldercenter.dao.OrganizationDao;
 import com.lvg.weldercenter.models.Organization;
+import com.lvg.weldercenter.models.Qualification;
 import com.lvg.weldercenter.services.OrganizationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Propagation;
@@ -50,5 +51,15 @@ public class OrganizationServiceHiberImpl implements OrganizationService {
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public void delete(Organization record) {
         dao.delete(record);
+    }
+
+    @Override
+    public Organization getByName(String name) {
+        List<Organization> list  = getAll();
+        for (Organization org : list){
+            if(name.equals(org.getName()))
+                return org;
+        }
+        return null;
     }
 }

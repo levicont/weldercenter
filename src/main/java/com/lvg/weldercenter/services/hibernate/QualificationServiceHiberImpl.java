@@ -50,4 +50,15 @@ public class QualificationServiceHiberImpl implements QualificationService {
     public void delete(Qualification record) {
         dao.delete(record);
     }
+
+    @Override
+    public Qualification getByType(String type) {
+        List<Qualification> list  = getAll();
+        for (Qualification q : list){
+            if(type.equals(q.getType()))
+                return q;
+        }
+        return null;
+
+    }
 }

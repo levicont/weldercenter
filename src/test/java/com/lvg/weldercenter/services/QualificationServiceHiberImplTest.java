@@ -2,6 +2,7 @@ package com.lvg.weldercenter.services;
 
 import com.lvg.weldercenter.GenericServiceHibernateTest;
 import com.lvg.weldercenter.models.Qualification;
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -29,6 +30,14 @@ public class QualificationServiceHiberImplTest extends GenericServiceHibernateTe
         List<Qualification> list = service.getAll();
         assertNotNull(list);
 
+    }
+
+    @Test
+    public void testGetByType(){
+        Qualification q = service.get(1l);
+        Qualification q1 = service.getByType(q.getType());
+        assertNotNull(q1);
+        assertEquals(q.getQualificationId(), q1.getQualificationId());
     }
 
     @Override

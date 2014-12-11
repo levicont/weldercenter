@@ -50,4 +50,14 @@ public class EducationServiceHiberImpl implements EducationService {
     public void delete(Education record) {
         dao.delete(record);
     }
+
+    @Override
+    public Education getByType(String type) {
+        List<Education> list = getAll();
+        for (Education edu : list){
+            if(type.equals(edu.getType()))
+                return edu;
+        }
+        return null;
+    }
 }

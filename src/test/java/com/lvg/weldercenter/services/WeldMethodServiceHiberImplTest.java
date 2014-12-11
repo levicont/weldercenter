@@ -2,6 +2,7 @@ package com.lvg.weldercenter.services;
 
 import com.lvg.weldercenter.GenericServiceHibernateTest;
 import com.lvg.weldercenter.models.WeldMethod;
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -29,6 +30,22 @@ public class WeldMethodServiceHiberImplTest extends GenericServiceHibernateTest 
         List<WeldMethod> list = service.getAll();
         assertNotNull(list);
 
+    }
+
+    @Test
+    public void testGetByName(){
+        WeldMethod wm = service.get(1l);
+        WeldMethod wm1 = service.getByName(wm.getName());
+        assertNotNull(wm1);
+        assertEquals(wm.getWeldMethodId(), wm1.getWeldMethodId());
+    }
+
+    @Test
+    public void testGetByCode(){
+        WeldMethod wm = service.get(1l);
+        WeldMethod wm1 = service.getByCode(wm.getCode());
+        assertNotNull(wm1);
+        assertEquals(wm.getWeldMethodId(), wm1.getWeldMethodId());
     }
 
     @Override

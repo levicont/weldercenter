@@ -45,7 +45,7 @@ public class Journal implements Serializable{
     public void setNumber(String number) {
         this.number = number;
     }
-    @Temporal(TemporalType.DATE)
+
     @Column(name = "date_begin")
     public Date getDateBegin() {
         return dateBegin;
@@ -55,7 +55,7 @@ public class Journal implements Serializable{
         this.dateBegin = dateBegin;
     }
 
-    @Temporal(TemporalType.DATE)
+
     @Column(name = "date_end")
     public Date getDateEnd() {
         return dateEnd;

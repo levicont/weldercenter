@@ -978,6 +978,7 @@ CREATE TABLE `welder` (
   `id_job` bigint(20) DEFAULT NULL,
   `id_organization` bigint(20) DEFAULT NULL,
   `id_qualification` bigint(20) DEFAULT NULL,
+  `address` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id_welder`),
   KEY `FKD0D293F3C491E346` (`id_organization`),
   KEY `FKD0D293F36A83B29A` (`id_job`),
@@ -996,7 +997,7 @@ CREATE TABLE `welder` (
 
 LOCK TABLES `welder` WRITE;
 /*!40000 ALTER TABLE `welder` DISABLE KEYS */;
-INSERT INTO `welder` VALUES (1,'2014-11-04','2014-11-04','XA-1620','Иван','Дорофеевич','Добрынин',1,3,1,1),(2,'2014-11-04','2014-11-04','XA-1626','Петр','Ильич','Петковский',1,4,2,3);
+INSERT INTO `welder` VALUES (1,'2014-11-04','2014-11-04','XA-1620','Иван','Дорофеевич','Добрынин',1,3,1,1,'г. Киев, ул. Новая, 45'),(2,'2014-11-04','2014-11-04','XA-1626','Петр','Ильич','Петковский',1,4,2,3,'г. Харьков, ул. Зубарева, 50');
 /*!40000 ALTER TABLE `welder` ENABLE KEYS */;
 UNLOCK TABLES;
 

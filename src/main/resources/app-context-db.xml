@@ -51,13 +51,15 @@
     <bean id="fxApplication" class="com.lvg.weldercenter.ui.MainFrame">
 
     </bean>
+    <!--JavaFX Application controllers -->
+    <bean id="fxMainFrameController" class="com.lvg.weldercenter.ui.control.MainFrameController"/>
 
     <!--Service beans -->
     <bean id="jobService" class="com.lvg.weldercenter.services.hibernate.JobServiceHiberImpl"/>
     <bean id="teacherService" class="com.lvg.weldercenter.services.hibernate.TeacherServiceHiberImpl"/>
     <bean id="organizationService" class="com.lvg.weldercenter.services.hibernate.OrganizationServiceHiberImpl"/>
     <bean id="weldMethodService" class="com.lvg.weldercenter.services.hibernate.WeldMethodServiceHiberImpl"/>
-    <bean id="qualificatioService" class="com.lvg.weldercenter.services.hibernate.QualificationServiceHiberImpl"/>
+    <bean id="qualificationService" class="com.lvg.weldercenter.services.hibernate.QualificationServiceHiberImpl"/>
     <bean id="educationService" class="com.lvg.weldercenter.services.hibernate.EducationServiceHiberImpl"/>
     <bean id="welderService" class="com.lvg.weldercenter.services.hibernate.WelderServiceHiberImpl"/>
 

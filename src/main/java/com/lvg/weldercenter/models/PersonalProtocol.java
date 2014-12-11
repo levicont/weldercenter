@@ -41,7 +41,7 @@ public class PersonalProtocol implements Serializable{
         this.personalProtocolId = personalProtocolId;
     }
 
-    @Temporal(TemporalType.DATE)
+
     @Column(name = "date_periodical_cert")
     public Date getDatePeriodicalCert() {
         return datePeriodicalCert;

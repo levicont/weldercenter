@@ -1,6 +1,7 @@
 package com.lvg.weldercenter.ui.entities;
 
 import com.lvg.weldercenter.models.*;
+import com.lvg.weldercenter.ui.util.DateUtil;
 import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -30,6 +31,10 @@ public class WelderUI {
     private final SimpleStringProperty qualification = new SimpleStringProperty();
     private final SimpleStringProperty organization = new SimpleStringProperty();
     private final SimpleStringProperty job = new SimpleStringProperty();
+    private final SimpleStringProperty address = new SimpleStringProperty();
+
+    private final SimpleStringProperty birthdayFormat = new SimpleStringProperty();
+    private final SimpleStringProperty dateBeginFormat = new SimpleStringProperty();
 
     //TODO in future init this fields
     private List<String> journals;
@@ -48,30 +53,45 @@ public class WelderUI {
         this.birthday.set(welder.getBirthday());
         this.dateBegin.set(welder.getDateBegin());
         this.docNumber.set(welder.getDocNumber());
-
-        this.education.set(welder.getEducation().getType());
+        this.birthdayFormat.set(DateUtil.format(birthday.get()));
+        if(null == welder.getEducation()){
+            this.education.set("");
+        }else
+            this.education.set(welder.getEducation().getType());
+        if(null == welder.getQualification()){
+            this.qualification.set("");
+        }else
         this.qualification.set(welder.getQualification().getType());
-        this.job.set(welder.getJob().getName());
-        this.organization.set(welder.getOrganization().getName());
+        if(null == welder.getJob()){
+            this.job.set("");
+        }else
+            this.job.set(welder.getJob().getName());
+        if (null == welder.getOrganization()){
+            this.organization.set("");
+        }else
+            this.organization.set(welder.getOrganization().getName());
 
+        this.address.set(welder.getAddress());
         this.weldMethods.set(getWeldMethodsNames(welder.getWeldMethods()));
+
 
     }
 
     public WelderUI(){
 
         this.id.set(0);
-        this.name.set("noname");
-        this.surname.set("no surname");
-        this.secname.set("no secname");
-        this.birthday.set(new Date());
-        this.dateBegin.set(new Date());
-        this.docNumber.set("no number");
+        this.name.set("");
+        this.surname.set("");
+        this.secname.set("");
+        this.birthday.set(DateUtil.getDate(DateUtil.DEFAULT_DATE));
+        this.dateBegin.set(DateUtil.getDate(DateUtil.DEFAULT_DATE));
+        this.docNumber.set("");
 
-        this.education.set("no education");
-        this.qualification.set("no qualification");
-        this.job.set("no job");
-        this.organization.set("no organization");
+        this.education.set("");
+        this.qualification.set("");
+        this.job.set("");
+        this.organization.set("");
+        this.address.set("");
 
 
         this.weldMethods.set(FXCollections.observableArrayList(new ArrayList<String>()));
@@ -220,6 +240,18 @@ public class WelderUI {
         this.job.set(job);
     }
 
+    public String getAddress() {
+        return address.get();
+    }
+
+    public SimpleStringProperty addressProperty() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address.set(address);
+    }
+
     public ObservableList<String> getWeldMethods() {
         return weldMethods.get();
     }
@@ -230,5 +262,58 @@ public class WelderUI {
 
     public void setWeldMethods(ObservableList<String> weldMethods) {
         this.weldMethods.set(weldMethods);
+    }
+
+    public String getBirthdayFormat() {
+        return DateUtil.format(birthday.get());
+    }
+
+    public void setBirthdayFormat(Date birthdayFormat) {
+        this.birthdayFormat.set(DateUtil.format(birthdayFormat));
+    }
+
+    public SimpleStringProperty birthdayFormatProperty() {
+        return birthdayFormat;
+    }
+
+
+
+    public String getDateBeginFormat() {
+        return DateUtil.format(dateBegin.get());
+    }
+
+    public SimpleStringProperty dateBeginFormatProperty() {
+        return dateBeginFormat;
+    }
+
+
+    @Override
+    public String toString() {
+        return "\n WelderUI{" +
+                "\n id=" + id.get() +
+                ",\n name=" + name.get() +
+                ",\n surname=" + surname.get() +
+                ",\n secname=" + secname.get() +
+                ",\n birthday=" + birthday.get() +
+                ",\n docNumber=" + docNumber.get() +
+                ", dateBegin=" + dateBegin.get() +
+                ", education=" + education.get() +
+                ", qualification=" + qualification.get() +
+                ", organization=" + organization.get() +
+                ", job=" + job.get() +
+                ",\n weldMethods=" + weldMethods.get() +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(null== obj)
+            return false;
+        if(WelderUI.class.equals(obj.getClass())){
+            WelderUI welderUI = (WelderUI)obj;
+            return welderUI.getId()==id.get();
+
+        }
+        return false;
     }
 }

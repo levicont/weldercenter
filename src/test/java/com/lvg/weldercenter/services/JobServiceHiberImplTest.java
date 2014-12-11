@@ -38,6 +38,14 @@ public class JobServiceHiberImplTest {
     }
 
     @Test
+    public void testGetByName(){
+        Job job = jobService.get(1l);
+        Job job1 = jobService.getByName(job.getName());
+        assertNotNull(job1);
+        assertEquals(job.getJobId(), job1.getJobId());
+    }
+
+    @Test
     @Transactional
     public void testDelete(){
         Job job = jobService.get(1L);

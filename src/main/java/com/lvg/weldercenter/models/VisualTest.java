@@ -50,7 +50,7 @@ public class VisualTest implements Serializable{
         this.number = number;
     }
 
-    @Temporal(TemporalType.DATE)
+
     @Column(name = "prot_date")
     public Date getProtDate() {
         return protDate;

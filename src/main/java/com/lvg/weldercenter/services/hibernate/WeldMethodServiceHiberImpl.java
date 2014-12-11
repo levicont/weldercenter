@@ -50,4 +50,24 @@ public class WeldMethodServiceHiberImpl implements WeldMethodService {
     public void delete(WeldMethod record) {
         dao.delete(record);
     }
+
+    @Override
+    public WeldMethod getByName(String name) {
+        List<WeldMethod> list = getAll();
+        for (WeldMethod wm : list){
+            if(name.equals(wm.getName()))
+                return wm;
+        }
+        throw new IllegalArgumentException("There are no one Weld Method with name: "+ name);
+    }
+
+    @Override
+    public WeldMethod getByCode(String code) {
+        List<WeldMethod> list = getAll();
+        for (WeldMethod wm : list){
+            if(code.equals(wm.getCode()))
+                return wm;
+        }
+        throw new IllegalArgumentException("There are no one Weld Method with code: "+ code);
+    }
 }

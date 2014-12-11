@@ -3,6 +3,8 @@ package com.lvg.weldercenter.services;
 import com.lvg.weldercenter.GenericServiceHibernateTest;
 import com.lvg.weldercenter.models.Organization;
 import static org.junit.Assert.*;
+
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -26,6 +28,13 @@ public class OrganizationServiceHiberImplTest extends GenericServiceHibernateTes
         List<Organization> list = service.getAll();
         assertNotNull(list);
 
+    }
+    @Test
+    public void testGetAllByName(){
+        Organization org = service.get(1l);
+        Organization org1 = service.getByName(org.getName());
+        assertNotNull(org1);
+        assertEquals(org.getOrganizationId(), org1.getOrganizationId());
     }
 
     @Override

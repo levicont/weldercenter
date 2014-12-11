@@ -2,6 +2,7 @@ package com.lvg.weldercenter.services.hibernate;
 
 import com.lvg.weldercenter.dao.JobDao;
 import com.lvg.weldercenter.models.Job;
+import com.lvg.weldercenter.models.Qualification;
 import com.lvg.weldercenter.services.JobService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Propagation;
@@ -52,4 +53,14 @@ public class JobServiceHiberImpl implements JobService {
     public void delete(Job record) {
         dao.delete(record);
     }
+
+    @Override
+    public Job getByName(String name) {
+        List<Job> list  = getAll();
+        for (Job job : list){
+            if(name.equals(job.getName()))
+                return job;
+        }
+        return null;
+            }
 }

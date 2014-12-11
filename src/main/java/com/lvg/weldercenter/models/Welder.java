@@ -22,6 +22,7 @@ public class Welder implements Serializable{
     private String docNumber;
     private Date birthday;
     private Date dateBegin;
+    private String address;
 
     private Education education;
     private Qualification qualification;
@@ -82,7 +83,7 @@ public class Welder implements Serializable{
         this.docNumber = docNumber;
     }
 
-    @Temporal(TemporalType.DATE)
+
     public Date getBirthday() {
         return birthday;
     }
@@ -92,13 +93,20 @@ public class Welder implements Serializable{
     }
 
     @Column(name = "date_begin")
-    @Temporal(TemporalType.DATE)
     public Date getDateBegin() {
         return dateBegin;
     }
 
     public void setDateBegin(Date dateBegin) {
         this.dateBegin = dateBegin;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     @ManyToOne(targetEntity = Education.class)
