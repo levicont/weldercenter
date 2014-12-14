@@ -9,9 +9,10 @@ import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.*;
+import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -27,8 +28,6 @@ import org.controlsfx.dialog.Dialog;
 import org.controlsfx.dialog.Dialogs;
 
 import java.net.URL;
-import java.time.LocalDate;
-import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -36,8 +35,9 @@ import java.util.ResourceBundle;
 /**
  * Created by Victor Levchenko LVG Corp. on 14.11.14.
  */
-public class WelderController implements Initializable {
+public class WelderController extends GenericController {
     private static final Logger LOGGER = Logger.getLogger(WelderController.class);
+    private ControllerManager controllerManager;
 
     private WelderService welderService = ServiceFactory.getWelderService();
     private WeldMethodService weldMethodService = ServiceFactory.getWeldMethodService();
@@ -132,10 +132,20 @@ public class WelderController implements Initializable {
         txfWeldMethodList = FXCollections.observableArrayList();
         initWeldersList();
 
+
+    }
+
+    public ControllerManager getControllerManager() {
+        return controllerManager;
+    }
+
+    public void setControllerManager(ControllerManager controllerManager) {
+        this.controllerManager = controllerManager;
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        LOGGER.debug("INITIALIZING WelderPane");
         fillMenuButton(mbtWeldMethod, getWeldMethods(weldMethodService.getAll()));
         fillComboBoxes();
         this.initWelderTable();
@@ -744,6 +754,7 @@ public class WelderController implements Initializable {
     private void closeWelderPane(){
         if(mainWelderPane.isVisible()){
             mainWelderPane.setVisible(false);
+            controllerManager.getMainFrameController().showLogo();
         }
     }
 
@@ -916,5 +927,7 @@ public class WelderController implements Initializable {
                 welderTableView.getSelectionModel().selectFirst();
             }
         }
+
+
     }
 }

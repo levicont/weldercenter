@@ -18,7 +18,7 @@
           <Menu id="mmMainData" mnemonicParsing="false" text="Данные">
             <items>
                   <MenuItem id="miWelders" fx:id="miWelders" mnemonicParsing="false" onAction="#showWeldersPane" text="Сварщики" />
-                  <MenuItem id="miJournals" mnemonicParsing="false" text="Журналы" />
+                  <MenuItem id="miJournals" mnemonicParsing="false" onAction="#showJournalPane" text="Журналы" />
                   <MenuItem id="miProtocols" mnemonicParsing="false" text="Протоколы" />
                   <SeparatorMenuItem mnemonicParsing="false" />
               <MenuItem id="miExit" fx:id="miExit" mnemonicParsing="false" onAction="#exit" text="Выход" />
@@ -64,27 +64,17 @@
       </MenuBar>
    </top>
    <center>
-      <StackPane prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-         <children>
-            <BorderPane prefHeight="200.0" prefWidth="200.0">
-               <center>
-                  <Label fx:id="lbAppTitle" opacity="0.4" style="-fx-background-color: #eeeeff;" text="АТТЕСТАЦИОННЫЙ ЦЕНТР СВАРЩИКОВ" textAlignment="CENTER" BorderPane.alignment="CENTER">
-                     <BorderPane.margin>
-                        <Insets bottom="10.0" top="-10.0" />
-                     </BorderPane.margin>
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </Label>
-               </center>
-            </BorderPane>
-            <BorderPane fx:id="welderPane" prefHeight="200.0" prefWidth="200.0" >
-                <center>
-                    <fx:include source="welder-pane.fxml"/>
-                </center>
-            </BorderPane>
-
-         </children>
-      </StackPane>
+       <BorderPane fx:id="logoPane" prefHeight="200.0" prefWidth="200.0">
+           <center>
+               <Label fx:id="lbAppTitle" opacity="0.4" style="-fx-background-color: #eeeeff;" text="АТТЕСТАЦИОННЫЙ ЦЕНТР СВАРЩИКОВ" textAlignment="CENTER" BorderPane.alignment="CENTER">
+                   <BorderPane.margin>
+                       <Insets bottom="10.0" top="-10.0" />
+                   </BorderPane.margin>
+                   <font>
+                       <Font size="14.0" />
+                   </font>
+               </Label>
+           </center>
+       </BorderPane>
    </center>
 </BorderPane>
