@@ -28,7 +28,6 @@ public class WelderServiceHiberImpl implements WelderService {
     }
 
     @Override
-    @Transactional
     public List<Welder> getAll() {
         return dao.getAll();
     }

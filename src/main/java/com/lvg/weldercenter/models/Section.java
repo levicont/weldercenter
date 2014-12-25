@@ -1,5 +1,8 @@
 package com.lvg.weldercenter.models;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -71,6 +74,7 @@ public class Section implements Serializable{
     }
 
     @ManyToMany
+    @LazyCollection(value = LazyCollectionOption.FALSE)
     @JoinTable(name = "section_topic",
             joinColumns = {@JoinColumn(name = "id_section")},
             inverseJoinColumns = {@JoinColumn(name = "id_topic")})

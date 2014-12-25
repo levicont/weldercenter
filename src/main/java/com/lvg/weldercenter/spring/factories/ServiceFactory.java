@@ -1,9 +1,6 @@
 package com.lvg.weldercenter.spring.factories;
 
-import com.lvg.weldercenter.models.Education;
-import com.lvg.weldercenter.models.Organization;
-import com.lvg.weldercenter.models.Qualification;
-import com.lvg.weldercenter.models.WeldMethod;
+import com.lvg.weldercenter.models.*;
 import com.lvg.weldercenter.services.*;
 import com.lvg.weldercenter.spring.ContextFactory;
 import org.springframework.context.ApplicationContext;
@@ -20,6 +17,10 @@ public class ServiceFactory {
     private static OrganizationService organizationService;
     private static QualificationService qualificationService;
     private static JobService jobService;
+    private static JournalService journalService;
+    private static CurriculumService curriculumService;
+    private static SectionService sectionService;
+    private static TopicService topicService;
 
     private ServiceFactory(){
 
@@ -83,5 +84,45 @@ public class ServiceFactory {
             jobService = (JobService)context.getBean("jobService");
         }
         return jobService;
+    }
+
+    public static JournalService getJournalService(){
+        if(null != journalService){
+            return journalService;
+        }
+        else {
+            journalService = (JournalService)context.getBean("journalService");
+        }
+        return journalService;
+    }
+
+    public static CurriculumService getCurriculumService(){
+        if(null != curriculumService){
+            return curriculumService;
+        }
+        else {
+            curriculumService = (CurriculumService)context.getBean("curriculumService");
+        }
+        return curriculumService;
+    }
+
+    public static SectionService getSectionService(){
+        if(null != sectionService){
+            return sectionService;
+        }
+        else {
+            sectionService = (SectionService)context.getBean("sectionService");
+        }
+        return sectionService;
+    }
+
+    public static TopicService getTopicService(){
+        if(null != topicService){
+            return topicService;
+        }
+        else {
+            topicService = (TopicService)context.getBean("topicService");
+        }
+        return topicService;
     }
 }

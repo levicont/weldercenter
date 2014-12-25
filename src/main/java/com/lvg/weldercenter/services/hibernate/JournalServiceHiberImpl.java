@@ -23,7 +23,6 @@ public class JournalServiceHiberImpl implements JournalService {
     }
 
     @Override
-    @Transactional
     public List<Journal> getAll() {
         return dao.getAll();
     }

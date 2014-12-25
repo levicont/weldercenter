@@ -65,7 +65,7 @@
     <bean id="welderService" class="com.lvg.weldercenter.services.hibernate.WelderServiceHiberImpl"/>
 
     <bean id="curriculumService" class="com.lvg.weldercenter.services.hibernate.CurriculumServiceHiberImpl"/>
-    <bean id="topicSrvice" class="com.lvg.weldercenter.services.hibernate.TopicServiceHiberImpl"/>
+    <bean id="topicService" class="com.lvg.weldercenter.services.hibernate.TopicServiceHiberImpl"/>
     <bean id="sectionService" class="com.lvg.weldercenter.services.hibernate.SectionServiceHiberImpl"/>
     <bean id="journalService" class="com.lvg.weldercenter.services.hibernate.JournalServiceHiberImpl"/>
 

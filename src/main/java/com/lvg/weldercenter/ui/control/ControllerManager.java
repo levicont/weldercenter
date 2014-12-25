@@ -66,7 +66,8 @@ public class ControllerManager {
                 journalPane = (BorderPane)JOURNAL_PANE_LOADER.load();
                 return journalPane;
             } catch (IOException e) {
-                LOGGER.error("Could not load JournalPane: " + e.getMessage());
+                LOGGER.error("GET JOURNAL PANE: Could not load JournalPane: " + e.getMessage());
+                LOGGER.error("GET JOURNAL PANE: exception: ",e);
             }
         }
         return journalPane;

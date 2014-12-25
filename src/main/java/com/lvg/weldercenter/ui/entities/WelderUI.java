@@ -16,9 +16,8 @@ import java.util.List;
 /**
  * Created by Victor Levchenko LVG Corp. on 14.11.14.
  */
-public class WelderUI {
+public class WelderUI extends GenericEntityUI{
 
-    private SimpleLongProperty id = new SimpleLongProperty();
     private final SimpleStringProperty name = new SimpleStringProperty();
     private final SimpleStringProperty surname = new SimpleStringProperty();
     private final SimpleStringProperty secname = new SimpleStringProperty();
@@ -108,17 +107,6 @@ public class WelderUI {
     }
 
     //Getters and Setters
-    public long getId() {
-        return id.get();
-    }
-
-    public SimpleLongProperty idProperty() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id.set(id);
-    }
 
     public String getName() {
         return name.get();
@@ -305,15 +293,4 @@ public class WelderUI {
                 '}';
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if(null== obj)
-            return false;
-        if(WelderUI.class.equals(obj.getClass())){
-            WelderUI welderUI = (WelderUI)obj;
-            return welderUI.getId()==id.get();
-
-        }
-        return false;
-    }
 }

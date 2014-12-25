@@ -2,6 +2,8 @@ package com.lvg.weldercenter.models;
 
 
 import com.sun.xml.internal.bind.v2.runtime.reflect.Lister;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -159,7 +161,8 @@ public class Welder implements Serializable{
         this.personalProtocols = personalProtocols;
     }
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany
+    @LazyCollection(value = LazyCollectionOption.FALSE)
     @JoinTable(name = "welder_weld_method",
             joinColumns = {@JoinColumn(name = "id_welder")},
             inverseJoinColumns = {@JoinColumn(name = "id_weld_method")})

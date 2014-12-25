@@ -610,6 +610,7 @@ CREATE TABLE `section_topic` (
 
 LOCK TABLES `section_topic` WRITE;
 /*!40000 ALTER TABLE `section_topic` DISABLE KEYS */;
+INSERT INTO `section_topic` VALUES (1,1),(2,1),(3,2);
 /*!40000 ALTER TABLE `section_topic` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -739,7 +740,7 @@ CREATE TABLE `topic` (
 
 LOCK TABLES `topic` WRITE;
 /*!40000 ALTER TABLE `topic` DISABLE KEYS */;
-INSERT INTO `topic` VALUES (1,'Сущность процессов, напряжения и деформации при сварке, понятия и показатели свариваемости',1,6,'Основы сварки плавлением'),(2,'Классификация, положения при сварке, зачистка кромок',2,4,'Сварные соединения и швы');
+INSERT INTO `topic` VALUES (1,'Сущность процессов, напряжения и деформации при сварке, понятия и показатели свариваемости',1,6,'Основы сварки плавлением'),(2,'Классификация, положения при сварке, зачистка кромок',2,4,'Сварные соединения и швы'),(3,'Практические занятия по сварке различных образцов',3,12,'Практические занятия');
 /*!40000 ALTER TABLE `topic` ENABLE KEYS */;
 UNLOCK TABLES;
 
