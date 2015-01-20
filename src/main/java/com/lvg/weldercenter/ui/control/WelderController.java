@@ -4,7 +4,8 @@ import com.lvg.weldercenter.models.*;
 import com.lvg.weldercenter.services.*;
 import com.lvg.weldercenter.spring.factories.ServiceFactory;
 import com.lvg.weldercenter.ui.entities.WelderUI;
-import com.lvg.weldercenter.ui.util.DateUtil;
+import com.lvg.weldercenter.ui.util.*;
+import com.lvg.weldercenter.ui.util.managers.TableViewManager;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 import javafx.collections.FXCollections;
@@ -45,6 +46,7 @@ public class WelderController extends GenericController {
     private OrganizationService organizationService = ServiceFactory.getOrganizationService();
     private QualificationService qualificationService = ServiceFactory.getQualificationService();
     private JobService jobService = ServiceFactory.getJobService();
+    private TableUtil<WelderUI> tableUtil = new TableViewManager();
 
     @FXML
     private BorderPane mainWelderPane;
@@ -572,63 +574,22 @@ public class WelderController extends GenericController {
 
     @FXML
     private void selectFirst(){
-        if(!welderTableView.getItems().isEmpty()){
-            welderTableView.getSelectionModel().clearSelection();
-            welderTableView.getSelectionModel().selectFirst();
-            welderTableView.requestFocus();
-            Event.fireEvent(welderTableView, new MouseEvent(MouseEvent.MOUSE_CLICKED,
-                    0,0, 0, 0, MouseButton.PRIMARY, 1,
-                    true, true, true, true,true, true, true, true, true, true, null));
-        }
+        tableUtil.selectFirstItem(welderTableView);
     }
 
     @FXML
     private void selectLast(){
-        if(!welderTableView.getItems().isEmpty()){
-            welderTableView.getSelectionModel().clearSelection();
-            welderTableView.getSelectionModel().selectLast();
-            welderTableView.requestFocus();
-            Event.fireEvent(welderTableView, new MouseEvent(MouseEvent.MOUSE_CLICKED,
-                    0,0, 0, 0, MouseButton.PRIMARY, 1,
-                    true, true, true, true,true, true, true, true, true, true, null));
-        }
+        tableUtil.selectLastItem(welderTableView);
     }
 
     @FXML
     private void selectPrev(){
-        if(!welderTableView.getItems().isEmpty()){
-            //welderTableView.getSelectionModel().clearSelection();
-            welderTableView.getSelectionModel().selectPrevious();
-            if(welderTableView.getSelectionModel().getSelectedItems().size()>1){
-                ObservableList<WelderUI> selectedItems = welderTableView.getSelectionModel().getSelectedItems();
-                WelderUI firstWelder = selectedItems.get(0);
-                welderTableView.getSelectionModel().clearSelection();
-                welderTableView.getSelectionModel().select(firstWelder);
-            }
-            welderTableView.requestFocus();
-            Event.fireEvent(welderTableView, new MouseEvent(MouseEvent.MOUSE_CLICKED,
-                    0,0, 0, 0, MouseButton.PRIMARY, 1,
-                    true, true, true, true,true, true, true, true, true, true, null));
-        }
+       tableUtil.selectPrevItem(welderTableView);
     }
 
     @FXML
     private void selectNext(){
-        if(!welderTableView.getItems().isEmpty()){
-            //welderTableView.getSelectionModel().clearSelection();
-
-            welderTableView.getSelectionModel().selectNext();
-            if(welderTableView.getSelectionModel().getSelectedItems().size()>1){
-                ObservableList<WelderUI> selectedItems = welderTableView.getSelectionModel().getSelectedItems();
-                WelderUI lastWelder = selectedItems.get(selectedItems.size()-1);
-                welderTableView.getSelectionModel().clearSelection();
-                welderTableView.getSelectionModel().select(lastWelder);
-            }
-            welderTableView.requestFocus();
-            Event.fireEvent(welderTableView, new MouseEvent(MouseEvent.MOUSE_CLICKED,
-                    0,0, 0, 0, MouseButton.PRIMARY, 1,
-                    true, true, true, true,true, true, true, true, true, true, null));
-        }
+        tableUtil.selectNextItem(welderTableView);
     }
     private void lightRefreshTable(){
         fillComboBoxes();

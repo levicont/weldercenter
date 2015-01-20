@@ -33,6 +33,7 @@ public class JournalUI extends GenericEntityUI {
 
     public JournalUI(Journal journal){
         this.id.set(journal.getJournalId());
+        this.number.set(journal.getNumber());
         this.dateBegin.set(journal.getDateBegin());
         this.dateEnd.set(journal.getDateEnd());
         this.dateBeginFormat.set(DateUtil.format(dateBegin.get()));
@@ -80,6 +81,7 @@ public class JournalUI extends GenericEntityUI {
         }
         return result;
     }
+
 
     //Getters and Setters
 

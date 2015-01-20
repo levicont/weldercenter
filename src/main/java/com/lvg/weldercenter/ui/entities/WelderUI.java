@@ -1,9 +1,8 @@
 package com.lvg.weldercenter.ui.entities;
 
-import com.lvg.weldercenter.models.*;
+import com.lvg.weldercenter.models.WeldMethod;
 import com.lvg.weldercenter.ui.util.DateUtil;
 import javafx.beans.property.SimpleListProperty;
-import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -274,7 +273,9 @@ public class WelderUI extends GenericEntityUI{
         return dateBeginFormat;
     }
 
-
+    public String getFullName(){
+        return id.get()+"\t"+surname.get()+"\t\t"+name.get()+"\t\t"+secname.get();
+    }
     @Override
     public String toString() {
         return "\n WelderUI{" +

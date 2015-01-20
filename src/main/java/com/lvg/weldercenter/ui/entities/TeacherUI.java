@@ -96,6 +96,10 @@ public class TeacherUI extends GenericEntityUI {
         this.secnameShort.set(secnameShort);
     }
 
+    public String getFullTeacherName(){
+        return this.getSurname()+" "+this.getName()+" "+this.getSecname();
+    }
+
     @Override
     public String toString() {
         return "TeacherUI{\n" +

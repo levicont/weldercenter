@@ -1,6 +1,5 @@
 package com.lvg.weldercenter.spring.factories;
 
-import com.lvg.weldercenter.models.*;
 import com.lvg.weldercenter.services.*;
 import com.lvg.weldercenter.spring.ContextFactory;
 import org.springframework.context.ApplicationContext;
@@ -21,6 +20,7 @@ public class ServiceFactory {
     private static CurriculumService curriculumService;
     private static SectionService sectionService;
     private static TopicService topicService;
+    private static TeacherService teacherService;
 
     private ServiceFactory(){
 
@@ -124,5 +124,15 @@ public class ServiceFactory {
             topicService = (TopicService)context.getBean("topicService");
         }
         return topicService;
+    }
+
+    public static TeacherService getTeacherService(){
+        if(null != teacherService){
+            return teacherService;
+        }
+        else {
+            teacherService = (TeacherService)context.getBean("teacherService");
+        }
+        return teacherService;
     }
 }

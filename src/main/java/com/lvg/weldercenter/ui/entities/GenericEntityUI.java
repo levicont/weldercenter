@@ -22,14 +22,19 @@ abstract public class GenericEntityUI {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if(null== obj)
-            return false;
-        if(WelderUI.class.equals(obj.getClass())){
-            WelderUI welderUI = (WelderUI)obj;
-            return welderUI.getId()==id.get();
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
-        }
-        return false;
+        GenericEntityUI that = (GenericEntityUI) o;
+
+        if (this.getId()!=that.getId()) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
     }
 }
