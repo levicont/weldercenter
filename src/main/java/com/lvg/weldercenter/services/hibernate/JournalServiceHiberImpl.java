@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * Created by Victor Levchenko LVG Corp. on 31.10.14.
  */
-@Transactional(readOnly =  true)
+@Transactional(readOnly = true)
 public class JournalServiceHiberImpl implements JournalService {
 
     @Autowired

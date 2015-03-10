@@ -51,7 +51,7 @@ public class SteelGroup implements Serializable{
         this.description = description;
     }
 
-    @OneToMany(targetEntity = SteelType.class, mappedBy = "steelGroup")
+    @OneToMany(targetEntity = SteelType.class, mappedBy = "stGroup")
     public List<SteelType> getSteelTypes() {
         return steelTypes;
     }

@@ -1,5 +1,8 @@
 package com.lvg.weldercenter.models;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -17,11 +20,11 @@ public class PersonalProtocol implements Serializable{
     private static final long serialVersionUID = 6810873579957924634L;
     private Long personalProtocolId;
     private Date datePeriodicalCert;
+    private String number;
 
     private Welder welder;
     private Journal journal;
     private ResolutionCertification resolutionCertification;
-    private CommissionCertification commissionCertification;
     private TheoryTest theoryTest;
 
 
@@ -51,6 +54,14 @@ public class PersonalProtocol implements Serializable{
         this.datePeriodicalCert = datePeriodicalCert;
     }
 
+    public String getNumber() {
+        return number;
+    }
+
+    public void setNumber(String number) {
+        this.number = number;
+    }
+
     @ManyToOne(targetEntity = Welder.class)
     @JoinColumn(name = "id_welder")
     public Welder getWelder() {
@@ -62,6 +73,7 @@ public class PersonalProtocol implements Serializable{
     }
 
     @OneToMany(targetEntity = WeldPattern.class, mappedBy = "personalProtocol")
+    @LazyCollection(value = LazyCollectionOption.FALSE)
     public List<WeldPattern> getWeldPatterns() {
         return weldPatterns;
     }
@@ -91,16 +103,6 @@ public class PersonalProtocol implements Serializable{
         this.resolutionCertification = resolutionCertification;
     }
 
-    @ManyToOne(targetEntity = CommissionCertification.class)
-    @JoinColumn(name = "id_commission_certification")
-    public CommissionCertification getCommissionCertification() {
-        return commissionCertification;
-    }
-
-    public void setCommissionCertification(CommissionCertification commissionCertification) {
-        this.commissionCertification = commissionCertification;
-    }
-
     @OneToOne(targetEntity = TheoryTest.class)
     @JoinColumn(name = "id_theory_test")
     public TheoryTest getTheoryTest() {
@@ -112,6 +114,7 @@ public class PersonalProtocol implements Serializable{
     }
 
     @ManyToMany
+    @LazyCollection(value = LazyCollectionOption.FALSE)
     @JoinTable(name = "personal_protocol_ndt_document",
             joinColumns = {@JoinColumn(name = "id_personal_protocol")},
             inverseJoinColumns = {@JoinColumn(name = "id_ndt_document")})
@@ -148,6 +151,7 @@ public class PersonalProtocol implements Serializable{
         return "PersonalProtocol{" +
                 "personalProtocolId=" + personalProtocolId +
                 ", datePeriodicalCert=" + datePeriodicalCert +
+                ", number=" + number +
                 ", welder=" + welder +
                 ", journal=" + journal.getNumber() +
                 '}';

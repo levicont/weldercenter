@@ -15,7 +15,7 @@ public class RadiationTest implements Serializable{
     private static final long serialVersionUID = -8173044539435304659L;
     private Long radiationTestId;
     private String defects;
-    private String sensitivty;
+    private String sensitivity;
     private String number;
     private Date protDate;
 
@@ -43,12 +43,12 @@ public class RadiationTest implements Serializable{
         this.defects = defects;
     }
 
-    public String getSensitivty() {
-        return sensitivty;
+    public String getSensitivity() {
+        return sensitivity;
     }
 
-    public void setSensitivty(String sensitivty) {
-        this.sensitivty = sensitivty;
+    public void setSensitivity(String sensitivity) {
+        this.sensitivity = sensitivity;
     }
 
     public String getNumber() {

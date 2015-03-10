@@ -17,16 +17,19 @@ public class ControllerManager {
     private final FXMLLoader MAIN_FRAME_LOADER = new FXMLLoader(getClass().getResource("/fxml/javafx-ui.fxml"));
     private final FXMLLoader WELDERS_PANE_LOADER = new FXMLLoader(getClass().getResource("/fxml/welder-pane.fxml"));
     private final FXMLLoader JOURNAL_PANE_LOADER = new FXMLLoader(getClass().getResource("/fxml/journal-pane.fxml"));
+    private final FXMLLoader PROTOCOL_PANE_LOADER = new FXMLLoader(getClass().getResource("/fxml/protocol-pane.fxml"));
 
     private Stage stage;
 
     private Parent mainFrame;
     private BorderPane welderPane;
     private BorderPane journalPane;
+    private BorderPane protocolPane;
 
     private MainFrameController mainFrameController;
     private WelderController welderController;
     private JournalController journalController;
+    private ProtocolController protocolController;
 
     public ControllerManager(Stage stage){
         this.stage = stage;
@@ -73,6 +76,19 @@ public class ControllerManager {
         return journalPane;
     }
 
+    public BorderPane getProtocolPane() {
+        if(protocolPane == null){
+            try{
+                protocolPane = (BorderPane)PROTOCOL_PANE_LOADER.load();
+                return protocolPane;
+            } catch (IOException e){
+                LOGGER.error("GET PROTOCOL PANE: Could not load ProtocolPane: " + e.getMessage());
+                LOGGER.error("GET PROTOCOL PANE: exception: ",e);
+            }
+        }
+        return protocolPane;
+    }
+
     public WelderController getWelderController() {
         if (welderController == null) {
             getWelderPane();
@@ -89,6 +105,15 @@ public class ControllerManager {
             return journalController;
         }
         return journalController;
+    }
+
+    public ProtocolController getProtocolController() {
+        if(protocolController == null){
+            getProtocolPane();
+            protocolController = (ProtocolController)PROTOCOL_PANE_LOADER.getController();
+            return protocolController;
+        }
+        return protocolController;
     }
 
     public MainFrameController getMainFrameController() {
@@ -111,5 +136,12 @@ public class ControllerManager {
             BorderPane mainPane = (BorderPane)stage.getScene().rootProperty().get();
             mainPane.setCenter(root);
             root.setVisible(true);
+    }
+
+    public void showProtocolPane(){
+        BorderPane root = getProtocolPane();
+        BorderPane mainPane = (BorderPane)stage.getScene().rootProperty().get();
+        mainPane.setCenter(root);
+        root.setVisible(true);
     }
 }

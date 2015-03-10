@@ -42,14 +42,14 @@ public class RadiationTestServiceHiberImpl extends GenericServiceHibernateTest {
         record.setNumber("14-001RT");
         record.setDefects("Нк200 2Ш4х5");
         record.setProtDate(new Date());
-        record.setSensitivty("0.3");
+        record.setSensitivity("0.3");
         record.setEvaluation(evaServ.get(1L));
 
         Long id = service.insert(record);
         assertNotNull(id);
 
         record = service.get(id);
-        assertEquals("0.3", record.getSensitivty());
+        assertEquals("0.3", record.getSensitivity());
 
     }
 
@@ -66,12 +66,12 @@ public class RadiationTestServiceHiberImpl extends GenericServiceHibernateTest {
     @Override
     public void testUpdate() {
         RadiationTest record = service.get(1L);
-        record.setSensitivty("0.3");
+        record.setSensitivity("0.3");
 
         service.update(record);
 
         record = service.get(1L);
-        assertEquals("0.3", record.getSensitivty());
+        assertEquals("0.3", record.getSensitivity());
 
     }
 

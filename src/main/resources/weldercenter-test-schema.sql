@@ -35,10 +35,10 @@ CREATE TABLE `commission_certification` (
   KEY `FK21B62C66452E0663` (`id_teacher_ndt_spec`),
   KEY `FK21B62C6685DDE6E7` (`id_teacher_head`),
   KEY `FK21B62C66F91AC379` (`id_teacher_weld_spec`),
-  CONSTRAINT `FK21B62C66F91AC379` FOREIGN KEY (`id_teacher_weld_spec`) REFERENCES `teacher` (`id_teacher`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `FK21B62C66452E0663` FOREIGN KEY (`id_teacher_ndt_spec`) REFERENCES `teacher` (`id_teacher`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `FK21B62C6685DDE6E7` FOREIGN KEY (`id_teacher_head`) REFERENCES `teacher` (`id_teacher`) ON DELETE SET NULL ON UPDATE CASCADE,
-  CONSTRAINT `FK21B62C668757B92D` FOREIGN KEY (`id_teacher_safety_spec`) REFERENCES `teacher` (`id_teacher`) ON DELETE SET NULL ON UPDATE CASCADE
+  CONSTRAINT `FK21B62C668757B92D` FOREIGN KEY (`id_teacher_safety_spec`) REFERENCES `teacher` (`id_teacher`) ON DELETE SET NULL ON UPDATE CASCADE,
+  CONSTRAINT `FK21B62C66F91AC379` FOREIGN KEY (`id_teacher_weld_spec`) REFERENCES `teacher` (`id_teacher`) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -89,8 +89,8 @@ CREATE TABLE `curriculum_section` (
   `id_curriculum` bigint(20) NOT NULL,
   KEY `FK56B956E17CD5F956` (`id_curriculum`),
   KEY `FK56B956E1DC6CE8EA` (`id_section`),
-  CONSTRAINT `FK56B956E1DC6CE8EA` FOREIGN KEY (`id_section`) REFERENCES `section` (`id_section`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `FK56B956E17CD5F956` FOREIGN KEY (`id_curriculum`) REFERENCES `curriculum` (`id_curriculum`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `FK56B956E17CD5F956` FOREIGN KEY (`id_curriculum`) REFERENCES `curriculum` (`id_curriculum`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `FK56B956E1DC6CE8EA` FOREIGN KEY (`id_section`) REFERENCES `section` (`id_section`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -216,7 +216,7 @@ CREATE TABLE `journal` (
   PRIMARY KEY (`id_journal`),
   KEY `FKAB64AF377CD5F956` (`id_curriculum`),
   CONSTRAINT `FKAB64AF377CD5F956` FOREIGN KEY (`id_curriculum`) REFERENCES `curriculum` (`id_curriculum`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -423,22 +423,20 @@ DROP TABLE IF EXISTS `personal_protocol`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `personal_protocol` (
   `id_personal_protocol` bigint(20) NOT NULL AUTO_INCREMENT,
+  `number` varchar(255) DEFAULT NULL,
   `date_periodical_cert` date DEFAULT NULL,
-  `id_commission_certification` bigint(20) DEFAULT NULL,
   `id_journal` bigint(20) DEFAULT NULL,
   `id_resolution_certification` bigint(20) DEFAULT NULL,
   `id_theory_test` bigint(20) DEFAULT NULL,
   `id_welder` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id_personal_protocol`),
   KEY `FKC06CA1B75F1D58C6` (`id_welder`),
-  KEY `FKC06CA1B7352A2EDD` (`id_commission_certification`),
   KEY `FKC06CA1B74857498E` (`id_journal`),
   KEY `FKC06CA1B7DFC6EABD` (`id_resolution_certification`),
   KEY `FKC06CA1B7C9E9C4DB` (`id_theory_test`),
-  CONSTRAINT `FKC06CA1B7C9E9C4DB` FOREIGN KEY (`id_theory_test`) REFERENCES `theory_test` (`id_theory_test`) ON DELETE SET NULL ON UPDATE CASCADE,
-  CONSTRAINT `FKC06CA1B7352A2EDD` FOREIGN KEY (`id_commission_certification`) REFERENCES `commission_certification` (`id_commission_certification`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `FKC06CA1B74857498E` FOREIGN KEY (`id_journal`) REFERENCES `journal` (`id_journal`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `FKC06CA1B75F1D58C6` FOREIGN KEY (`id_welder`) REFERENCES `welder` (`id_welder`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `FKC06CA1B7C9E9C4DB` FOREIGN KEY (`id_theory_test`) REFERENCES `theory_test` (`id_theory_test`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `FKC06CA1B7DFC6EABD` FOREIGN KEY (`id_resolution_certification`) REFERENCES `resolution_certification` (`id_resolution_certification`) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -449,7 +447,7 @@ CREATE TABLE `personal_protocol` (
 
 LOCK TABLES `personal_protocol` WRITE;
 /*!40000 ALTER TABLE `personal_protocol` DISABLE KEYS */;
-INSERT INTO `personal_protocol` VALUES (1,'2014-11-04',1,1,1,1,1);
+INSERT INTO `personal_protocol` VALUES (1,'14-001','2014-11-04',1,1,1,1);
 /*!40000 ALTER TABLE `personal_protocol` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -516,7 +514,7 @@ CREATE TABLE `radiation_test` (
   `defects` varchar(255) DEFAULT NULL,
   `number` varchar(255) DEFAULT NULL,
   `prot_date` date DEFAULT NULL,
-  `sensitivty` varchar(255) DEFAULT NULL,
+  `sensitivity` varchar(255) DEFAULT NULL,
   `id_evaluation` bigint(20) DEFAULT NULL,
   `id_weld_pattern` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id_radiation_test`),
@@ -599,8 +597,8 @@ CREATE TABLE `section_topic` (
   `id_section` bigint(20) NOT NULL,
   KEY `FKB1FF2F55D97BCD7E` (`id_topic`),
   KEY `FKB1FF2F55DC6CE8EA` (`id_section`),
-  CONSTRAINT `FKB1FF2F55DC6CE8EA` FOREIGN KEY (`id_section`) REFERENCES `section` (`id_section`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `FKB1FF2F55D97BCD7E` FOREIGN KEY (`id_topic`) REFERENCES `topic` (`id_topic`)
+  CONSTRAINT `FKB1FF2F55D97BCD7E` FOREIGN KEY (`id_topic`) REFERENCES `topic` (`id_topic`),
+  CONSTRAINT `FKB1FF2F55DC6CE8EA` FOREIGN KEY (`id_section`) REFERENCES `section` (`id_section`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -731,7 +729,7 @@ CREATE TABLE `topic` (
   `timelong` double DEFAULT NULL,
   `title` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id_topic`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -742,6 +740,37 @@ LOCK TABLES `topic` WRITE;
 /*!40000 ALTER TABLE `topic` DISABLE KEYS */;
 INSERT INTO `topic` VALUES (1,'Сущность процессов, напряжения и деформации при сварке, понятия и показатели свариваемости',1,6,'Основы сварки плавлением'),(2,'Классификация, положения при сварке, зачистка кромок',2,4,'Сварные соединения и швы'),(3,'Практические занятия по сварке различных образцов',3,12,'Практические занятия');
 /*!40000 ALTER TABLE `topic` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `total_protocol`
+--
+
+DROP TABLE IF EXISTS `total_protocol`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `total_protocol` (
+  `id_total_protocol` bigint(20) NOT NULL AUTO_INCREMENT,
+  `number` varchar(255) DEFAULT NULL,
+  `date_cert` date DEFAULT NULL,
+  `id_journal` bigint(20) DEFAULT NULL,
+  `id_commission_certification` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id_total_protocol`),
+  KEY `FK_TOTAL_PROTOCOL_JOURNAL` (`id_journal`),
+  KEY `FK_TOTAL_PROTOCOL_COMMISSION_idx` (`id_commission_certification`),
+  CONSTRAINT `FK_TOTAL_PROTOCOL_COMMISSION` FOREIGN KEY (`id_commission_certification`) REFERENCES `commission_certification` (`id_commission_certification`) ON DELETE SET NULL ON UPDATE CASCADE,
+  CONSTRAINT `FK_TOTAL_PROTOCOL_JOURNAL` FOREIGN KEY (`id_journal`) REFERENCES `journal` (`id_journal`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `total_protocol`
+--
+
+LOCK TABLES `total_protocol` WRITE;
+/*!40000 ALTER TABLE `total_protocol` DISABLE KEYS */;
+INSERT INTO `total_protocol` VALUES (1,'14-001','2014-11-04',1,1);
+/*!40000 ALTER TABLE `total_protocol` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -887,11 +916,11 @@ CREATE TABLE `weld_pattern` (
   KEY `FKA8EE0D17427C121B` (`id_mechanical_test`),
   KEY `FKA8EE0D178677AE3A` (`id_electrode`),
   KEY `FKA8EE0D178415AEE1` (`id_weld_wire`),
-  CONSTRAINT `FKA8EE0D178415AEE1` FOREIGN KEY (`id_weld_wire`) REFERENCES `weld_wire` (`id_weld_wire`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `FKA8EE0D17245C603B` FOREIGN KEY (`id_visual_test`) REFERENCES `visual_test` (`id_visual_test`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `FKA8EE0D17291D9D2B` FOREIGN KEY (`id_radiation_test`) REFERENCES `radiation_test` (`id_radiation_test`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `FKA8EE0D17427C121B` FOREIGN KEY (`id_mechanical_test`) REFERENCES `mechanical_test` (`id_mechanical_test`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `FKA8EE0D177B944AC7` FOREIGN KEY (`id_personal_protocol`) REFERENCES `personal_protocol` (`id_personal_protocol`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `FKA8EE0D178415AEE1` FOREIGN KEY (`id_weld_wire`) REFERENCES `weld_wire` (`id_weld_wire`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `FKA8EE0D178677AE3A` FOREIGN KEY (`id_electrode`) REFERENCES `electrode` (`id_electrode`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `FKA8EE0D17941E64B9` FOREIGN KEY (`id_weld_detail`) REFERENCES `weld_detail` (`id_weld_detail`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `FKA8EE0D17A5C46FBB` FOREIGN KEY (`id_steel_type`) REFERENCES `steel_type` (`id_steel_type`) ON DELETE SET NULL ON UPDATE CASCADE,
@@ -985,11 +1014,11 @@ CREATE TABLE `welder` (
   KEY `FKD0D293F36A83B29A` (`id_job`),
   KEY `FKD0D293F37DB64EFE` (`id_qualification`),
   KEY `FKD0D293F3A3167270` (`id_education`),
-  CONSTRAINT `FKD0D293F3A3167270` FOREIGN KEY (`id_education`) REFERENCES `education` (`id_education`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `FKD0D293F36A83B29A` FOREIGN KEY (`id_job`) REFERENCES `job` (`id_job`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `FKD0D293F37DB64EFE` FOREIGN KEY (`id_qualification`) REFERENCES `qualification` (`id_qualification`) ON DELETE SET NULL ON UPDATE CASCADE,
+  CONSTRAINT `FKD0D293F3A3167270` FOREIGN KEY (`id_education`) REFERENCES `education` (`id_education`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `FKD0D293F3C491E346` FOREIGN KEY (`id_organization`) REFERENCES `organization` (`id_organization`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -998,7 +1027,7 @@ CREATE TABLE `welder` (
 
 LOCK TABLES `welder` WRITE;
 /*!40000 ALTER TABLE `welder` DISABLE KEYS */;
-INSERT INTO `welder` VALUES (1,'2014-11-04','2014-11-04','XA-1620','Иван','Дорофеевич','Добрынин',1,3,1,1,'г. Киев, ул. Новая, 45'),(2,'2014-11-04','2014-11-04','XA-1626','Петр','Ильич','Петковский',1,4,2,3,'г. Харьков, ул. Зубарева, 50');
+INSERT INTO `welder` VALUES (1,'2014-11-04','2014-11-04','XA-1620','Иван','Дорофеевич','Добрынин',1,3,1,1,'г. Киев, ул. Новая, 45'),(2,'2014-11-04','2014-11-04','XA-1626','Петр','Ильич','Петковский',1,4,2,3,'г. Харьков, ул. Зубарева, 50'),(3,'1988-05-18','2000-01-20','ХА-1898','Сергей','Петрович','Иванов',1,1,1,1,'г. Харьков');
 /*!40000 ALTER TABLE `welder` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1014,8 +1043,8 @@ CREATE TABLE `welder_weld_method` (
   `id_weld_method` bigint(20) NOT NULL,
   KEY `FKBD2C802E5F1D58C6` (`id_welder`),
   KEY `FKBD2C802EB2D5D5D9` (`id_weld_method`),
-  CONSTRAINT `FKBD2C802EB2D5D5D9` FOREIGN KEY (`id_weld_method`) REFERENCES `weld_method` (`id_weld_method`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `FKBD2C802E5F1D58C6` FOREIGN KEY (`id_welder`) REFERENCES `welder` (`id_welder`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `FKBD2C802E5F1D58C6` FOREIGN KEY (`id_welder`) REFERENCES `welder` (`id_welder`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `FKBD2C802EB2D5D5D9` FOREIGN KEY (`id_weld_method`) REFERENCES `weld_method` (`id_weld_method`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1025,7 +1054,7 @@ CREATE TABLE `welder_weld_method` (
 
 LOCK TABLES `welder_weld_method` WRITE;
 /*!40000 ALTER TABLE `welder_weld_method` DISABLE KEYS */;
-INSERT INTO `welder_weld_method` VALUES (1,1),(2,1),(1,2),(2,3);
+INSERT INTO `welder_weld_method` VALUES (1,1),(2,1),(1,2),(2,3),(3,1);
 /*!40000 ALTER TABLE `welder_weld_method` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -1038,4 +1067,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-11-04  8:37:15
+-- Dump completed on 2015-02-26  9:46:51

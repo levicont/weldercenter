@@ -88,5 +88,12 @@
     <bean id="theoryTestService" class="com.lvg.weldercenter.services.hibernate.TheoryTestServiceHiberImpl"/>
     <bean id="ndtDocumentService" class="com.lvg.weldercenter.services.hibernate.NDTDocumentServiceHiberImpl"/>
     <bean id="personalProtocolService" class="com.lvg.weldercenter.services.hibernate.PersonalProtocolServiceHiberImpl"/>
+    <bean id="totalProtocolService" class="com.lvg.weldercenter.services.hibernate.TotalProtocolServiceHiberImpl"/>
+
+    <!-- Service UI beans-->
+    <bean id="teacherServiceUI" class="com.lvg.weldercenter.ui.servicesui.impl.TeacherUIManager"/>
+    <bean id="welderServiceUI" class="com.lvg.weldercenter.ui.servicesui.impl.WelderUIManager"/>
+    <bean id="totalProtocolServiceUI" class="com.lvg.weldercenter.ui.servicesui.impl.TotalProtocolUIManager"/>
+    <bean id="journalServiceUI" class="com.lvg.weldercenter.ui.servicesui.impl.JournalUIManager"/>
 
 </beans>

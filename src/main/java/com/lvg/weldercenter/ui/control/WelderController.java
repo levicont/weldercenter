@@ -38,7 +38,6 @@ import java.util.ResourceBundle;
  */
 public class WelderController extends GenericController {
     private static final Logger LOGGER = Logger.getLogger(WelderController.class);
-    private ControllerManager controllerManager;
 
     private WelderService welderService = ServiceFactory.getWelderService();
     private WeldMethodService weldMethodService = ServiceFactory.getWeldMethodService();
@@ -137,13 +136,6 @@ public class WelderController extends GenericController {
 
     }
 
-    public ControllerManager getControllerManager() {
-        return controllerManager;
-    }
-
-    public void setControllerManager(ControllerManager controllerManager) {
-        this.controllerManager = controllerManager;
-    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {

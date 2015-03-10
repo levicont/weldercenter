@@ -1,0 +1,1017 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane fx:id="mainProtocolPane" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.lvg.weldercenter.ui.control.ProtocolController">
+    <bottom>
+        <HBox prefHeight="32.0" prefWidth="600.0" spacing="10.0" BorderPane.alignment="CENTER">
+            <children>
+                <Button fx:id="btCloseProtocolPane" mnemonicParsing="false" onAction="#closeProtocolPane" text="Закрыть" />
+                <Button fx:id="btUpdate" mnemonicParsing="false" onAction="#refreshProtocolsTreeView" text="Обновить" />
+            </children>
+            <padding>
+                <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
+            </padding>
+            <BorderPane.margin>
+                <Insets />
+            </BorderPane.margin>
+        </HBox>
+    </bottom>
+    <center>
+        <SplitPane dividerPositions="0.45" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <items>
+                <BorderPane prefHeight="200.0" prefWidth="200.0">
+                    <bottom>
+                        <VBox fx:id="vboxToolBars" BorderPane.alignment="CENTER">
+                            <children>
+                                <ToolBar prefHeight="30.0" prefWidth="200.0">
+                                    <items>
+                                        <Button fx:id="btFirst" mnemonicParsing="false" text="|&lt;" />
+                                        <Button fx:id="btPrev" mnemonicParsing="false" text="&lt;&lt;" />
+                                        <Button fx:id="btNew" mnemonicParsing="false" text="&gt;*" />
+                                        <Button fx:id="btNext" mnemonicParsing="false" text="&gt;&gt;" />
+                                        <Button fx:id="btLast" mnemonicParsing="false" text="&gt;|" />
+                                        <Button mnemonicParsing="false" text="копия" />
+                                        <ToggleButton fx:id="btShowSearchToolBar" mnemonicParsing="false" text="Поиск" />
+                                    </items>
+                                </ToolBar>
+                                <ToolBar fx:id="toolBarSearch" prefHeight="40.0" prefWidth="200.0">
+                                    <items>
+                                        <TextField fx:id="txfSearch" prefHeight="25.0" prefWidth="230.0" />
+                                    </items>
+                                    <VBox.margin>
+                                        <Insets bottom="-40.0" />
+                                    </VBox.margin>
+                                </ToolBar>
+                            </children>
+                        </VBox>
+                    </bottom>
+               <center>
+                  <TreeView fx:id="protocolsTreeView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+               </center>
+                </BorderPane>
+                <BorderPane prefHeight="324.0" prefWidth="161.0" style="-fx-background-color: #bbffaa;">
+                    <top>
+                        <Label text="Подробные сведения" BorderPane.alignment="CENTER">
+                            <BorderPane.margin>
+                                <Insets bottom="10.0" top="10.0" />
+                            </BorderPane.margin>
+                        </Label>
+                    </top>
+               <center>
+                  <TabPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #F4F4F4;" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+                     <tabs>
+                        <Tab fx:id="tabTotalProtocol" text="Общий протокол">
+                           <content>
+                              <BorderPane fx:id="totalProtocolBorderPane" prefHeight="200.0" prefWidth="200.0">
+                                 <top>
+                                    <GridPane BorderPane.alignment="CENTER">
+                                      <columnConstraints>
+                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="70.0" />
+                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="100.0" />
+                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                      </columnConstraints>
+                                      <rowConstraints>
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                      </rowConstraints>
+                                       <children>
+                                          <Label text="Номер:">
+                                             <GridPane.margin>
+                                                <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                             </GridPane.margin>
+                                          </Label>
+                                          <Label fx:id="lbTotalProtocolNumber" text="00-000" GridPane.columnIndex="1">
+                                             <GridPane.margin>
+                                                <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                             </GridPane.margin>
+                                             <font>
+                                                <Font name="System Bold" size="14.0" />
+                                             </font>
+                                          </Label>
+                                          <Label alignment="CENTER_RIGHT" text="Дата:" GridPane.columnIndex="2" GridPane.halignment="RIGHT">
+                                             <GridPane.margin>
+                                                <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                             </GridPane.margin>
+                                          </Label>
+                                          <Label fx:id="lbTotalProtocolDate" text="01.01.2014г." GridPane.columnIndex="3">
+                                             <font>
+                                                <Font name="System Bold" size="14.0" />
+                                             </font>
+                                             <GridPane.margin>
+                                                <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                             </GridPane.margin>
+                                          </Label>
+                                       </children>
+                                    </GridPane>
+                                 </top>
+                                 <center>
+                                    <Accordion fx:id="accordionTotalProtocol" BorderPane.alignment="CENTER">
+                                      <panes>
+                                        <TitledPane fx:id="titlePaneCommissionCert" text="Аттестационная комиссия">
+                                             <content>
+                                                <BorderPane prefHeight="200.0" prefWidth="200.0">
+                                                   <center>
+                                                      <GridPane BorderPane.alignment="CENTER">
+                                                        <columnConstraints>
+                                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                        </columnConstraints>
+                                                        <rowConstraints>
+                                                          <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
+                                                          <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
+                                                            <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
+                                                            <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
+                                                            <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
+                                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                        </rowConstraints>
+                                                         <children>
+                                                            <Label text="Номер комиссии (ID):">
+                                                               <GridPane.margin>
+                                                                  <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                                               </GridPane.margin>
+                                                            </Label>
+                                                            <ComboBox fx:id="cbIDCommissionCert" prefWidth="150.0" GridPane.columnIndex="1">
+                                                               <GridPane.margin>
+                                                                  <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                                               </GridPane.margin>
+                                                            </ComboBox>
+                                                            <Label text="Глава комиссии:" GridPane.rowIndex="1">
+                                                               <GridPane.margin>
+                                                                  <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                                               </GridPane.margin>
+                                                            </Label>
+                                                            <Label text="Специалист по сварке:" GridPane.rowIndex="2">
+                                                               <GridPane.margin>
+                                                                  <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                                               </GridPane.margin>
+                                                            </Label>
+                                                            <Label text="Специалист по контролю качества:" GridPane.rowIndex="3">
+                                                               <GridPane.margin>
+                                                                  <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                                               </GridPane.margin>
+                                                            </Label>
+                                                            <Label text="Специалист охраны труда:" GridPane.rowIndex="4">
+                                                               <GridPane.margin>
+                                                                  <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                                               </GridPane.margin>
+                                                            </Label>
+                                                            <TextField fx:id="txfCommissionHead" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                                               <GridPane.margin>
+                                                                  <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                                               </GridPane.margin>
+                                                            </TextField>
+                                                            <TextField fx:id="txfCommissionWeldSpecialist" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                                               <GridPane.margin>
+                                                                  <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                                               </GridPane.margin>
+                                                            </TextField>
+                                                            <TextField fx:id="txfCommissionNDTSpecialist" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                                               <GridPane.margin>
+                                                                  <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                                               </GridPane.margin>
+                                                            </TextField>
+                                                            <TextField fx:id="txfCommissionSafetySpecialist" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                                                               <GridPane.margin>
+                                                                  <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                                               </GridPane.margin>
+                                                            </TextField>
+                                                         </children>
+                                                      </GridPane>
+                                                   </center>
+                                                </BorderPane>
+                                             </content>
+                                        </TitledPane>
+                                        <TitledPane fx:id="titlePaneTotalProtocolWelders" text="Сварщики">
+                                             <content>
+                                                <BorderPane prefHeight="200.0" prefWidth="200.0">
+                                                   <center>
+                                                      <TableView fx:id="tableViewWelders" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                                                        <columns>
+                                                          <TableColumn fx:id="tcolWelderID" prefWidth="50.0" text="id" />
+                                                          <TableColumn fx:id="tcolWelderSurname" prefWidth="100.0" text="Фамилия" />
+                                                            <TableColumn fx:id="tcolWelderName" prefWidth="95.0" text="Имя" />
+                                                            <TableColumn fx:id="tcolWelderSecname" prefWidth="120.0" text="Отчество" />
+                                                            <TableColumn fx:id="tcolWelderWeldMethod" prefWidth="100.0" text="Методы сварки" />
+                                                        </columns>
+                                                      </TableView>
+                                                   </center>
+                                                </BorderPane>
+                                             </content>
+                                        </TitledPane>
+                                        <TitledPane fx:id="titlePaneTotalProtocolPrint" text="Печать протоколов">
+                                             <content>
+                                                <BorderPane prefHeight="200.0" prefWidth="200.0">
+                                                   <center>
+                                                      <GridPane BorderPane.alignment="CENTER">
+                                                        <columnConstraints>
+                                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                        </columnConstraints>
+                                                        <rowConstraints>
+                                                          <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
+                                                          <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
+                                                            <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
+                                                            <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
+                                                            <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
+                                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                        </rowConstraints>
+                                                         <children>
+                                                            <Label text="Общий протокол:">
+                                                               <GridPane.margin>
+                                                                  <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                                               </GridPane.margin>
+                                                            </Label>
+                                                            <Label text="Радиографический контроль:" GridPane.rowIndex="1">
+                                                               <GridPane.margin>
+                                                                  <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                                               </GridPane.margin>
+                                                            </Label>
+                                                            <Label text="Визуальный контроль:" GridPane.rowIndex="2">
+                                                               <GridPane.margin>
+                                                                  <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                                               </GridPane.margin>
+                                                            </Label>
+                                                            <Label text="Механические испытания:" GridPane.rowIndex="3">
+                                                               <GridPane.margin>
+                                                                  <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                                               </GridPane.margin>
+                                                            </Label>
+                                                            <Button fx:id="btPrintTotalProtocol" mnemonicParsing="false" text="Печать" GridPane.columnIndex="1">
+                                                               <GridPane.margin>
+                                                                  <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                                               </GridPane.margin>
+                                                            </Button>
+                                                            <Button fx:id="btPrintRTProtocol" mnemonicParsing="false" text="Печать" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                                               <GridPane.margin>
+                                                                  <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                                               </GridPane.margin>
+                                                            </Button>
+                                                            <Button fx:id="btPrintVTProtocol" mnemonicParsing="false" text="Печать" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                                               <GridPane.margin>
+                                                                  <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                                               </GridPane.margin>
+                                                            </Button>
+                                                            <Button fx:id="btPrintMechProtocol" mnemonicParsing="false" text="Печать" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                                               <GridPane.margin>
+                                                                  <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                                               </GridPane.margin>
+                                                            </Button>
+                                                         </children>
+                                                      </GridPane>
+                                                   </center>
+                                                </BorderPane>
+                                             </content>
+                                        </TitledPane>
+                                          <TitledPane fx:id="titlePaneTotalProtocolJournal" prefHeight="200.0" prefWidth="200.0" text="Журнал подготовки">
+                                             <content>
+                                                <GridPane>
+                                                  <columnConstraints>
+                                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="140.0" />
+                                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                  </columnConstraints>
+                                                  <rowConstraints>
+                                                    <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
+                                                    <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
+                                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                  </rowConstraints>
+                                                   <children>
+                                                      <Label text="Номер:">
+                                                         <GridPane.margin>
+                                                            <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                                         </GridPane.margin>
+                                                      </Label>
+                                                      <Label fx:id="lbTotalProtocolJournalNumber" text="00-000" GridPane.columnIndex="1">
+                                                         <font>
+                                                            <Font name="System Bold" size="14.0" />
+                                                         </font>
+                                                         <GridPane.margin>
+                                                            <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                                         </GridPane.margin>
+                                                      </Label>
+                                                      <Label text="Дата начала:" GridPane.rowIndex="1">
+                                                         <GridPane.margin>
+                                                            <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                                         </GridPane.margin>
+                                                      </Label>
+                                                      <Label text="Дата окончания:" GridPane.rowIndex="2">
+                                                         <GridPane.margin>
+                                                            <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                                         </GridPane.margin>
+                                                      </Label>
+                                                      <Label fx:id="lbTotalProtocolJournalDateEnd" text="01.01.2014" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                                         <font>
+                                                            <Font name="System Bold" size="14.0" />
+                                                         </font>
+                                                         <GridPane.margin>
+                                                            <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                                         </GridPane.margin>
+                                                      </Label>
+                                                      <Label fx:id="lbTotalProtocolJournalDateBegin" text="01.01.2014" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                                         <font>
+                                                            <Font name="System Bold" size="14.0" />
+                                                         </font>
+                                                         <GridPane.margin>
+                                                            <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                                         </GridPane.margin>
+                                                      </Label>
+                                                      <Button fx:id="btPrintJournal" mnemonicParsing="false" text="Печать" GridPane.rowIndex="3">
+                                                         <GridPane.margin>
+                                                            <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                                         </GridPane.margin>
+                                                      </Button>
+                                                      <Button fx:id="btGoToJournal" mnemonicParsing="false" text="Перейти" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                                         <GridPane.margin>
+                                                            <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                                         </GridPane.margin>
+                                                      </Button>
+                                                   </children>
+                                                </GridPane>
+                                             </content>
+                                          </TitledPane>
+                                      </panes>
+                                    </Accordion>
+                                 </center>
+                              </BorderPane>
+                           </content>
+                        </Tab>
+                        <Tab fx:id="tabPersonalProtocol" text="Персональный протокол">
+                           <content>
+                              <BorderPane prefHeight="200.0" prefWidth="200.0">
+                                 <top>
+                                    <GridPane BorderPane.alignment="CENTER">
+                                      <columnConstraints>
+                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="65.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="100.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="65.0" />
+                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                      </columnConstraints>
+                                      <rowConstraints>
+                                        <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                      </rowConstraints>
+                                       <children>
+                                          <Label fx:id="lbWelderFullName" text="Фамилия Имя Отчество" GridPane.columnSpan="4" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+                                             <GridPane.margin>
+                                                <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                             </GridPane.margin>
+                                             <font>
+                                                <Font name="System Bold" size="14.0" />
+                                             </font>
+                                          </Label>
+                                          <Label text="Номер:">
+                                             <GridPane.margin>
+                                                <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                             </GridPane.margin>
+                                          </Label>
+                                          <Label text="Дата:" GridPane.columnIndex="2" GridPane.halignment="RIGHT">
+                                             <GridPane.margin>
+                                                <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                             </GridPane.margin>
+                                          </Label>
+                                          <TextField fx:id="txfPersonalProtocolNumber" GridPane.columnIndex="1">
+                                             <GridPane.margin>
+                                                <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                             </GridPane.margin>
+                                          </TextField>
+                                          <DatePicker fx:id="dpPersonalProtocolDate" GridPane.columnIndex="3">
+                                             <GridPane.margin>
+                                                <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                             </GridPane.margin>
+                                          </DatePicker>
+                                       </children>
+                                       <BorderPane.margin>
+                                          <Insets top="8.0" />
+                                       </BorderPane.margin>
+                                    </GridPane>
+                                 </top>
+                                 <center>
+                                    <Accordion BorderPane.alignment="CENTER">
+                                      <panes>
+                                        <TitledPane fx:id="titlePanePersProtocolWeldPattern" text="Контрольные образцы">
+                                             <content>
+                                                <BorderPane>
+                                                   <center>
+                                                      <TableView fx:id="tableViewWeldPatterns" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="TOP_CENTER">
+                                                        <columns>
+                                                          <TableColumn fx:id="tcolWeldPatternID" prefWidth="40.0" text="id" />
+                                                          <TableColumn fx:id="tcolWeldPatternType" prefWidth="75.0" text="Тип" />
+                                                            <TableColumn fx:id="tcolWeldPatternSize" prefWidth="75.0" text="Размеры" />
+                                                            <TableColumn fx:id="tcolWeldPatternWeldMethod" prefWidth="125.0" text="Метод сварки" />
+                                                        </columns>
+                                                         <BorderPane.margin>
+                                                            <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                                         </BorderPane.margin>
+                                                      </TableView>
+                                                   </center>
+                                                   <right>
+                                                      <VBox maxWidth="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="90.0" BorderPane.alignment="CENTER">
+                                                         <children>
+                                                            <Button fx:id="btAddWeldPattern" mnemonicParsing="false" text="Добавить">
+                                                               <VBox.margin>
+                                                                  <Insets left="5.0" right="5.0" top="8.0" />
+                                                               </VBox.margin>
+                                                               <font>
+                                                                  <Font size="12.0" />
+                                                               </font>
+                                                            </Button>
+                                                            <Button fx:id="btEditWeldPattern" mnemonicParsing="false" text="Изменить">
+                                                               <VBox.margin>
+                                                                  <Insets left="5.0" right="5.0" top="5.0" />
+                                                               </VBox.margin>
+                                                               <font>
+                                                                  <Font size="12.0" />
+                                                               </font>
+                                                            </Button>
+                                                            <Button fx:id="btDeleteWeldPattern" mnemonicParsing="false" text="Удалить">
+                                                               <VBox.margin>
+                                                                  <Insets left="5.0" right="5.0" top="5.0" />
+                                                               </VBox.margin>
+                                                               <font>
+                                                                  <Font size="12.0" />
+                                                               </font>
+                                                            </Button>
+                                                         </children>
+                                                      </VBox>
+                                                   </right>
+                                                </BorderPane>
+                                             </content>
+                                          </TitledPane>
+                                        <TitledPane fx:id="titlePanePersProtocolTheoryTest" text="Теоретический экзамен">
+                                             <content>
+                                                <GridPane>
+                                                  <columnConstraints>
+                                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="130.0" />
+                                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                  </columnConstraints>
+                                                  <rowConstraints>
+                                                    <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
+                                                    <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
+                                                    <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                  </rowConstraints>
+                                                   <children>
+                                                      <Label text="Результаты теоретического экзамена" GridPane.columnSpan="2" GridPane.halignment="CENTER">
+                                                         <GridPane.margin>
+                                                            <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                                         </GridPane.margin>
+                                                      </Label>
+                                                      <Label text="Номер билета:" GridPane.rowIndex="1">
+                                                         <GridPane.margin>
+                                                            <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                                         </GridPane.margin>
+                                                      </Label>
+                                                      <Label text="Оценка:" GridPane.rowIndex="2">
+                                                         <GridPane.margin>
+                                                            <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                                         </GridPane.margin>
+                                                      </Label>
+                                                      <TextField fx:id="txfTheoryTestTicketNumber" maxWidth="-Infinity" prefWidth="95.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                                         <GridPane.margin>
+                                                            <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                                         </GridPane.margin>
+                                                      </TextField>
+                                                      <ComboBox fx:id="cbTheoryTestRating" maxWidth="-Infinity" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                                         <GridPane.margin>
+                                                            <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                                         </GridPane.margin>
+                                                      </ComboBox>
+                                                   </children>
+                                                </GridPane>
+                                             </content></TitledPane>
+                                          <TitledPane fx:id="titlePaneNDTDocuments" prefHeight="200.0" prefWidth="200.0" text="Нормативные документы">
+                                             <content>
+                                                <BorderPane prefHeight="200.0" prefWidth="200.0">
+                                                   <center>
+                                                      <SplitPane dividerPositions="0.5" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                                                         <items>
+                                                            <BorderPane prefHeight="200.0" prefWidth="200.0">
+                                                               <top>
+                                                                  <Label text="Документы аттестации" BorderPane.alignment="CENTER">
+                                                                     <BorderPane.margin>
+                                                                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                                                     </BorderPane.margin>
+                                                                  </Label>
+                                                               </top>
+                                                               <right>
+                                                                  <VBox alignment="BOTTOM_LEFT" maxWidth="-Infinity" prefHeight="200.0" prefWidth="52.0" spacing="5.0" BorderPane.alignment="CENTER">
+                                                                     <padding>
+                                                                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                                                     </padding>
+                                                                     <children>
+                                                                        <Button fx:id="btRemoveAllDocs" maxWidth="-Infinity" mnemonicParsing="false" prefWidth="40.0" text="&gt;&gt;" />
+                                                                        <Button fx:id="btRemoveSingleDoc" maxWidth="-Infinity" mnemonicParsing="false" prefWidth="40.0" text="&gt;" />
+                                                                     </children>
+                                                                  </VBox>
+                                                               </right>
+                                                               <center>
+                                                                  <ListView fx:id="listViewAttestDocs" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                                                                     <BorderPane.margin>
+                                                                        <Insets bottom="5.0" left="5.0" />
+                                                                     </BorderPane.margin>
+                                                                  </ListView>
+                                                               </center>
+                                                            </BorderPane>
+                                                            <BorderPane prefHeight="200.0" prefWidth="200.0">
+                                                               <left>
+                                                                  <VBox maxWidth="-Infinity" prefHeight="200.0" prefWidth="52.0" spacing="5.0" BorderPane.alignment="CENTER">
+                                                                     <children>
+                                                                        <Button fx:id="btAddAllDocsToProtocol" mnemonicParsing="false" text="&lt;&lt;" />
+                                                                        <Button fx:id="btAddSingleDocToProtocol" maxWidth="-Infinity" mnemonicParsing="false" prefWidth="40.0" text="&lt;" />
+                                                                     </children>
+                                                                     <padding>
+                                                                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                                                     </padding>
+                                                                  </VBox>
+                                                               </left>
+                                                               <top>
+                                                                  <Label text="База документов" BorderPane.alignment="CENTER">
+                                                                     <BorderPane.margin>
+                                                                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                                                     </BorderPane.margin>
+                                                                  </Label>
+                                                               </top>
+                                                               <center>
+                                                                  <ListView fx:id="listViewAllDocs" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                                                                     <BorderPane.margin>
+                                                                        <Insets bottom="5.0" right="5.0" />
+                                                                     </BorderPane.margin>
+                                                                  </ListView>
+                                                               </center>
+                                                            </BorderPane>
+                                                         </items>
+                                                      </SplitPane>
+                                                   </center>
+                                                   <top>
+                                                      <GridPane BorderPane.alignment="CENTER">
+                                                        <columnConstraints>
+                                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                        </columnConstraints>
+                                                        <rowConstraints>
+                                                          <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="46.0" vgrow="SOMETIMES" />
+                                                        </rowConstraints>
+                                                         <children>
+                                                            <Label alignment="CENTER" text="Выбор документов, согласно которым аттестуется сварщик" textAlignment="CENTER" wrapText="true" GridPane.columnSpan="2">
+                                                               <GridPane.margin>
+                                                                  <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                                               </GridPane.margin>
+                                                            </Label>
+                                                         </children>
+                                                      </GridPane>
+                                                   </top>
+                                                </BorderPane>
+                                             </content></TitledPane>
+                                          <TitledPane fx:id="titlePaneResolutionCert" text="Заключение комиссии">
+                                             <content>
+                                                <GridPane>
+                                                  <columnConstraints>
+                                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                  </columnConstraints>
+                                                  <rowConstraints>
+                                                    <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="38.0" vgrow="SOMETIMES" />
+                                                    <RowConstraints minHeight="10.0" prefHeight="150.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="38.0" vgrow="SOMETIMES" />
+                                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                  </rowConstraints>
+                                                   <children>
+                                                      <Label text="Текст заключения аттестации:" GridPane.columnSpan="2">
+                                                         <GridPane.margin>
+                                                            <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                                         </GridPane.margin>
+                                                      </Label>
+                                                      <TextArea fx:id="textAreaResolutionCert" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="1">
+                                                         <GridPane.margin>
+                                                            <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                                         </GridPane.margin>
+                                                      </TextArea>
+                                                      <Button fx:id="btCleanResolutionText" mnemonicParsing="false" text="Очистить" GridPane.rowIndex="2">
+                                                         <GridPane.margin>
+                                                            <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                                         </GridPane.margin>
+                                                      </Button>
+                                                   </children>
+                                                </GridPane>
+                                             </content>
+                                          </TitledPane>
+                                      </panes>
+                                    </Accordion>
+                                 </center></BorderPane>
+                           </content>
+                        </Tab>
+                        <Tab fx:id="tabWeldPattern" text="Контрольный образец">
+                           <content>
+                              <BorderPane prefHeight="200.0" prefWidth="200.0">
+                                 <center>
+                                    <Accordion BorderPane.alignment="CENTER">
+                                      <panes>
+                                        <TitledPane fx:id="titlePaneWeldPatternOption" text="Параметры и технология сварки">
+                                             <content>
+                                                <ScrollPane fitToWidth="true">
+                                                   <content>
+                                                      <GridPane>
+                                                        <columnConstraints>
+                                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="180.0" />
+                                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                        </columnConstraints>
+                                                        <rowConstraints>
+                                                            <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="38.0" vgrow="SOMETIMES" />
+                                                          <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="38.0" vgrow="SOMETIMES" />
+                                                          <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="38.0" vgrow="SOMETIMES" />
+                                                            <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="38.0" vgrow="SOMETIMES" />
+                                                          <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="38.0" vgrow="SOMETIMES" />
+                                                            <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="38.0" vgrow="SOMETIMES" />
+                                                            <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="38.0" vgrow="SOMETIMES" />
+                                                            <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="38.0" vgrow="SOMETIMES" />
+                                                            <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="38.0" vgrow="SOMETIMES" />
+                                                            <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="38.0" vgrow="SOMETIMES" />
+                                                            <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="38.0" vgrow="SOMETIMES" />
+                                                            <RowConstraints minHeight="10.0" prefHeight="38.0" vgrow="SOMETIMES" />
+                                                        </rowConstraints>
+                                                         <children>
+                                                            <Label text="Тип образца:" GridPane.rowIndex="1">
+                                                               <GridPane.margin>
+                                                                  <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                                               </GridPane.margin>
+                                                            </Label>
+                                                            <ComboBox fx:id="cbWeldPatternDetail" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                                               <GridPane.margin>
+                                                                  <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                                               </GridPane.margin>
+                                                            </ComboBox>
+                                                            <Label text="Размеры:" GridPane.rowIndex="2">
+                                                               <GridPane.margin>
+                                                                  <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                                               </GridPane.margin>
+                                                            </Label>
+                                                            <Label text="Диаметр (мм):" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                                               <GridPane.margin>
+                                                                  <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                                               </GridPane.margin>
+                                                            </Label>
+                                                            <ComboBox fx:id="cbWeldPatternDiameter" prefWidth="60.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                                               <GridPane.margin>
+                                                                  <Insets bottom="8.0" left="115.0" right="8.0" top="8.0" />
+                                                               </GridPane.margin>
+                                                            </ComboBox>
+                                                            <ComboBox fx:id="cbWeldPatternThickness" prefWidth="60.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                                               <GridPane.margin>
+                                                                  <Insets bottom="8.0" left="115.0" right="8.0" top="8.0" />
+                                                               </GridPane.margin>
+                                                            </ComboBox>
+                                                            <Label text="Толщина (мм):" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                                               <GridPane.margin>
+                                                                  <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                                               </GridPane.margin>
+                                                            </Label>
+                                                            <Label text="Клеймо:" GridPane.rowIndex="4">
+                                                               <GridPane.margin>
+                                                                  <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                                               </GridPane.margin>
+                                                            </Label>
+                                                            <TextField fx:id="txfWeldPatternMark" maxWidth="-Infinity" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                                                               <GridPane.margin>
+                                                                  <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                                               </GridPane.margin>
+                                                            </TextField>
+                                                            <CheckBox fx:id="chkWeldPatternHeating" mnemonicParsing="false" text="Пред. подогрев" GridPane.rowIndex="5">
+                                                               <GridPane.margin>
+                                                                  <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                                               </GridPane.margin>
+                                                            </CheckBox>
+                                                            <CheckBox fx:id="chkWeldPatternHeatTreatment" mnemonicParsing="false" text="Термообработка" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                                                               <GridPane.margin>
+                                                                  <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                                               </GridPane.margin>
+                                                            </CheckBox>
+                                                            <Label text="Материал образца:" GridPane.rowIndex="6">
+                                                               <GridPane.margin>
+                                                                  <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                                               </GridPane.margin>
+                                                            </Label>
+                                                            <ComboBox fx:id="cbWeldPatternSteelType" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="6">
+                                                               <GridPane.margin>
+                                                                  <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                                               </GridPane.margin>
+                                                            </ComboBox>
+                                                            <Label text="Параметры образца" GridPane.columnSpan="2" GridPane.halignment="CENTER">
+                                                               <GridPane.margin>
+                                                                  <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                                               </GridPane.margin>
+                                                            </Label>
+                                                            <Label text="Метод сварки:" GridPane.rowIndex="8">
+                                                               <GridPane.margin>
+                                                                  <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                                               </GridPane.margin>
+                                                            </Label>
+                                                            <ComboBox fx:id="cbWeldPatternWeldMethod" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="8">
+                                                               <GridPane.margin>
+                                                                  <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                                               </GridPane.margin>
+                                                            </ComboBox>
+                                                            <CheckBox fx:id="chkWeldPatternElectrode" mnemonicParsing="false" text="Электроды:" GridPane.rowIndex="9">
+                                                               <GridPane.margin>
+                                                                  <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                                               </GridPane.margin>
+                                                            </CheckBox>
+                                                            <CheckBox fx:id="chkWeldPatternWeldWire" mnemonicParsing="false" text="Св. проволока:" GridPane.rowIndex="10">
+                                                               <GridPane.margin>
+                                                                  <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                                               </GridPane.margin>
+                                                            </CheckBox>
+                                                            <CheckBox fx:id="chkWeldPatternWeldGas" mnemonicParsing="false" text="Защитный газ:" GridPane.rowIndex="11">
+                                                               <GridPane.margin>
+                                                                  <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                                               </GridPane.margin>
+                                                            </CheckBox>
+                                                            <ComboBox fx:id="cbWeldPatternElectrode" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="9">
+                                                               <GridPane.margin>
+                                                                  <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                                               </GridPane.margin>
+                                                            </ComboBox>
+                                                            <ComboBox fx:id="cbWeldPatternWeldWire" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="10">
+                                                               <GridPane.margin>
+                                                                  <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                                               </GridPane.margin>
+                                                            </ComboBox>
+                                                            <ComboBox fx:id="cbWeldPatternWeldGas" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="11">
+                                                               <GridPane.margin>
+                                                                  <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                                               </GridPane.margin>
+                                                            </ComboBox>
+                                                            <Label text="Положения при сварке:" GridPane.rowIndex="7">
+                                                               <GridPane.margin>
+                                                                  <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                                               </GridPane.margin>
+                                                            </Label>
+                                                            <TextField fx:id="txfWeldPatternWeldPosition" maxWidth="-Infinity" prefWidth="120.0" GridPane.columnIndex="1" GridPane.rowIndex="7">
+                                                               <GridPane.margin>
+                                                                  <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                                               </GridPane.margin>
+                                                            </TextField>
+                                                            <ChoiceBox fx:id="choiceBoxWeldPatternWeldPosition" prefWidth="60.0" GridPane.columnIndex="1" GridPane.rowIndex="7">
+                                                               <GridPane.margin>
+                                                                  <Insets bottom="8.0" left="133.0" right="8.0" top="8.0" />
+                                                               </GridPane.margin>
+                                                            </ChoiceBox>
+                                                         </children>
+                                                         <opaqueInsets>
+                                                            <Insets />
+                                                         </opaqueInsets>
+                                                      </GridPane>
+                                                   </content>
+                                                </ScrollPane>
+                                             </content>
+                                          </TitledPane>
+                                        <TitledPane fx:id="titlePaneWeldPatternNDT" text="Контроль качества">
+                                             <content>
+                                                <ScrollPane fitToWidth="true" prefHeight="200.0" prefWidth="200.0">
+                                                   <content>
+                                                      <GridPane>
+                                                        <columnConstraints>
+                                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="225.0" />
+                                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="120.0" />
+                                                        </columnConstraints>
+                                                        <rowConstraints>
+                                                          <RowConstraints minHeight="10.0" prefHeight="34.0" vgrow="SOMETIMES" />
+                                                            <RowConstraints minHeight="10.0" prefHeight="34.0" vgrow="SOMETIMES" />
+                                                          <RowConstraints minHeight="10.0" prefHeight="34.0" vgrow="SOMETIMES" />
+                                                          <RowConstraints minHeight="10.0" prefHeight="65.0" vgrow="SOMETIMES" />
+                                                            <RowConstraints minHeight="10.0" prefHeight="34.0" vgrow="SOMETIMES" />
+                                                            <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="10.0" vgrow="SOMETIMES" />
+                                                            <RowConstraints minHeight="10.0" prefHeight="34.0" vgrow="SOMETIMES" />
+                                                            <RowConstraints minHeight="10.0" prefHeight="34.0" vgrow="SOMETIMES" />
+                                                            <RowConstraints minHeight="10.0" prefHeight="34.0" vgrow="SOMETIMES" />
+                                                            <RowConstraints minHeight="10.0" prefHeight="34.0" vgrow="SOMETIMES" />
+                                                            <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="65.0" vgrow="SOMETIMES" />
+                                                            <RowConstraints minHeight="10.0" prefHeight="34.0" vgrow="SOMETIMES" />
+                                                            <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="10.0" vgrow="SOMETIMES" />
+                                                            <RowConstraints minHeight="10.0" prefHeight="34.0" vgrow="SOMETIMES" />
+                                                            <RowConstraints minHeight="10.0" prefHeight="34.0" vgrow="SOMETIMES" />
+                                                            <RowConstraints minHeight="10.0" prefHeight="34.0" vgrow="SOMETIMES" />
+                                                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                        </rowConstraints>
+                                                         <children>
+                                                            <CheckBox fx:id="chkWeldPatternVT" mnemonicParsing="false" text="Визуальный контроль (VT)" textFill="#090cdd">
+                                                               <GridPane.margin>
+                                                                  <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                                               </GridPane.margin>
+                                                            </CheckBox>
+                                                            <Label text="Дефекты:" GridPane.rowIndex="2">
+                                                               <GridPane.margin>
+                                                                  <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                                               </GridPane.margin>
+                                                            </Label>
+                                                            <TextArea fx:id="textAreaWeldPatternVTDefects" maxWidth="-Infinity" prefHeight="200.0" prefWidth="260.0" GridPane.columnSpan="2" GridPane.rowIndex="3">
+                                                               <GridPane.margin>
+                                                                  <Insets bottom="5.0" left="8.0" right="8.0" />
+                                                               </GridPane.margin>
+                                                            </TextArea>
+                                                            <Label text="Заключение:" GridPane.rowIndex="4">
+                                                               <GridPane.margin>
+                                                                  <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                                               </GridPane.margin>
+                                                            </Label>
+                                                            <ComboBox fx:id="cbWeldPatternVTEvaluation" prefWidth="150.0" GridPane.rowIndex="4">
+                                                               <GridPane.margin>
+                                                                  <Insets bottom="8.0" left="110.0" right="8.0" top="8.0" />
+                                                               </GridPane.margin>
+                                                            </ComboBox>
+                                                            <Label text="Протокол №:" GridPane.rowIndex="1">
+                                                               <GridPane.margin>
+                                                                  <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                                               </GridPane.margin>
+                                                            </Label>
+                                                            <TextField fx:id="txfWeldPatternVTNumber" maxWidth="-Infinity" prefWidth="120.0" GridPane.rowIndex="1">
+                                                               <GridPane.margin>
+                                                                  <Insets bottom="8.0" left="100.0" right="8.0" top="8.0" />
+                                                               </GridPane.margin>
+                                                            </TextField>
+                                                            <DatePicker fx:id="dpWeldPatternVTDate" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                                               <GridPane.margin>
+                                                                  <Insets bottom="8.0" left="35.0" right="8.0" top="8.0" />
+                                                               </GridPane.margin>
+                                                            </DatePicker>
+                                                            <Label text="от:" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                                               <GridPane.margin>
+                                                                  <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                                               </GridPane.margin>
+                                                            </Label>
+                                                            <Separator prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="5">
+                                                               <GridPane.margin>
+                                                                  <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+                                                               </GridPane.margin>
+                                                            </Separator>
+                                                            <CheckBox fx:id="chkWeldPatternMech" mnemonicParsing="false" text="Механические испытания" textFill="#090cdd" GridPane.columnSpan="2" GridPane.rowIndex="13">
+                                                               <GridPane.margin>
+                                                                  <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                                               </GridPane.margin>
+                                                            </CheckBox>
+                                                            <Label text="Протокол №:" GridPane.rowIndex="14">
+                                                               <GridPane.margin>
+                                                                  <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                                               </GridPane.margin>
+                                                            </Label>
+                                                            <TextField fx:id="txfWeldPatternMechNumber" maxWidth="-Infinity" prefWidth="120.0" GridPane.rowIndex="14">
+                                                               <GridPane.margin>
+                                                                  <Insets bottom="8.0" left="100.0" right="8.0" top="8.0" />
+                                                               </GridPane.margin>
+                                                            </TextField>
+                                                            <Label text="от:" GridPane.columnIndex="1" GridPane.rowIndex="14">
+                                                               <GridPane.margin>
+                                                                  <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                                               </GridPane.margin>
+                                                            </Label>
+                                                            <DatePicker fx:id="dpWeldPatternMechDate" GridPane.columnIndex="1" GridPane.rowIndex="14">
+                                                               <GridPane.margin>
+                                                                  <Insets bottom="8.0" left="35.0" right="8.0" top="8.0" />
+                                                               </GridPane.margin>
+                                                            </DatePicker>
+                                                            <Label text="Угол изгиба (град):" GridPane.rowIndex="15">
+                                                               <GridPane.margin>
+                                                                  <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                                               </GridPane.margin>
+                                                            </Label>
+                                                            <TextField fx:id="txfWeldPatternMechAngle" maxWidth="-Infinity" prefWidth="100.0" GridPane.columnSpan="2" GridPane.rowIndex="15">
+                                                               <GridPane.margin>
+                                                                  <Insets bottom="8.0" left="180.0" right="8.0" top="8.0" />
+                                                               </GridPane.margin>
+                                                            </TextField>
+                                                            <Label text="Заключение:" GridPane.rowIndex="16">
+                                                               <GridPane.margin>
+                                                                  <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                                               </GridPane.margin>
+                                                            </Label>
+                                                            <ComboBox fx:id="cbWeldPatternMechEvaluation" prefWidth="150.0" GridPane.rowIndex="16">
+                                                               <GridPane.margin>
+                                                                  <Insets bottom="8.0" left="110.0" right="8.0" top="8.0" />
+                                                               </GridPane.margin>
+                                                            </ComboBox>
+                                                            <CheckBox fx:id="chkWeldPatternRT" mnemonicParsing="false" text="Радиографический контроль (RT)" textFill="#090cdd" GridPane.columnSpan="2" GridPane.rowIndex="6">
+                                                               <GridPane.margin>
+                                                                  <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                                               </GridPane.margin>
+                                                            </CheckBox>
+                                                            <Label text="Протокол №:" GridPane.rowIndex="7">
+                                                               <GridPane.margin>
+                                                                  <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                                               </GridPane.margin>
+                                                            </Label>
+                                                            <TextField fx:id="txfWeldPatternRTNumber" maxWidth="-Infinity" prefWidth="120.0" GridPane.rowIndex="7">
+                                                               <GridPane.margin>
+                                                                  <Insets bottom="8.0" left="100.0" right="8.0" top="8.0" />
+                                                               </GridPane.margin>
+                                                            </TextField>
+                                                            <Label text="от:" GridPane.columnIndex="1" GridPane.rowIndex="7">
+                                                               <GridPane.margin>
+                                                                  <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                                               </GridPane.margin>
+                                                            </Label>
+                                                            <DatePicker fx:id="dpWeldPatternRTDate" GridPane.columnIndex="1" GridPane.rowIndex="7">
+                                                               <GridPane.margin>
+                                                                  <Insets bottom="8.0" left="35.0" right="8.0" top="8.0" />
+                                                               </GridPane.margin>
+                                                            </DatePicker>
+                                                            <Label text="Чувствительность (мм):" GridPane.rowIndex="8">
+                                                               <GridPane.margin>
+                                                                  <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                                               </GridPane.margin>
+                                                            </Label>
+                                                            <TextField fx:id="txfWeldPatternRTSensitivity" maxWidth="-Infinity" prefWidth="120.0" GridPane.columnSpan="2" GridPane.rowIndex="8">
+                                                               <GridPane.margin>
+                                                                  <Insets bottom="8.0" left="180.0" right="8.0" top="8.0" />
+                                                               </GridPane.margin>
+                                                            </TextField>
+                                                            <Label text="Дефекты:" GridPane.rowIndex="9">
+                                                               <GridPane.margin>
+                                                                  <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                                               </GridPane.margin>
+                                                            </Label>
+                                                            <TextArea fx:id="textAreaWeldPatternRTDefects" maxWidth="-Infinity" prefHeight="200.0" prefWidth="260.0" GridPane.columnSpan="2" GridPane.rowIndex="10">
+                                                               <GridPane.margin>
+                                                                  <Insets bottom="5.0" left="8.0" right="8.0" />
+                                                               </GridPane.margin>
+                                                            </TextArea>
+                                                            <Label text="Заключение:" GridPane.rowIndex="11">
+                                                               <GridPane.margin>
+                                                                  <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                                               </GridPane.margin>
+                                                            </Label>
+                                                            <ComboBox fx:id="cbWeldPatternRTEvaluation" prefWidth="150.0" GridPane.rowIndex="11">
+                                                               <GridPane.margin>
+                                                                  <Insets bottom="8.0" left="110.0" right="8.0" top="8.0" />
+                                                               </GridPane.margin>
+                                                            </ComboBox>
+                                                            <Separator prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="12">
+                                                               <GridPane.margin>
+                                                                  <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                                               </GridPane.margin>
+                                                            </Separator>
+                                                         </children>
+                                                      </GridPane>
+                                                   </content>
+                                                </ScrollPane>
+                                             </content>
+                                          </TitledPane>
+                                      </panes>
+                                    </Accordion>
+                                 </center>
+                                 <bottom>
+                                    <HBox alignment="CENTER_RIGHT" maxHeight="-Infinity" prefHeight="45.0" prefWidth="200.0" spacing="8.0" BorderPane.alignment="CENTER">
+                                       <children>
+                                          <Button fx:id="btWeldPatternSave" mnemonicParsing="false" text="Сохранить" />
+                                          <Button fx:id="btWeldPatternCancel" mnemonicParsing="false" text="Отмена" />
+                                       </children>
+                                       <padding>
+                                          <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                       </padding>
+                                    </HBox>
+                                 </bottom>
+                              </BorderPane>
+                           </content>
+                        </Tab>
+                     </tabs></TabPane>
+               </center>
+                </BorderPane>
+            </items>
+            <BorderPane.margin>
+                <Insets left="12.0" top="12.0" />
+            </BorderPane.margin>
+        </SplitPane>
+    </center>
+    <right>
+        <VBox spacing="10.0" BorderPane.alignment="CENTER">
+            <children>
+                <Button fx:id="btAdd" mnemonicParsing="false" text="Добавить" />
+                <Button fx:id="btEdit" mnemonicParsing="false" text="Изменить" />
+                <Button fx:id="btDelete" mnemonicParsing="false" text="Удалить" />
+                <Separator>
+                    <VBox.margin>
+                        <Insets top="12.0" />
+                    </VBox.margin>
+                </Separator>
+                <Button fx:id="btSave" contentDisplay="CENTER" mnemonicParsing="false" text="Сохранить">
+                    <VBox.margin>
+                        <Insets />
+                    </VBox.margin>
+                </Button>
+            </children>
+            <padding>
+                <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
+            </padding>
+            <BorderPane.margin>
+                <Insets top="12.0" />
+            </BorderPane.margin>
+        </VBox>
+    </right>
+</BorderPane>

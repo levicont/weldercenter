@@ -1,5 +1,7 @@
 package com.lvg.weldercenter.spring.factories;
 
+import com.lvg.weldercenter.models.CommissionCertification;
+import com.lvg.weldercenter.models.PersonalProtocol;
 import com.lvg.weldercenter.services.*;
 import com.lvg.weldercenter.spring.ContextFactory;
 import org.springframework.context.ApplicationContext;
@@ -21,6 +23,9 @@ public class ServiceFactory {
     private static SectionService sectionService;
     private static TopicService topicService;
     private static TeacherService teacherService;
+    private static PersonalProtocolService personalProtocolService;
+    private static TotalProtocolService totalProtocolService;
+    private static CommissionCertificationService commissionCertificationService;
 
     private ServiceFactory(){
 
@@ -134,5 +139,36 @@ public class ServiceFactory {
             teacherService = (TeacherService)context.getBean("teacherService");
         }
         return teacherService;
+    }
+
+    public static PersonalProtocolService getPersonalProtocolService(){
+        if(null != personalProtocolService){
+            return personalProtocolService;
+        }
+        else{
+            personalProtocolService = (PersonalProtocolService)context.getBean("personalProtocolService");
+        }
+        return personalProtocolService;
+    }
+
+    public static TotalProtocolService getTotalProtocolService(){
+        if(null != totalProtocolService){
+            return totalProtocolService;
+        }
+        else{
+            totalProtocolService = (TotalProtocolService)context.getBean("totalProtocolService");
+        }
+        return totalProtocolService;
+    }
+
+    public static CommissionCertificationService getCommissionCertificationService(){
+        if(null != commissionCertificationService){
+            return commissionCertificationService;
+        }
+        else{
+            commissionCertificationService =
+                    (CommissionCertificationService)context.getBean("commissionCertificationService");
+        }
+        return commissionCertificationService;
     }
 }

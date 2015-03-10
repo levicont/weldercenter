@@ -21,8 +21,6 @@ public class CommissionCertification implements Serializable{
     private Teacher ndtSpecialist;
     private Teacher safetySpecialist;
 
-    private List<PersonalProtocol> personalProtocols = new ArrayList<PersonalProtocol>();
-
     //Getters and Setters
 
     @Id
@@ -75,16 +73,6 @@ public class CommissionCertification implements Serializable{
     public void setSafetySpecialist(Teacher safetySpecialist) {
         this.safetySpecialist = safetySpecialist;
     }
-
-    @OneToMany(targetEntity = PersonalProtocol.class, mappedBy = "commissionCertification")
-    public List<PersonalProtocol> getPersonalProtocols() {
-        return personalProtocols;
-    }
-
-    public void setPersonalProtocols(List<PersonalProtocol> personalProtocols) {
-        this.personalProtocols = personalProtocols;
-    }
-
 
     @Override
     public boolean equals(Object o) {

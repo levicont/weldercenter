@@ -19,7 +19,7 @@
             <items>
                   <MenuItem id="miWelders" fx:id="miWelders" mnemonicParsing="false" onAction="#showWeldersPane" text="Сварщики" />
                   <MenuItem id="miJournals" mnemonicParsing="false" onAction="#showJournalPane" text="Журналы" />
-                  <MenuItem id="miProtocols" mnemonicParsing="false" text="Протоколы" />
+                  <MenuItem id="miProtocols" mnemonicParsing="false" onAction="#showProtocolPane" text="Протоколы" />
                   <SeparatorMenuItem mnemonicParsing="false" />
               <MenuItem id="miExit" fx:id="miExit" mnemonicParsing="false" onAction="#exit" text="Выход" />
             </items>

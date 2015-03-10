@@ -9,10 +9,9 @@ import com.lvg.weldercenter.services.JournalService;
 import com.lvg.weldercenter.services.TeacherService;
 import com.lvg.weldercenter.services.WelderService;
 import com.lvg.weldercenter.spring.factories.ServiceFactory;
-import com.lvg.weldercenter.ui.entities.JournalUI;
-import com.lvg.weldercenter.ui.entities.TeacherUI;
-import com.lvg.weldercenter.ui.entities.TopicUI;
-import com.lvg.weldercenter.ui.entities.WelderUI;
+import com.lvg.weldercenter.spring.factories.ServiceUIFactory;
+import com.lvg.weldercenter.ui.entities.*;
+import com.lvg.weldercenter.ui.servicesui.TotalProtocolServiceUI;
 import com.lvg.weldercenter.ui.util.DateUtil;
 import com.lvg.weldercenter.ui.util.TableUtil;
 import com.lvg.weldercenter.ui.util.TimeTableUtil;
@@ -49,13 +48,13 @@ import java.util.ResourceBundle;
 public class JournalController extends GenericController{
     private static final Logger LOGGER = Logger.getLogger(JournalController.class);
 
-    private ControllerManager controllerManager;
     private JournalService journalService = ServiceFactory.getJournalService();
     private CurriculumService curriculumService = ServiceFactory.getCurriculumService();
     private TeacherService teacherService = ServiceFactory.getTeacherService();
     private WelderService welderService = ServiceFactory.getWelderService();
     private TimeTableUtil timeTableUtil = new TimeTableUtilManager();
     private TableUtil<JournalUI> tableUtil = new TableViewManager();
+    private TotalProtocolServiceUI totalProtocolServiceUI = ServiceUIFactory.getTotalProtocolServiceUI();
 
     @FXML
     BorderPane mainJournalPane;
@@ -160,14 +159,6 @@ public class JournalController extends GenericController{
 
     public JournalController(){
         getTopics().addListener(new TopicsListChangeListener());
-    }
-
-    public ControllerManager getControllerManager() {
-        return controllerManager;
-    }
-
-    public void setControllerManager(ControllerManager controllerManager) {
-        this.controllerManager = controllerManager;
     }
 
     public ObservableList<TopicUI> getTopics() {
@@ -491,6 +482,7 @@ public class JournalController extends GenericController{
             journal.setJournalId(null);
             Long id = journalService.insert(journal);
             journal.setJournalId(id);
+            totalProtocolServiceUI.saveTotalProtocolUIinDB(new TotalProtocolUI(journal));
             JournalUI newJournal = new JournalUI(journal);
             journalTableView.getItems().remove(journalUI);
             journalTableView.getSelectionModel().clearSelection();
@@ -502,6 +494,7 @@ public class JournalController extends GenericController{
         if(journalService.get(journal.getJournalId())!=null){
             JournalUI updJournal = new JournalUI(journal);
             journalService.update(journal);
+            totalProtocolServiceUI.saveTotalProtocolUIinDB(new TotalProtocolUI(journal));
             LOGGER.debug("SAVE JOURNAL IN DB: New journal was updated in data base");
             return;
         }

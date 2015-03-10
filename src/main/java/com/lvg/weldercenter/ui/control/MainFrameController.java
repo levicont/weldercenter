@@ -60,6 +60,12 @@ public class MainFrameController extends GenericController{
         controllerManager.showJournalPane();
     }
 
+    @FXML
+    private void showProtocolPane(){
+        LOGGER.debug("SHOWING ProtocolPane");
+        controllerManager.showProtocolPane();
+    }
+
     private void hideAllPanes(){
     }
 

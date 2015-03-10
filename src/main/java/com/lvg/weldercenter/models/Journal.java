@@ -70,6 +70,7 @@ public class Journal implements Serializable{
     }
 
     @OneToMany(targetEntity = PersonalProtocol.class, mappedBy = "journal")
+    @LazyCollection(value = LazyCollectionOption.FALSE)
     public List<PersonalProtocol> getPersonalProtocols() {
         return personalProtocols;
     }

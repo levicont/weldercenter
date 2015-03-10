@@ -17,7 +17,7 @@ public class SteelType implements Serializable{
     private Long steelTypeId;
     private String type;
 
-    private SteelGroup steelGroup;
+    private SteelGroup stGroup;
 
 
     private List<WeldPattern> weldPatterns = new ArrayList<WeldPattern>();
@@ -44,12 +44,12 @@ public class SteelType implements Serializable{
 
     @ManyToOne(targetEntity = SteelGroup.class)
     @JoinColumn(name = "id_steel_group")
-    public SteelGroup getSteelGroup() {
-        return steelGroup;
+    public SteelGroup getStGroup() {
+        return stGroup;
     }
 
-    public void setSteelGroup(SteelGroup steelGroup) {
-        this.steelGroup = steelGroup;
+    public void setStGroup(SteelGroup stGroup) {
+        this.stGroup = stGroup;
     }
 
     @OneToMany(targetEntity = WeldPattern.class, mappedBy = "steelType")

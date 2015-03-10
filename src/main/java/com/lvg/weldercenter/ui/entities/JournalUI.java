@@ -1,9 +1,7 @@
 package com.lvg.weldercenter.ui.entities;
 
 import com.lvg.weldercenter.hibernate.utils.Unproximator;
-import com.lvg.weldercenter.models.Journal;
-import com.lvg.weldercenter.models.Teacher;
-import com.lvg.weldercenter.models.Welder;
+import com.lvg.weldercenter.models.*;
 import com.lvg.weldercenter.ui.util.DateUtil;
 import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleObjectProperty;

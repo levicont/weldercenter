@@ -1,9 +1,6 @@
 package com.lvg.weldercenter.ui;
 
-import com.lvg.weldercenter.ui.control.ControllerManager;
-import com.lvg.weldercenter.ui.control.JournalController;
-import com.lvg.weldercenter.ui.control.MainFrameController;
-import com.lvg.weldercenter.ui.control.WelderController;
+import com.lvg.weldercenter.ui.control.*;
 import impl.org.controlsfx.i18n.Localization;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -48,5 +45,8 @@ public class MainFrame extends Application {
 
         JournalController journalController = controllerManager.getJournalController();
         journalController.setControllerManager(controllerManager);
+
+        ProtocolController protocolController = controllerManager.getProtocolController();
+        protocolController.setControllerManager(controllerManager);
     }
 }

@@ -6,260 +6,260 @@
 <?import javafx.scene.layout.*?>
 
 <BorderPane fx:id="mainWelderPane" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.lvg.weldercenter.ui.control.WelderController">
-   <bottom>
-      <HBox prefHeight="32.0" prefWidth="600.0" spacing="10.0" BorderPane.alignment="CENTER">
-         <children>
-            <Button fx:id="btCloseWelderPane" mnemonicParsing="false" onAction="#closeWelderPane" text="Закрыть" />
-            <Button fx:id="btUpdate" mnemonicParsing="false" onAction="#refreshWelderTable" text="Обновить" />
-         </children>
-         <padding>
-            <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
-         </padding>
-         <BorderPane.margin>
-            <Insets />
-         </BorderPane.margin>
-      </HBox>
-   </bottom>
-   <center>
-      <SplitPane dividerPositions="0.5" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-         <items>
-            <BorderPane prefHeight="200.0" prefWidth="200.0">
-               <center>
-                  <TableView fx:id="welderTableView" BorderPane.alignment="CENTER">
-                    <columns>
-                      <TableColumn fx:id="id" prefWidth="40.0" text="id" />
-                      <TableColumn fx:id="surname" prefWidth="102.0" text="Фамилия" />
-                        <TableColumn fx:id="name" prefWidth="100.0" text="Имя" />
-                        <TableColumn fx:id="secname" prefWidth="110.0" text="Отчество" />
-                        <TableColumn fx:id="birthdayFormat" minWidth="-Infinity" prefWidth="120.0" text="Дата рождения" />
-                        <TableColumn fx:id="weldMethods" minWidth="0.0" prefWidth="110.0" text="Метод сварки" />
-                        <TableColumn fx:id="job" prefWidth="100.0" text="Должность" />
-                    </columns>
-                  </TableView>
-               </center>
-               <bottom>
-                  <VBox fx:id="vboxToolBars" BorderPane.alignment="CENTER">
-                     <children>
-                        <ToolBar prefHeight="30.0" prefWidth="200.0">
-                          <items>
-                            <Button fx:id="btFirst" mnemonicParsing="false" onAction="#selectFirst" text="|&lt;" />
-                              <Button fx:id="btPrev" mnemonicParsing="false" onAction="#selectPrev" text="&lt;&lt;" />
-                              <Button fx:id="btNew" mnemonicParsing="false" onAction="#addNewWelder" text="&gt;*" />
-                              <Button fx:id="btNext" mnemonicParsing="false" onAction="#selectNext" text="&gt;&gt;" />
-                              <Button fx:id="btLast" mnemonicParsing="false" onAction="#selectLast" text="&gt;|" />
-                              <Button mnemonicParsing="false" onAction="#copyWelder" text="копия" />
-                              <ToggleButton fx:id="btShowSearchToolBar" mnemonicParsing="false" onAction="#initSearch" text="Поиск" />
-                          </items>
-                        </ToolBar>
-                        <ToolBar fx:id="toolBarSearch" prefHeight="40.0" prefWidth="200.0">
-                          <items>
-                              <TextField fx:id="txfSearch" prefHeight="25.0" prefWidth="230.0" />
-                            <Button mnemonicParsing="false" text="найти" />
-                          </items>
-                           <VBox.margin>
-                              <Insets bottom="-40.0" />
-                           </VBox.margin>
-                        </ToolBar>
-                     </children>
-                  </VBox>
-               </bottom>
-            </BorderPane>
-            <BorderPane prefHeight="324.0" prefWidth="161.0" style="-fx-background-color: #bbffaa;">
-               <top>
-                  <Label text="Подробные сведения" BorderPane.alignment="CENTER">
-                     <BorderPane.margin>
-                        <Insets bottom="10.0" top="10.0" />
-                     </BorderPane.margin>
-                  </Label>
-               </top>
-               <center>
-                  <ScrollPane fitToHeight="true" fitToWidth="true" style="-fx-border-color: white;" BorderPane.alignment="CENTER">
-                     <content>
-                        <GridPane fx:id="welderDetailsPane" minHeight="-Infinity" minWidth="-Infinity" prefHeight="475.0" prefWidth="290.0">
-                          <columnConstraints>
-                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="155.0" />
-                            <ColumnConstraints hgrow="SOMETIMES" minWidth="-Infinity" prefWidth="100.0" />
-                          </columnConstraints>
-                          <rowConstraints>
-                            <RowConstraints minHeight="-Infinity" prefHeight="38.0" vgrow="SOMETIMES" />
-                            <RowConstraints minHeight="-Infinity" prefHeight="38.0" vgrow="SOMETIMES" />
-                            <RowConstraints minHeight="-Infinity" prefHeight="38.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="-Infinity" prefHeight="38.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="-Infinity" prefHeight="38.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="-Infinity" prefHeight="38.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="-Infinity" prefHeight="38.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="-Infinity" prefHeight="38.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="-Infinity" prefHeight="38.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="-Infinity" prefHeight="38.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="-Infinity" prefHeight="38.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="-Infinity" prefHeight="38.0" vgrow="SOMETIMES" />
-                          </rowConstraints>
-                           <children>
-                              <Label text="Фамилия:">
-                                 <GridPane.margin>
-                                    <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
-                                 </GridPane.margin>
-                              </Label>
-                              <Label text="Имя:" GridPane.rowIndex="1">
-                                 <GridPane.margin>
-                                    <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
-                                 </GridPane.margin>
-                              </Label>
-                              <Label text="Отчество:" GridPane.rowIndex="2">
-                                 <GridPane.margin>
-                                    <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
-                                 </GridPane.margin>
-                              </Label>
-                              <Label text="Дата рождения:" GridPane.rowIndex="3">
-                                 <GridPane.margin>
-                                    <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
-                                 </GridPane.margin>
-                              </Label>
-                              <TextField fx:id="txfSurname" onAction="#submitData" GridPane.columnIndex="1">
-                                 <GridPane.margin>
-                                    <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
-                                 </GridPane.margin>
-                              </TextField>
-                              <TextField fx:id="txfName" onAction="#submitData" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                                 <GridPane.margin>
-                                    <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
-                                 </GridPane.margin>
-                              </TextField>
-                              <TextField fx:id="txfSecname" onAction="#submitData" GridPane.columnIndex="1" GridPane.rowIndex="2">
-                                 <GridPane.margin>
-                                    <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
-                                 </GridPane.margin>
-                              </TextField>
-                              <DatePicker fx:id="dpBirthday" onAction="#onChangeWelderComponents" GridPane.columnIndex="1" GridPane.rowIndex="3">
-                                 <GridPane.margin>
-                                    <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
-                                 </GridPane.margin>
-                              </DatePicker>
-                              <Label text="Методы сварки:" GridPane.rowIndex="4">
-                                 <GridPane.margin>
-                                    <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
-                                 </GridPane.margin>
-                              </Label>
-                              <HBox GridPane.columnIndex="1" GridPane.rowIndex="4">
-                                 <children>
-                                    <TextField fx:id="txfWeldMethod" editable="false">
-                                       <HBox.margin>
-                                          <Insets bottom="8.0" left="8.0" top="8.0" />
-                                       </HBox.margin>
-                                    </TextField>
-                                    <MenuButton fx:id="mbtWeldMethod" alignment="CENTER_RIGHT" mnemonicParsing="false" text="...">
-                                       <HBox.margin>
-                                          <Insets bottom="8.0" right="8.0" top="8.0" />
-                                       </HBox.margin>
-                                        
-                                          </MenuButton>
-                                 </children>
-                              </HBox>
-                              <Label text="№ Документа:" GridPane.rowIndex="5">
-                                 <GridPane.margin>
-                                    <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
-                                 </GridPane.margin>
-                              </Label>
-                              <TextField fx:id="txfDocNumber" onAction="#submitData" GridPane.columnIndex="1" GridPane.rowIndex="5">
-                                 <GridPane.margin>
-                                    <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
-                                 </GridPane.margin>
-                              </TextField>
-                              <Label text="Дата начала работ:" GridPane.rowIndex="6">
-                                 <GridPane.margin>
-                                    <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
-                                 </GridPane.margin>
-                              </Label>
-                              <DatePicker fx:id="dpDateBegin" onAction="#onChangeWelderComponents" GridPane.columnIndex="1" GridPane.rowIndex="6">
-                                 <GridPane.margin>
-                                    <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
-                                 </GridPane.margin>
-                              </DatePicker>
-                              <Label text="Образование" GridPane.rowIndex="7">
-                                 <GridPane.margin>
-                                    <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
-                                 </GridPane.margin>
-                              </Label>
-                              <Label text="Квалификация:" GridPane.rowIndex="8">
-                                 <GridPane.margin>
-                                    <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
-                                 </GridPane.margin>
-                              </Label>
-                              <Label text="Место работы:" GridPane.rowIndex="9">
-                                 <GridPane.margin>
-                                    <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
-                                 </GridPane.margin>
-                              </Label>
-                              <Label text="Должность:" GridPane.rowIndex="10">
-                                 <GridPane.margin>
-                                    <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
-                                 </GridPane.margin>
-                              </Label>
-                              <Label text="Адрес:" GridPane.rowIndex="11">
-                                 <GridPane.margin>
-                                    <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
-                                 </GridPane.margin>
-                              </Label>
-                              <ComboBox fx:id="cbEducation" onAction="#onChangeWelderComponents" prefWidth="165.0" GridPane.columnIndex="1" GridPane.rowIndex="7">
-                                 <GridPane.margin>
-                                    <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
-                                 </GridPane.margin>
-                              </ComboBox>
-                              <ComboBox fx:id="cbQualification" onAction="#onChangeWelderComponents" prefWidth="165.0" GridPane.columnIndex="1" GridPane.rowIndex="8">
-                                 <GridPane.margin>
-                                    <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
-                                 </GridPane.margin>
-                              </ComboBox>
-                              <ComboBox fx:id="cbOrganization" onAction="#onChangeWelderComponents" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="9">
-                                 <GridPane.margin>
-                                    <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
-                                 </GridPane.margin>
-                              </ComboBox>
-                              <ComboBox fx:id="cbJob" onAction="#onChangeWelderComponents" prefWidth="165.0" GridPane.columnIndex="1" GridPane.rowIndex="10">
-                                 <GridPane.margin>
-                                    <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
-                                 </GridPane.margin>
-                              </ComboBox>
-                              <TextField fx:id="txfAddress" onAction="#submitData" GridPane.columnIndex="1" GridPane.rowIndex="11">
-                                 <GridPane.margin>
-                                    <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
-                                 </GridPane.margin>
-                              </TextField>
-                           </children>
-                        </GridPane>
-                     </content>
-                  </ScrollPane>
-               </center>
-            </BorderPane>
-         </items>
-         <BorderPane.margin>
-            <Insets left="12.0" top="12.0" />
-         </BorderPane.margin>
-      </SplitPane>
-   </center>
-   <right>
-      <VBox spacing="10.0" BorderPane.alignment="CENTER">
-         <children>
-            <Button fx:id="btAdd" mnemonicParsing="false" onAction="#addNewWelder" text="Добавить" />
-            <Button fx:id="btEdit" mnemonicParsing="false" text="Изменить" />
-            <Button fx:id="btDelete" mnemonicParsing="false" onAction="#deleteWelders" text="Удалить" />
-            <Separator>
-               <VBox.margin>
-                  <Insets top="12.0" />
-               </VBox.margin>
-            </Separator>
-            <Button fx:id="btSave" contentDisplay="CENTER" mnemonicParsing="false" onAction="#saveWelder" text="Сохранить">
-               <VBox.margin>
-                  <Insets />
-               </VBox.margin>
-            </Button>
-         </children>
-         <padding>
-            <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
-         </padding>
-         <BorderPane.margin>
-            <Insets top="12.0" />
-         </BorderPane.margin>
-      </VBox>
-   </right>
+    <bottom>
+        <HBox prefHeight="32.0" prefWidth="600.0" spacing="10.0" BorderPane.alignment="CENTER">
+            <children>
+                <Button fx:id="btCloseWelderPane" mnemonicParsing="false" onAction="#closeWelderPane" text="Закрыть" />
+                <Button fx:id="btUpdate" mnemonicParsing="false" onAction="#refreshWelderTable" text="Обновить" />
+            </children>
+            <padding>
+                <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
+            </padding>
+            <BorderPane.margin>
+                <Insets />
+            </BorderPane.margin>
+        </HBox>
+    </bottom>
+    <center>
+        <SplitPane dividerPositions="0.5" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <items>
+                <BorderPane prefHeight="200.0" prefWidth="200.0">
+                    <center>
+                        <TableView fx:id="welderTableView" BorderPane.alignment="CENTER">
+                            <columns>
+                                <TableColumn fx:id="id" prefWidth="40.0" text="id" />
+                                <TableColumn fx:id="surname" prefWidth="102.0" text="Фамилия" />
+                                <TableColumn fx:id="name" prefWidth="100.0" text="Имя" />
+                                <TableColumn fx:id="secname" prefWidth="110.0" text="Отчество" />
+                                <TableColumn fx:id="birthdayFormat" minWidth="-Infinity" prefWidth="120.0" text="Дата рождения" />
+                                <TableColumn fx:id="weldMethods" minWidth="0.0" prefWidth="110.0" text="Метод сварки" />
+                                <TableColumn fx:id="job" prefWidth="100.0" text="Должность" />
+                            </columns>
+                        </TableView>
+                    </center>
+                    <bottom>
+                        <VBox fx:id="vboxToolBars" BorderPane.alignment="CENTER">
+                            <children>
+                                <ToolBar prefHeight="30.0" prefWidth="200.0">
+                                    <items>
+                                        <Button fx:id="btFirst" mnemonicParsing="false" onAction="#selectFirst" text="|&lt;" />
+                                        <Button fx:id="btPrev" mnemonicParsing="false" onAction="#selectPrev" text="&lt;&lt;" />
+                                        <Button fx:id="btNew" mnemonicParsing="false" onAction="#addNewWelder" text="&gt;*" />
+                                        <Button fx:id="btNext" mnemonicParsing="false" onAction="#selectNext" text="&gt;&gt;" />
+                                        <Button fx:id="btLast" mnemonicParsing="false" onAction="#selectLast" text="&gt;|" />
+                                        <Button mnemonicParsing="false" onAction="#copyWelder" text="копия" />
+                                        <ToggleButton fx:id="btShowSearchToolBar" mnemonicParsing="false" onAction="#initSearch" text="Поиск" />
+                                    </items>
+                                </ToolBar>
+                                <ToolBar fx:id="toolBarSearch" prefHeight="40.0" prefWidth="200.0">
+                                    <items>
+                                        <TextField fx:id="txfSearch" prefHeight="25.0" prefWidth="230.0" />
+                                        <Button mnemonicParsing="false" text="найти" />
+                                    </items>
+                                    <VBox.margin>
+                                        <Insets bottom="-40.0" />
+                                    </VBox.margin>
+                                </ToolBar>
+                            </children>
+                        </VBox>
+                    </bottom>
+                </BorderPane>
+                <BorderPane prefHeight="324.0" prefWidth="161.0" style="-fx-background-color: #bbffaa;">
+                    <top>
+                        <Label text="Подробные сведения" BorderPane.alignment="CENTER">
+                            <BorderPane.margin>
+                                <Insets bottom="10.0" top="10.0" />
+                            </BorderPane.margin>
+                        </Label>
+                    </top>
+                    <center>
+                        <ScrollPane fitToHeight="true" fitToWidth="true" style="-fx-border-color: white;" BorderPane.alignment="CENTER">
+                            <content>
+                                <GridPane fx:id="welderDetailsPane" minHeight="-Infinity" minWidth="-Infinity" prefHeight="475.0" prefWidth="290.0">
+                                    <columnConstraints>
+                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="155.0" />
+                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="-Infinity" prefWidth="100.0" />
+                                    </columnConstraints>
+                                    <rowConstraints>
+                                        <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="38.0" vgrow="SOMETIMES" />
+                                        <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="38.0" vgrow="SOMETIMES" />
+                                        <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="38.0" vgrow="SOMETIMES" />
+                                        <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="38.0" vgrow="SOMETIMES" />
+                                        <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="38.0" vgrow="SOMETIMES" />
+                                        <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="38.0" vgrow="SOMETIMES" />
+                                        <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="38.0" vgrow="SOMETIMES" />
+                                        <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="38.0" vgrow="SOMETIMES" />
+                                        <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="38.0" vgrow="SOMETIMES" />
+                                        <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="38.0" vgrow="SOMETIMES" />
+                                        <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="38.0" vgrow="SOMETIMES" />
+                                        <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="38.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="10.0" prefHeight="38.0" vgrow="SOMETIMES" />
+                                    </rowConstraints>
+                                    <children>
+                                        <Label text="Фамилия:">
+                                            <GridPane.margin>
+                                                <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                            </GridPane.margin>
+                                        </Label>
+                                        <Label text="Имя:" GridPane.rowIndex="1">
+                                            <GridPane.margin>
+                                                <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                            </GridPane.margin>
+                                        </Label>
+                                        <Label text="Отчество:" GridPane.rowIndex="2">
+                                            <GridPane.margin>
+                                                <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                            </GridPane.margin>
+                                        </Label>
+                                        <Label text="Дата рождения:" GridPane.rowIndex="3">
+                                            <GridPane.margin>
+                                                <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                            </GridPane.margin>
+                                        </Label>
+                                        <TextField fx:id="txfSurname" onAction="#submitData" GridPane.columnIndex="1">
+                                            <GridPane.margin>
+                                                <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                            </GridPane.margin>
+                                        </TextField>
+                                        <TextField fx:id="txfName" onAction="#submitData" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                            <GridPane.margin>
+                                                <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                            </GridPane.margin>
+                                        </TextField>
+                                        <TextField fx:id="txfSecname" onAction="#submitData" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                            <GridPane.margin>
+                                                <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                            </GridPane.margin>
+                                        </TextField>
+                                        <DatePicker fx:id="dpBirthday" onAction="#onChangeWelderComponents" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                            <GridPane.margin>
+                                                <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                            </GridPane.margin>
+                                        </DatePicker>
+                                        <Label text="Методы сварки:" GridPane.rowIndex="4">
+                                            <GridPane.margin>
+                                                <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                            </GridPane.margin>
+                                        </Label>
+                                        <HBox GridPane.columnIndex="1" GridPane.rowIndex="4">
+                                            <children>
+                                                <TextField fx:id="txfWeldMethod" editable="false">
+                                                    <HBox.margin>
+                                                        <Insets bottom="8.0" left="8.0" top="8.0" />
+                                                    </HBox.margin>
+                                                </TextField>
+                                                <MenuButton fx:id="mbtWeldMethod" alignment="CENTER_RIGHT" mnemonicParsing="false" text="...">
+                                                    <HBox.margin>
+                                                        <Insets bottom="8.0" right="8.0" top="8.0" />
+                                                    </HBox.margin>
+                                                </MenuButton>
+                                            </children>
+                                        </HBox>
+                                        <Label text="№ Документа:" GridPane.rowIndex="5">
+                                            <GridPane.margin>
+                                                <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                            </GridPane.margin>
+                                        </Label>
+                                        <TextField fx:id="txfDocNumber" onAction="#submitData" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                                            <GridPane.margin>
+                                                <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                            </GridPane.margin>
+                                        </TextField>
+                                        <Label text="Дата начала работ:" GridPane.rowIndex="6">
+                                            <GridPane.margin>
+                                                <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                            </GridPane.margin>
+                                        </Label>
+                                        <DatePicker fx:id="dpDateBegin" onAction="#onChangeWelderComponents" GridPane.columnIndex="1" GridPane.rowIndex="6">
+                                            <GridPane.margin>
+                                                <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                            </GridPane.margin>
+                                        </DatePicker>
+                                        <Label text="Образование" GridPane.rowIndex="7">
+                                            <GridPane.margin>
+                                                <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                            </GridPane.margin>
+                                        </Label>
+                                        <Label text="Квалификация:" GridPane.rowIndex="8">
+                                            <GridPane.margin>
+                                                <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                            </GridPane.margin>
+                                        </Label>
+                                        <Label text="Место работы:" GridPane.rowIndex="9">
+                                            <GridPane.margin>
+                                                <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                            </GridPane.margin>
+                                        </Label>
+                                        <Label text="Должность:" GridPane.rowIndex="10">
+                                            <GridPane.margin>
+                                                <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                            </GridPane.margin>
+                                        </Label>
+                                        <Label text="Адрес:" GridPane.rowIndex="11">
+                                            <GridPane.margin>
+                                                <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                            </GridPane.margin>
+                                        </Label>
+                                        <ComboBox fx:id="cbEducation" onAction="#onChangeWelderComponents" prefWidth="165.0" GridPane.columnIndex="1" GridPane.rowIndex="7">
+                                            <GridPane.margin>
+                                                <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                            </GridPane.margin>
+                                        </ComboBox>
+                                        <ComboBox fx:id="cbQualification" onAction="#onChangeWelderComponents" prefWidth="165.0" GridPane.columnIndex="1" GridPane.rowIndex="8">
+                                            <GridPane.margin>
+                                                <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                            </GridPane.margin>
+                                        </ComboBox>
+                                        <ComboBox fx:id="cbOrganization" onAction="#onChangeWelderComponents" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="9">
+                                            <GridPane.margin>
+                                                <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                            </GridPane.margin>
+                                        </ComboBox>
+                                        <ComboBox fx:id="cbJob" onAction="#onChangeWelderComponents" prefWidth="165.0" GridPane.columnIndex="1" GridPane.rowIndex="10">
+                                            <GridPane.margin>
+                                                <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                            </GridPane.margin>
+                                        </ComboBox>
+                                        <TextField fx:id="txfAddress" onAction="#submitData" GridPane.columnIndex="1" GridPane.rowIndex="11">
+                                            <GridPane.margin>
+                                                <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                            </GridPane.margin>
+                                        </TextField>
+                                    </children>
+                                </GridPane>
+                            </content>
+                        </ScrollPane>
+                    </center>
+                </BorderPane>
+            </items>
+            <BorderPane.margin>
+                <Insets left="12.0" top="12.0" />
+            </BorderPane.margin>
+        </SplitPane>
+    </center>
+    <right>
+        <VBox spacing="10.0" BorderPane.alignment="CENTER">
+            <children>
+                <Button fx:id="btAdd" mnemonicParsing="false" onAction="#addNewWelder" text="Добавить" />
+                <Button fx:id="btEdit" mnemonicParsing="false" text="Изменить" />
+                <Button fx:id="btDelete" mnemonicParsing="false" onAction="#deleteWelders" text="Удалить" />
+                <Separator>
+                    <VBox.margin>
+                        <Insets top="12.0" />
+                    </VBox.margin>
+                </Separator>
+                <Button fx:id="btSave" contentDisplay="CENTER" mnemonicParsing="false" onAction="#saveWelder" text="Сохранить">
+                    <VBox.margin>
+                        <Insets />
+                    </VBox.margin>
+                </Button>
+            </children>
+            <padding>
+                <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
+            </padding>
+            <BorderPane.margin>
+                <Insets top="12.0" />
+            </BorderPane.margin>
+        </VBox>
+    </right>
 </BorderPane>

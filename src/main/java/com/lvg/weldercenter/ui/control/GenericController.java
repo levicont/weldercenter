@@ -9,6 +9,13 @@ import javafx.stage.Stage;
 abstract public class GenericController implements Initializable {
 
     private Stage stage;
+    protected ControllerManager controllerManager;
 
+    public ControllerManager getControllerManager() {
+        return controllerManager;
+    }
 
+    public void setControllerManager(ControllerManager controllerManager) {
+        this.controllerManager = controllerManager;
+    }
 }

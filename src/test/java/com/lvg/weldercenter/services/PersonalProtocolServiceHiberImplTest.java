@@ -54,7 +54,6 @@ public class PersonalProtocolServiceHiberImplTest extends GenericServiceHibernat
         PersonalProtocol record = new PersonalProtocol();
         record.setWelder(welderService.get(1l));
         record.setJournal(journalService.get(1l));
-        record.setCommissionCertification(commissServ.get(1l));
         record.setResolutionCertification(resolServ.get(1l));
         record.setTheoryTest(theoryTestService.get(1l));
         record.setNdtDocuments(ndtDocumentService.getAll());

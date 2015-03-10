@@ -7,11 +7,16 @@ import javafx.beans.property.SimpleStringProperty;
 /**
  * Created by Victor Levchenko LVG Corp. on 16.11.14.
  */
-public class WeldMethodUI {
+public class WeldMethodUI extends GenericEntityUI{
 
-    private final SimpleLongProperty id = new SimpleLongProperty();
     private final SimpleStringProperty name = new SimpleStringProperty();
     private final SimpleStringProperty code = new SimpleStringProperty();
+
+    public WeldMethodUI() {
+        this.id.set(0);
+        this.name.set("");
+        this.code.set("");
+    }
 
     public WeldMethodUI(WeldMethod weldMethod){
         this.id.set(weldMethod.getWeldMethodId());
@@ -21,19 +26,6 @@ public class WeldMethodUI {
     }
 
     //Getters and Setters
-
-
-    public long getId() {
-        return id.get();
-    }
-
-    public SimpleLongProperty idProperty() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id.set(id);
-    }
 
     public String getName() {
         return name.get();

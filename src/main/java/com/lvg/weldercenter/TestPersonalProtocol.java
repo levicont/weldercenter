@@ -87,10 +87,10 @@ public class TestPersonalProtocol {
 
         SteelType st = new SteelType();
         st.setType("Сталь 20");
-        st.setSteelGroup(sg);
+        st.setStGroup(sg);
         SteelType st2 = new SteelType();
         st2.setType("Ст. 2пс");
-        st.setSteelGroup(sg);
+        st.setStGroup(sg);
 
         WeldDetail wdPlane = new WeldDetail();
         wdPlane.setType("Пластина");
@@ -124,7 +124,7 @@ public class TestPersonalProtocol {
         RadiationTest rt = new RadiationTest();
         rt.setEvaluation(eva2);
         rt.setDefects("2П0,8; 2Ш3х4; Нк25");
-        rt.setSensitivty("0.2");
+        rt.setSensitivity("0.2");
         rt.setNumber("14-001");
         rt.setProtDate(new Date());
 
@@ -327,7 +327,6 @@ public class TestPersonalProtocol {
         pp.setWelder(welder1);
         pp.setJournal(j1);
         pp.setResolutionCertification(resolution);
-        pp.setCommissionCertification(comm);
         pp.setTheoryTest(thTest);
         pp.setDatePeriodicalCert(new Date());
 
