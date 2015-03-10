@@ -250,6 +250,7 @@ public class ProtocolController extends GenericController {
     private TotalProtocolUI selectedTotalProtocolUI = null;
 
     private ObservableList<TreeItem<String>> totalProtocols = FXCollections.observableArrayList();
+    private ObservableList<TotalProtocolUI> cachedTotalProtocols = FXCollections.observableArrayList();
     private ObservableList<WelderUI> weldersUIinTotalProtocol = FXCollections.observableArrayList();
     private ObservableList<Long> commissionIDList = FXCollections.observableArrayList();
     private ObservableList<CommissionCertificationUI> commissionCertificationUIList =
@@ -276,11 +277,13 @@ public class ProtocolController extends GenericController {
 
     private void initTotalProtocols(){
         totalProtocols.clear();
+        cachedTotalProtocols.clear();
         List<Journal> journalsDb = journalService.getAll();
         List<PersonalProtocol> personalProtocolsDB = personalProtocolService.getAll();
         List<TotalProtocol> totalProtocolList  = totalProtocolService.getAll();
         List<JournalUI> journalUIList = new ArrayList<JournalUI>();
         List<PersonalProtocolUI> protocolUIFromDB = new ArrayList<PersonalProtocolUI>();
+
         for (PersonalProtocol pp : personalProtocolsDB){
             if(pp.getJournal()!=null){
                 journalUIList.add(new JournalUI(pp.getJournal()));
@@ -291,6 +294,7 @@ public class ProtocolController extends GenericController {
             TotalProtocolUI totalProtocolUI = new TotalProtocolUI(tp);
             JournalUI journalUI = totalProtocolUI.getJournal();
             TreeItem<String> treeItem = new TreeItem<String>(totalProtocolUI.toString());
+            cachedTotalProtocols.add(totalProtocolUI);
             for (int i = 0; i<journalUI.getWelders().size();i++){
                 //TODO load protocols from db
                 PersonalProtocolUI pp;
@@ -350,6 +354,13 @@ public class ProtocolController extends GenericController {
         }
     }
 
+    private void initJournalTitledPane(TotalProtocolUI selectedTotalProtocolUI){
+        JournalUI journalUI = selectedTotalProtocolUI.getJournal();
+        lbTotalProtocolJournalNumber.setText(journalUI.getNumber());
+        lbTotalProtocolJournalDateBegin.setText(journalUI.getDateBeginFormat());
+        lbTotalProtocolJournalDateEnd.setText(journalUI.getDateEndFormat());
+    }
+
     private void clearCommissionTitlePane(){
         cbIDCommissionCert.getSelectionModel().clearSelection();
         txfCommissionHead.setText("");
@@ -394,6 +405,7 @@ public class ProtocolController extends GenericController {
         lbTotalProtocolDate.setText(selectedTotalProtocol.getDateCertFormat());
         initWeldersUIinTotalProtocol(selectedTotalProtocol);
         initCommissionTitlePane(selectedTotalProtocol);
+        initJournalTitledPane(selectedTotalProtocol);
 
     }
 
@@ -408,6 +420,18 @@ public class ProtocolController extends GenericController {
     @FXML
     private void refreshProtocolsTreeView(){
         initProtocolsTreeView();
+    }
+
+    @FXML
+    private void gotoSelectedJournal(){
+        if(selectedTotalProtocolUI!=null){
+            JournalUI journalUI = selectedTotalProtocolUI.getJournal();
+            closeProtocolPane();
+            getControllerManager().showJournalPane();
+            getControllerManager().getJournalController().journalTableView.getSelectionModel().clearSelection();
+            getControllerManager().getJournalController().journalTableView.getSelectionModel().select(journalUI);
+            getControllerManager().getJournalController().journalTableView.requestFocus();
+        }
     }
 
     private class ComboBoxCommissionHandler implements InvalidationListener{
@@ -448,15 +472,16 @@ public class ProtocolController extends GenericController {
             if(protocolItem.getValue().contains(PERSONAL_PROTOCOL_PREFIX_NAME)){
                 TreeItem<String> totalProtocolItem = protocolItem.getParent();
                 selectedTotalProtocolUI =
-                        totalProtocolServiceUI.getTotalProtocolUIByToStringMethod(totalProtocolItem.getValue());
+                        totalProtocolServiceUI.getTotalProtocolUIByToStringMethod(totalProtocolItem.getValue(),cachedTotalProtocols);
                 showSelectedTotalProtocol(selectedTotalProtocolUI);
                 LOGGER.debug("TREE LIST VIEW HANDLER: The personal protocol is selected");
                 return;
             }
             selectedTotalProtocolUI =
-                    totalProtocolServiceUI.getTotalProtocolUIByToStringMethod(protocolItem.getValue());
+                    totalProtocolServiceUI.getTotalProtocolUIByToStringMethod(protocolItem.getValue(), cachedTotalProtocols);
             if(selectedTotalProtocolUI != null){
-                LOGGER.debug("TREE LIST VIEW HANDLER: Selected protocol is: \n"+selectedTotalProtocolUI+"\n");
+                LOGGER.debug("TREE LIST VIEW HANDLER: Selected protocol is: \n"+"id = "+selectedTotalProtocolUI.getId()+
+                        "; "+selectedTotalProtocolUI+"\n");
                 showSelectedTotalProtocol(selectedTotalProtocolUI);
                 //if(!totalProtocolBorderPane.isDisabled())
                 //    totalProtocolBorderPane.setDisable(true);

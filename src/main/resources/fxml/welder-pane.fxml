@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.text.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import java.lang.*?>
@@ -23,7 +24,7 @@
     <center>
         <SplitPane dividerPositions="0.5" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
             <items>
-                <BorderPane prefHeight="200.0" prefWidth="200.0">
+                <BorderPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #cc7722;">
                     <center>
                         <TableView fx:id="welderTableView" BorderPane.alignment="CENTER">
                             <columns>
@@ -63,6 +64,13 @@
                             </children>
                         </VBox>
                     </bottom>
+               <top>
+                  <Label text="Сварщики" textFill="#f2f2f2" BorderPane.alignment="CENTER">
+                     <BorderPane.margin>
+                        <Insets bottom="10.0" top="10.0" />
+                     </BorderPane.margin>
+                  </Label>
+               </top>
                 </BorderPane>
                 <BorderPane prefHeight="324.0" prefWidth="161.0" style="-fx-background-color: #bbffaa;">
                     <top>

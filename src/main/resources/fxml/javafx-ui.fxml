@@ -11,7 +11,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 
-<BorderPane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="950.0" style="-fx-background-color: linear-gradient(to bottom, #ccccff, #eeeeFF);" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.lvg.weldercenter.ui.control.MainFrameController">
+<BorderPane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="950.0" style="-fx-background-color: linear-gradient(to bottom, #aaccff, #cceeFF);" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.lvg.weldercenter.ui.control.MainFrameController">
    <top>
       <MenuBar id="mainMenuBar" BorderPane.alignment="CENTER">
         <menus>
@@ -66,7 +66,7 @@
    <center>
        <BorderPane fx:id="logoPane" prefHeight="200.0" prefWidth="200.0">
            <center>
-               <Label fx:id="lbAppTitle" opacity="0.4" style="-fx-background-color: #eeeeff;" text="АТТЕСТАЦИОННЫЙ ЦЕНТР СВАРЩИКОВ" textAlignment="CENTER" BorderPane.alignment="CENTER">
+               <Label fx:id="lbAppTitle" opacity="0.4" style="-fx-background-color: #bbddff;" text="АТТЕСТАЦИОННЫЙ ЦЕНТР СВАРЩИКОВ" textAlignment="CENTER" BorderPane.alignment="CENTER">
                    <BorderPane.margin>
                        <Insets bottom="10.0" top="-10.0" />
                    </BorderPane.margin>

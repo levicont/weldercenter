@@ -25,7 +25,7 @@
     <center>
         <SplitPane dividerPositions="0.45" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
             <items>
-                <BorderPane prefHeight="200.0" prefWidth="200.0">
+                <BorderPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #cc7722;">
                     <bottom>
                         <VBox fx:id="vboxToolBars" BorderPane.alignment="CENTER">
                             <children>
@@ -54,6 +54,13 @@
                <center>
                   <TreeView fx:id="protocolsTreeView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
                </center>
+               <top>
+                  <Label text="Общие и персональные протоколы" textFill="#f2f2f2" BorderPane.alignment="CENTER">
+                     <BorderPane.margin>
+                        <Insets bottom="10.0" top="10.0" />
+                     </BorderPane.margin>
+                  </Label>
+               </top>
                 </BorderPane>
                 <BorderPane prefHeight="324.0" prefWidth="161.0" style="-fx-background-color: #bbffaa;">
                     <top>
@@ -327,7 +334,7 @@
                                                             <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                                          </GridPane.margin>
                                                       </Button>
-                                                      <Button fx:id="btGoToJournal" mnemonicParsing="false" text="Перейти" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                                      <Button fx:id="btGoToJournal" mnemonicParsing="false" onAction="#gotoSelectedJournal" text="Перейти" GridPane.columnIndex="1" GridPane.rowIndex="3">
                                                          <GridPane.margin>
                                                             <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                                          </GridPane.margin>

@@ -88,12 +88,47 @@ public class TotalProtocolUIManager implements TotalProtocolServiceUI {
     public TotalProtocolUI getTotalProtocolUIByToStringMethod(String stringName){
         TotalProtocolUI result = null;
         if(stringName.contains("(") && stringName.contains(")")){
-            String number = stringName.substring(0, stringName.indexOf(" "));
-            String dateString = stringName.substring(stringName.indexOf("(")+5, stringName.indexOf(")")-3);
+            String number = getTotalProtocolNumberFromToStringMethod(stringName);
+            String dateString = getTotalProtocolDateFromToStringMethod(stringName);
             result = getTotalProtocolUIByNumberAndDate(number, dateString);
             LOGGER.debug("GET TOTAL PROTOCOL BY NAME: Number: "+number+" DateString: "+dateString);
         }
         return result;
 
+    }
+
+    @Override
+    public TotalProtocolUI getTotalProtocolUIByToStringMethod(String stringName, List<TotalProtocolUI> totalProtocolUIList) {
+        TotalProtocolUI result = null;
+        String protocolNumber = getTotalProtocolNumberFromToStringMethod(stringName);
+        String dateFormat = getTotalProtocolDateFromToStringMethod(stringName);
+        for (TotalProtocolUI tp : totalProtocolUIList){
+            if(protocolNumber.toLowerCase().equals(tp.getNumber().toLowerCase()) &&
+                    dateFormat.equals(DateUtil.format(tp.getDateCert()))){
+                result = tp;
+                break;
+            }
+        }
+        return result;
+    }
+
+    private String getTotalProtocolNumberFromToStringMethod(String stringName){
+        String result = "";
+        if(stringName.contains("(") && stringName.contains(")")){
+            String number = stringName.substring(0, stringName.indexOf(" "));
+            result = number;
+            LOGGER.debug("GET TOTAL PROTOCOL NUMBER BY NAME: Number: "+number);
+        }
+        return result;
+    }
+
+    private String getTotalProtocolDateFromToStringMethod(String stringName){
+        String result = "";
+        if(stringName.contains("(") && stringName.contains(")")){
+            String dateString = stringName.substring(stringName.indexOf("(")+5, stringName.indexOf(")")-3);
+            result = dateString;
+            LOGGER.debug("GET TOTAL PROTOCOL DATE STRING BY NAME: DateString: "+dateString);
+        }
+        return result;
     }
 }
