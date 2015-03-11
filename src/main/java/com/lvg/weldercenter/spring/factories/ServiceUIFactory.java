@@ -1,10 +1,7 @@
 package com.lvg.weldercenter.spring.factories;
 
 import com.lvg.weldercenter.spring.ContextFactory;
-import com.lvg.weldercenter.ui.servicesui.JournalServiceUI;
-import com.lvg.weldercenter.ui.servicesui.TeacherServiceUI;
-import com.lvg.weldercenter.ui.servicesui.TotalProtocolServiceUI;
-import com.lvg.weldercenter.ui.servicesui.WelderServiceUI;
+import com.lvg.weldercenter.ui.servicesui.*;
 import org.springframework.context.ApplicationContext;
 
 /**
@@ -16,6 +13,7 @@ public class ServiceUIFactory {
     private static TeacherServiceUI teacherServiceUI;
     private static TotalProtocolServiceUI totalProtocolServiceUI;
     private static JournalServiceUI journalServiceUI;
+    private static PersonalProtocolServiceUI personalProtocolServiceUI;
 
 
     private ServiceUIFactory(){
@@ -56,6 +54,15 @@ public class ServiceUIFactory {
         }else {
             totalProtocolServiceUI = (TotalProtocolServiceUI) context.getBean("totalProtocolServiceUI");
             return totalProtocolServiceUI;
+        }
+    }
+
+    public static PersonalProtocolServiceUI getPersonalProtocolServiceUI(){
+        if(personalProtocolServiceUI != null){
+            return personalProtocolServiceUI;
+        }else {
+            personalProtocolServiceUI = (PersonalProtocolServiceUI) context.getBean("personalProtocolServiceUI");
+            return personalProtocolServiceUI;
         }
     }
 }

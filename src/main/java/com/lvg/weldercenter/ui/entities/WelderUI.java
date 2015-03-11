@@ -276,6 +276,10 @@ public class WelderUI extends GenericEntityUI{
     public String getFullName(){
         return id.get()+"\t"+surname.get()+"\t\t"+name.get()+"\t\t"+secname.get();
     }
+
+    public String getSurnameNameSecname(){
+        return surname.get()+" "+name.get()+" "+secname.get();
+    }
     @Override
     public String toString() {
         return "\n WelderUI{" +

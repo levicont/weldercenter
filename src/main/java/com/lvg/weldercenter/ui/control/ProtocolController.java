@@ -8,15 +8,15 @@ import com.lvg.weldercenter.services.TotalProtocolService;
 import com.lvg.weldercenter.spring.factories.ServiceFactory;
 import com.lvg.weldercenter.spring.factories.ServiceUIFactory;
 import com.lvg.weldercenter.ui.entities.*;
+import com.lvg.weldercenter.ui.servicesui.PersonalProtocolServiceUI;
 import com.lvg.weldercenter.ui.servicesui.TotalProtocolServiceUI;
-import com.lvg.weldercenter.ui.util.EventFXUtil;
+import com.lvg.weldercenter.ui.util.DateUtil;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.event.EventHandler;
-import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -26,10 +26,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import org.apache.log4j.Logger;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.net.URL;
-import java.security.Key;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -41,6 +38,7 @@ public class ProtocolController extends GenericController {
     private static final Logger LOGGER = Logger.getLogger(ProtocolController.class);
     private static final String TREE_ROOT_ITEM_NAME = "Общие протоколы";
     private static final String PERSONAL_PROTOCOL_PREFIX_NAME = "Перс. протокол: ";
+    private static final String PERSONAL_PROTOCOL_DB_SUFFIX_NAME = " (БД)";
 
     private JournalService journalService = ServiceFactory.getJournalService();
     private PersonalProtocolService personalProtocolService = ServiceFactory.getPersonalProtocolService();
@@ -48,6 +46,7 @@ public class ProtocolController extends GenericController {
             ServiceFactory.getCommissionCertificationService();
     private TotalProtocolService totalProtocolService = ServiceFactory.getTotalProtocolService();
     private TotalProtocolServiceUI totalProtocolServiceUI = ServiceUIFactory.getTotalProtocolServiceUI();
+    private PersonalProtocolServiceUI personalProtocolServiceUI = ServiceUIFactory.getPersonalProtocolServiceUI();
 
     @FXML
     BorderPane mainProtocolPane;
@@ -301,7 +300,7 @@ public class ProtocolController extends GenericController {
                 if(getWelderProtocolFromDB(journalUI.getWelders().get(i),journalUI)!=null){
                     pp = getWelderProtocolFromDB(journalUI.getWelders().get(i),journalUI);
                     treeItem.getChildren().add(new TreeItem<String>(PERSONAL_PROTOCOL_PREFIX_NAME
-                            +"(БД): " + pp.toString()));
+                            + pp.toString()+ PERSONAL_PROTOCOL_DB_SUFFIX_NAME));
                 }else {
                     pp = new PersonalProtocolUI(journalUI.getWelders().get(i), journalUI);
                     treeItem.getChildren().add(new TreeItem<String>(PERSONAL_PROTOCOL_PREFIX_NAME
@@ -409,6 +408,33 @@ public class ProtocolController extends GenericController {
 
     }
 
+    private void showSelectedPersProtocol(PersonalProtocolUI selectedPersProtocol){
+        txfPersonalProtocolNumber.setText(selectedPersProtocol.getNumber());
+        dpPersonalProtocolDate.setValue(DateUtil.getLocalDate(selectedPersProtocol.getDatePeriodicalCert()));
+        lbWelderFullName.setText(selectedPersProtocol.toString());
+
+    }
+
+    private PersonalProtocolUI getPersProtocolByItemName(TotalProtocolUI totalProtocolUI, String itemName){
+        PersonalProtocolUI result = null;
+        String fullName = "";
+        if(itemName.contains(PERSONAL_PROTOCOL_DB_SUFFIX_NAME) && itemName.contains(PERSONAL_PROTOCOL_PREFIX_NAME)){
+            fullName =
+                    itemName.substring(PERSONAL_PROTOCOL_PREFIX_NAME.length(),itemName.indexOf(PERSONAL_PROTOCOL_DB_SUFFIX_NAME));
+            LOGGER.debug("GET PERSONAL PROTOCOL BY ITEM NAME: fullName is: "+fullName);
+            return personalProtocolServiceUI.getPersonalProtocolUI(totalProtocolUI, fullName);
+        }else{
+            if(itemName.contains(PERSONAL_PROTOCOL_PREFIX_NAME) && !itemName.contains(PERSONAL_PROTOCOL_DB_SUFFIX_NAME)) {
+                fullName = itemName.substring(PERSONAL_PROTOCOL_PREFIX_NAME.length());
+                LOGGER.debug("GET PERSONAL PROTOCOL BY ITEM NAME: fullName is: "+fullName);
+                return personalProtocolServiceUI.getPersonalProtocolUI(totalProtocolUI, fullName);
+            }
+        }
+        LOGGER.debug("GET PERSONAL PROTOCOL BY ITEM NAME: fullName is: "+fullName);
+
+        return result;
+    }
+
     @FXML
     private void closeProtocolPane(){
         if(mainProtocolPane.isVisible()){
@@ -474,7 +500,10 @@ public class ProtocolController extends GenericController {
                 selectedTotalProtocolUI =
                         totalProtocolServiceUI.getTotalProtocolUIByToStringMethod(totalProtocolItem.getValue(),cachedTotalProtocols);
                 showSelectedTotalProtocol(selectedTotalProtocolUI);
-                LOGGER.debug("TREE LIST VIEW HANDLER: The personal protocol is selected");
+                showSelectedPersProtocol(getPersProtocolByItemName(selectedTotalProtocolUI,protocolItem.getValue()));
+
+                LOGGER.debug("TREE LIST VIEW HANDLER: The personal protocol is selected: "+
+                    getPersProtocolByItemName(selectedTotalProtocolUI, protocolItem.getValue()));
                 return;
             }
             selectedTotalProtocolUI =
