@@ -19,7 +19,7 @@ public class RadiationTestUI extends GenericEntityUI {
     private final SimpleStringProperty dateFormat = new SimpleStringProperty();
 
     private final SimpleObjectProperty<EvaluationUI> evaluation = new SimpleObjectProperty<EvaluationUI>();
-    private final SimpleObjectProperty<WeldPatternUI> weldPattern = new SimpleObjectProperty<WeldPatternUI>();
+   // private final SimpleObjectProperty<WeldPatternUI> weldPattern = new SimpleObjectProperty<WeldPatternUI>();
 
     public RadiationTestUI() {
         this.id.set(0);
@@ -29,8 +29,7 @@ public class RadiationTestUI extends GenericEntityUI {
         this.date.set(DateUtil.getDate(DateUtil.DEFAULT_DATE));
         this.dateFormat.set(DateUtil.format(this.date.get()));
         this.evaluation.set(new EvaluationUI());
-        this.weldPattern.set(new WeldPatternUI());
-    }
+          }
 
     public RadiationTestUI(RadiationTest radiationTest){
         this.id.set(radiationTest.getRadiationTestId());
@@ -39,8 +38,8 @@ public class RadiationTestUI extends GenericEntityUI {
         this.sensitivity.set(radiationTest.getSensitivity());
         this.date.set(radiationTest.getProtDate());
         this.dateFormat.set(DateUtil.format(this.date.get()));
-        this.evaluation.set(new EvaluationUI(radiationTest.getEvaluation()));
-        this.weldPattern.set(new WeldPatternUI(radiationTest.getWeldPattern()));
+        this.evaluation.set(new EvaluationUI());
+
     }
 
     //Getters and Setters
@@ -117,15 +116,5 @@ public class RadiationTestUI extends GenericEntityUI {
         this.evaluation.set(evaluation);
     }
 
-    public WeldPatternUI getWeldPattern() {
-        return weldPattern.get();
-    }
 
-    public SimpleObjectProperty<WeldPatternUI> weldPatternProperty() {
-        return weldPattern;
-    }
-
-    public void setWeldPattern(WeldPatternUI weldPattern) {
-        this.weldPattern.set(weldPattern);
-    }
 }

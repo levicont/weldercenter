@@ -1,10 +1,7 @@
 package com.lvg.weldercenter.ui.control;
 
 import com.lvg.weldercenter.models.*;
-import com.lvg.weldercenter.services.CommissionCertificationService;
-import com.lvg.weldercenter.services.JournalService;
-import com.lvg.weldercenter.services.PersonalProtocolService;
-import com.lvg.weldercenter.services.TotalProtocolService;
+import com.lvg.weldercenter.services.*;
 import com.lvg.weldercenter.spring.factories.ServiceFactory;
 import com.lvg.weldercenter.spring.factories.ServiceUIFactory;
 import com.lvg.weldercenter.ui.entities.*;
@@ -45,11 +42,15 @@ public class ProtocolController extends GenericController {
     private CommissionCertificationService commissionCertificationService =
             ServiceFactory.getCommissionCertificationService();
     private TotalProtocolService totalProtocolService = ServiceFactory.getTotalProtocolService();
+    private TheoryTestService theoryTestService = ServiceFactory.getTheoryTestService();
+    private NDTDocumentService ndtDocumentService = ServiceFactory.getNdtDocumentService();
     private TotalProtocolServiceUI totalProtocolServiceUI = ServiceUIFactory.getTotalProtocolServiceUI();
     private PersonalProtocolServiceUI personalProtocolServiceUI = ServiceUIFactory.getPersonalProtocolServiceUI();
 
     @FXML
     BorderPane mainProtocolPane;
+    @FXML
+    TabPane tabPaneAllProtocols;
 
     @FXML
     TreeView<String> protocolsTreeView;
@@ -117,6 +118,8 @@ public class ProtocolController extends GenericController {
     //Personal protocol components
     @FXML
     Tab tabPersonalProtocol;
+    @FXML
+    BorderPane borderPanePersonalProtocol;
     @FXML
     TextField txfPersonalProtocolNumber;
     @FXML
@@ -251,9 +254,13 @@ public class ProtocolController extends GenericController {
     private ObservableList<TreeItem<String>> totalProtocols = FXCollections.observableArrayList();
     private ObservableList<TotalProtocolUI> cachedTotalProtocols = FXCollections.observableArrayList();
     private ObservableList<WelderUI> weldersUIinTotalProtocol = FXCollections.observableArrayList();
+    private ObservableList<WeldPatternUI> weldPatternsUIinPersProtocol = FXCollections.observableArrayList();
     private ObservableList<Long> commissionIDList = FXCollections.observableArrayList();
     private ObservableList<CommissionCertificationUI> commissionCertificationUIList =
             FXCollections.observableArrayList();
+    private ObservableList<String> theoryTestRatingsList = FXCollections.observableArrayList();
+    private ObservableList<String> allNTDdocs = FXCollections.observableArrayList();
+    private ObservableList<String> currentNTDdocs = FXCollections.observableArrayList();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -261,8 +268,27 @@ public class ProtocolController extends GenericController {
         initProtocolsTreeView();
         initWeldPatternTab();
         initTotalProtocolTab();
+        initPersonalProtocolTab();
     }
 
+    private void initPersonalProtocolTab(){
+        initTheoryTestRatingsList();
+        cbTheoryTestRating.setItems(theoryTestRatingsList);
+        initAllNDTdocs();
+        listViewAllDocs.setItems(allNTDdocs);
+
+    }
+
+    private void initAllNDTdocs(){
+        allNTDdocs.clear();
+        for (NDTDocument document: ndtDocumentService.getAll()){
+            allNTDdocs.add(document.getName());
+        }
+    }
+
+    private void initTheoryTestRatingsList(){
+        theoryTestRatingsList.addAll(TheoryTestUI.POSITIVE_RATING_VALUE,TheoryTestUI.NEGATIVE_RATING_VALUE);
+    }
 
     private void initProtocolsTreeView(){
         initTotalProtocols();
@@ -405,6 +431,8 @@ public class ProtocolController extends GenericController {
         initWeldersUIinTotalProtocol(selectedTotalProtocol);
         initCommissionTitlePane(selectedTotalProtocol);
         initJournalTitledPane(selectedTotalProtocol);
+        tabTotalProtocol.getTabPane().getSelectionModel().select(tabTotalProtocol);
+
 
     }
 
@@ -412,7 +440,75 @@ public class ProtocolController extends GenericController {
         txfPersonalProtocolNumber.setText(selectedPersProtocol.getNumber());
         dpPersonalProtocolDate.setValue(DateUtil.getLocalDate(selectedPersProtocol.getDatePeriodicalCert()));
         lbWelderFullName.setText(selectedPersProtocol.toString());
+        tabPersonalProtocol.getTabPane().getSelectionModel().select(tabPersonalProtocol);
+        initPersProtocolWeldPatterns(selectedPersProtocol);
+        initTitlePanePersProtocolTheoryTest(selectedPersProtocol);
+        initPersProtocolNTDdocs(selectedPersProtocol);
 
+
+    }
+
+    private void initPersProtocolNTDdocs(PersonalProtocolUI selectedPersProtocol){
+        ObservableList<NDTDocumentUI> ntdDocs = selectedPersProtocol.getNdtDocuments();
+        currentNTDdocs.clear();
+        initAllNDTdocs();
+        for(NDTDocumentUI documentUI: ntdDocs){
+            currentNTDdocs.add(documentUI.getName());
+        }
+        allNTDdocs.removeAll(currentNTDdocs);
+        checkEmptiesNTDdocsLists();
+
+        listViewAttestDocs.setItems(currentNTDdocs);
+    }
+
+    private void checkEmptiesNTDdocsLists(){
+        if(allNTDdocs.isEmpty()){
+            btAddAllDocsToProtocol.setDisable(true);
+            btAddSingleDocToProtocol.setDisable(true);
+        }else {
+            btAddAllDocsToProtocol.setDisable(false);
+            btAddSingleDocToProtocol.setDisable(false);
+        }
+        if(currentNTDdocs.isEmpty()){
+            btRemoveAllDocs.setDisable(true);
+            btRemoveSingleDoc.setDisable(true);
+        }
+        else{
+            btRemoveAllDocs.setDisable(false);
+            btRemoveSingleDoc.setDisable(false);
+        }
+
+    }
+
+    private void initPersProtocolWeldPatterns(PersonalProtocolUI selectedPersProtocol ){
+        weldPatternsUIinPersProtocol.clear();
+        weldPatternsUIinPersProtocol.addAll(selectedPersProtocol.getWeldPatterns());
+        LOGGER.debug("INIT PERS PROTOCOL WELD PATTERNS: weldPatternUIs list: "+weldPatternsUIinPersProtocol);
+        tcolWeldPatternID.setCellValueFactory(new PropertyValueFactory<WeldPatternUI, Long>("id"));
+        tcolWeldPatternType.setCellValueFactory(new PropertyValueFactory<WeldPatternUI, String>("typeName"));
+        tcolWeldPatternSize.setCellValueFactory(new PropertyValueFactory<WeldPatternUI, String>("size"));
+        tcolWeldPatternWeldMethod.setCellValueFactory(new PropertyValueFactory<WeldPatternUI, String>("weldMethodName"));
+        tableViewWeldPatterns.setItems(weldPatternsUIinPersProtocol);
+        tableViewWeldPatterns.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+
+    }
+
+    private void initTitlePanePersProtocolTheoryTest(PersonalProtocolUI selectedPersProtocol){
+        TheoryTestUI theoryTestUI = selectedPersProtocol.getTheoryTest();
+
+        txfTheoryTestTicketNumber.setText(theoryTestUI.getTicketNumber());
+        initComboBoxTheoryTestRating(theoryTestUI);
+
+    }
+
+    private void initComboBoxTheoryTestRating(TheoryTestUI theoryTestUI){
+
+        for (String rating: cbTheoryTestRating.getItems()){
+            if(theoryTestUI.getRating().equals(rating)){
+                cbTheoryTestRating.getSelectionModel().select(rating);
+                break;
+            }
+        }
     }
 
     private PersonalProtocolUI getPersProtocolByItemName(TotalProtocolUI totalProtocolUI, String itemName){
@@ -422,7 +518,7 @@ public class ProtocolController extends GenericController {
             fullName =
                     itemName.substring(PERSONAL_PROTOCOL_PREFIX_NAME.length(),itemName.indexOf(PERSONAL_PROTOCOL_DB_SUFFIX_NAME));
             LOGGER.debug("GET PERSONAL PROTOCOL BY ITEM NAME: fullName is: "+fullName);
-            return personalProtocolServiceUI.getPersonalProtocolUI(totalProtocolUI, fullName);
+            return personalProtocolServiceUI.getPersonalProtocolUIFromDB(totalProtocolUI, fullName);
         }else{
             if(itemName.contains(PERSONAL_PROTOCOL_PREFIX_NAME) && !itemName.contains(PERSONAL_PROTOCOL_DB_SUFFIX_NAME)) {
                 fullName = itemName.substring(PERSONAL_PROTOCOL_PREFIX_NAME.length());
@@ -441,6 +537,40 @@ public class ProtocolController extends GenericController {
             mainProtocolPane.setVisible(false);
             getControllerManager().getMainFrameController().showLogo();
         }
+    }
+
+    @FXML
+    private void addAllNDTdocsToCurrentProtocol(){
+        currentNTDdocs.clear();
+        currentNTDdocs.addAll(allNTDdocs);
+        allNTDdocs.clear();
+        checkEmptiesNTDdocsLists();
+    }
+
+    @FXML
+    private void addSingleNDTdocToCurrentProtocol(){
+        String selectedDoc = listViewAllDocs.getSelectionModel().getSelectedItem();
+        if(null != selectedDoc){
+            currentNTDdocs.add(selectedDoc);
+            allNTDdocs.remove(selectedDoc);
+        }
+       checkEmptiesNTDdocsLists();
+    }
+    @FXML
+    private void removeAllNDTdocsFromCurrentProtocol(){
+        allNTDdocs.addAll(currentNTDdocs);
+        currentNTDdocs.clear();
+        checkEmptiesNTDdocsLists();
+    }
+
+    @FXML
+    private void removeSingleNDTdocFromCurrentProtocol(){
+        String selectedDoc = listViewAttestDocs.getSelectionModel().getSelectedItem();
+        if(null != selectedDoc){
+            allNTDdocs.add(selectedDoc);
+            currentNTDdocs.remove(selectedDoc);
+        }
+        checkEmptiesNTDdocsLists();
     }
 
     @FXML
@@ -499,11 +629,12 @@ public class ProtocolController extends GenericController {
                 TreeItem<String> totalProtocolItem = protocolItem.getParent();
                 selectedTotalProtocolUI =
                         totalProtocolServiceUI.getTotalProtocolUIByToStringMethod(totalProtocolItem.getValue(),cachedTotalProtocols);
+                PersonalProtocolUI selectedPersProtocolUI = getPersProtocolByItemName(selectedTotalProtocolUI,protocolItem.getValue());
                 showSelectedTotalProtocol(selectedTotalProtocolUI);
-                showSelectedPersProtocol(getPersProtocolByItemName(selectedTotalProtocolUI,protocolItem.getValue()));
+                showSelectedPersProtocol(selectedPersProtocolUI);
 
                 LOGGER.debug("TREE LIST VIEW HANDLER: The personal protocol is selected: "+
-                    getPersProtocolByItemName(selectedTotalProtocolUI, protocolItem.getValue()));
+                    selectedPersProtocolUI);
                 return;
             }
             selectedTotalProtocolUI =

@@ -17,7 +17,7 @@ public class VisualTestUI extends GenericEntityUI {
     private final SimpleStringProperty dateFormat = new SimpleStringProperty();
 
     private final SimpleObjectProperty<EvaluationUI> evaluation = new SimpleObjectProperty<EvaluationUI>();
-    private final SimpleObjectProperty<WeldPatternUI> weldPattern = new SimpleObjectProperty<WeldPatternUI>();
+   // private final SimpleObjectProperty<WeldPatternUI> weldPattern = new SimpleObjectProperty<WeldPatternUI>();
 
     public VisualTestUI() {
         this.id.set(0);
@@ -26,7 +26,7 @@ public class VisualTestUI extends GenericEntityUI {
         this.date.set(DateUtil.getDate(DateUtil.DEFAULT_DATE));
         this.dateFormat.set(DateUtil.format(this.date.get()));
         this.evaluation.set(new EvaluationUI());
-        this.weldPattern.set(new WeldPatternUI());
+
     }
 
     public VisualTestUI(VisualTest visualTest){
@@ -35,8 +35,8 @@ public class VisualTestUI extends GenericEntityUI {
         this.number.set(visualTest.getNumber());
         this.date.set(visualTest.getProtDate());
         this.dateFormat.set(DateUtil.format(this.date.get()));
-        this.evaluation.set(new EvaluationUI(visualTest.getEvaluation()));
-        this.weldPattern.set(new WeldPatternUI(visualTest.getWeldPattern()));
+        this.evaluation.set(new EvaluationUI());
+
     }
 
     //Getters and Setters
@@ -102,15 +102,5 @@ public class VisualTestUI extends GenericEntityUI {
         this.evaluation.set(evaluation);
     }
 
-    public WeldPatternUI getWeldPattern() {
-        return weldPattern.get();
-    }
 
-    public SimpleObjectProperty<WeldPatternUI> weldPatternProperty() {
-        return weldPattern;
-    }
-
-    public void setWeldPattern(WeldPatternUI weldPattern) {
-        this.weldPattern.set(weldPattern);
-    }
 }

@@ -28,7 +28,7 @@ public class PersonalProtocolUI extends GenericEntityUI{
             new SimpleObjectProperty<TheoryTestUI>();
 
 
-//    private SimpleListProperty<WeldPatternUI> weldPatterns = new SimpleListProperty<WeldPatternUI>();
+    private SimpleListProperty<WeldPatternUI> weldPatterns = new SimpleListProperty<WeldPatternUI>();
     private SimpleListProperty<NDTDocumentUI> ndtDocuments = new SimpleListProperty<NDTDocumentUI>();
 
 
@@ -42,6 +42,7 @@ public class PersonalProtocolUI extends GenericEntityUI{
         this.resolutionCertification.set(new ResolutionCertificationUI());
         this.theoryTest.set(new TheoryTestUI());
         this.ndtDocuments.set(FXCollections.observableArrayList(new ArrayList<NDTDocumentUI>()));
+        this.weldPatterns.set(FXCollections.observableArrayList(new ArrayList<WeldPatternUI>()));
 
     }
 
@@ -55,6 +56,7 @@ public class PersonalProtocolUI extends GenericEntityUI{
         this.resolutionCertification.set(new ResolutionCertificationUI());
         this.theoryTest.set(new TheoryTestUI());
         this.ndtDocuments.set(FXCollections.observableArrayList(new ArrayList<NDTDocumentUI>()));
+        this.weldPatterns.set(FXCollections.observableArrayList(new ArrayList<WeldPatternUI>()));
     }
 
     public PersonalProtocolUI(PersonalProtocol personalProtocol) {
@@ -68,6 +70,7 @@ public class PersonalProtocolUI extends GenericEntityUI{
         this.theoryTest.set(new TheoryTestUI(personalProtocol.getTheoryTest()));
         this.ndtDocuments.set(FXCollections.observableArrayList(
                 getNDTDocumentUIList(personalProtocol.getNdtDocuments())));
+        this.weldPatterns.set(FXCollections.observableArrayList(getWeldPatternUIList(personalProtocol.getWeldPatterns())));
 
     }
 
@@ -75,6 +78,7 @@ public class PersonalProtocolUI extends GenericEntityUI{
         List<WeldPatternUI> result = new ArrayList<WeldPatternUI>();
         for(WeldPattern wp: dbList){
             WeldPatternUI weldPatternUI = new WeldPatternUI(wp);
+            weldPatternUI.setPersonalProtocol(this);
             result.add(weldPatternUI);
         }
         return result;
@@ -186,6 +190,18 @@ public class PersonalProtocolUI extends GenericEntityUI{
 
     public void setNdtDocuments(ObservableList<NDTDocumentUI> ndtDocuments) {
         this.ndtDocuments.set(ndtDocuments);
+    }
+
+    public ObservableList<WeldPatternUI> getWeldPatterns() {
+        return weldPatterns.get();
+    }
+
+    public SimpleListProperty<WeldPatternUI> weldPatternsProperty() {
+        return weldPatterns;
+    }
+
+    public void setWeldPatterns(ObservableList<WeldPatternUI> weldPatterns) {
+        this.weldPatterns.set(weldPatterns);
     }
 
     @Override

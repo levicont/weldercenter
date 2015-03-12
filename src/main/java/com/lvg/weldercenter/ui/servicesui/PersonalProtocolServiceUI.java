@@ -8,4 +8,5 @@ import com.lvg.weldercenter.ui.entities.TotalProtocolUI;
  */
 public interface PersonalProtocolServiceUI {
     public PersonalProtocolUI getPersonalProtocolUI(TotalProtocolUI totalProtocolUI, String welderFullName);
+    public PersonalProtocolUI getPersonalProtocolUIFromDB(TotalProtocolUI totalProtocolUI, String welderFullName);
 }

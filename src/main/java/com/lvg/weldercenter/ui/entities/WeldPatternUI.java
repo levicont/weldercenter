@@ -11,12 +11,18 @@ import javafx.beans.property.SimpleStringProperty;
  * Created by Victor Levchenko LVG Corp. on 23.01.15.
  */
 public class WeldPatternUI extends GenericEntityUI {
+    private final String THICKNESS_MARK = "Толщ ";
+    private final String DIAMETER_MARK = "Диам ";
+    private final String MEASURE_MARK = " мм ";
 
     private final SimpleDoubleProperty thickness  = new SimpleDoubleProperty();
     private final SimpleDoubleProperty diameter = new SimpleDoubleProperty();
     private final SimpleStringProperty mark = new SimpleStringProperty();
     private final SimpleBooleanProperty isHeating = new SimpleBooleanProperty();
     private final SimpleBooleanProperty isHeatTreatment = new SimpleBooleanProperty();
+    private final SimpleStringProperty typeName = new SimpleStringProperty();
+    private final SimpleStringProperty size = new SimpleStringProperty();
+    private final SimpleStringProperty weldMethodName = new SimpleStringProperty();
 
     private final SimpleObjectProperty<PersonalProtocolUI> personalProtocol = new SimpleObjectProperty<PersonalProtocolUI>();
     private final SimpleObjectProperty<WeldMethodUI> weldMethod = new SimpleObjectProperty<WeldMethodUI>();
@@ -39,12 +45,17 @@ public class WeldPatternUI extends GenericEntityUI {
         this.isHeating.set(false);
         this.isHeatTreatment.set(false);
 
+        this.size.set(getSizeFromThicknesAndDiameter(this.diameter.get(), this.thickness.get()));
+
         this.personalProtocol.set(new PersonalProtocolUI());
         this.weldMethod.set(new WeldMethodUI());
+        this.weldMethodName.set(this.weldMethod.get().getName());
         this.electrode.set(new ElectrodeUI());
         this.weldWire.set(new WeldWireUI());
         this.weldGas.set(new WeldGasUI());
         this.weldDetail.set(new WeldDetailUI());
+        this.typeName.set(this.weldDetail.get().getType());
+
         this.steelType.set(new SteelTypeUI());
         this.weldPosition.set(new WeldPositionUI());
 
@@ -61,13 +72,18 @@ public class WeldPatternUI extends GenericEntityUI {
         this.isHeating.set(weldPattern.getIsHeating());
         this.isHeatTreatment.set(weldPattern.getIsHeatTreatment());
 
-        this.personalProtocol.set(new PersonalProtocolUI(weldPattern.getPersonalProtocol()));
+        this.size.set(getSizeFromThicknesAndDiameter(this.diameter.get(), this.thickness.get()));
+
+        this.personalProtocol.set(new PersonalProtocolUI());
         this.weldMethod.set(new WeldMethodUI(weldPattern.getWeldMethod()));
+        this.weldMethodName.set(this.weldMethod.get().getName());
         this.electrode.set(new ElectrodeUI(weldPattern.getElectrode()));
         this.weldWire.set(new WeldWireUI(weldPattern.getWeldWire()));
         this.weldGas.set(new WeldGasUI(weldPattern.getWeldGas()));
         this.weldDetail.set(new WeldDetailUI(weldPattern.getWeldDetail()));
+        this.typeName.set(this.weldDetail.get().getType());
         this.steelType.set(new SteelTypeUI(weldPattern.getSteelType()));
+
         this.weldPosition.set(new WeldPositionUI(weldPattern.getWeldPosition()));
 
         this.radiationTest.set(new RadiationTestUI(weldPattern.getRadiationTest()));
@@ -75,7 +91,36 @@ public class WeldPatternUI extends GenericEntityUI {
         this.mechanicalTest.set(new MechanicalTestUI(weldPattern.getMechanicalTest()));
     }
 
+    public WeldPatternUI(PersonalProtocolUI personalProtocolUI){
+        this.id.set(0);
+        this.thickness.set(0);
+        this.diameter.set(0);
+        this.mark.set("");
+        this.isHeating.set(false);
+        this.isHeatTreatment.set(false);
+        this.size.set(getSizeFromThicknesAndDiameter(this.diameter.get(), this.thickness.get()));
+
+        this.personalProtocol.set(personalProtocolUI);
+        this.weldMethod.set(new WeldMethodUI());
+        this.weldMethodName.set(this.weldMethod.get().getName());
+        this.electrode.set(new ElectrodeUI());
+        this.weldWire.set(new WeldWireUI());
+        this.weldGas.set(new WeldGasUI());
+        this.weldDetail.set(new WeldDetailUI());
+        this.typeName.set(this.weldDetail.get().getType());
+        this.steelType.set(new SteelTypeUI());
+        this.weldPosition.set(new WeldPositionUI());
+
+        this.radiationTest.set(new RadiationTestUI());
+        this.visualTest.set(new VisualTestUI());
+        this.mechanicalTest.set(new MechanicalTestUI());
+    }
+
     //Getters and Setters
+
+    private String getSizeFromThicknesAndDiameter(double diameter, double thickness){
+        return DIAMETER_MARK+diameter+MEASURE_MARK+"\n"+THICKNESS_MARK+thickness+MEASURE_MARK;
+    }
 
 
     public double getThickness() {
@@ -268,5 +313,41 @@ public class WeldPatternUI extends GenericEntityUI {
 
     public void setMechanicalTest(MechanicalTestUI mechanicalTest) {
         this.mechanicalTest.set(mechanicalTest);
+    }
+
+    public String getTypeName() {
+        return typeName.get();
+    }
+
+    public SimpleStringProperty typeNameProperty() {
+        return typeName;
+    }
+
+    public void setTypeName(String typeName) {
+        this.typeName.set(typeName);
+    }
+
+    public String getSize() {
+        return size.get();
+    }
+
+    public SimpleStringProperty sizeProperty() {
+        return size;
+    }
+
+    public void setSize(String size) {
+        this.size.set(size);
+    }
+
+    public String getWeldMethodName() {
+        return weldMethodName.get();
+    }
+
+    public SimpleStringProperty weldMethodNameProperty() {
+        return weldMethodName;
+    }
+
+    public void setWeldMethodName(String weldMethodName) {
+        this.weldMethodName.set(weldMethodName);
     }
 }

@@ -26,6 +26,8 @@ public class ServiceFactory {
     private static PersonalProtocolService personalProtocolService;
     private static TotalProtocolService totalProtocolService;
     private static CommissionCertificationService commissionCertificationService;
+    private static TheoryTestService theoryTestService;
+    private static NDTDocumentService ndtDocumentService;
 
     private ServiceFactory(){
 
@@ -170,5 +172,25 @@ public class ServiceFactory {
                     (CommissionCertificationService)context.getBean("commissionCertificationService");
         }
         return commissionCertificationService;
+    }
+
+    public static TheoryTestService getTheoryTestService(){
+        if(null != theoryTestService){
+            return theoryTestService;
+        }
+        else {
+            theoryTestService = (TheoryTestService)context.getBean("theoryTestService");
+            return theoryTestService;
+        }
+    }
+
+    public static NDTDocumentService getNdtDocumentService(){
+        if(null != ndtDocumentService){
+            return ndtDocumentService;
+        }
+        else {
+            ndtDocumentService = (NDTDocumentService)context.getBean("ndtDocumentService");
+            return ndtDocumentService;
+        }
     }
 }

@@ -96,5 +96,6 @@
     <bean id="welderServiceUI" class="com.lvg.weldercenter.ui.servicesui.impl.WelderUIManager"/>
     <bean id="totalProtocolServiceUI" class="com.lvg.weldercenter.ui.servicesui.impl.TotalProtocolUIManager"/>
     <bean id="journalServiceUI" class="com.lvg.weldercenter.ui.servicesui.impl.JournalUIManager"/>
+    <bean id="personalProtocolServiceUI" class="com.lvg.weldercenter.ui.servicesui.impl.PersonalProtocolUIManager"/>
 
 </beans>

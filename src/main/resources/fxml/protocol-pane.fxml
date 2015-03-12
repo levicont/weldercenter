@@ -71,7 +71,7 @@
                         </Label>
                     </top>
                <center>
-                  <TabPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #F4F4F4;" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+                  <TabPane fx:id="tabPaneAllProtocols" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #F4F4F4;" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
                      <tabs>
                         <Tab fx:id="tabTotalProtocol" text="Общий протокол">
                            <content>
@@ -351,7 +351,7 @@
                         </Tab>
                         <Tab fx:id="tabPersonalProtocol" text="Персональный протокол">
                            <content>
-                              <BorderPane prefHeight="200.0" prefWidth="200.0">
+                              <BorderPane fx:id="borderPanePersonalProtocol" prefHeight="200.0" prefWidth="200.0">
                                  <top>
                                     <GridPane BorderPane.alignment="CENTER">
                                       <columnConstraints>
@@ -410,7 +410,7 @@
                                                         <columns>
                                                           <TableColumn fx:id="tcolWeldPatternID" prefWidth="40.0" text="id" />
                                                           <TableColumn fx:id="tcolWeldPatternType" prefWidth="75.0" text="Тип" />
-                                                            <TableColumn fx:id="tcolWeldPatternSize" prefWidth="75.0" text="Размеры" />
+                                                            <TableColumn fx:id="tcolWeldPatternSize" prefWidth="90.0" text="Размеры" />
                                                             <TableColumn fx:id="tcolWeldPatternWeldMethod" prefWidth="125.0" text="Метод сварки" />
                                                         </columns>
                                                          <BorderPane.margin>
@@ -514,8 +514,8 @@
                                                                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                                                      </padding>
                                                                      <children>
-                                                                        <Button fx:id="btRemoveAllDocs" maxWidth="-Infinity" mnemonicParsing="false" prefWidth="40.0" text="&gt;&gt;" />
-                                                                        <Button fx:id="btRemoveSingleDoc" maxWidth="-Infinity" mnemonicParsing="false" prefWidth="40.0" text="&gt;" />
+                                                                        <Button fx:id="btRemoveAllDocs" maxWidth="-Infinity" mnemonicParsing="false" onAction="#removeAllNDTdocsFromCurrentProtocol" prefWidth="40.0" text="&gt;&gt;" />
+                                                                        <Button fx:id="btRemoveSingleDoc" maxWidth="-Infinity" mnemonicParsing="false" onAction="#removeSingleNDTdocFromCurrentProtocol" prefWidth="40.0" text="&gt;" />
                                                                      </children>
                                                                   </VBox>
                                                                </right>
@@ -531,8 +531,8 @@
                                                                <left>
                                                                   <VBox maxWidth="-Infinity" prefHeight="200.0" prefWidth="52.0" spacing="5.0" BorderPane.alignment="CENTER">
                                                                      <children>
-                                                                        <Button fx:id="btAddAllDocsToProtocol" mnemonicParsing="false" text="&lt;&lt;" />
-                                                                        <Button fx:id="btAddSingleDocToProtocol" maxWidth="-Infinity" mnemonicParsing="false" prefWidth="40.0" text="&lt;" />
+                                                                        <Button fx:id="btAddAllDocsToProtocol" mnemonicParsing="false" onAction="#addAllNDTdocsToCurrentProtocol" text="&lt;&lt;" />
+                                                                        <Button fx:id="btAddSingleDocToProtocol" maxWidth="-Infinity" mnemonicParsing="false" onAction="#addSingleNDTdocToCurrentProtocol" prefWidth="40.0" text="&lt;" />
                                                                      </children>
                                                                      <padding>
                                                                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />

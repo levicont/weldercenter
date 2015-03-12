@@ -7,6 +7,9 @@ import javafx.beans.property.SimpleStringProperty;
  * Created by Victor Levchenko LVG Corp. on 23.01.15.
  */
 public class TheoryTestUI extends GenericEntityUI {
+    public static final String POSITIVE_RATING_VALUE = "Сдано";
+    public static final String NEGATIVE_RATING_VALUE = "Не сдано";
+
     private SimpleStringProperty ticketNumber = new SimpleStringProperty();
     private SimpleStringProperty rating = new SimpleStringProperty();
 
