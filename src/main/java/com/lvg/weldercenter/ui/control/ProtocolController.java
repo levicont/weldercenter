@@ -43,7 +43,17 @@ public class ProtocolController extends GenericController {
             ServiceFactory.getCommissionCertificationService();
     private TotalProtocolService totalProtocolService = ServiceFactory.getTotalProtocolService();
     private TheoryTestService theoryTestService = ServiceFactory.getTheoryTestService();
+    private WeldDetailService weldDetailService = ServiceFactory.getWeldDetailService();
+    private WeldMethodService weldMethodService = ServiceFactory.getWeldMethodService();
     private NDTDocumentService ndtDocumentService = ServiceFactory.getNdtDocumentService();
+    private PatternDiameterService patternDiameterService = ServiceFactory.getPatternDiameterService();
+    private PatternThicknessService patternThicknessService = ServiceFactory.getPatternThicknessService();
+    private SteelTypeService steelTypeService = ServiceFactory.getSteelTypeService();
+    private WeldPositionService weldPositionService = ServiceFactory.getWeldPositionService();
+    private ElectrodeService electrodeService = ServiceFactory.getElectrodeService();
+    private WeldWireService weldWireService = ServiceFactory.getWeldWireService();
+    private WeldGasService weldGasService = ServiceFactory.getWeldGasService();
+
     private TotalProtocolServiceUI totalProtocolServiceUI = ServiceUIFactory.getTotalProtocolServiceUI();
     private PersonalProtocolServiceUI personalProtocolServiceUI = ServiceUIFactory.getPersonalProtocolServiceUI();
 
@@ -177,11 +187,13 @@ public class ProtocolController extends GenericController {
     @FXML
     TitledPane titlePaneWeldPatternOption;
     @FXML
+    Accordion accordionWeldPatternPane;
+    @FXML
     ComboBox<String> cbWeldPatternDetail;
     @FXML
-    ComboBox<String> cbWeldPatternDiameter;
+    ComboBox<Double> cbWeldPatternDiameter;
     @FXML
-    ComboBox<String> cbWeldPatternThickness;
+    ComboBox<Double> cbWeldPatternThickness;
     @FXML
     TextField txfWeldPatternMark;
     @FXML
@@ -250,6 +262,7 @@ public class ProtocolController extends GenericController {
 
 
     private TotalProtocolUI selectedTotalProtocolUI = null;
+    private PersonalProtocolUI selectedPersonalProtocolUI = null;
 
     private ObservableList<TreeItem<String>> totalProtocols = FXCollections.observableArrayList();
     private ObservableList<TotalProtocolUI> cachedTotalProtocols = FXCollections.observableArrayList();
@@ -261,6 +274,14 @@ public class ProtocolController extends GenericController {
     private ObservableList<String> theoryTestRatingsList = FXCollections.observableArrayList();
     private ObservableList<String> allNTDdocs = FXCollections.observableArrayList();
     private ObservableList<String> currentNTDdocs = FXCollections.observableArrayList();
+    private ObservableList<String> weldDetailList = FXCollections.observableArrayList();
+    private ObservableList<Double> weldPatternDiameterList = FXCollections.observableArrayList();
+    private ObservableList<Double> weldPatternThicknessList = FXCollections.observableArrayList();
+    private ObservableList<String> weldPatternSteelTypeList = FXCollections.observableArrayList();
+    private ObservableList<String> weldPatternElectrodeList = FXCollections.observableArrayList();
+    private ObservableList<String> weldPatternWeldWireList = FXCollections.observableArrayList();
+    private ObservableList<String> weldPatternWeldGasList = FXCollections.observableArrayList();
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -269,6 +290,7 @@ public class ProtocolController extends GenericController {
         initWeldPatternTab();
         initTotalProtocolTab();
         initPersonalProtocolTab();
+        initWeldPatternTab();
     }
 
     private void initPersonalProtocolTab(){
@@ -296,6 +318,7 @@ public class ProtocolController extends GenericController {
         rootItem.getChildren().clear();
         rootItem.getChildren().addAll(totalProtocols);
         protocolsTreeView.setRoot(rootItem);
+        protocolsTreeView.getRoot().setExpanded(true);
         protocolsTreeView.addEventHandler(MouseEvent.MOUSE_CLICKED, new ListViewHandler());
         protocolsTreeView.addEventHandler(KeyEvent.KEY_RELEASED, new ListViewHandler());
     }
@@ -405,6 +428,87 @@ public class ProtocolController extends GenericController {
     private void initWeldPatternTab(){
         tabWeldPattern.setDisable(true);
         tabWeldPattern.setClosable(true);
+        initComboBoxDetailType();
+        initComboBoxDiameter();
+        initComboBoxThickness();
+        initComboBoxSteelType();
+        initComboBoxWeldMethod();
+        initComboBoxElectrode();
+        initComboBoxWeldWire();
+        initComboBoxWeldGas();
+
+    }
+
+    private void initComboBoxWeldGas(){
+        weldPatternWeldGasList.clear();
+        for(WeldGas wg: weldGasService.getAll()){
+            weldPatternWeldGasList.add(wg.getType());
+        }
+        cbWeldPatternWeldGas.setItems(weldPatternWeldGasList);
+        cbWeldPatternWeldGas.setDisable(true);
+    }
+
+    private void initComboBoxWeldWire(){
+        weldPatternWeldWireList.clear();
+        for(WeldWire ww: weldWireService.getAll()){
+            weldPatternWeldWireList.add(ww.getType());
+        }
+        cbWeldPatternWeldWire.setItems(weldPatternWeldWireList);
+        cbWeldPatternWeldWire.setDisable(true);
+    }
+
+    private void initComboBoxElectrode(){
+        weldPatternElectrodeList.clear();
+        for (Electrode e : electrodeService.getAll()){
+            weldPatternElectrodeList.add(e.getType());
+        }
+        cbWeldPatternElectrode.setItems(weldPatternElectrodeList);
+        cbWeldPatternElectrode.setDisable(true);
+    }
+
+    private void initComboBoxWeldMethod(){
+        ObservableList<String> weldMethodList = FXCollections.observableArrayList();
+        for(WeldMethod wm : weldMethodService.getAll() ){
+            WeldMethodUI weldMethodUI = new WeldMethodUI(wm);
+            weldMethodList.add(weldMethodUI.getNameCode());
+        }
+        cbWeldPatternWeldMethod.setItems(weldMethodList);
+    }
+
+    private void initComboBoxSteelType(){
+        weldPatternSteelTypeList.clear();
+        for (SteelType st: steelTypeService.getAll()){
+            SteelTypeUI steelTypeUI = new SteelTypeUI(st);
+            weldPatternSteelTypeList.add(steelTypeUI.getType());
+        }
+        cbWeldPatternSteelType.setItems(weldPatternSteelTypeList);
+    }
+
+    private void initComboBoxThickness(){
+        weldPatternThicknessList.clear();
+        for (PatternThickness pt : patternThicknessService.getAll()){
+            PatternThicknessUI patternThicknessUI = new PatternThicknessUI(pt);
+            weldPatternThicknessList.addAll(patternThicknessUI.getThickness());
+        }
+        cbWeldPatternThickness.setItems(weldPatternThicknessList);
+    }
+
+    private void initComboBoxDiameter(){
+        weldPatternDiameterList.clear();
+        for(PatternDiameter pd: patternDiameterService.getAll()){
+            PatternDiameterUI patternDiameterUI = new PatternDiameterUI(pd);
+            weldPatternDiameterList.add(patternDiameterUI.getDiameter());
+        }
+        cbWeldPatternDiameter.setItems(weldPatternDiameterList);
+    }
+
+    private void initComboBoxDetailType(){
+        weldDetailList.clear();
+        for (WeldDetail wd : weldDetailService.getAll()){
+            WeldDetailUI weldDetailUI = new WeldDetailUI(wd);
+            weldDetailList.addAll(weldDetailUI.getDetailTypeCode());
+        }
+        cbWeldPatternDetail.setItems(weldDetailList);
     }
 
 
@@ -444,7 +548,20 @@ public class ProtocolController extends GenericController {
         initPersProtocolWeldPatterns(selectedPersProtocol);
         initTitlePanePersProtocolTheoryTest(selectedPersProtocol);
         initPersProtocolNTDdocs(selectedPersProtocol);
+        initPersProtocolResolutionCert(selectedPersProtocol);
 
+
+    }
+
+    private void showSelectedWeldPattern(WeldPatternUI selectedWeldPattern){
+
+    }
+
+    private  void initPersProtocolResolutionCert(PersonalProtocolUI selectedPersProtocol){
+        ResolutionCertificationUI resolution = selectedPersProtocol.getResolutionCertification();
+        if (resolution != null) {
+            textAreaResolutionCert.setText(resolution.getTextResolution());
+        }
 
     }
 
@@ -529,6 +646,46 @@ public class ProtocolController extends GenericController {
         LOGGER.debug("GET PERSONAL PROTOCOL BY ITEM NAME: fullName is: "+fullName);
 
         return result;
+    }
+
+    @FXML
+    private void activeComboBoxElectrode(){
+        if(cbWeldPatternElectrode.isDisable()){
+            cbWeldPatternElectrode.setDisable(false);
+        }else {
+            cbWeldPatternElectrode.setDisable(true);
+        }
+    }
+
+    @FXML
+    private void activeComboBoxWeldWire(){
+        if(cbWeldPatternWeldWire.isDisable()){
+            cbWeldPatternWeldWire.setDisable(false);
+        }else {
+            cbWeldPatternWeldWire.setDisable(true);
+        }
+    }
+
+    @FXML
+    private void activeComboBoxWeldGas(){
+        if(cbWeldPatternWeldGas.isDisable()){
+            cbWeldPatternWeldGas.setDisable(false);
+        }else {
+            cbWeldPatternWeldGas.setDisable(true);
+        }
+    }
+
+    @FXML
+    private void addNewWeldPatternToPersProtocol(){
+        tabWeldPattern.setDisable(false);
+        tabWeldPattern.getTabPane().getSelectionModel().select(tabWeldPattern);
+        accordionWeldPatternPane.setExpandedPane(titlePaneWeldPatternOption);
+        showSelectedWeldPattern(new WeldPatternUI(selectedPersonalProtocolUI));
+    }
+
+    @FXML
+    private void cleanResolutionText(){
+        textAreaResolutionCert.clear();
     }
 
     @FXML
@@ -629,12 +786,12 @@ public class ProtocolController extends GenericController {
                 TreeItem<String> totalProtocolItem = protocolItem.getParent();
                 selectedTotalProtocolUI =
                         totalProtocolServiceUI.getTotalProtocolUIByToStringMethod(totalProtocolItem.getValue(),cachedTotalProtocols);
-                PersonalProtocolUI selectedPersProtocolUI = getPersProtocolByItemName(selectedTotalProtocolUI,protocolItem.getValue());
+                selectedPersonalProtocolUI = getPersProtocolByItemName(selectedTotalProtocolUI,protocolItem.getValue());
                 showSelectedTotalProtocol(selectedTotalProtocolUI);
-                showSelectedPersProtocol(selectedPersProtocolUI);
+                showSelectedPersProtocol(selectedPersonalProtocolUI);
 
                 LOGGER.debug("TREE LIST VIEW HANDLER: The personal protocol is selected: "+
-                    selectedPersProtocolUI);
+                    selectedPersonalProtocolUI);
                 return;
             }
             selectedTotalProtocolUI =

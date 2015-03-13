@@ -26,6 +26,9 @@ public class WeldMethodUI extends GenericEntityUI{
     }
 
     //Getters and Setters
+    public String getNameCode(){
+        return name.get()+" ("+code.get()+")";
+    }
 
     public String getName() {
         return name.get();

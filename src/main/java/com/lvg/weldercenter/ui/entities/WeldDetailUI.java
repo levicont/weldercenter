@@ -23,6 +23,9 @@ public class WeldDetailUI extends GenericEntityUI {
     }
 
     //Getters and Setters
+    public String getDetailTypeCode(){
+        return "( "+code.get()+" ) "+type.get();
+    }
 
     public String getType() {
         return type.get();
@@ -46,5 +49,13 @@ public class WeldDetailUI extends GenericEntityUI {
 
     public void setCode(String code) {
         this.code.set(code);
+    }
+
+    @Override
+    public String toString() {
+        return "WeldDetailUI{" +
+                "type=" + type +
+                ", code=" + code +
+                '}';
     }
 }

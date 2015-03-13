@@ -421,7 +421,7 @@
                                                    <right>
                                                       <VBox maxWidth="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="90.0" BorderPane.alignment="CENTER">
                                                          <children>
-                                                            <Button fx:id="btAddWeldPattern" mnemonicParsing="false" text="Добавить">
+                                                            <Button fx:id="btAddWeldPattern" mnemonicParsing="false" onAction="#addNewWeldPatternToPersProtocol" text="Добавить">
                                                                <VBox.margin>
                                                                   <Insets left="5.0" right="5.0" top="8.0" />
                                                                </VBox.margin>
@@ -600,8 +600,11 @@
                                                          <GridPane.margin>
                                                             <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                                          </GridPane.margin>
+                                                         <font>
+                                                            <Font size="14.0" />
+                                                         </font>
                                                       </TextArea>
-                                                      <Button fx:id="btCleanResolutionText" mnemonicParsing="false" text="Очистить" GridPane.rowIndex="2">
+                                                      <Button fx:id="btCleanResolutionText" mnemonicParsing="false" onAction="#cleanResolutionText" text="Очистить" GridPane.rowIndex="2">
                                                          <GridPane.margin>
                                                             <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                                          </GridPane.margin>
@@ -619,7 +622,7 @@
                            <content>
                               <BorderPane prefHeight="200.0" prefWidth="200.0">
                                  <center>
-                                    <Accordion BorderPane.alignment="CENTER">
+                                    <Accordion fx:id="accordionWeldPatternPane" BorderPane.alignment="CENTER">
                                       <panes>
                                         <TitledPane fx:id="titlePaneWeldPatternOption" text="Параметры и технология сварки">
                                              <content>
@@ -665,12 +668,12 @@
                                                                   <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                                                </GridPane.margin>
                                                             </Label>
-                                                            <ComboBox fx:id="cbWeldPatternDiameter" prefWidth="60.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                                            <ComboBox fx:id="cbWeldPatternDiameter" prefWidth="90.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                                                                <GridPane.margin>
                                                                   <Insets bottom="8.0" left="115.0" right="8.0" top="8.0" />
                                                                </GridPane.margin>
                                                             </ComboBox>
-                                                            <ComboBox fx:id="cbWeldPatternThickness" prefWidth="60.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                                            <ComboBox fx:id="cbWeldPatternThickness" prefWidth="90.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
                                                                <GridPane.margin>
                                                                   <Insets bottom="8.0" left="115.0" right="8.0" top="8.0" />
                                                                </GridPane.margin>
@@ -725,17 +728,17 @@
                                                                   <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                                                </GridPane.margin>
                                                             </ComboBox>
-                                                            <CheckBox fx:id="chkWeldPatternElectrode" mnemonicParsing="false" text="Электроды:" GridPane.rowIndex="9">
+                                                            <CheckBox fx:id="chkWeldPatternElectrode" mnemonicParsing="false" onAction="#activeComboBoxElectrode" text="Электроды:" GridPane.rowIndex="9">
                                                                <GridPane.margin>
                                                                   <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                                                </GridPane.margin>
                                                             </CheckBox>
-                                                            <CheckBox fx:id="chkWeldPatternWeldWire" mnemonicParsing="false" text="Св. проволока:" GridPane.rowIndex="10">
+                                                            <CheckBox fx:id="chkWeldPatternWeldWire" mnemonicParsing="false" onAction="#activeComboBoxWeldWire" text="Св. проволока:" GridPane.rowIndex="10">
                                                                <GridPane.margin>
                                                                   <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                                                </GridPane.margin>
                                                             </CheckBox>
-                                                            <CheckBox fx:id="chkWeldPatternWeldGas" mnemonicParsing="false" text="Защитный газ:" GridPane.rowIndex="11">
+                                                            <CheckBox fx:id="chkWeldPatternWeldGas" mnemonicParsing="false" onAction="#activeComboBoxWeldGas" text="Защитный газ:" GridPane.rowIndex="11">
                                                                <GridPane.margin>
                                                                   <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                                                </GridPane.margin>

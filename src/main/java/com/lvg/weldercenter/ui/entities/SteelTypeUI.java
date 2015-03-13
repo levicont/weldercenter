@@ -1,5 +1,6 @@
 package com.lvg.weldercenter.ui.entities;
 
+import com.lvg.weldercenter.models.SteelGroup;
 import com.lvg.weldercenter.models.SteelType;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -9,21 +10,24 @@ import javafx.beans.property.SimpleStringProperty;
  */
 public class SteelTypeUI extends  GenericEntityUI {
     private final SimpleStringProperty type = new SimpleStringProperty();
-    private final SimpleObjectProperty<SteelGroupUI> steelGroup = new SimpleObjectProperty<SteelGroupUI>();
+    private final SimpleObjectProperty<SteelGroup> steelGroup = new SimpleObjectProperty<SteelGroup>();
 
     public SteelTypeUI(){
         this.id.set(0);
         this.type.set("");
-        this.steelGroup.set(new SteelGroupUI());
+        this.steelGroup.set(null);
     }
 
     public SteelTypeUI(SteelType steelType){
         this.id.set(steelType.getSteelTypeId());
         this.type.set(steelType.getType());
-        this.steelGroup.set(new SteelGroupUI(steelType.getStGroup()));
+        this.steelGroup.set(steelType.getStGroup());
     }
 
     //Getters and Setters
+    public SteelGroupUI getSteelGroupUI(){
+        return new SteelGroupUI(steelGroup.get());
+    }
 
     public String getType() {
         return type.get();
@@ -37,15 +41,15 @@ public class SteelTypeUI extends  GenericEntityUI {
         this.type.set(type);
     }
 
-    public SteelGroupUI getSteelGroup() {
+    public SteelGroup getSteelGroup() {
         return steelGroup.get();
     }
 
-    public SimpleObjectProperty<SteelGroupUI> steelGroupProperty() {
+    public SimpleObjectProperty<SteelGroup> steelGroupProperty() {
         return steelGroup;
     }
 
-    public void setSteelGroup(SteelGroupUI steelGroup) {
+    public void setSteelGroup(SteelGroup steelGroup) {
         this.steelGroup.set(steelGroup);
     }
 }

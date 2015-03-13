@@ -1,7 +1,9 @@
 package com.lvg.weldercenter.spring.factories;
 
 import com.lvg.weldercenter.models.CommissionCertification;
+import com.lvg.weldercenter.models.PatternDiameter;
 import com.lvg.weldercenter.models.PersonalProtocol;
+import com.lvg.weldercenter.models.WeldPosition;
 import com.lvg.weldercenter.services.*;
 import com.lvg.weldercenter.spring.ContextFactory;
 import org.springframework.context.ApplicationContext;
@@ -14,6 +16,7 @@ public class ServiceFactory {
     private static ApplicationContext context = ContextFactory.getApplicationContext();
     private static WelderService welderService;
     private static WeldMethodService weldMethodService;
+    private static WeldDetailService weldDetailService;
     private static EducationService educationService;
     private static OrganizationService organizationService;
     private static QualificationService qualificationService;
@@ -28,6 +31,14 @@ public class ServiceFactory {
     private static CommissionCertificationService commissionCertificationService;
     private static TheoryTestService theoryTestService;
     private static NDTDocumentService ndtDocumentService;
+    private static PatternDiameterService patternDiameterService;
+    private static PatternThicknessService patternThicknessService;
+    private static SteelTypeService steelTypeService;
+    private static SteelGroupService steelGroupService;
+    private static WeldPositionService weldPositionService;
+    private static ElectrodeService electrodeService;
+    private static WeldWireService weldWireService;
+    private static WeldGasService weldGasService;
 
     private ServiceFactory(){
 
@@ -51,6 +62,16 @@ public class ServiceFactory {
             weldMethodService = (WeldMethodService)context.getBean("weldMethodService");
         }
         return weldMethodService;
+    }
+
+    public static WeldDetailService getWeldDetailService(){
+        if(null != weldDetailService){
+            return weldDetailService;
+        }
+        else{
+            weldDetailService = (WeldDetailService)context.getBean("weldDetailService");
+            return weldDetailService;
+        }
     }
 
     public static EducationService getEducationService(){
@@ -191,6 +212,80 @@ public class ServiceFactory {
         else {
             ndtDocumentService = (NDTDocumentService)context.getBean("ndtDocumentService");
             return ndtDocumentService;
+        }
+    }
+
+    public static PatternDiameterService getPatternDiameterService(){
+        if(null != patternDiameterService){
+            return patternDiameterService;
+        }
+        else {
+            patternDiameterService = (PatternDiameterService)context.getBean("patternDiameterService");
+            return patternDiameterService;
+        }
+    }
+
+    public static PatternThicknessService getPatternThicknessService(){
+        if(null != patternThicknessService){
+            return patternThicknessService;
+        }
+        else {
+            patternThicknessService = (PatternThicknessService)context.getBean("patternThicknessService");
+            return patternThicknessService;
+        }
+    }
+
+    public static SteelTypeService getSteelTypeService() {
+        if(null!= steelTypeService) {
+            return steelTypeService;
+        }else{
+            steelTypeService = (SteelTypeService)context.getBean("steelTypeService");
+            return steelTypeService;
+        }
+    }
+
+    public static SteelGroupService getSteelGroupService() {
+        if(null!= steelGroupService) {
+            return steelGroupService;
+        }else {
+            steelGroupService = (SteelGroupService)context.getBean("steelGroupService");
+            return steelGroupService;
+        }
+    }
+
+    public static WeldPositionService getWeldPositionService() {
+        if(null!=weldPositionService){
+            return weldPositionService;
+        }else {
+            weldPositionService = (WeldPositionService)context.getBean("weldPositionService");
+            return weldPositionService;
+        }
+    }
+
+    public static ElectrodeService getElectrodeService() {
+        if(null!= electrodeService) {
+            return electrodeService;
+        }else {
+            electrodeService = (ElectrodeService)context.getBean("electrodeService");
+            return electrodeService;
+        }
+    }
+
+    public static WeldWireService getWeldWireService() {
+        if(null!= weldWireService) {
+            return weldWireService;
+        }else {
+            weldWireService = (WeldWireService)context.getBean("weldWireService");
+            return weldWireService;
+        }
+    }
+
+    public static WeldGasService getWeldGasService() {
+        if(null!=weldGasService) {
+            return weldGasService;
+        }else {
+            weldGasService = (WeldGasService)context.getBean("weldGasService");
+            return weldGasService;
         }
     }
 }
