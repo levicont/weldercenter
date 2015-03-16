@@ -763,14 +763,14 @@
                                                                   <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                                                </GridPane.margin>
                                                             </Label>
-                                                            <TextField fx:id="txfWeldPatternWeldPosition" maxWidth="-Infinity" prefWidth="120.0" GridPane.columnIndex="1" GridPane.rowIndex="7">
+                                                            <TextField fx:id="txfWeldPatternWeldPosition" editable="false" maxWidth="-Infinity" prefWidth="120.0" GridPane.columnIndex="1" GridPane.rowIndex="7">
                                                                <GridPane.margin>
                                                                   <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                                                </GridPane.margin>
                                                             </TextField>
                                                             <ChoiceBox fx:id="choiceBoxWeldPatternWeldPosition" prefWidth="60.0" GridPane.columnIndex="1" GridPane.rowIndex="7">
                                                                <GridPane.margin>
-                                                                  <Insets bottom="8.0" left="133.0" right="8.0" top="8.0" />
+                                                                  <Insets bottom="8.0" left="128.0" right="8.0" top="8.0" />
                                                                </GridPane.margin>
                                                             </ChoiceBox>
                                                          </children>
@@ -937,11 +937,6 @@
                                                                   <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                                                </GridPane.margin>
                                                             </Label>
-                                                            <TextField fx:id="txfWeldPatternRTSensitivity" maxWidth="-Infinity" prefWidth="120.0" GridPane.columnSpan="2" GridPane.rowIndex="8">
-                                                               <GridPane.margin>
-                                                                  <Insets bottom="8.0" left="180.0" right="8.0" top="8.0" />
-                                                               </GridPane.margin>
-                                                            </TextField>
                                                             <Label text="Дефекты:" GridPane.rowIndex="9">
                                                                <GridPane.margin>
                                                                   <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
@@ -967,6 +962,11 @@
                                                                   <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                                                </GridPane.margin>
                                                             </Separator>
+                                                            <ComboBox fx:id="cbWeldPatternRTSensitivity" prefWidth="120.0" GridPane.columnSpan="2" GridPane.rowIndex="8">
+                                                               <GridPane.margin>
+                                                                  <Insets bottom="8.0" left="180.0" right="8.0" top="8.0" />
+                                                               </GridPane.margin>
+                                                            </ComboBox>
                                                          </children>
                                                       </GridPane>
                                                    </content>

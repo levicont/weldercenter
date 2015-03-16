@@ -36,6 +36,8 @@ public class ProtocolController extends GenericController {
     private static final String TREE_ROOT_ITEM_NAME = "Общие протоколы";
     private static final String PERSONAL_PROTOCOL_PREFIX_NAME = "Перс. протокол: ";
     private static final String PERSONAL_PROTOCOL_DB_SUFFIX_NAME = " (БД)";
+    private final String EMPTY_STRING_ITEM = "нет";
+    private final Double EMPTY_DOUBLE_ITEM = 0.0;
 
     private JournalService journalService = ServiceFactory.getJournalService();
     private PersonalProtocolService personalProtocolService = ServiceFactory.getPersonalProtocolService();
@@ -53,6 +55,7 @@ public class ProtocolController extends GenericController {
     private ElectrodeService electrodeService = ServiceFactory.getElectrodeService();
     private WeldWireService weldWireService = ServiceFactory.getWeldWireService();
     private WeldGasService weldGasService = ServiceFactory.getWeldGasService();
+    private EvaluationService evaluationService = ServiceFactory.getEvaluationService();
 
     private TotalProtocolServiceUI totalProtocolServiceUI = ServiceUIFactory.getTotalProtocolServiceUI();
     private PersonalProtocolServiceUI personalProtocolServiceUI = ServiceUIFactory.getPersonalProtocolServiceUI();
@@ -239,7 +242,7 @@ public class ProtocolController extends GenericController {
     @FXML
     DatePicker dpWeldPatternRTDate;
     @FXML
-    TextField txfWeldPatternRTSensitivity;
+    ComboBox<Double> cbWeldPatternRTSensitivity;
     @FXML
     TextArea textAreaWeldPatternRTDefects;
     @FXML
@@ -281,16 +284,18 @@ public class ProtocolController extends GenericController {
     private ObservableList<String> weldPatternElectrodeList = FXCollections.observableArrayList();
     private ObservableList<String> weldPatternWeldWireList = FXCollections.observableArrayList();
     private ObservableList<String> weldPatternWeldGasList = FXCollections.observableArrayList();
+    private ObservableList<String> weldPatternAllWeldPosition = FXCollections.observableArrayList();
+    private ObservableList<String> weldPatternSelectedWeldPosition = FXCollections.observableArrayList();
+    private ObservableList<String> weldPatternEvaluationList = FXCollections.observableArrayList();
 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         LOGGER.debug("INITIALIZING ProtocolPane");
         initProtocolsTreeView();
-        initWeldPatternTab();
         initTotalProtocolTab();
-        initPersonalProtocolTab();
         initWeldPatternTab();
+        initPersonalProtocolTab();
     }
 
     private void initPersonalProtocolTab(){
@@ -436,6 +441,65 @@ public class ProtocolController extends GenericController {
         initComboBoxElectrode();
         initComboBoxWeldWire();
         initComboBoxWeldGas();
+        initChoiseBoxWeldPosition();
+        initWeldPatternTestPane();
+
+    }
+
+    private void initWeldPatternTestPane(){
+        chkWeldPatternVT.addEventHandler(MouseEvent.MOUSE_CLICKED, new CheckBoxWeldPatternTestHandler());
+        chkWeldPatternRT.addEventHandler(MouseEvent.MOUSE_CLICKED, new CheckBoxWeldPatternTestHandler());
+        chkWeldPatternMech.addEventHandler(MouseEvent.MOUSE_CLICKED, new CheckBoxWeldPatternTestHandler());
+        setDisabledRTPane(true);
+        setDisabledVTPane(true);
+        setDisabledMechPane(true);
+        initWeldPatternEvaluationList();
+        cbWeldPatternRTEvaluation.setItems(weldPatternEvaluationList);
+        cbWeldPatternMechEvaluation.setItems(weldPatternEvaluationList);
+        cbWeldPatternVTEvaluation.setItems(weldPatternEvaluationList);
+        initComboBoxRTSensitivity();
+    }
+
+    private void initComboBoxRTSensitivity(){
+        cbWeldPatternRTSensitivity.setItems(FXCollections.observableArrayList(RadiationTestUI.getSensitivityList()));
+    }
+
+    private void initWeldPatternEvaluationList(){
+        weldPatternEvaluationList.clear();
+        for(Evaluation e : evaluationService.getAll()){
+            weldPatternEvaluationList.addAll(e.getType());
+        }
+
+    }
+
+    private void setDisabledMechPane(boolean isDisabled){
+       txfWeldPatternMechNumber.setDisable(isDisabled);
+       dpWeldPatternMechDate.setDisable(isDisabled);
+       txfWeldPatternMechAngle.setDisable(isDisabled);
+       cbWeldPatternMechEvaluation.setDisable(isDisabled);
+    }
+
+    private void setDisabledVTPane(boolean isDisabled){
+        txfWeldPatternVTNumber.setDisable(isDisabled);
+        dpWeldPatternVTDate.setDisable(isDisabled);
+        textAreaWeldPatternVTDefects.setDisable(isDisabled);
+        cbWeldPatternVTEvaluation.setDisable(isDisabled);
+    }
+
+    private void setDisabledRTPane(boolean isDisabled){
+            txfWeldPatternRTNumber.setDisable(isDisabled);
+            dpWeldPatternRTDate.setDisable(isDisabled);
+            cbWeldPatternRTSensitivity.setDisable(isDisabled);
+            textAreaWeldPatternRTDefects.setDisable(isDisabled);
+            cbWeldPatternRTEvaluation.setDisable(isDisabled);
+    }
+
+    private void initChoiseBoxWeldPosition(){
+        weldPatternAllWeldPosition.clear();
+        for(WeldPosition wp: weldPositionService.getAll()){
+            weldPatternAllWeldPosition.add(wp.getCode());
+        }
+        choiceBoxWeldPatternWeldPosition.setItems(weldPatternAllWeldPosition);
 
     }
 
@@ -488,13 +552,16 @@ public class ProtocolController extends GenericController {
         weldPatternThicknessList.clear();
         for (PatternThickness pt : patternThicknessService.getAll()){
             PatternThicknessUI patternThicknessUI = new PatternThicknessUI(pt);
-            weldPatternThicknessList.addAll(patternThicknessUI.getThickness());
+            weldPatternThicknessList.add(patternThicknessUI.getThickness());
         }
         cbWeldPatternThickness.setItems(weldPatternThicknessList);
+
+
     }
 
     private void initComboBoxDiameter(){
         weldPatternDiameterList.clear();
+        weldPatternDiameterList.add(EMPTY_DOUBLE_ITEM);
         for(PatternDiameter pd: patternDiameterService.getAll()){
             PatternDiameterUI patternDiameterUI = new PatternDiameterUI(pd);
             weldPatternDiameterList.add(patternDiameterUI.getDiameter());
@@ -555,7 +622,99 @@ public class ProtocolController extends GenericController {
 
     private void showSelectedWeldPattern(WeldPatternUI selectedWeldPattern){
 
+        initComboBoxDetailType(selectedWeldPattern);
+        initComboBoxDiameter(selectedWeldPattern);
+        initComboBoxThickness(selectedWeldPattern);
+        initComboBoxSteelType(selectedWeldPattern);
+        initComboBoxWeldMethod(selectedWeldPattern);
+        initComboBoxElectrode(selectedWeldPattern);
+        initComboBoxWeldWire(selectedWeldPattern);
+        initComboBoxWeldGas(selectedWeldPattern);
+        initChoiseBoxWeldPosition(selectedWeldPattern);
     }
+
+    private void initChoiseBoxWeldPosition(WeldPatternUI selectedWeldPattern){
+        weldPatternAllWeldPosition.clear();
+        for(WeldPosition wp: weldPositionService.getAll()){
+            weldPatternAllWeldPosition.add(wp.getCode());
+        }
+        choiceBoxWeldPatternWeldPosition.setItems(weldPatternAllWeldPosition);
+
+    }
+
+    private void initComboBoxWeldGas(WeldPatternUI selectedWeldPattern){
+        weldPatternWeldGasList.clear();
+
+        for(WeldGas wg: weldGasService.getAll()){
+            weldPatternWeldGasList.add(wg.getType());
+        }
+        cbWeldPatternWeldGas.setItems(weldPatternWeldGasList);
+        cbWeldPatternWeldGas.setDisable(true);
+    }
+
+    private void initComboBoxWeldWire(WeldPatternUI selectedWeldPattern){
+        weldPatternWeldWireList.clear();
+        for(WeldWire ww: weldWireService.getAll()){
+            weldPatternWeldWireList.add(ww.getType());
+        }
+        cbWeldPatternWeldWire.setItems(weldPatternWeldWireList);
+        cbWeldPatternWeldWire.setDisable(true);
+    }
+
+    private void initComboBoxElectrode(WeldPatternUI selectedWeldPattern){
+        weldPatternElectrodeList.clear();
+        for (Electrode e : electrodeService.getAll()){
+            weldPatternElectrodeList.add(e.getType());
+        }
+        cbWeldPatternElectrode.setItems(weldPatternElectrodeList);
+        cbWeldPatternElectrode.setDisable(true);
+    }
+
+    private void initComboBoxWeldMethod(WeldPatternUI selectedWeldPattern){
+        ObservableList<String> weldMethodList = FXCollections.observableArrayList();
+        for(WeldMethod wm : weldMethodService.getAll() ){
+            WeldMethodUI weldMethodUI = new WeldMethodUI(wm);
+            weldMethodList.add(weldMethodUI.getNameCode());
+        }
+        cbWeldPatternWeldMethod.setItems(weldMethodList);
+    }
+
+    private void initComboBoxSteelType(WeldPatternUI selectedWeldPattern){
+        weldPatternSteelTypeList.clear();
+        for (SteelType st: steelTypeService.getAll()){
+            SteelTypeUI steelTypeUI = new SteelTypeUI(st);
+            weldPatternSteelTypeList.add(steelTypeUI.getType());
+        }
+        cbWeldPatternSteelType.setItems(weldPatternSteelTypeList);
+    }
+
+    private void initComboBoxThickness(WeldPatternUI selectedWeldPattern){
+        weldPatternThicknessList.clear();
+        for (PatternThickness pt : patternThicknessService.getAll()){
+            PatternThicknessUI patternThicknessUI = new PatternThicknessUI(pt);
+            weldPatternThicknessList.addAll(patternThicknessUI.getThickness());
+        }
+        cbWeldPatternThickness.setItems(weldPatternThicknessList);
+    }
+
+    private void initComboBoxDiameter(WeldPatternUI selectedWeldPattern){
+        weldPatternDiameterList.clear();
+        for(PatternDiameter pd: patternDiameterService.getAll()){
+            PatternDiameterUI patternDiameterUI = new PatternDiameterUI(pd);
+            weldPatternDiameterList.add(patternDiameterUI.getDiameter());
+        }
+        cbWeldPatternDiameter.setItems(weldPatternDiameterList);
+    }
+
+    private void initComboBoxDetailType(WeldPatternUI selectedWeldPattern){
+        weldDetailList.clear();
+        for (WeldDetail wd : weldDetailService.getAll()){
+            WeldDetailUI weldDetailUI = new WeldDetailUI(wd);
+            weldDetailList.addAll(weldDetailUI.getDetailTypeCode());
+        }
+        cbWeldPatternDetail.setItems(weldDetailList);
+    }
+
 
     private  void initPersProtocolResolutionCert(PersonalProtocolUI selectedPersProtocol){
         ResolutionCertificationUI resolution = selectedPersProtocol.getResolutionCertification();
@@ -766,6 +925,28 @@ public class ProtocolController extends GenericController {
             }
         }
 
+    }
+
+    private class CheckBoxWeldPatternTestHandler implements EventHandler<MouseEvent>{
+        @Override
+        public void handle(MouseEvent event) {
+            if(event.getSource().getClass().equals(CheckBox.class)){
+                CheckBox checkBox = (CheckBox)event.getSource();
+                if(checkBox.equals(chkWeldPatternVT)){
+                    setDisabledVTPane(!checkBox.isSelected());
+                    return;
+                }
+                if(checkBox.equals(chkWeldPatternRT)){
+                    setDisabledRTPane(!checkBox.isSelected());
+                    return;
+                }
+                if(checkBox.equals(chkWeldPatternMech)){
+                    setDisabledMechPane(!checkBox.isSelected());
+                    return;
+                }
+
+            }
+        }
     }
 
     private class ListViewHandler implements EventHandler<Event> {

@@ -5,12 +5,16 @@ import com.lvg.weldercenter.ui.util.DateUtil;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Victor Levchenko LVG Corp. on 23.01.15.
  */
 public class RadiationTestUI extends GenericEntityUI {
+    private static final List<Double> SENSITIVITY_LIST = new ArrayList<Double>(Arrays.asList(0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0));
 
     private final SimpleStringProperty number = new SimpleStringProperty();
     private final SimpleStringProperty defects = new SimpleStringProperty();
@@ -114,6 +118,10 @@ public class RadiationTestUI extends GenericEntityUI {
 
     public void setEvaluation(EvaluationUI evaluation) {
         this.evaluation.set(evaluation);
+    }
+
+    public static List<Double> getSensitivityList(){
+        return SENSITIVITY_LIST;
     }
 
 

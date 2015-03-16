@@ -39,6 +39,7 @@ public class ServiceFactory {
     private static ElectrodeService electrodeService;
     private static WeldWireService weldWireService;
     private static WeldGasService weldGasService;
+    private static EvaluationService evaluationService;
 
     private ServiceFactory(){
 
@@ -286,6 +287,15 @@ public class ServiceFactory {
         }else {
             weldGasService = (WeldGasService)context.getBean("weldGasService");
             return weldGasService;
+        }
+    }
+
+    public static EvaluationService getEvaluationService(){
+        if(null!=evaluationService){
+            return evaluationService;
+        }else{
+            evaluationService = (EvaluationService)context.getBean("evaluationService");
+            return evaluationService;
         }
     }
 }
