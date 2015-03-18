@@ -505,6 +505,7 @@ public class ProtocolController extends GenericController {
 
     private void initComboBoxWeldGas(){
         weldPatternWeldGasList.clear();
+        weldPatternWeldGasList.add(EMPTY_STRING_ITEM);
         for(WeldGas wg: weldGasService.getAll()){
             weldPatternWeldGasList.add(wg.getType());
         }
@@ -622,15 +623,15 @@ public class ProtocolController extends GenericController {
 
     private void showSelectedWeldPattern(WeldPatternUI selectedWeldPattern){
 
-        initComboBoxDetailType(selectedWeldPattern);
-        initComboBoxDiameter(selectedWeldPattern);
-        initComboBoxThickness(selectedWeldPattern);
-        initComboBoxSteelType(selectedWeldPattern);
-        initComboBoxWeldMethod(selectedWeldPattern);
-        initComboBoxElectrode(selectedWeldPattern);
-        initComboBoxWeldWire(selectedWeldPattern);
-        initComboBoxWeldGas(selectedWeldPattern);
-        initChoiseBoxWeldPosition(selectedWeldPattern);
+//        initComboBoxDetailType(selectedWeldPattern);
+//        initComboBoxDiameter(selectedWeldPattern);
+//        initComboBoxThickness(selectedWeldPattern);
+//        initComboBoxSteelType(selectedWeldPattern);
+//        initComboBoxWeldMethod(selectedWeldPattern);
+//        initComboBoxElectrode(selectedWeldPattern);
+//        initComboBoxWeldWire(selectedWeldPattern);
+//        initComboBoxWeldGas(selectedWeldPattern);
+//        initChoiseBoxWeldPosition(selectedWeldPattern);
     }
 
     private void initChoiseBoxWeldPosition(WeldPatternUI selectedWeldPattern){
