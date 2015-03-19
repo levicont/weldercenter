@@ -623,9 +623,12 @@ public class ProtocolController extends GenericController {
 
     private void showSelectedWeldPattern(WeldPatternUI selectedWeldPattern){
 
-//        initComboBoxDetailType(selectedWeldPattern);
-//        initComboBoxDiameter(selectedWeldPattern);
-//        initComboBoxThickness(selectedWeldPattern);
+        initComboBoxDetailType(selectedWeldPattern);
+        initComboBoxDiameter(selectedWeldPattern);
+        initComboBoxThickness(selectedWeldPattern);
+        txfWeldPatternMark.setText(selectedWeldPattern.getMark());
+        chkWeldPatternHeating.setSelected(selectedWeldPattern.getIsHeating());
+        chkWeldPatternHeatTreatment.setSelected(selectedWeldPattern.getIsHeatTreatment());
 //        initComboBoxSteelType(selectedWeldPattern);
 //        initComboBoxWeldMethod(selectedWeldPattern);
 //        initComboBoxElectrode(selectedWeldPattern);
@@ -690,30 +693,40 @@ public class ProtocolController extends GenericController {
     }
 
     private void initComboBoxThickness(WeldPatternUI selectedWeldPattern){
-        weldPatternThicknessList.clear();
-        for (PatternThickness pt : patternThicknessService.getAll()){
-            PatternThicknessUI patternThicknessUI = new PatternThicknessUI(pt);
-            weldPatternThicknessList.addAll(patternThicknessUI.getThickness());
+        initComboBoxThickness();
+        Double thickness = selectedWeldPattern.getThickness();
+        if(thickness == null)
+            return;
+        for (Double t : cbWeldPatternThickness.getItems()){
+            if(t.equals(thickness)){
+                cbWeldPatternThickness.getSelectionModel().select(t);
+                break;
+            }
         }
-        cbWeldPatternThickness.setItems(weldPatternThicknessList);
     }
 
     private void initComboBoxDiameter(WeldPatternUI selectedWeldPattern){
-        weldPatternDiameterList.clear();
-        for(PatternDiameter pd: patternDiameterService.getAll()){
-            PatternDiameterUI patternDiameterUI = new PatternDiameterUI(pd);
-            weldPatternDiameterList.add(patternDiameterUI.getDiameter());
+        initComboBoxDiameter();
+        Double patternDiameter = selectedWeldPattern.getDiameter();
+        if(patternDiameter==null)
+            return;
+
+        for(Double d : cbWeldPatternDiameter.getItems()){
+            if(d.equals(patternDiameter)){
+                cbWeldPatternDiameter.getSelectionModel().select(d);
+                break;
+            }
         }
-        cbWeldPatternDiameter.setItems(weldPatternDiameterList);
     }
 
     private void initComboBoxDetailType(WeldPatternUI selectedWeldPattern){
-        weldDetailList.clear();
-        for (WeldDetail wd : weldDetailService.getAll()){
-            WeldDetailUI weldDetailUI = new WeldDetailUI(wd);
-            weldDetailList.addAll(weldDetailUI.getDetailTypeCode());
+        initComboBoxDetailType();
+        for(String types: cbWeldPatternDetail.getItems()){
+            if(types.contains(selectedWeldPattern.getTypeName())){
+                cbWeldPatternDetail.getSelectionModel().select(types);
+                break;
+            }
         }
-        cbWeldPatternDetail.setItems(weldDetailList);
     }
 
 
@@ -808,6 +821,7 @@ public class ProtocolController extends GenericController {
         return result;
     }
 
+
     @FXML
     private void activeComboBoxElectrode(){
         if(cbWeldPatternElectrode.isDisable()){
@@ -841,6 +855,21 @@ public class ProtocolController extends GenericController {
         tabWeldPattern.getTabPane().getSelectionModel().select(tabWeldPattern);
         accordionWeldPatternPane.setExpandedPane(titlePaneWeldPatternOption);
         showSelectedWeldPattern(new WeldPatternUI(selectedPersonalProtocolUI));
+    }
+
+    @FXML
+    private void editWeldPattern(){
+        if(selectedPersonalProtocolUI==null)
+            return;
+
+        WeldPatternUI selectedWelPattern = tableViewWeldPatterns.getSelectionModel().getSelectedItem();
+        if(selectedWelPattern==null)
+            return;
+
+        tabWeldPattern.setDisable(false);
+        tabWeldPattern.getTabPane().getSelectionModel().select(tabWeldPattern);
+        accordionWeldPatternPane.setExpandedPane(titlePaneWeldPatternOption);
+        showSelectedWeldPattern(selectedWelPattern);
     }
 
     @FXML

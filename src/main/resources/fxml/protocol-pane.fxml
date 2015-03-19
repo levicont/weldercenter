@@ -429,7 +429,7 @@
                                                                   <Font size="12.0" />
                                                                </font>
                                                             </Button>
-                                                            <Button fx:id="btEditWeldPattern" mnemonicParsing="false" text="Изменить">
+                                                            <Button fx:id="btEditWeldPattern" mnemonicParsing="false" onAction="#editWeldPattern" text="Изменить">
                                                                <VBox.margin>
                                                                   <Insets left="5.0" right="5.0" top="5.0" />
                                                                </VBox.margin>
