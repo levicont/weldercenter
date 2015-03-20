@@ -768,11 +768,15 @@
                                                                   <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                                                </GridPane.margin>
                                                             </TextField>
-                                                            <ChoiceBox fx:id="choiceBoxWeldPatternWeldPosition" prefWidth="60.0" GridPane.columnIndex="1" GridPane.rowIndex="7">
+                                                            <MenuButton fx:id="menuButtonWeldPosition" mnemonicParsing="false" text="Положение" GridPane.columnIndex="1" GridPane.rowIndex="7">
+                                                              <items>
+                                                                <MenuItem mnemonicParsing="false" text="Action 1" />
+                                                                <MenuItem mnemonicParsing="false" text="Action 2" />
+                                                              </items>
                                                                <GridPane.margin>
                                                                   <Insets bottom="8.0" left="128.0" right="8.0" top="8.0" />
                                                                </GridPane.margin>
-                                                            </ChoiceBox>
+                                                            </MenuButton>
                                                          </children>
                                                          <opaqueInsets>
                                                             <Insets />

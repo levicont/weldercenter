@@ -208,7 +208,7 @@ public class ProtocolController extends GenericController {
     @FXML
     TextField txfWeldPatternWeldPosition;
     @FXML
-    ChoiceBox<String> choiceBoxWeldPatternWeldPosition;
+    MenuButton menuButtonWeldPosition;
     @FXML
     ComboBox<String> cbWeldPatternWeldMethod;
     @FXML
@@ -284,7 +284,7 @@ public class ProtocolController extends GenericController {
     private ObservableList<String> weldPatternElectrodeList = FXCollections.observableArrayList();
     private ObservableList<String> weldPatternWeldWireList = FXCollections.observableArrayList();
     private ObservableList<String> weldPatternWeldGasList = FXCollections.observableArrayList();
-    private ObservableList<String> weldPatternAllWeldPosition = FXCollections.observableArrayList();
+    private ObservableList<CheckMenuItem> weldPatternAllWeldPosition = FXCollections.observableArrayList();
     private ObservableList<String> weldPatternSelectedWeldPosition = FXCollections.observableArrayList();
     private ObservableList<String> weldPatternEvaluationList = FXCollections.observableArrayList();
 
@@ -441,9 +441,27 @@ public class ProtocolController extends GenericController {
         initComboBoxElectrode();
         initComboBoxWeldWire();
         initComboBoxWeldGas();
-        initChoiseBoxWeldPosition();
+        initMenuButtonWeldPosition();
+        initTextFieldWeldPosition();
         initWeldPatternTestPane();
 
+    }
+
+    private void initTextFieldWeldPosition(){
+        txfWeldPatternWeldPosition.clear();
+        if(menuButtonWeldPosition.getItems().isEmpty())
+            return;
+        StringBuilder text = new StringBuilder();
+        for(MenuItem mi : menuButtonWeldPosition.getItems()){
+            CheckMenuItem chkItem = (CheckMenuItem)mi;
+            if(chkItem.isSelected()){
+                text.append(chkItem.getText());
+                if(menuButtonWeldPosition.getItems().iterator().hasNext()){
+                    text.append(" ");
+                }
+            }
+        }
+        txfWeldPatternWeldPosition.setText(text.toString());
     }
 
     private void initWeldPatternTestPane(){
@@ -494,14 +512,16 @@ public class ProtocolController extends GenericController {
             cbWeldPatternRTEvaluation.setDisable(isDisabled);
     }
 
-    private void initChoiseBoxWeldPosition(){
+    private void initMenuButtonWeldPosition(){
         weldPatternAllWeldPosition.clear();
         for(WeldPosition wp: weldPositionService.getAll()){
-            weldPatternAllWeldPosition.add(wp.getCode());
+            CheckMenuItem item = new CheckMenuItem(wp.getCode());
+            weldPatternAllWeldPosition.add(item);
         }
-        choiceBoxWeldPatternWeldPosition.setItems(weldPatternAllWeldPosition);
-
+        menuButtonWeldPosition.getItems().clear();
+        menuButtonWeldPosition.getItems().addAll(weldPatternAllWeldPosition);
     }
+
 
     private void initComboBoxWeldGas(){
         weldPatternWeldGasList.clear();
@@ -629,67 +649,100 @@ public class ProtocolController extends GenericController {
         txfWeldPatternMark.setText(selectedWeldPattern.getMark());
         chkWeldPatternHeating.setSelected(selectedWeldPattern.getIsHeating());
         chkWeldPatternHeatTreatment.setSelected(selectedWeldPattern.getIsHeatTreatment());
-//        initComboBoxSteelType(selectedWeldPattern);
-//        initComboBoxWeldMethod(selectedWeldPattern);
-//        initComboBoxElectrode(selectedWeldPattern);
-//        initComboBoxWeldWire(selectedWeldPattern);
-//        initComboBoxWeldGas(selectedWeldPattern);
-//        initChoiseBoxWeldPosition(selectedWeldPattern);
+        initComboBoxSteelType(selectedWeldPattern);
+        initComboBoxWeldMethod(selectedWeldPattern);
+        initComboBoxElectrode(selectedWeldPattern);
+        initComboBoxWeldWire(selectedWeldPattern);
+        initComboBoxWeldGas(selectedWeldPattern);
+        initMenuButtonWeldPosition(selectedWeldPattern);
+        initTextFieldWeldPosition(selectedWeldPattern);
     }
 
-    private void initChoiseBoxWeldPosition(WeldPatternUI selectedWeldPattern){
-        weldPatternAllWeldPosition.clear();
-        for(WeldPosition wp: weldPositionService.getAll()){
-            weldPatternAllWeldPosition.add(wp.getCode());
-        }
-        choiceBoxWeldPatternWeldPosition.setItems(weldPatternAllWeldPosition);
+    private void initTextFieldWeldPosition(WeldPatternUI selectedWeldPattern){
+        initTextFieldWeldPosition();
+    }
 
+    private void initMenuButtonWeldPosition(WeldPatternUI selectedWeldPattern){
+        initMenuButtonWeldPosition();
+        ObservableList<WeldPositionUI> weldPositions = selectedWeldPattern.getWeldPositions();
+        for (MenuItem mi : menuButtonWeldPosition.getItems()){
+            CheckMenuItem chkItem = (CheckMenuItem)mi;
+            for (WeldPositionUI wp : weldPositions){
+                if(mi.getText().equals(wp.getCode())){
+                    chkItem.setSelected(true);
+                }
+            }
+        }
     }
 
     private void initComboBoxWeldGas(WeldPatternUI selectedWeldPattern){
-        weldPatternWeldGasList.clear();
-
-        for(WeldGas wg: weldGasService.getAll()){
-            weldPatternWeldGasList.add(wg.getType());
+       initComboBoxWeldGas();
+        if (null == selectedWeldPattern.getWeldGas())
+            return;
+        String weldGas = selectedWeldPattern.getWeldGas().getType();
+        for (String wg : cbWeldPatternWeldGas.getItems()){
+            if(wg.equals(weldGas)){
+                chkWeldPatternWeldGas.setSelected(true);
+                cbWeldPatternWeldGas.setDisable(false);
+                cbWeldPatternWeldGas.getSelectionModel().select(wg);
+            }
         }
-        cbWeldPatternWeldGas.setItems(weldPatternWeldGasList);
-        cbWeldPatternWeldGas.setDisable(true);
     }
 
     private void initComboBoxWeldWire(WeldPatternUI selectedWeldPattern){
-        weldPatternWeldWireList.clear();
-        for(WeldWire ww: weldWireService.getAll()){
-            weldPatternWeldWireList.add(ww.getType());
+        initComboBoxWeldWire();
+        if (null == selectedWeldPattern.getWeldWire())
+            return;
+        String weldWire = selectedWeldPattern.getWeldWire().getType();
+        for(String ww : cbWeldPatternWeldWire.getItems()){
+            if(ww.equals(weldWire)){
+                chkWeldPatternWeldWire.setSelected(true);
+                cbWeldPatternWeldWire.setDisable(false);
+                cbWeldPatternWeldWire.getSelectionModel().select(ww);
+                break;
+            }
         }
-        cbWeldPatternWeldWire.setItems(weldPatternWeldWireList);
-        cbWeldPatternWeldWire.setDisable(true);
     }
 
     private void initComboBoxElectrode(WeldPatternUI selectedWeldPattern){
-        weldPatternElectrodeList.clear();
-        for (Electrode e : electrodeService.getAll()){
-            weldPatternElectrodeList.add(e.getType());
+        initComboBoxElectrode();
+        if (null == selectedWeldPattern.getElectrode())
+            return;
+        String electrode = selectedWeldPattern.getElectrode().getType();
+        for (String e : cbWeldPatternElectrode.getItems()){
+            if (e.equals(electrode)){
+                chkWeldPatternElectrode.setSelected(true);
+                cbWeldPatternElectrode.setDisable(false);
+                cbWeldPatternElectrode.getSelectionModel().select(e);
+                break;
+            }
         }
-        cbWeldPatternElectrode.setItems(weldPatternElectrodeList);
-        cbWeldPatternElectrode.setDisable(true);
     }
 
     private void initComboBoxWeldMethod(WeldPatternUI selectedWeldPattern){
-        ObservableList<String> weldMethodList = FXCollections.observableArrayList();
-        for(WeldMethod wm : weldMethodService.getAll() ){
-            WeldMethodUI weldMethodUI = new WeldMethodUI(wm);
-            weldMethodList.add(weldMethodUI.getNameCode());
+        initComboBoxWeldMethod();
+        if(null == selectedWeldPattern.getWeldMethod())
+            return;
+        String weldMethodCode = selectedWeldPattern.getWeldMethod().getCode();
+        for(String wm : cbWeldPatternWeldMethod.getItems()){
+            if(wm.contains(weldMethodCode)){
+                cbWeldPatternWeldMethod.getSelectionModel().select(wm);
+                break;
+            }
         }
-        cbWeldPatternWeldMethod.setItems(weldMethodList);
     }
 
     private void initComboBoxSteelType(WeldPatternUI selectedWeldPattern){
-        weldPatternSteelTypeList.clear();
-        for (SteelType st: steelTypeService.getAll()){
-            SteelTypeUI steelTypeUI = new SteelTypeUI(st);
-            weldPatternSteelTypeList.add(steelTypeUI.getType());
+        initComboBoxSteelType();
+        if (null == selectedWeldPattern.getSteelType())
+            return;
+        String steelType = selectedWeldPattern.getSteelType().getType();
+        for(String st : cbWeldPatternSteelType.getItems()){
+            if(st.equals(steelType)){
+                cbWeldPatternSteelType.getSelectionModel().select(st);
+                break;
+            }
         }
-        cbWeldPatternSteelType.setItems(weldPatternSteelTypeList);
     }
 
     private void initComboBoxThickness(WeldPatternUI selectedWeldPattern){

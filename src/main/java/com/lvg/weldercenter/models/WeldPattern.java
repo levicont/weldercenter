@@ -1,7 +1,12 @@
 package com.lvg.weldercenter.models;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Victor Levchenko LVG Corp. on 20.10.14.
@@ -25,11 +30,12 @@ public class WeldPattern implements Serializable{
     private WeldGas weldGas;
     private WeldDetail weldDetail;
     private SteelType steelType;
-    private WeldPosition weldPosition;
 
     private RadiationTest radiationTest;
     private VisualTest visualTest;
     private MechanicalTest mechanicalTest;
+
+    private List<WeldPosition> weldPositions = new ArrayList<WeldPosition>();
 
 
 
@@ -158,16 +164,6 @@ public class WeldPattern implements Serializable{
         this.steelType = steelType;
     }
 
-    @ManyToOne(targetEntity = WeldPosition.class)
-    @JoinColumn(name = "id_weld_position")
-    public WeldPosition getWeldPosition() {
-        return weldPosition;
-    }
-
-    public void setWeldPosition(WeldPosition weldPosition) {
-        this.weldPosition = weldPosition;
-    }
-
     @OneToOne
     @JoinColumn(name = "id_radiation_test")
     public RadiationTest getRadiationTest() {
@@ -196,6 +192,19 @@ public class WeldPattern implements Serializable{
 
     public void setMechanicalTest(MechanicalTest mechanicalTest) {
         this.mechanicalTest = mechanicalTest;
+    }
+
+    @ManyToMany
+    @LazyCollection(value = LazyCollectionOption.FALSE)
+    @JoinTable(name = "weld_pattern_weld_position",
+            joinColumns = {@JoinColumn(name = "id_weld_pattern")},
+            inverseJoinColumns = {@JoinColumn(name = "id_weld_position")})
+    public List<WeldPosition> getWeldPositions() {
+        return weldPositions;
+    }
+
+    public void setWeldPositions(List<WeldPosition> weldPositions) {
+        this.weldPositions = weldPositions;
     }
 
     @Override

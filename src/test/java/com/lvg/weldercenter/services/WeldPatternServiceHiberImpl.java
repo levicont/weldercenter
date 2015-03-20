@@ -112,7 +112,6 @@ public class WeldPatternServiceHiberImpl extends GenericServiceHibernateTest {
         record.setMark("12");
         record.setElectrode(elServ.get(1l));
         record.setWeldMethod(weldMethodServ.get(1l));
-        record.setWeldPosition(weldPositionServ.get(1L));
         record.setWeldDetail(weldDetailServ.get(1L));
         record.setSteelType(steelTypeServ.get(1L));
         record.setWeldGas(weldGasService.get(1L));

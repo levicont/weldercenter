@@ -157,7 +157,7 @@ public class TestWeldPattern {
         weldPattern.setWeldWire(wire1);
         weldPattern.setWeldGas(gas1);
         weldPattern.setWeldDetail(wdPlane);
-        weldPattern.setWeldPosition(wp1);
+
 
         //welder test
 

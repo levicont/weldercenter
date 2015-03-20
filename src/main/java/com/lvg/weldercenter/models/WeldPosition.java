@@ -1,5 +1,8 @@
 package com.lvg.weldercenter.models;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -48,7 +51,11 @@ public class WeldPosition implements Serializable{
         this.type = type;
     }
 
-    @OneToMany(targetEntity = WeldPattern.class, mappedBy = "weldPosition")
+    @ManyToMany
+    @LazyCollection(value = LazyCollectionOption.FALSE)
+    @JoinTable(name = "weld_pattern_weld_position",
+            joinColumns = {@JoinColumn(name = "id_weld_position")},
+            inverseJoinColumns = {@JoinColumn(name = "id_weld_pattern")})
     public List<WeldPattern> getWeldPatterns() {
         return weldPatterns;
     }

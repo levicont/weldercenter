@@ -1,10 +1,12 @@
 package com.lvg.weldercenter.ui.entities;
 
 import com.lvg.weldercenter.models.*;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.*;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -31,11 +33,13 @@ public class WeldPatternUI extends GenericEntityUI {
     private final SimpleObjectProperty<WeldGasUI> weldGas = new SimpleObjectProperty<WeldGasUI>();
     private final SimpleObjectProperty<WeldDetailUI> weldDetail = new SimpleObjectProperty<WeldDetailUI>();
     private final SimpleObjectProperty<SteelTypeUI> steelType = new SimpleObjectProperty<SteelTypeUI>();
-    private final SimpleObjectProperty<WeldPositionUI> weldPosition = new SimpleObjectProperty<WeldPositionUI>();
 
     private final SimpleObjectProperty<RadiationTestUI> radiationTest = new SimpleObjectProperty<RadiationTestUI>();
     private final SimpleObjectProperty<VisualTestUI> visualTest = new SimpleObjectProperty<VisualTestUI>();
     private final SimpleObjectProperty<MechanicalTestUI> mechanicalTest = new SimpleObjectProperty<MechanicalTestUI>();
+
+    private final SimpleListProperty<WeldPositionUI> weldPositions = new SimpleListProperty<WeldPositionUI>(
+            FXCollections.observableArrayList(new ArrayList<WeldPositionUI>()));
 
     public WeldPatternUI(){
         this.id.set(0);
@@ -57,7 +61,7 @@ public class WeldPatternUI extends GenericEntityUI {
         this.typeName.set(this.weldDetail.get().getType());
 
         this.steelType.set(new SteelTypeUI());
-        this.weldPosition.set(new WeldPositionUI());
+
 
         this.radiationTest.set(new RadiationTestUI());
         this.visualTest.set(new VisualTestUI());
@@ -84,11 +88,12 @@ public class WeldPatternUI extends GenericEntityUI {
         this.typeName.set(this.weldDetail.get().getType());
         this.steelType.set(new SteelTypeUI(weldPattern.getSteelType()));
 
-        this.weldPosition.set(new WeldPositionUI(weldPattern.getWeldPosition()));
+
 
         this.radiationTest.set(new RadiationTestUI(weldPattern.getRadiationTest()));
         this.visualTest.set(new VisualTestUI(weldPattern.getVisualTest()));
         this.mechanicalTest.set(new MechanicalTestUI(weldPattern.getMechanicalTest()));
+        this.weldPositions.set(FXCollections.observableArrayList(getWeldPositionsUIFromWeldPosition(weldPattern.getWeldPositions())));
     }
 
     public WeldPatternUI(PersonalProtocolUI personalProtocolUI){
@@ -109,7 +114,6 @@ public class WeldPatternUI extends GenericEntityUI {
         this.weldDetail.set(new WeldDetailUI());
         this.typeName.set(this.weldDetail.get().getType());
         this.steelType.set(new SteelTypeUI());
-        this.weldPosition.set(new WeldPositionUI());
 
         this.radiationTest.set(new RadiationTestUI());
         this.visualTest.set(new VisualTestUI());
@@ -120,6 +124,14 @@ public class WeldPatternUI extends GenericEntityUI {
 
     private String getSizeFromThicknesAndDiameter(double diameter, double thickness){
         return DIAMETER_MARK+diameter+MEASURE_MARK+"\n"+THICKNESS_MARK+thickness+MEASURE_MARK;
+    }
+
+    private List<WeldPositionUI> getWeldPositionsUIFromWeldPosition(List<WeldPosition> weldPositionList){
+        List<WeldPositionUI> result = new ArrayList<WeldPositionUI>();
+        for(WeldPosition wp : weldPositionList){
+            result.add(new WeldPositionUI(wp));
+        }
+        return result;
     }
 
 
@@ -267,18 +279,6 @@ public class WeldPatternUI extends GenericEntityUI {
         this.steelType.set(steelType);
     }
 
-    public WeldPositionUI getWeldPosition() {
-        return weldPosition.get();
-    }
-
-    public SimpleObjectProperty<WeldPositionUI> weldPositionProperty() {
-        return weldPosition;
-    }
-
-    public void setWeldPosition(WeldPositionUI weldPosition) {
-        this.weldPosition.set(weldPosition);
-    }
-
     public RadiationTestUI getRadiationTest() {
         return radiationTest.get();
     }
@@ -349,5 +349,17 @@ public class WeldPatternUI extends GenericEntityUI {
 
     public void setWeldMethodName(String weldMethodName) {
         this.weldMethodName.set(weldMethodName);
+    }
+
+    public ObservableList<WeldPositionUI> getWeldPositions() {
+        return weldPositions.get();
+    }
+
+    public SimpleListProperty<WeldPositionUI> weldPositionsProperty() {
+        return weldPositions;
+    }
+
+    public void setWeldPositions(ObservableList<WeldPositionUI> weldPositions) {
+        this.weldPositions.set(weldPositions);
     }
 }

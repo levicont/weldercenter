@@ -167,7 +167,7 @@ public class TestPersonalProtocol {
         weldPattern.setWeldWire(wire1);
         weldPattern.setWeldGas(gas1);
         weldPattern.setWeldDetail(wdPlane);
-        weldPattern.setWeldPosition(wp1);
+
 
 
         mechT.setWeldPattern(weldPattern);
