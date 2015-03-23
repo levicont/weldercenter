@@ -35,7 +35,7 @@ public class VisualTestUI extends GenericEntityUI {
         this.number.set(visualTest.getNumber());
         this.date.set(visualTest.getProtDate());
         this.dateFormat.set(DateUtil.format(this.date.get()));
-        this.evaluation.set(new EvaluationUI());
+        this.evaluation.set(new EvaluationUI(visualTest.getEvaluation()));
 
     }
 

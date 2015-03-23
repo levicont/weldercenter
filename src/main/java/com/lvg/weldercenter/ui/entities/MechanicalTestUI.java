@@ -37,7 +37,7 @@ public class MechanicalTestUI extends GenericEntityUI {
         this.angle.set(mechanicalTest.getAngle());
         this.date.set(mechanicalTest.getProtDate());
         this.dateFormat.set(DateUtil.format(this.date.get()));
-        this.evaluation.set(new EvaluationUI());
+        this.evaluation.set(new EvaluationUI(mechanicalTest.getEvaluation()));
 
     }
 

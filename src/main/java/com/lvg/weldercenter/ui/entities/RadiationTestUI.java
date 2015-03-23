@@ -42,7 +42,7 @@ public class RadiationTestUI extends GenericEntityUI {
         this.sensitivity.set(radiationTest.getSensitivity());
         this.date.set(radiationTest.getProtDate());
         this.dateFormat.set(DateUtil.format(this.date.get()));
-        this.evaluation.set(new EvaluationUI());
+        this.evaluation.set(new EvaluationUI(radiationTest.getEvaluation()));
 
     }
 

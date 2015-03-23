@@ -26,6 +26,7 @@ import org.apache.log4j.Logger;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -316,7 +317,7 @@ public class ProtocolController extends GenericController {
     }
 
     private void initTheoryTestRatingsList(){
-        theoryTestRatingsList.addAll(TheoryTestUI.POSITIVE_RATING_VALUE,TheoryTestUI.NEGATIVE_RATING_VALUE);
+        theoryTestRatingsList.addAll(TheoryTestUI.POSITIVE_RATING_VALUE, TheoryTestUI.NEGATIVE_RATING_VALUE);
     }
 
     private void initProtocolsTreeView(){
@@ -474,14 +475,23 @@ public class ProtocolController extends GenericController {
         chkWeldPatternVT.addEventHandler(MouseEvent.MOUSE_CLICKED, new CheckBoxWeldPatternTestHandler());
         chkWeldPatternRT.addEventHandler(MouseEvent.MOUSE_CLICKED, new CheckBoxWeldPatternTestHandler());
         chkWeldPatternMech.addEventHandler(MouseEvent.MOUSE_CLICKED, new CheckBoxWeldPatternTestHandler());
+        chkWeldPatternVT.setSelected(false);
+        chkWeldPatternRT.setSelected(false);
+        chkWeldPatternMech.setSelected(false);
         setDisabledRTPane(true);
         setDisabledVTPane(true);
         setDisabledMechPane(true);
         initWeldPatternEvaluationList();
         cbWeldPatternRTEvaluation.setItems(weldPatternEvaluationList);
+
         cbWeldPatternMechEvaluation.setItems(weldPatternEvaluationList);
+
         cbWeldPatternVTEvaluation.setItems(weldPatternEvaluationList);
+
         initComboBoxRTSensitivity();
+        clearVTPane();
+        clearRTPane();
+        clearMechPane();
     }
 
     private void initComboBoxRTSensitivity(){
@@ -518,12 +528,34 @@ public class ProtocolController extends GenericController {
             cbWeldPatternRTEvaluation.setDisable(isDisabled);
     }
 
+    private void clearMechPane(){
+        txfWeldPatternMechNumber.clear();
+        dpWeldPatternMechDate.setValue(DateUtil.getLocalDate(new Date()));
+        txfWeldPatternMechAngle.clear();
+        cbWeldPatternMechEvaluation.getSelectionModel().clearSelection();
+    }
+
+    private void clearVTPane(){
+        txfWeldPatternVTNumber.clear();
+        dpWeldPatternVTDate.setValue(DateUtil.getLocalDate(new Date()));
+        textAreaWeldPatternVTDefects.clear();
+        cbWeldPatternVTEvaluation.getSelectionModel().clearSelection();
+    }
+
+    private void clearRTPane(){
+        txfWeldPatternRTNumber.clear();
+        dpWeldPatternRTDate.setValue(DateUtil.getLocalDate(new Date()));
+        cbWeldPatternRTSensitivity.getSelectionModel().clearSelection();
+        textAreaWeldPatternRTDefects.clear();
+        cbWeldPatternRTEvaluation.getSelectionModel().clearSelection();
+    }
+
     private void initMenuButtonWeldPosition(){
         weldPatternAllWeldPosition.clear();
         for(WeldPosition wp: weldPositionService.getAll()){
             CheckMenuItem item = new CheckMenuItem(wp.getCode());
             weldPatternAllWeldPosition.add(item);
-            item.addEventHandler(ActionEvent.ACTION,new CheckMenuItemHandler());
+            item.addEventHandler(ActionEvent.ACTION, new CheckMenuItemHandler());
         }
         menuButtonWeldPosition.getItems().clear();
         menuButtonWeldPosition.getItems().addAll(weldPatternAllWeldPosition);
@@ -667,6 +699,77 @@ public class ProtocolController extends GenericController {
         initComboBoxWeldGas(selectedWeldPattern);
         initMenuButtonWeldPosition(selectedWeldPattern);
         initTextFieldWeldPosition(selectedWeldPattern);
+        initTitlePaneWeldPatternTest(selectedWeldPattern);
+    }
+
+    private void initTitlePaneWeldPatternTest(WeldPatternUI selectedWeldPattern){
+        initWeldPatternTestPane();
+        if(selectedWeldPattern.getRadiationTest()!=null){
+            if (selectedWeldPattern.getRadiationTest().getId()>0) {
+                fillRadiationTestPane(selectedWeldPattern.getRadiationTest());
+                chkWeldPatternRT.setSelected(true);
+                setDisabledRTPane(false);
+            }
+        }
+        if(selectedWeldPattern.getVisualTest()!=null){
+            if(selectedWeldPattern.getVisualTest().getId()>0) {
+                fillVisualTestPane(selectedWeldPattern.getVisualTest());
+                chkWeldPatternVT.setSelected(true);
+                setDisabledVTPane(false);
+            }
+        }
+        if(selectedWeldPattern.getMechanicalTest()!=null){
+            if(selectedWeldPattern.getMechanicalTest().getId()>0) {
+                fillMechanicalTestPane(selectedWeldPattern.getMechanicalTest());
+                chkWeldPatternMech.setSelected(true);
+                setDisabledMechPane(false);
+            }
+        }
+    }
+
+    private void fillMechanicalTestPane(MechanicalTestUI mechanicalTestUI){
+        txfWeldPatternMechNumber.setText(mechanicalTestUI.getNumber());
+        dpWeldPatternMechDate.setValue(DateUtil.getLocalDate(mechanicalTestUI.getDate()));
+        txfWeldPatternMechAngle.setText(mechanicalTestUI.getAngle()+"");
+        String evaluation = mechanicalTestUI.getEvaluation().getType();
+        for (String e : cbWeldPatternMechEvaluation.getItems()){
+            if(e.equals(evaluation)){
+                cbWeldPatternMechEvaluation.getSelectionModel().select(e);
+                break;
+            }
+        }
+    }
+
+    private void fillVisualTestPane(VisualTestUI visualTestUI){
+        txfWeldPatternVTNumber.setText(visualTestUI.getNumber());
+        dpWeldPatternVTDate.setValue(DateUtil.getLocalDate(visualTestUI.getDate()));
+        textAreaWeldPatternVTDefects.setText(visualTestUI.getDefects());
+        String evaluation = visualTestUI.getEvaluation().getType();
+        for (String e : cbWeldPatternVTEvaluation.getItems()){
+            if(e.equals(evaluation)){
+                cbWeldPatternVTEvaluation.getSelectionModel().select(e);
+                break;
+            }
+        }
+    }
+
+    private void fillRadiationTestPane(RadiationTestUI radiationTestUI){
+        txfWeldPatternRTNumber.setText(radiationTestUI.getNumber());
+        dpWeldPatternRTDate.setValue(DateUtil.getLocalDate(radiationTestUI.getDate()));
+        for(Double sensitivity : cbWeldPatternRTSensitivity.getItems() ){
+            if(radiationTestUI.getSensitivity().equals(sensitivity.toString())){
+                cbWeldPatternRTSensitivity.getSelectionModel().select(sensitivity);
+                break;
+            }
+        }
+        textAreaWeldPatternRTDefects.setText(radiationTestUI.getDefects());
+        String evaluation = radiationTestUI.getEvaluation().getType();
+        for (String e : cbWeldPatternRTEvaluation.getItems()){
+            if(e.equals(evaluation)){
+                cbWeldPatternRTEvaluation.getSelectionModel().select(e);
+                break;
+            }
+        }
     }
 
     private void initTextFieldWeldPosition(WeldPatternUI selectedWeldPattern){
@@ -839,6 +942,16 @@ public class ProtocolController extends GenericController {
 
     private void initPersProtocolWeldPatterns(PersonalProtocolUI selectedPersProtocol ){
         weldPatternsUIinPersProtocol.clear();
+        //If current pers protocol exist in DB than load weld patterns from db
+//        PersonalProtocol pp = personalProtocolService.get(selectedPersProtocol.getId());
+//        if(pp!=null){
+//            List<WeldPattern> weldPatterns = pp.getWeldPatterns();
+//            for (WeldPattern wp : weldPatterns){
+//                weldPatternsUIinPersProtocol.add(new WeldPatternUI(wp));
+//            }
+//        }else {
+//            weldPatternsUIinPersProtocol.addAll(selectedPersProtocol.getWeldPatterns());
+//        }
         weldPatternsUIinPersProtocol.addAll(selectedPersProtocol.getWeldPatterns());
         LOGGER.debug("INIT PERS PROTOCOL WELD PATTERNS: weldPatternUIs list: "+weldPatternsUIinPersProtocol);
         tcolWeldPatternID.setCellValueFactory(new PropertyValueFactory<WeldPatternUI, Long>("id"));
