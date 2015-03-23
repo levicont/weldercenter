@@ -12,6 +12,7 @@ import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -278,6 +279,7 @@ public class ProtocolController extends GenericController {
     private ObservableList<String> allNTDdocs = FXCollections.observableArrayList();
     private ObservableList<String> currentNTDdocs = FXCollections.observableArrayList();
     private ObservableList<String> weldDetailList = FXCollections.observableArrayList();
+    private ObservableList<String> weldPatternWeldMethodList = FXCollections.observableArrayList();
     private ObservableList<Double> weldPatternDiameterList = FXCollections.observableArrayList();
     private ObservableList<Double> weldPatternThicknessList = FXCollections.observableArrayList();
     private ObservableList<String> weldPatternSteelTypeList = FXCollections.observableArrayList();
@@ -448,6 +450,10 @@ public class ProtocolController extends GenericController {
     }
 
     private void initTextFieldWeldPosition(){
+        fillTextFieldWeldPosition();
+    }
+
+    private void fillTextFieldWeldPosition(){
         txfWeldPatternWeldPosition.clear();
         if(menuButtonWeldPosition.getItems().isEmpty())
             return;
@@ -517,6 +523,7 @@ public class ProtocolController extends GenericController {
         for(WeldPosition wp: weldPositionService.getAll()){
             CheckMenuItem item = new CheckMenuItem(wp.getCode());
             weldPatternAllWeldPosition.add(item);
+            item.addEventHandler(ActionEvent.ACTION,new CheckMenuItemHandler());
         }
         menuButtonWeldPosition.getItems().clear();
         menuButtonWeldPosition.getItems().addAll(weldPatternAllWeldPosition);
@@ -530,6 +537,7 @@ public class ProtocolController extends GenericController {
             weldPatternWeldGasList.add(wg.getType());
         }
         cbWeldPatternWeldGas.setItems(weldPatternWeldGasList);
+        chkWeldPatternWeldGas.setSelected(false);
         cbWeldPatternWeldGas.setDisable(true);
     }
 
@@ -539,6 +547,7 @@ public class ProtocolController extends GenericController {
             weldPatternWeldWireList.add(ww.getType());
         }
         cbWeldPatternWeldWire.setItems(weldPatternWeldWireList);
+        chkWeldPatternWeldWire.setSelected(false);
         cbWeldPatternWeldWire.setDisable(true);
     }
 
@@ -548,16 +557,17 @@ public class ProtocolController extends GenericController {
             weldPatternElectrodeList.add(e.getType());
         }
         cbWeldPatternElectrode.setItems(weldPatternElectrodeList);
+        chkWeldPatternElectrode.setSelected(false);
         cbWeldPatternElectrode.setDisable(true);
     }
 
     private void initComboBoxWeldMethod(){
-        ObservableList<String> weldMethodList = FXCollections.observableArrayList();
+        weldPatternWeldMethodList.clear();
         for(WeldMethod wm : weldMethodService.getAll() ){
             WeldMethodUI weldMethodUI = new WeldMethodUI(wm);
-            weldMethodList.add(weldMethodUI.getNameCode());
+            weldPatternWeldMethodList.add(weldMethodUI.getNameCode());
         }
-        cbWeldPatternWeldMethod.setItems(weldMethodList);
+        cbWeldPatternWeldMethod.setItems(weldPatternWeldMethodList);
     }
 
     private void initComboBoxSteelType(){
@@ -633,6 +643,7 @@ public class ProtocolController extends GenericController {
         dpPersonalProtocolDate.setValue(DateUtil.getLocalDate(selectedPersProtocol.getDatePeriodicalCert()));
         lbWelderFullName.setText(selectedPersProtocol.toString());
         tabPersonalProtocol.getTabPane().getSelectionModel().select(tabPersonalProtocol);
+        titlePanePersProtocolWeldPattern.setExpanded(true);
         initPersProtocolWeldPatterns(selectedPersProtocol);
         initTitlePanePersProtocolTheoryTest(selectedPersProtocol);
         initPersProtocolNTDdocs(selectedPersProtocol);
@@ -723,9 +734,9 @@ public class ProtocolController extends GenericController {
         initComboBoxWeldMethod();
         if(null == selectedWeldPattern.getWeldMethod())
             return;
-        String weldMethodCode = selectedWeldPattern.getWeldMethod().getCode();
+        String weldMethodNameCode = selectedWeldPattern.getWeldMethod().getNameCode();
         for(String wm : cbWeldPatternWeldMethod.getItems()){
-            if(wm.contains(weldMethodCode)){
+            if(wm.equals(weldMethodNameCode)){
                 cbWeldPatternWeldMethod.getSelectionModel().select(wm);
                 break;
             }
@@ -774,8 +785,11 @@ public class ProtocolController extends GenericController {
 
     private void initComboBoxDetailType(WeldPatternUI selectedWeldPattern){
         initComboBoxDetailType();
+        if(null == selectedWeldPattern.getWeldDetail())
+            return;
+        String detailTypeCode = selectedWeldPattern.getWeldDetail().getDetailTypeCode();
         for(String types: cbWeldPatternDetail.getItems()){
-            if(types.contains(selectedWeldPattern.getTypeName())){
+            if(types.equals(detailTypeCode)){
                 cbWeldPatternDetail.getSelectionModel().select(types);
                 break;
             }
@@ -1008,6 +1022,13 @@ public class ProtocolController extends GenericController {
             }
         }
 
+    }
+
+    private class CheckMenuItemHandler implements EventHandler<ActionEvent>{
+        @Override
+        public void handle(ActionEvent event) {
+            fillTextFieldWeldPosition();
+        }
     }
 
     private class CheckBoxWeldPatternTestHandler implements EventHandler<MouseEvent>{
