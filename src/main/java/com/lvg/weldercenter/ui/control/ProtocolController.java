@@ -1001,6 +1001,42 @@ public class ProtocolController extends GenericController {
         return result;
     }
 
+    private boolean isSelectedWeldPatternChanged(WeldPatternUI selectedWeldPattern){
+        if(!cbWeldPatternDetail.getValue().equals(selectedWeldPattern.getWeldDetail().getDetailTypeCode()))
+            return true;
+        if (!cbWeldPatternDiameter.getValue().equals(selectedWeldPattern.getDiameter()))
+            return true;
+        if(!cbWeldPatternThickness.getValue().equals(selectedWeldPattern.getThickness()))
+            return true;
+        if (!txfWeldPatternMark.getText().trim().equals(selectedWeldPattern.getMark()))
+            return true;
+        if (chkWeldPatternHeating.isSelected()!=selectedWeldPattern.getIsHeating())
+            return true;
+        if (chkWeldPatternHeatTreatment.isSelected()!=selectedWeldPattern.getIsHeatTreatment())
+            return true;
+        if (!cbWeldPatternSteelType.getValue().equals(selectedWeldPattern.getSteelType().getType()))
+            return true;
+        ObservableList<String> checkedWeldPositions = FXCollections.observableArrayList();
+        for(MenuItem mi : menuButtonWeldPosition.getItems()){
+            CheckMenuItem chkItem = (CheckMenuItem)mi;
+            if(chkItem.isSelected()){
+                checkedWeldPositions.add(chkItem.getText());
+            }
+        }
+        if (checkedWeldPositions.size()==selectedWeldPattern.getWeldPositions().size()){
+            for (WeldPositionUI wp : selectedWeldPattern.getWeldPositions()){
+                if(!checkedWeldPositions.contains(wp.getCode()))
+                    return true;
+            }
+        }else{
+            return true;
+        }
+        //TODO continue method
+
+
+        return false;
+    }
+
 
     @FXML
     private void activeComboBoxElectrode(){
@@ -1050,6 +1086,20 @@ public class ProtocolController extends GenericController {
         tabWeldPattern.getTabPane().getSelectionModel().select(tabWeldPattern);
         accordionWeldPatternPane.setExpandedPane(titlePaneWeldPatternOption);
         showSelectedWeldPattern(selectedWelPattern);
+    }
+    @FXML
+    private void discardSaveWeldPattern(){
+        tabWeldPattern.setDisable(true);
+        tabWeldPattern.getTabPane().getSelectionModel().select(tabPersonalProtocol);
+        titlePanePersProtocolWeldPattern.requestFocus();
+    }
+
+    @FXML
+    private void weldPatternTabSelectionChanged(){
+        if (!tabWeldPattern.isSelected()){
+            tabWeldPattern.setDisable(true);
+        }
+
     }
 
     @FXML
