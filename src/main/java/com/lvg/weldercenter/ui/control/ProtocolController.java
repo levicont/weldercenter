@@ -1031,9 +1031,117 @@ public class ProtocolController extends GenericController {
         }else{
             return true;
         }
-        //TODO continue method
+        if (!cbWeldPatternWeldMethod.getValue().equals(selectedWeldPattern.getWeldMethod().getNameCode()))
+            return true;
+        if (chkWeldPatternElectrode.isSelected()){
+            if(selectedWeldPattern.getElectrode().getId()==0)
+                return true;
+            if(cbWeldPatternElectrode.getValue().equals(selectedWeldPattern.getElectrode().getType()))
+                return true;
+        }else {
+            if (selectedWeldPattern.getElectrode().getId()>0)
+                return true;
+        }
 
+        if (chkWeldPatternWeldWire.isSelected()){
+            if(selectedWeldPattern.getWeldWire().getId()==0)
+                return true;
+            if(cbWeldPatternWeldWire.getValue().equals(selectedWeldPattern.getWeldWire().getType()))
+                return true;
+        }else {
+            if (selectedWeldPattern.getWeldWire().getId()>0)
+                return true;
+        }
 
+        if (chkWeldPatternWeldGas.isSelected()){
+            if(selectedWeldPattern.getWeldGas().getId()==0)
+                return true;
+            if(cbWeldPatternWeldGas.getValue().equals(selectedWeldPattern.getWeldGas().getType()))
+                return true;
+        }else {
+            if (selectedWeldPattern.getWeldGas().getId()>0)
+                return true;
+        }
+
+        if (isWeldPatternRtTestChanged(selectedWeldPattern))
+            return true;
+
+        if (isWeldPatternVtTestChanged(selectedWeldPattern))
+            return true;
+
+        if (isWeldPatternMechTestChanged(selectedWeldPattern))
+            return true;
+        return false;
+    }
+
+    private boolean isWeldPatternMechTestChanged(WeldPatternUI selectedWeldPattern){
+        MechanicalTestUI selectedMechTest = selectedWeldPattern.getMechanicalTest();
+        if (chkWeldPatternMech.isSelected()){
+            if(selectedMechTest.getId()==0)
+                return true;
+            if (!txfWeldPatternMechNumber.getText().trim().equals(selectedMechTest.getNumber()))
+                return true;
+            if (!DateUtil.format(dpWeldPatternMechDate.getValue()).equals(
+                    DateUtil.format(selectedMechTest.getDate())))
+                return true;
+            if(!txfWeldPatternMechAngle.getText().trim().equals(
+                    String.valueOf(selectedMechTest.getAngle())))
+                return true;
+            if (!cbWeldPatternMechEvaluation.getValue().equals(
+                    selectedMechTest.getEvaluation().getType()))
+                return true;
+        }else {
+            if (selectedMechTest.getId()>0)
+                return true;
+        }
+        return false;
+    }
+
+    private boolean isWeldPatternVtTestChanged(WeldPatternUI selectedWeldPattern){
+        VisualTestUI selectedVT = selectedWeldPattern.getVisualTest();
+
+        if (chkWeldPatternVT.isSelected()){
+            if(selectedVT.getId()==0)
+                return true;
+            if (!txfWeldPatternVTNumber.getText().trim().equals(selectedVT.getNumber()))
+                return true;
+            if (!DateUtil.format(dpWeldPatternVTDate.getValue()).equals(
+                    DateUtil.format(selectedVT.getDate())))
+                return true;
+            if(!textAreaWeldPatternVTDefects.getText().equals(selectedVT.getDefects()))
+                return true;
+            if (!cbWeldPatternVTEvaluation.getValue().equals(
+                    selectedVT.getEvaluation().getType()))
+                return true;
+        }else {
+            if (selectedVT.getId()>0)
+                return true;
+        }
+        return false;
+    }
+
+    private boolean isWeldPatternRtTestChanged(WeldPatternUI selectedWeldPattern){
+        RadiationTestUI selectedRT = selectedWeldPattern.getRadiationTest();
+        if (chkWeldPatternRT.isSelected()){
+            if(selectedRT.getId()==0)
+                return true;
+            if (!txfWeldPatternRTNumber.getText().trim().equals(selectedRT.getNumber()))
+                return true;
+            if (!DateUtil.format(dpWeldPatternRTDate.getValue()).equals(
+                    DateUtil.format(selectedRT.getDate())))
+                return true;
+            if(!cbWeldPatternRTSensitivity.getValue().toString().equals(
+                    selectedRT.getSensitivity()))
+                return true;
+            if(!textAreaWeldPatternRTDefects.getText().equals(selectedRT.getDefects()))
+                return true;
+            if (!cbWeldPatternRTEvaluation.getValue().equals(
+                    selectedRT.getEvaluation().getType()))
+                return true;
+        }else {
+            if (selectedRT.getId()>0)
+                return true;
+        }
         return false;
     }
 
