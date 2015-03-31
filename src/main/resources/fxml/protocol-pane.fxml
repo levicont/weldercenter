@@ -983,7 +983,7 @@
                                  <bottom>
                                     <HBox alignment="CENTER_RIGHT" maxHeight="-Infinity" prefHeight="45.0" prefWidth="200.0" spacing="8.0" BorderPane.alignment="CENTER">
                                        <children>
-                                          <Button fx:id="btWeldPatternSave" mnemonicParsing="false" text="Сохранить" />
+                                          <Button fx:id="btWeldPatternSave" mnemonicParsing="false" onAction="#saveSelectedWeldPattern" text="Сохранить" />
                                           <Button fx:id="btWeldPatternCancel" mnemonicParsing="false" onAction="#discardSaveWeldPattern" text="Отмена" />
                                        </children>
                                        <padding>

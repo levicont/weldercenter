@@ -268,6 +268,8 @@ public class ProtocolController extends GenericController {
 
     private TotalProtocolUI selectedTotalProtocolUI = null;
     private PersonalProtocolUI selectedPersonalProtocolUI = null;
+    private WeldPatternUI selectedWeldPatternUI = null;
+    private List<String> chagedFields = new ArrayList<String>();
 
     private ObservableList<TreeItem<String>> totalProtocols = FXCollections.observableArrayList();
     private ObservableList<TotalProtocolUI> cachedTotalProtocols = FXCollections.observableArrayList();
@@ -1001,21 +1003,49 @@ public class ProtocolController extends GenericController {
         return result;
     }
 
-    private boolean isSelectedWeldPatternChanged(WeldPatternUI selectedWeldPattern){
-        if(!cbWeldPatternDetail.getValue().equals(selectedWeldPattern.getWeldDetail().getDetailTypeCode()))
+    private boolean isSelectedWeldPatternChanged(WeldPatternUI selectedWeldPattern) {
+        chagedFields.clear();
+
+        if (cbWeldPatternDetail.getValue()!=null) {
+            if (!cbWeldPatternDetail.getValue().equals(selectedWeldPattern.getWeldDetail().getDetailTypeCode())) {
+                chagedFields.add("cbWeldPatternDetail is changed ");
+                return true;
+            }
+        }
+
+        if (cbWeldPatternDiameter.getValue()!=null) {
+            if (!cbWeldPatternDiameter.getValue().equals(selectedWeldPattern.getDiameter())) {
+                chagedFields.add("cbWeldPatternDiameter is changed ");
+                return true;
+            }
+        }
+
+        if(cbWeldPatternThickness.getValue()!=null) {
+            if (!cbWeldPatternThickness.getValue().equals(selectedWeldPattern.getThickness())) {
+                chagedFields.add("cbWeldPatternThickness is changed ");
+                return true;
+            }
+        }
+
+        if (!txfWeldPatternMark.getText().trim().equals(selectedWeldPattern.getMark())) {
+            chagedFields.add("txfWeldPatternMark is changed ");
             return true;
-        if (!cbWeldPatternDiameter.getValue().equals(selectedWeldPattern.getDiameter()))
+        }
+        if (chkWeldPatternHeating.isSelected()!=selectedWeldPattern.getIsHeating()) {
+            chagedFields.add("chkWeldPatternHeating is changed ");
             return true;
-        if(!cbWeldPatternThickness.getValue().equals(selectedWeldPattern.getThickness()))
+        }
+        if (chkWeldPatternHeatTreatment.isSelected()!=selectedWeldPattern.getIsHeatTreatment()) {
+            chagedFields.add("chkWeldPatternHeatTreatment is changed ");
             return true;
-        if (!txfWeldPatternMark.getText().trim().equals(selectedWeldPattern.getMark()))
-            return true;
-        if (chkWeldPatternHeating.isSelected()!=selectedWeldPattern.getIsHeating())
-            return true;
-        if (chkWeldPatternHeatTreatment.isSelected()!=selectedWeldPattern.getIsHeatTreatment())
-            return true;
-        if (!cbWeldPatternSteelType.getValue().equals(selectedWeldPattern.getSteelType().getType()))
-            return true;
+        }
+
+        if (cbWeldPatternSteelType.getValue()!=null) {
+            if (!cbWeldPatternSteelType.getValue().equals(selectedWeldPattern.getSteelType().getType())) {
+                chagedFields.add("cbWeldPatternSteelType is changed ");
+                return true;
+            }
+        }
         ObservableList<String> checkedWeldPositions = FXCollections.observableArrayList();
         for(MenuItem mi : menuButtonWeldPosition.getItems()){
             CheckMenuItem chkItem = (CheckMenuItem)mi;
@@ -1025,52 +1055,90 @@ public class ProtocolController extends GenericController {
         }
         if (checkedWeldPositions.size()==selectedWeldPattern.getWeldPositions().size()){
             for (WeldPositionUI wp : selectedWeldPattern.getWeldPositions()){
-                if(!checkedWeldPositions.contains(wp.getCode()))
+                if(!checkedWeldPositions.contains(wp.getCode())){
+                    chagedFields.add("txfWeldPatternWeldPosition is changed ");
                     return true;
+                }
             }
         }else{
             return true;
         }
-        if (!cbWeldPatternWeldMethod.getValue().equals(selectedWeldPattern.getWeldMethod().getNameCode()))
-            return true;
+
+        if (cbWeldPatternWeldMethod.getValue()!=null) {
+            if (!cbWeldPatternWeldMethod.getValue().equals(selectedWeldPattern.getWeldMethod().getNameCode())) {
+                chagedFields.add("cbWeldPatternWeldMethod is changed ");
+                return true;
+            }
+        }
+
         if (chkWeldPatternElectrode.isSelected()){
-            if(selectedWeldPattern.getElectrode().getId()==0)
+            if(selectedWeldPattern.getElectrode().getId()==0) {
+                chagedFields.add("chkWeldPatternElectrode is changed ");
                 return true;
-            if(cbWeldPatternElectrode.getValue().equals(selectedWeldPattern.getElectrode().getType()))
-                return true;
+            }
+            if(cbWeldPatternElectrode.getValue()!=null) {
+                if (!cbWeldPatternElectrode.getValue().equals(selectedWeldPattern.getElectrode().getType())) {
+                    chagedFields.add("cbWeldPatternElectrode is changed ");
+                    return true;
+                }
+            }
         }else {
-            if (selectedWeldPattern.getElectrode().getId()>0)
+            if (selectedWeldPattern.getElectrode().getId()>0) {
+                chagedFields.add("chkWeldPatternElectrode is changed ");
                 return true;
+            }
         }
 
         if (chkWeldPatternWeldWire.isSelected()){
-            if(selectedWeldPattern.getWeldWire().getId()==0)
+            if(selectedWeldPattern.getWeldWire().getId()==0) {
+                chagedFields.add("chkWeldPatternWeldWire is changed ");
                 return true;
-            if(cbWeldPatternWeldWire.getValue().equals(selectedWeldPattern.getWeldWire().getType()))
-                return true;
+            }
+            if (cbWeldPatternWeldWire.getValue()!=null) {
+                if (!cbWeldPatternWeldWire.getValue().equals(selectedWeldPattern.getWeldWire().getType())) {
+                    chagedFields.add("cbWeldPatternWeldWire is changed ");
+                    return true;
+                }
+            }
         }else {
-            if (selectedWeldPattern.getWeldWire().getId()>0)
+            if (selectedWeldPattern.getWeldWire().getId()>0) {
+                chagedFields.add("chkWeldPatternWeldWire is changed ");
                 return true;
+            }
         }
 
         if (chkWeldPatternWeldGas.isSelected()){
-            if(selectedWeldPattern.getWeldGas().getId()==0)
+            if(selectedWeldPattern.getWeldGas().getId()==0) {
+                chagedFields.add("chkWeldPatternWeldGas is changed ");
                 return true;
-            if(cbWeldPatternWeldGas.getValue().equals(selectedWeldPattern.getWeldGas().getType()))
-                return true;
+            }
+            if (cbWeldPatternWeldGas.getValue()!=null) {
+                if (!cbWeldPatternWeldGas.getValue().equals(selectedWeldPattern.getWeldGas().getType())) {
+                    chagedFields.add("cbWeldPatternWeldGas is changed ");
+                    return true;
+                }
+            }
         }else {
-            if (selectedWeldPattern.getWeldGas().getId()>0)
+            if (selectedWeldPattern.getWeldGas().getId()>0) {
+                chagedFields.add("chkWeldPatternWeldGas is changed ");
                 return true;
+            }
         }
 
-        if (isWeldPatternRtTestChanged(selectedWeldPattern))
+        if (isWeldPatternRtTestChanged(selectedWeldPattern)) {
+            chagedFields.add("WeldPatternRTtest is changed ");
             return true;
+        }
 
-        if (isWeldPatternVtTestChanged(selectedWeldPattern))
+        if (isWeldPatternVtTestChanged(selectedWeldPattern)) {
+            chagedFields.add("WeldPatternVTtest is changed ");
             return true;
+        }
 
-        if (isWeldPatternMechTestChanged(selectedWeldPattern))
+        if (isWeldPatternMechTestChanged(selectedWeldPattern)) {
+            chagedFields.add("WeldPatternMechtest is changed ");
             return true;
+        }
         return false;
     }
 
@@ -1081,15 +1149,19 @@ public class ProtocolController extends GenericController {
                 return true;
             if (!txfWeldPatternMechNumber.getText().trim().equals(selectedMechTest.getNumber()))
                 return true;
-            if (!DateUtil.format(dpWeldPatternMechDate.getValue()).equals(
-                    DateUtil.format(selectedMechTest.getDate())))
-                return true;
+            if (dpWeldPatternMechDate.getValue()!=null) {
+                if (!DateUtil.format(dpWeldPatternMechDate.getValue()).equals(
+                        DateUtil.format(selectedMechTest.getDate())))
+                    return true;
+            }
             if(!txfWeldPatternMechAngle.getText().trim().equals(
                     String.valueOf(selectedMechTest.getAngle())))
                 return true;
-            if (!cbWeldPatternMechEvaluation.getValue().equals(
-                    selectedMechTest.getEvaluation().getType()))
-                return true;
+            if (cbWeldPatternMechEvaluation.getValue()!=null) {
+                if (!cbWeldPatternMechEvaluation.getValue().equals(
+                        selectedMechTest.getEvaluation().getType()))
+                    return true;
+            }
         }else {
             if (selectedMechTest.getId()>0)
                 return true;
@@ -1105,14 +1177,18 @@ public class ProtocolController extends GenericController {
                 return true;
             if (!txfWeldPatternVTNumber.getText().trim().equals(selectedVT.getNumber()))
                 return true;
-            if (!DateUtil.format(dpWeldPatternVTDate.getValue()).equals(
-                    DateUtil.format(selectedVT.getDate())))
-                return true;
+            if (dpWeldPatternVTDate.getValue()!=null) {
+                if (!DateUtil.format(dpWeldPatternVTDate.getValue()).equals(
+                        DateUtil.format(selectedVT.getDate())))
+                    return true;
+            }
             if(!textAreaWeldPatternVTDefects.getText().equals(selectedVT.getDefects()))
                 return true;
-            if (!cbWeldPatternVTEvaluation.getValue().equals(
-                    selectedVT.getEvaluation().getType()))
-                return true;
+            if (cbWeldPatternVTEvaluation.getValue()!=null) {
+                if (!cbWeldPatternVTEvaluation.getValue().equals(
+                        selectedVT.getEvaluation().getType()))
+                    return true;
+            }
         }else {
             if (selectedVT.getId()>0)
                 return true;
@@ -1127,22 +1203,193 @@ public class ProtocolController extends GenericController {
                 return true;
             if (!txfWeldPatternRTNumber.getText().trim().equals(selectedRT.getNumber()))
                 return true;
-            if (!DateUtil.format(dpWeldPatternRTDate.getValue()).equals(
-                    DateUtil.format(selectedRT.getDate())))
-                return true;
-            if(!cbWeldPatternRTSensitivity.getValue().toString().equals(
-                    selectedRT.getSensitivity()))
-                return true;
+            if(dpWeldPatternRTDate.getValue()!=null) {
+                if (!DateUtil.format(dpWeldPatternRTDate.getValue()).equals(
+                        DateUtil.format(selectedRT.getDate())))
+                    return true;
+            }
+            if (cbWeldPatternRTSensitivity.getValue()!=null) {
+                if (!cbWeldPatternRTSensitivity.getValue().toString().equals(
+                        selectedRT.getSensitivity()))
+                    return true;
+            }
             if(!textAreaWeldPatternRTDefects.getText().equals(selectedRT.getDefects()))
                 return true;
-            if (!cbWeldPatternRTEvaluation.getValue().equals(
-                    selectedRT.getEvaluation().getType()))
-                return true;
+            if (cbWeldPatternRTEvaluation.getValue()!=null) {
+                if (!cbWeldPatternRTEvaluation.getValue().equals(
+                        selectedRT.getEvaluation().getType()))
+                    return true;
+            }
         }else {
             if (selectedRT.getId()>0)
                 return true;
         }
         return false;
+    }
+
+    private void updateSelectedWeldPatternFromFields(WeldPatternUI selectedWeldPattern){
+
+        if (cbWeldPatternDetail.getValue()!=null) {
+            selectedWeldPattern.setWeldDetail(getWeldDetailFromComboBox(cbWeldPatternDetail));
+        }
+
+        if (cbWeldPatternDiameter.getValue()!=null) {
+            selectedWeldPattern.setDiameter(cbWeldPatternDiameter.getValue());
+        }
+
+        if(cbWeldPatternThickness.getValue()!=null) {
+            selectedWeldPattern.setThickness(cbWeldPatternThickness.getValue());
+        }
+
+        if (!txfWeldPatternMark.getText().isEmpty()) {
+            selectedWeldPattern.setMark(txfWeldPatternMark.getText().trim());
+        }
+           selectedWeldPattern.setIsHeating(chkWeldPatternHeating.isSelected());
+           selectedWeldPattern.setIsHeatTreatment(chkWeldPatternHeatTreatment.isSelected());
+
+        if (cbWeldPatternSteelType.getValue()!=null) {
+            selectedWeldPattern.setSteelType(getSteelTypeFromComboBox(cbWeldPatternSteelType));
+        }
+
+
+        selectedWeldPattern.setWeldPositions(getWeldPositionsFromMenuButton(menuButtonWeldPosition));
+
+        if (cbWeldPatternWeldMethod.getValue()!=null) {
+            selectedWeldPattern.setWeldMethod(getWeldMethodFromComboBox(cbWeldPatternWeldMethod));
+        }
+
+        if (chkWeldPatternElectrode.isSelected()){
+            selectedWeldPattern.setElectrode(getElectrodeFromComboBox(cbWeldPatternElectrode));
+        }else {
+            selectedWeldPattern.setElectrode(null);
+        }
+
+        if (chkWeldPatternWeldWire.isSelected()){
+            selectedWeldPattern.setWeldWire(getWeldWireFromComboBox(cbWeldPatternWeldWire));
+        }else {
+            selectedWeldPattern.setWeldWire(null);
+        }
+
+        if (chkWeldPatternWeldGas.isSelected()){
+            selectedWeldPattern.setWeldGas(getWeldGasFromComboBox(cbWeldPatternWeldGas));
+        }else {
+            selectedWeldPattern.setWeldGas(null);
+        }
+        //TODO finish getters
+//        if (chkWeldPatternRT.isSelected()) {
+//            selectedWeldPattern.setRadiationTest(getRTFromPane());
+//        }else {
+//            selectedWeldPattern.setRadiationTest(null);
+//        }
+//
+//        if (chkWeldPatternVT.isSelected()){
+//            selectedWeldPattern.setVisualTest(getVTFromPane());
+//        }else {
+//            selectedWeldPattern.setVisualTest(null);
+//        }
+//
+//        if (chkWeldPatternMech.isSelected()){
+//            selectedWeldPattern.setMechanicalTest(getMechTestFromPane());
+//        }
+    }
+
+    private WeldGasUI getWeldGasFromComboBox(ComboBox<String>  cbWeldGas){
+        WeldGasUI weldGasUI = null;
+        for (WeldGas wg: weldGasService.getAll()){
+            weldGasUI = new WeldGasUI(wg);
+            if (weldGasUI.getType().equals(cbWeldGas.getValue())){
+                return weldGasUI;
+            }
+        }
+        return weldGasUI;
+    }
+
+    private WeldWireUI getWeldWireFromComboBox(ComboBox<String>  cbWeldWire){
+        WeldWireUI weldWireUI = null;
+        for (WeldWire ww: weldWireService.getAll()){
+            weldWireUI = new WeldWireUI(ww);
+            if (weldWireUI.getType().equals(cbWeldWire.getValue())){
+                return weldWireUI;
+            }
+        }
+        return weldWireUI;
+    }
+
+    private ElectrodeUI getElectrodeFromComboBox(ComboBox<String>  cbElectrode){
+        ElectrodeUI electrodeUI = null;
+        for (Electrode e: electrodeService.getAll()){
+            electrodeUI = new ElectrodeUI(e);
+            if (electrodeUI.getType().equals(cbElectrode.getValue())){
+                return electrodeUI;
+            }
+        }
+        return electrodeUI;
+    }
+
+    private WeldMethodUI getWeldMethodFromComboBox(ComboBox<String> cbWeldMethod){
+        WeldMethodUI weldMethodUI = null;
+        for (WeldMethod wm : weldMethodService.getAll()){
+            weldMethodUI = new WeldMethodUI(wm);
+            if (weldMethodUI.getNameCode().equals(cbWeldMethod.getValue())){
+                return weldMethodUI;
+            }
+        }
+        return weldMethodUI;
+    }
+
+    private ObservableList<WeldPositionUI> getWeldPositionsFromMenuButton(MenuButton mbtWeldPosition){
+        ObservableList<WeldPositionUI> weldPositionUIList = FXCollections.observableArrayList();
+        ObservableList<String> checkedWeldPositions = FXCollections.observableArrayList();
+        for(MenuItem mi : mbtWeldPosition.getItems()){
+            CheckMenuItem chkItem = (CheckMenuItem)mi;
+            if(chkItem.isSelected()){
+                checkedWeldPositions.add(chkItem.getText());
+            }
+        }
+        for (WeldPosition wp : weldPositionService.getAll()){
+            WeldPositionUI weldPositionUI = new WeldPositionUI(wp);
+            if (checkedWeldPositions.contains(weldPositionUI.getCode())){
+                weldPositionUIList.add(weldPositionUI);
+            }
+        }
+        return weldPositionUIList;
+    }
+
+    private SteelTypeUI getSteelTypeFromComboBox(ComboBox<String> cbSteelType){
+        SteelTypeUI steelTypeUI = null;
+        for (SteelType st : steelTypeService.getAll()){
+            steelTypeUI = new SteelTypeUI(st);
+            if (steelTypeUI.getType().equals(cbSteelType.getValue())){
+                return steelTypeUI;
+            }
+        }
+        return steelTypeUI;
+    }
+
+    private WeldDetailUI getWeldDetailFromComboBox(ComboBox<String> cbWeldDetail){
+        WeldDetailUI weldDetailUI = null;
+        for (WeldDetail wd : weldDetailService.getAll()){
+            weldDetailUI = new WeldDetailUI(wd);
+            if (weldDetailUI.getDetailTypeCode().equals(cbWeldDetail.getValue())){
+                return weldDetailUI;
+            }
+        }
+        return weldDetailUI;
+    }
+
+
+    @FXML
+    private void saveSelectedWeldPattern(){
+        if(selectedWeldPatternUI==null) {
+            LOGGER.warn("SAVE SELECTED WELD PATTERN: SelectedWeldPattern is null");
+            return;
+        }
+        if(selectedWeldPatternUI.getId()==0){
+            updateSelectedWeldPatternFromFields(selectedWeldPatternUI);
+        }
+        LOGGER.debug("SAVE SELECTED WELD PATTERN: isSelectedWeldPatternChanged(): "
+                +isSelectedWeldPatternChanged(selectedWeldPatternUI)+
+        " changed in: "+chagedFields);
     }
 
 
@@ -1178,7 +1425,8 @@ public class ProtocolController extends GenericController {
         tabWeldPattern.setDisable(false);
         tabWeldPattern.getTabPane().getSelectionModel().select(tabWeldPattern);
         accordionWeldPatternPane.setExpandedPane(titlePaneWeldPatternOption);
-        showSelectedWeldPattern(new WeldPatternUI(selectedPersonalProtocolUI));
+        selectedWeldPatternUI = new WeldPatternUI(selectedPersonalProtocolUI);
+        showSelectedWeldPattern(selectedWeldPatternUI);
     }
 
     @FXML
@@ -1186,14 +1434,14 @@ public class ProtocolController extends GenericController {
         if(selectedPersonalProtocolUI==null)
             return;
 
-        WeldPatternUI selectedWelPattern = tableViewWeldPatterns.getSelectionModel().getSelectedItem();
-        if(selectedWelPattern==null)
+        selectedWeldPatternUI = tableViewWeldPatterns.getSelectionModel().getSelectedItem();
+        if(selectedWeldPatternUI==null)
             return;
 
         tabWeldPattern.setDisable(false);
         tabWeldPattern.getTabPane().getSelectionModel().select(tabWeldPattern);
         accordionWeldPatternPane.setExpandedPane(titlePaneWeldPatternOption);
-        showSelectedWeldPattern(selectedWelPattern);
+        showSelectedWeldPattern(selectedWeldPatternUI);
     }
     @FXML
     private void discardSaveWeldPattern(){
