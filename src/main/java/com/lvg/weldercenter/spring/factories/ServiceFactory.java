@@ -40,6 +40,9 @@ public class ServiceFactory {
     private static WeldWireService weldWireService;
     private static WeldGasService weldGasService;
     private static EvaluationService evaluationService;
+    private static RadiationTestService radiationTestService;
+    private static VisualTestService visualTestService;
+    private static MechanicalTestService mechanicalTestService;
 
     private ServiceFactory(){
 
@@ -296,6 +299,34 @@ public class ServiceFactory {
         }else{
             evaluationService = (EvaluationService)context.getBean("evaluationService");
             return evaluationService;
+        }
+    }
+
+    public static RadiationTestService getRadiationTestService(){
+        if (null!=radiationTestService){
+            return radiationTestService;
+        }else {
+            radiationTestService = (RadiationTestService)context.getBean("radiationTestService");
+            return radiationTestService;
+        }
+    }
+
+    public static VisualTestService getVisualTestService() {
+        if(null!=visualTestService) {
+            return visualTestService;
+        }else {
+            visualTestService =(VisualTestService)context.getBean("visualTestService");
+            return visualTestService;
+        }
+
+    }
+
+    public static MechanicalTestService getMechanicalTestService() {
+        if (null!=mechanicalTestService) {
+            return mechanicalTestService;
+        }else{
+            mechanicalTestService = (MechanicalTestService)context.getBean("mechanicalTestService");
+            return mechanicalTestService;
         }
     }
 }

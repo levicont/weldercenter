@@ -58,6 +58,9 @@ public class ProtocolController extends GenericController {
     private WeldWireService weldWireService = ServiceFactory.getWeldWireService();
     private WeldGasService weldGasService = ServiceFactory.getWeldGasService();
     private EvaluationService evaluationService = ServiceFactory.getEvaluationService();
+    private RadiationTestService radiationTestService = ServiceFactory.getRadiationTestService();
+    private VisualTestService visualTestService = ServiceFactory.getVisualTestService();
+    private MechanicalTestService mechanicalTestService = ServiceFactory.getMechanicalTestService();
 
     private TotalProtocolServiceUI totalProtocolServiceUI = ServiceUIFactory.getTotalProtocolServiceUI();
     private PersonalProtocolServiceUI personalProtocolServiceUI = ServiceUIFactory.getPersonalProtocolServiceUI();
@@ -1291,6 +1294,46 @@ public class ProtocolController extends GenericController {
 //        if (chkWeldPatternMech.isSelected()){
 //            selectedWeldPattern.setMechanicalTest(getMechTestFromPane());
 //        }
+    }
+
+    private void saveRadiationTestInDB(RadiationTestUI radiationTestUI){
+        if (radiationTestUI.getId()>0){
+            RadiationTest rt = radiationTestService.get(radiationTestUI.getId());
+            if(rt!=null){
+                //TODO finish update
+            }
+        }
+    }
+
+    private RadiationTestUI getRTFromPane(){
+        RadiationTestUI radiationTestUI = new RadiationTestUI();
+        radiationTestUI.setNumber(txfWeldPatternRTNumber.getText().trim());
+        if(dpWeldPatternRTDate.getValue()!=null) {
+            radiationTestUI.setDate(DateUtil.getDate(dpWeldPatternRTDate.getValue()));
+            radiationTestUI.setDateFormat(DateUtil.format(radiationTestUI.getDate()));
+        }
+        if(cbWeldPatternRTSensitivity.getValue()!=null) {
+            radiationTestUI.setSensitivity(cbWeldPatternRTSensitivity.getValue().toString());
+        }
+        if (!textAreaWeldPatternRTDefects.getText().trim().isEmpty()){
+            radiationTestUI.setDefects(textAreaWeldPatternRTDefects.getText().trim());
+        }
+        if(cbWeldPatternRTEvaluation.getValue()!=null){
+            radiationTestUI.setEvaluation(getEvaluationFromComboBox(cbWeldPatternRTEvaluation));
+        }
+        return radiationTestUI;
+    }
+
+    private EvaluationUI getEvaluationFromComboBox(ComboBox<String> cbEvaluation){
+        EvaluationUI evaluationUI = null;
+        if(cbEvaluation.getValue()==null)
+            return null;
+        for (Evaluation e : evaluationService.getAll()){
+            evaluationUI = new EvaluationUI(e);
+            if(evaluationUI.getType().equals(cbEvaluation.getValue()))
+                return evaluationUI;
+        }
+        return evaluationUI;
     }
 
     private WeldGasUI getWeldGasFromComboBox(ComboBox<String>  cbWeldGas){
