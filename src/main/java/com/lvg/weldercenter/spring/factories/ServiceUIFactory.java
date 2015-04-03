@@ -1,5 +1,6 @@
 package com.lvg.weldercenter.spring.factories;
 
+import com.lvg.weldercenter.services.VisualTestService;
 import com.lvg.weldercenter.spring.ContextFactory;
 import com.lvg.weldercenter.ui.servicesui.*;
 import org.springframework.context.ApplicationContext;
@@ -14,6 +15,11 @@ public class ServiceUIFactory {
     private static TotalProtocolServiceUI totalProtocolServiceUI;
     private static JournalServiceUI journalServiceUI;
     private static PersonalProtocolServiceUI personalProtocolServiceUI;
+    private static EvaluationServiceUI evaluationServiceUI;
+    private static RadiationTestServiceUI radiationTestServiceUI;
+    private static VisualTestServiceUI visualTestServiceUI;
+    private static MechanicalTestServiceUI mechanicalTestServiceUI;
+
 
 
     private ServiceUIFactory(){
@@ -63,6 +69,42 @@ public class ServiceUIFactory {
         }else {
             personalProtocolServiceUI = (PersonalProtocolServiceUI) context.getBean("personalProtocolServiceUI");
             return personalProtocolServiceUI;
+        }
+    }
+
+    public static EvaluationServiceUI getEvaluationServiceUI() {
+        if (evaluationServiceUI != null) {
+            return evaluationServiceUI;
+        }else{
+            evaluationServiceUI = (EvaluationServiceUI)context.getBean("evaluationServiceUI");
+            return evaluationServiceUI;
+        }
+    }
+
+    public static RadiationTestServiceUI getRadiationTestServiceUI() {
+        if (radiationTestServiceUI != null) {
+            return radiationTestServiceUI;
+        }else{
+            radiationTestServiceUI = (RadiationTestServiceUI)context.getBean("radiationTestServiceUI");
+            return radiationTestServiceUI;
+        }
+    }
+
+    public static VisualTestServiceUI getVisualTestServiceUI() {
+        if (visualTestServiceUI != null) {
+            return visualTestServiceUI;
+        }else {
+            visualTestServiceUI = (VisualTestServiceUI)context.getBean("visualTestServiceUI");
+            return visualTestServiceUI;
+        }
+    }
+
+    public static MechanicalTestServiceUI getMechanicalTestServiceUI() {
+        if (mechanicalTestServiceUI != null) {
+            return mechanicalTestServiceUI;
+        }else {
+            mechanicalTestServiceUI = (MechanicalTestServiceUI)context.getBean("mechanicalTestServiceUI");
+            return mechanicalTestServiceUI;
         }
     }
 }

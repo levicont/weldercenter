@@ -5,8 +5,7 @@ import com.lvg.weldercenter.services.*;
 import com.lvg.weldercenter.spring.factories.ServiceFactory;
 import com.lvg.weldercenter.spring.factories.ServiceUIFactory;
 import com.lvg.weldercenter.ui.entities.*;
-import com.lvg.weldercenter.ui.servicesui.PersonalProtocolServiceUI;
-import com.lvg.weldercenter.ui.servicesui.TotalProtocolServiceUI;
+import com.lvg.weldercenter.ui.servicesui.*;
 import com.lvg.weldercenter.ui.util.DateUtil;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
@@ -64,6 +63,10 @@ public class ProtocolController extends GenericController {
 
     private TotalProtocolServiceUI totalProtocolServiceUI = ServiceUIFactory.getTotalProtocolServiceUI();
     private PersonalProtocolServiceUI personalProtocolServiceUI = ServiceUIFactory.getPersonalProtocolServiceUI();
+    private EvaluationServiceUI evaluationServiceUI = ServiceUIFactory.getEvaluationServiceUI();
+    private RadiationTestServiceUI radiationTestServiceUI = ServiceUIFactory.getRadiationTestServiceUI();
+    private VisualTestServiceUI visualTestServiceUI = ServiceUIFactory.getVisualTestServiceUI();
+    private MechanicalTestServiceUI mechanicalTestServiceUI = ServiceUIFactory.getMechanicalTestServiceUI();
 
     @FXML
     BorderPane mainProtocolPane;
@@ -1279,11 +1282,11 @@ public class ProtocolController extends GenericController {
             selectedWeldPattern.setWeldGas(null);
         }
         //TODO finish getters
-//        if (chkWeldPatternRT.isSelected()) {
-//            selectedWeldPattern.setRadiationTest(getRTFromPane());
-//        }else {
-//            selectedWeldPattern.setRadiationTest(null);
-//        }
+        if (chkWeldPatternRT.isSelected()) {
+            selectedWeldPattern.setRadiationTest(getRTFromPane());
+        }else {
+            selectedWeldPattern.setRadiationTest(null);
+        }
 //
 //        if (chkWeldPatternVT.isSelected()){
 //            selectedWeldPattern.setVisualTest(getVTFromPane());
@@ -1297,13 +1300,18 @@ public class ProtocolController extends GenericController {
     }
 
     private void saveRadiationTestInDB(RadiationTestUI radiationTestUI){
-        if (radiationTestUI.getId()>0){
-            RadiationTest rt = radiationTestService.get(radiationTestUI.getId());
+        RadiationTest rt = radiationTestServiceUI.getRadiationTestFromUI(radiationTestUI);
             if(rt!=null){
-                //TODO finish update
+               if(rt.getRadiationTestId()!=null){
+                   radiationTestService.update(rt);
+               }else {
+                   radiationTestService.insert(rt);
+               }
             }
-        }
+
     }
+
+
 
     private RadiationTestUI getRTFromPane(){
         RadiationTestUI radiationTestUI = new RadiationTestUI();

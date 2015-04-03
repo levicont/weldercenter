@@ -97,5 +97,9 @@
     <bean id="totalProtocolServiceUI" class="com.lvg.weldercenter.ui.servicesui.impl.TotalProtocolUIManager"/>
     <bean id="journalServiceUI" class="com.lvg.weldercenter.ui.servicesui.impl.JournalUIManager"/>
     <bean id="personalProtocolServiceUI" class="com.lvg.weldercenter.ui.servicesui.impl.PersonalProtocolUIManager"/>
+    <bean id="evaluationServiceUI" class="com.lvg.weldercenter.ui.servicesui.impl.EvaluationUIManager"/>
+    <bean id="mechanicalTestServiceUI" class="com.lvg.weldercenter.ui.servicesui.impl.MechanicalTestUIManager"/>
+    <bean id="radiationTestServiceUI" class="com.lvg.weldercenter.ui.servicesui.impl.RadiationTestUIManager"/>
+    <bean id="visualTestServiceUI" class="com.lvg.weldercenter.ui.servicesui.impl.VisualTestUIManager"/>
 
 </beans>
