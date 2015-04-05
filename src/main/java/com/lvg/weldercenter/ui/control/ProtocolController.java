@@ -1089,7 +1089,7 @@ public class ProtocolController extends GenericController {
                 }
             }
         }else {
-            if (selectedWeldPattern.getElectrode().getId()>0) {
+            if (selectedWeldPattern.getElectrode() != null) {
                 chagedFields.add("chkWeldPatternElectrode is changed ");
                 return true;
             }
@@ -1107,7 +1107,7 @@ public class ProtocolController extends GenericController {
                 }
             }
         }else {
-            if (selectedWeldPattern.getWeldWire().getId()>0) {
+            if (selectedWeldPattern.getWeldWire() != null) {
                 chagedFields.add("chkWeldPatternWeldWire is changed ");
                 return true;
             }
@@ -1125,7 +1125,7 @@ public class ProtocolController extends GenericController {
                 }
             }
         }else {
-            if (selectedWeldPattern.getWeldGas().getId()>0) {
+            if (selectedWeldPattern.getWeldGas() != null) {
                 chagedFields.add("chkWeldPatternWeldGas is changed ");
                 return true;
             }
@@ -1169,7 +1169,7 @@ public class ProtocolController extends GenericController {
                     return true;
             }
         }else {
-            if (selectedMechTest.getId()>0)
+            if (selectedMechTest != null)
                 return true;
         }
         return false;
@@ -1196,7 +1196,7 @@ public class ProtocolController extends GenericController {
                     return true;
             }
         }else {
-            if (selectedVT.getId()>0)
+            if (selectedVT != null)
                 return true;
         }
         return false;
@@ -1227,7 +1227,7 @@ public class ProtocolController extends GenericController {
                     return true;
             }
         }else {
-            if (selectedRT.getId()>0)
+            if (selectedRT != null)
                 return true;
         }
         return false;
@@ -1281,22 +1281,119 @@ public class ProtocolController extends GenericController {
         }else {
             selectedWeldPattern.setWeldGas(null);
         }
-        //TODO finish getters
+
         if (chkWeldPatternRT.isSelected()) {
+            if (selectedWeldPattern.getRadiationTest()!=null){
+                deleteRadiationTestFromDB(selectedWeldPatternUI.getRadiationTest());
+            }
             selectedWeldPattern.setRadiationTest(getRTFromPane());
+            saveRadiationTestInDB(selectedWeldPatternUI.getRadiationTest());
         }else {
+            if (selectedWeldPattern.getRadiationTest()!=null){
+                deleteRadiationTestFromDB(selectedWeldPatternUI.getRadiationTest());
+            }
             selectedWeldPattern.setRadiationTest(null);
         }
-//
-//        if (chkWeldPatternVT.isSelected()){
-//            selectedWeldPattern.setVisualTest(getVTFromPane());
-//        }else {
-//            selectedWeldPattern.setVisualTest(null);
-//        }
-//
-//        if (chkWeldPatternMech.isSelected()){
-//            selectedWeldPattern.setMechanicalTest(getMechTestFromPane());
-//        }
+
+        if (chkWeldPatternVT.isSelected()){
+            if (selectedWeldPattern.getVisualTest()!=null){
+                deleteVisualTestFromDB(selectedWeldPatternUI.getVisualTest());
+
+            }
+            selectedWeldPattern.setVisualTest(getVTFromPane());
+            saveVisualTestInDB(selectedWeldPatternUI.getVisualTest());
+        }else {
+            if (selectedWeldPattern.getVisualTest()!=null){
+                deleteVisualTestFromDB(selectedWeldPatternUI.getVisualTest());
+            }
+            selectedWeldPattern.setVisualTest(null);
+        }
+
+        if (chkWeldPatternMech.isSelected()){
+            if (selectedWeldPatternUI.getMechanicalTest() != null){
+                deleteMechTestUIFromDB(selectedWeldPatternUI.getMechanicalTest());
+            }
+            selectedWeldPattern.setMechanicalTest(getMechTestFromPane());
+            saveMechTestUIInDB(selectedWeldPatternUI.getMechanicalTest());
+        }else {
+            if (selectedWeldPatternUI.getMechanicalTest() != null){
+                deleteMechTestUIFromDB(selectedWeldPatternUI.getMechanicalTest());
+            }
+            selectedWeldPatternUI.setMechanicalTest(null);
+        }
+    }
+
+    private void deleteMechTestUIFromDB(MechanicalTestUI mechanicalTestUI){
+        if (mechanicalTestUI.getId() > 0){
+            MechanicalTest mechTest = mechanicalTestService.get(mechanicalTestUI.getId());
+            if (mechTest != null){
+                mechanicalTestService.delete(mechTest);
+            }
+        }
+    }
+
+    private void saveMechTestUIInDB(MechanicalTestUI mechTestUI){
+        MechanicalTest mt = mechanicalTestServiceUI.getMechTestFromMechTestUI(mechTestUI);
+        if(mt!=null){
+            if(mt.getMechanicalTestId()!=null){
+                mechanicalTestService.update(mt);
+            }else {
+                mechanicalTestService.insert(mt);
+            }
+        }
+    }
+
+    private MechanicalTestUI getMechTestFromPane(){
+        MechanicalTestUI mechanicalTestUI = new MechanicalTestUI();
+        mechanicalTestUI.setNumber(txfWeldPatternMechNumber.getText().trim());
+        if (dpWeldPatternMechDate.getValue()!=null){
+            mechanicalTestUI.setDate(DateUtil.getDate(dpWeldPatternMechDate.getValue()));
+            mechanicalTestUI.setDateFormat(DateUtil.format(mechanicalTestUI.getDate()));
+        }
+        Double angle = 0.0;
+        try{
+            angle = Double.valueOf(txfWeldPatternMechAngle.getText().trim());
+        }catch (NumberFormatException ex){
+            LOGGER.warn("GET MECH TEST FROM PANE: not valid angle in text field :"+txfWeldPatternMechAngle.getText());
+        }
+        mechanicalTestUI.setAngle(angle);
+        if (cbWeldPatternMechEvaluation.getValue() != null){
+            mechanicalTestUI.setEvaluation(getEvaluationFromComboBox(cbWeldPatternMechEvaluation));
+        }
+        return mechanicalTestUI;
+    }
+
+    private void saveVisualTestInDB(VisualTestUI visualTestUI){
+        VisualTest vt = visualTestServiceUI.getVisualTestFromVisualTestUI(visualTestUI);
+        if(vt!=null){
+            if(vt.getVisuaLTestId()!=null){
+                visualTestService.update(vt);
+            }else {
+                visualTestService.insert(vt);
+            }
+        }
+    }
+
+    private void deleteVisualTestFromDB(VisualTestUI visualTestUI){
+        if (visualTestUI.getId()>0){
+            VisualTest vt = visualTestService.get(visualTestUI.getId());
+            if(vt!=null)
+                visualTestService.delete(vt);
+        }
+    }
+
+    private VisualTestUI getVTFromPane(){
+        VisualTestUI visualTestUI = new VisualTestUI();
+        visualTestUI.setNumber(txfWeldPatternVTNumber.getText().trim());
+        if(dpWeldPatternVTDate.getValue()!=null){
+            visualTestUI.setDate(DateUtil.getDate(dpWeldPatternVTDate.getValue()));
+            visualTestUI.setDateFormat(DateUtil.format(visualTestUI.getDate()));
+        }
+        visualTestUI.setDefects(textAreaWeldPatternVTDefects.getText().trim());
+        if (cbWeldPatternVTEvaluation.getValue()!=null){
+            visualTestUI.setEvaluation(getEvaluationFromComboBox(cbWeldPatternVTEvaluation));
+        }
+        return visualTestUI;
     }
 
     private void saveRadiationTestInDB(RadiationTestUI radiationTestUI){
@@ -1308,7 +1405,14 @@ public class ProtocolController extends GenericController {
                    radiationTestService.insert(rt);
                }
             }
+    }
 
+    private void deleteRadiationTestFromDB(RadiationTestUI radiationTestUI){
+        if (radiationTestUI.getId()>0){
+            RadiationTest rt = radiationTestService.get(radiationTestUI.getId());
+            if (rt!=null)
+                radiationTestService.delete(rt);
+        }
     }
 
 
@@ -1437,6 +1541,7 @@ public class ProtocolController extends GenericController {
         }
         if(selectedWeldPatternUI.getId()==0){
             updateSelectedWeldPatternFromFields(selectedWeldPatternUI);
+            LOGGER.debug("SAVE SELECTED WELD PATTERN: selectedWeldPattern is updated.");
         }
         LOGGER.debug("SAVE SELECTED WELD PATTERN: isSelectedWeldPatternChanged(): "
                 +isSelectedWeldPatternChanged(selectedWeldPatternUI)+
