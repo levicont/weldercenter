@@ -19,7 +19,7 @@ public class VisualTestUIManager implements VisualTestServiceUI {
 
     @Override
     public VisualTest getVisualTestFromVisualTestUI(VisualTestUI visualTestUI) {
-        if (visualTestUI!=null)
+        if (visualTestUI==null)
         return null;
         VisualTest vt = visualTestService.get(visualTestUI.getId());
         if (vt != null){

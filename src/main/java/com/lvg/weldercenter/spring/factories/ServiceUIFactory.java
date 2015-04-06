@@ -1,6 +1,5 @@
 package com.lvg.weldercenter.spring.factories;
 
-import com.lvg.weldercenter.services.VisualTestService;
 import com.lvg.weldercenter.spring.ContextFactory;
 import com.lvg.weldercenter.ui.servicesui.*;
 import org.springframework.context.ApplicationContext;
@@ -19,7 +18,18 @@ public class ServiceUIFactory {
     private static RadiationTestServiceUI radiationTestServiceUI;
     private static VisualTestServiceUI visualTestServiceUI;
     private static MechanicalTestServiceUI mechanicalTestServiceUI;
-
+    private static WeldDetailServiceUI weldDetailServiceUI;
+    private static SteelTypeServiceUI steelTypeServiceUI;
+    private static SteelGroupServiceUI steelGroupServiceUI;
+    private static WeldPositionServiceUI weldPositionServiceUI;
+    private static WeldMethodServiceUI weldMethodServiceUI;
+    private static ElectrodeServiceUI electrodeServiceUI;
+    private static WeldWireServiceUI weldWireServiceUI;
+    private static WeldGasServiceUI weldGasServiceUI;
+    private static TheoryTestServiceUI theoryTestServiceUI;
+    private static NDTDocumentServiceUI ndtDocumentServiceUI;
+    private static ResolutionCertificationServiceUI resolutionCertificationServiceUI;
+    private static WeldPatternServiceUI weldPatternServiceUI;
 
 
     private ServiceUIFactory(){
@@ -105,6 +115,116 @@ public class ServiceUIFactory {
         }else {
             mechanicalTestServiceUI = (MechanicalTestServiceUI)context.getBean("mechanicalTestServiceUI");
             return mechanicalTestServiceUI;
+        }
+    }
+
+    public static WeldDetailServiceUI getWeldDetailServiceUI() {
+        if (weldDetailServiceUI != null) {
+            return weldDetailServiceUI;
+        }else {
+            weldDetailServiceUI = (WeldDetailServiceUI)context.getBean("weldDetailServiceUI");
+            return weldDetailServiceUI;
+        }
+    }
+
+    public static SteelTypeServiceUI getSteelTypeServiceUI() {
+        if (steelTypeServiceUI != null) {
+            return steelTypeServiceUI;
+        }else {
+            steelTypeServiceUI = (SteelTypeServiceUI)context.getBean("steelTypeServiceUI");
+            return steelTypeServiceUI;
+        }
+    }
+
+    public static SteelGroupServiceUI getSteelGroupServiceUI() {
+        if (steelGroupServiceUI != null) {
+            return steelGroupServiceUI;
+        }else {
+            steelGroupServiceUI = (SteelGroupServiceUI)context.getBean("steelGroupServiceUI");
+            return steelGroupServiceUI;
+        }
+    }
+
+    public static WeldPositionServiceUI getWeldPositionServiceUI() {
+        if (weldPositionServiceUI != null) {
+            return weldPositionServiceUI;
+        }else {
+            weldPositionServiceUI = (WeldPositionServiceUI)context.getBean("weldPositionServiceUI");
+            return weldPositionServiceUI;
+        }
+    }
+
+    public static WeldMethodServiceUI getWeldMethodServiceUI() {
+        if (weldMethodServiceUI != null) {
+            return weldMethodServiceUI;
+        }else {
+            weldMethodServiceUI = (WeldMethodServiceUI)context.getBean("weldMethodServiceUI");
+            return weldMethodServiceUI;
+        }
+
+    }
+
+    public static ElectrodeServiceUI getElectrodeServiceUI() {
+        if (electrodeServiceUI != null){
+            return electrodeServiceUI;
+        }else {
+            electrodeServiceUI = (ElectrodeServiceUI)context.getBean("electrodeServiceUI");
+            return electrodeServiceUI;
+        }
+    }
+
+    public static WeldWireServiceUI getWeldWireServiceUI() {
+        if(weldWireServiceUI != null) {
+            return weldWireServiceUI;
+        }else {
+            weldWireServiceUI = (WeldWireServiceUI)context.getBean("weldWireServiceUI");
+            return weldWireServiceUI;
+        }
+    }
+
+    public static WeldGasServiceUI getWeldGasServiceUI() {
+        if (weldGasServiceUI != null) {
+            return weldGasServiceUI;
+        }else {
+            weldGasServiceUI = (WeldGasServiceUI)context.getBean("weldGasServiceUI");
+            return weldGasServiceUI;
+        }
+    }
+
+    public static TheoryTestServiceUI getTheoryTestServiceUI() {
+        if (theoryTestServiceUI != null) {
+            return theoryTestServiceUI;
+        }else {
+            theoryTestServiceUI = (TheoryTestServiceUI)context.getBean("theoryTestServiceUI");
+            return theoryTestServiceUI;
+        }
+    }
+
+    public static NDTDocumentServiceUI getNdtDocumentServiceUI() {
+        if (ndtDocumentServiceUI != null){
+            return ndtDocumentServiceUI;
+        }else{
+            ndtDocumentServiceUI = (NDTDocumentServiceUI)context.getBean("ndtDocumentServiceUI");
+            return ndtDocumentServiceUI;
+        }
+    }
+
+    public static ResolutionCertificationServiceUI getResolutionCertificationServiceUI() {
+        if (resolutionCertificationServiceUI != null) {
+            return resolutionCertificationServiceUI;
+        }else {
+            resolutionCertificationServiceUI = (ResolutionCertificationServiceUI)context.
+                    getBean("resolutionCertificationServiceUI");
+            return resolutionCertificationServiceUI;
+        }
+    }
+
+    public static WeldPatternServiceUI getWeldPatternServiceUI() {
+        if (weldPatternServiceUI != null) {
+            return weldPatternServiceUI;
+        }else {
+            weldPatternServiceUI = (WeldPatternServiceUI)context.getBean("weldPatternServiceUI");
+            return weldPatternServiceUI;
         }
     }
 }

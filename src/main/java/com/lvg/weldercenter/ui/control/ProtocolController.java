@@ -67,6 +67,7 @@ public class ProtocolController extends GenericController {
     private RadiationTestServiceUI radiationTestServiceUI = ServiceUIFactory.getRadiationTestServiceUI();
     private VisualTestServiceUI visualTestServiceUI = ServiceUIFactory.getVisualTestServiceUI();
     private MechanicalTestServiceUI mechanicalTestServiceUI = ServiceUIFactory.getMechanicalTestServiceUI();
+    private WeldPatternServiceUI weldPatternServiceUI = ServiceUIFactory.getWeldPatternServiceUI();
 
     @FXML
     BorderPane mainProtocolPane;
@@ -1542,6 +1543,12 @@ public class ProtocolController extends GenericController {
         if(selectedWeldPatternUI.getId()==0){
             updateSelectedWeldPatternFromFields(selectedWeldPatternUI);
             LOGGER.debug("SAVE SELECTED WELD PATTERN: selectedWeldPattern is updated.");
+            LOGGER.debug("SAVE SELECTED WELD PATTERN: selectedWeldPattern: \n"+
+                    weldPatternServiceUI.getWeldPatternFromWeldPatternUI(selectedWeldPatternUI));
+        }else{
+            updateSelectedWeldPatternFromFields(selectedWeldPatternUI);
+            LOGGER.debug("SAVE SELECTED WELD PATTERN: selectedWeldPattern: \n"+
+                    weldPatternServiceUI.getWeldPatternFromWeldPatternUI(selectedWeldPatternUI));
         }
         LOGGER.debug("SAVE SELECTED WELD PATTERN: isSelectedWeldPatternChanged(): "
                 +isSelectedWeldPatternChanged(selectedWeldPatternUI)+

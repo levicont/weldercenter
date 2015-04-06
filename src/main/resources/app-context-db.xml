@@ -100,5 +100,18 @@
     <bean id="mechanicalTestServiceUI" class="com.lvg.weldercenter.ui.servicesui.impl.MechanicalTestUIManager"/>
     <bean id="radiationTestServiceUI" class="com.lvg.weldercenter.ui.servicesui.impl.RadiationTestUIManager"/>
     <bean id="visualTestServiceUI" class="com.lvg.weldercenter.ui.servicesui.impl.VisualTestUIManager"/>
+    <bean id="weldDetailServiceUI" class="com.lvg.weldercenter.ui.servicesui.impl.WeldDetailUIManager"/>
+    <bean id="steelTypeServiceUI" class="com.lvg.weldercenter.ui.servicesui.impl.SteelTypeUIManager"/>
+    <bean id="steelGroupServiceUI" class="com.lvg.weldercenter.ui.servicesui.impl.SteelGroupUIManager"/>
+    <bean id="weldPositionServiceUI" class="com.lvg.weldercenter.ui.servicesui.impl.WeldPositionUIManager"/>
+    <bean id="weldMethodServiceUI" class="com.lvg.weldercenter.ui.servicesui.impl.WeldMethodUIManager"/>
+    <bean id="weldGasServiceUI" class="com.lvg.weldercenter.ui.servicesui.impl.WeldGasUIManager"/>
+    <bean id="weldWireServiceUI" class="com.lvg.weldercenter.ui.servicesui.impl.WeldWireUIManager"/>
+    <bean id="electrodeServiceUI" class="com.lvg.weldercenter.ui.servicesui.impl.ElectrodeUIManager"/>
+    <bean id="theoryTestServiceUI" class="com.lvg.weldercenter.ui.servicesui.impl.TheoryTestUIManager"/>
+    <bean id="ndtDocumentServiceUI" class="com.lvg.weldercenter.ui.servicesui.impl.NDTDocumentUIManager"/>
+    <bean id="resolutionCertificationServiceUI"
+          class="com.lvg.weldercenter.ui.servicesui.impl.ResolutionCeritificationUIManager"/>
+    <bean id="weldPatternServiceUI" class="com.lvg.weldercenter.ui.servicesui.impl.WeldPatternUIManager"/>
 
 </beans>

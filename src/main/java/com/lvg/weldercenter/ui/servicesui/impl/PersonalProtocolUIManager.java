@@ -6,7 +6,7 @@ import com.lvg.weldercenter.ui.entities.JournalUI;
 import com.lvg.weldercenter.ui.entities.PersonalProtocolUI;
 import com.lvg.weldercenter.ui.entities.TotalProtocolUI;
 import com.lvg.weldercenter.ui.entities.WelderUI;
-import com.lvg.weldercenter.ui.servicesui.PersonalProtocolServiceUI;
+import com.lvg.weldercenter.ui.servicesui.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -18,6 +18,19 @@ public class PersonalProtocolUIManager implements PersonalProtocolServiceUI {
 
     @Autowired
     private PersonalProtocolService personalProtocolService;
+    @Autowired
+    private JournalServiceUI journalServiceUI;
+    @Autowired
+    private WelderServiceUI welderServiceUI;
+    @Autowired
+    private TheoryTestServiceUI theoryTestServiceUI;
+    @Autowired
+    private NDTDocumentServiceUI ndtDocumentServiceUI;
+    @Autowired
+    private ResolutionCertificationServiceUI resolutionCertificationServiceUI;
+//    @Autowired
+//    private WeldPatternServiceUI weldPatternServiceUI;
+
 
     @Override
     public PersonalProtocolUI getPersonalProtocolUI(TotalProtocolUI totalProtocolUI, String welderFullName) {
@@ -49,5 +62,35 @@ public class PersonalProtocolUIManager implements PersonalProtocolServiceUI {
             }
         }
         return result;
+    }
+
+    @Override
+    public PersonalProtocol getPersonalProtocolFromUIModel(PersonalProtocolUI personalProtocolUI) {
+        if (personalProtocolUI == null) {
+            return null;
+        }
+        PersonalProtocol pp = personalProtocolService.get(personalProtocolUI.getId());
+        if (pp != null){
+            updatePersonalProtocolFromUIModel(pp, personalProtocolUI);
+        }else {
+            pp = new PersonalProtocol();
+            updatePersonalProtocolFromUIModel(pp, personalProtocolUI);
+        }
+        return pp;
+
+    }
+
+    private void updatePersonalProtocolFromUIModel(PersonalProtocol updPersonalPrptocol, PersonalProtocolUI modelUI){
+        updPersonalPrptocol.setNumber(modelUI.getNumber());
+        updPersonalPrptocol.setDatePeriodicalCert(modelUI.getDatePeriodicalCert());
+        updPersonalPrptocol.setJournal(journalServiceUI.getJournalFromJournalUI(modelUI.getJournal()));
+        updPersonalPrptocol.setWelder(welderServiceUI.getWelderFromWelderUI(modelUI.getWelder()));
+        updPersonalPrptocol.setTheoryTest(theoryTestServiceUI.getTheoryTestFromUIModel(modelUI.getTheoryTest()));
+        updPersonalPrptocol.setNdtDocuments(ndtDocumentServiceUI.getNDTDocumentListFromObsList(modelUI.getNdtDocuments()));
+        updPersonalPrptocol.setResolutionCertification(resolutionCertificationServiceUI.getResolutionCertFromUIModel(
+                modelUI.getResolutionCertification()
+        ));
+       // updPersonalPrptocol.setWeldPatterns(weldPatternServiceUI.getWeldPatternListFromObsList(modelUI.getWeldPatterns()));
+
     }
 }
