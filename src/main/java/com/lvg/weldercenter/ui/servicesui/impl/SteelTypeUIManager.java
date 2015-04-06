@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 public class SteelTypeUIManager implements SteelTypeServiceUI {
     @Autowired
-    SteelTypeService steelTypeService;
+    private SteelTypeService steelTypeService;
 
 
 

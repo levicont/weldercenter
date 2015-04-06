@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class SteelGroupUIManager implements SteelGroupServiceUI {
 
     @Autowired
-    SteelGroupService steelGroupService;
+    private SteelGroupService steelGroupService;
 
     @Override
     public SteelGroup getSteelGroupFromUIModel(SteelGroupUI steelGroupUI) {

@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 public class WeldWireUIManager implements WeldWireServiceUI {
     @Autowired
-    WeldWireService weldWireService;
+    private WeldWireService weldWireService;
 
     @Override
     public WeldWire getWeldWireFromUIModel(WeldWireUI weldWireUI) {

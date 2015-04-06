@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class WeldMethodUIManager implements WeldMethodServiceUI {
 
     @Autowired
-    WeldMethodService weldMethodService;
+    private WeldMethodService weldMethodService;
 
     @Override
     public WeldMethod getWeldMethodFromUI(WeldMethodUI weldMethodUI) {

@@ -12,9 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 public class MechanicalTestUIManager implements MechanicalTestServiceUI {
     @Autowired
-    EvaluationServiceUI evaluationServiceUI;
+    private EvaluationServiceUI evaluationServiceUI;
     @Autowired
-    MechanicalTestService mechanicalTestService;
+    private MechanicalTestService mechanicalTestService;
 
     @Override
     public MechanicalTest getMechTestFromMechTestUI(MechanicalTestUI mechanicalTestUI) {

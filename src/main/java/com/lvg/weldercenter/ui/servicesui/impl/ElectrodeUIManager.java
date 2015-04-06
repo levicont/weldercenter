@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 public class ElectrodeUIManager implements ElectrodeServiceUI {
     @Autowired
-    ElectrodeService electrodeService;
+    private ElectrodeService electrodeService;
 
     @Override
     public Electrode getElectrodeFromUIModel(ElectrodeUI electrodeUI) {

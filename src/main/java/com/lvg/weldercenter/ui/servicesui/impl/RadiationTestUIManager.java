@@ -13,9 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class RadiationTestUIManager implements RadiationTestServiceUI {
 
     @Autowired
-    RadiationTestService radiationTestService;
+    private RadiationTestService radiationTestService;
     @Autowired
-    EvaluationServiceUI evaluationServiceUI;
+    private EvaluationServiceUI evaluationServiceUI;
 
     @Override
     public RadiationTest getRadiationTestFromUI(RadiationTestUI radiationTestUI) {

@@ -1541,12 +1541,12 @@ public class ProtocolController extends GenericController {
             return;
         }
         if(selectedWeldPatternUI.getId()==0){
-            updateSelectedWeldPatternFromFields(selectedWeldPatternUI);
+            //updateSelectedWeldPatternFromFields(selectedWeldPatternUI);
             LOGGER.debug("SAVE SELECTED WELD PATTERN: selectedWeldPattern is updated.");
             LOGGER.debug("SAVE SELECTED WELD PATTERN: selectedWeldPattern: \n"+
                     weldPatternServiceUI.getWeldPatternFromWeldPatternUI(selectedWeldPatternUI));
         }else{
-            updateSelectedWeldPatternFromFields(selectedWeldPatternUI);
+            //updateSelectedWeldPatternFromFields(selectedWeldPatternUI);
             LOGGER.debug("SAVE SELECTED WELD PATTERN: selectedWeldPattern: \n"+
                     weldPatternServiceUI.getWeldPatternFromWeldPatternUI(selectedWeldPatternUI));
         }

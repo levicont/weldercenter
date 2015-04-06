@@ -13,9 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class VisualTestUIManager implements VisualTestServiceUI {
 
     @Autowired
-    EvaluationServiceUI evaluationServiceUI;
+    private EvaluationServiceUI evaluationServiceUI;
     @Autowired
-    VisualTestService visualTestService;
+    private VisualTestService visualTestService;
 
     @Override
     public VisualTest getVisualTestFromVisualTestUI(VisualTestUI visualTestUI) {

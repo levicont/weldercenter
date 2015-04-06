@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class WeldDetailUIManager implements WeldDetailServiceUI {
 
     @Autowired
-    WeldDetailService weldDetailService;
+    private WeldDetailService weldDetailService;
 
     @Override
     public WeldDetail getWeldDetailFromUIModel(WeldDetailUI weldDetailUI) {

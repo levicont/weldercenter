@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class EvaluationUIManager implements EvaluationServiceUI {
 
     @Autowired
-    EvaluationService evaluationService;
+    private EvaluationService evaluationService;
 
     @Override
     public Evaluation getEvaluationFromEvaluationUI(EvaluationUI evaluationUI) {
