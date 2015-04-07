@@ -23,10 +23,14 @@ public class CommissionCertificationUI extends GenericEntityUI {
 
     public CommissionCertificationUI(CommissionCertification commission){
         this.id.set(commission.getCommissionCertificationId());
-        this.head.set(new TeacherUI(commission.getHead()));
-        this.weldSpecialist.set(new TeacherUI(commission.getWeldSpecialist()));
-        this.ndtSpecialist.set(new TeacherUI(commission.getNdtSpecialist()));
-        this.safetySpecialist.set(new TeacherUI(commission.getSafetySpecialist()));
+        if (commission.getHead()!=null)
+            this.head.set(new TeacherUI(commission.getHead()));
+        if (commission.getWeldSpecialist()!=null)
+            this.weldSpecialist.set(new TeacherUI(commission.getWeldSpecialist()));
+        if (commission.getNdtSpecialist()!=null)
+            this.ndtSpecialist.set(new TeacherUI(commission.getNdtSpecialist()));
+        if (commission.getSafetySpecialist()!=null)
+            this.safetySpecialist.set(new TeacherUI(commission.getSafetySpecialist()));
     }
 
     //Getters and Setters
@@ -77,5 +81,15 @@ public class CommissionCertificationUI extends GenericEntityUI {
 
     public void setSafetySpecialist(TeacherUI safetySpecialist) {
         this.safetySpecialist.set(safetySpecialist);
+    }
+
+    @Override
+    public String toString() {
+        return "CommissionCertificationUI{" +
+                "head=" + head +
+                ", weldSpecialist=" + weldSpecialist +
+                ", ndtSpecialist=" + ndtSpecialist +
+                ", safetySpecialist=" + safetySpecialist +
+                '}';
     }
 }

@@ -47,4 +47,12 @@ public class WeldPositionUI extends GenericEntityUI {
     public void setCode(String code) {
         this.code.set(code);
     }
+
+    @Override
+    public String toString() {
+        return "WeldPositionUI{" +
+                "type=" + type +
+                ", code=" + code +
+                '}';
+    }
 }

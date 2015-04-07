@@ -32,4 +32,11 @@ public class PatternThicknessUI extends GenericEntityUI {
     public void setThickness(double thickness) {
         this.thickness.set(thickness);
     }
+
+    @Override
+    public String toString() {
+        return "PatternThicknessUI{" +
+                "thickness=" + thickness +
+                '}';
+    }
 }

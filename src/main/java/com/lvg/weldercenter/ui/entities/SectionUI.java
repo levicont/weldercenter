@@ -98,4 +98,14 @@ public class SectionUI extends GenericEntityUI {
     public void setTopics(ObservableList<TopicUI> topics) {
         this.topics.set(topics);
     }
+
+    @Override
+    public String toString() {
+        return "SectionUI{" +
+                "orderIndex=" + orderIndex +
+                ", title=" + title +
+                ", description=" + description +
+                ", topics=" + topics +
+                '}';
+    }
 }

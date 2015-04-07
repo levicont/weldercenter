@@ -32,4 +32,11 @@ public class ElectrodeUI extends GenericEntityUI {
     public void setType(String type) {
         this.type.set(type);
     }
+
+    @Override
+    public String toString() {
+        return "ElectrodeUI{" +
+                "type=" + type +
+                '}';
+    }
 }

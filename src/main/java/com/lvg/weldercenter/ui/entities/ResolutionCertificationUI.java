@@ -34,4 +34,12 @@ public class ResolutionCertificationUI extends GenericEntityUI {
     public void setTextResolution(String textResolution) {
         this.textResolution.set(textResolution);
     }
+
+    @Override
+    public String toString() {
+        return "ResolutionCertificationUI{" +
+                "DEFAULT_RESOLUTION='" + DEFAULT_RESOLUTION + '\'' +
+                ", textResolution=" + textResolution +
+                '}';
+    }
 }

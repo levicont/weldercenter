@@ -20,11 +20,15 @@ public class DateUtil implements Holidays{
 
 
     public static LocalDate getLocalDate(Date date) {
+        if (date == null)
+            return null;
         Instant instant = date.toInstant();
         return instant.atZone(ZoneId.systemDefault()).toLocalDate();
     }
 
     public static Date getDate(LocalDate localDate) {
+        if (localDate == null)
+            return null;
         Instant instant = Instant.from(localDate.atStartOfDay(ZoneId.systemDefault()));
         return Date.from(instant);
     }

@@ -32,4 +32,11 @@ public class WeldWireUI extends GenericEntityUI {
     public void setType(String type) {
         this.type.set(type);
     }
+
+    @Override
+    public String toString() {
+        return "WeldWireUI{" +
+                "type=" + type +
+                '}';
+    }
 }

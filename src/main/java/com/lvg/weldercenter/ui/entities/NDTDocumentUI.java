@@ -49,4 +49,12 @@ public class NDTDocumentUI extends GenericEntityUI {
     public void setFullName(String fullName) {
         this.fullName.set(fullName);
     }
+
+    @Override
+    public String toString() {
+        return "NDTDocumentUI{" +
+                "name=" + name +
+                ", fullName=" + fullName +
+                '}';
+    }
 }

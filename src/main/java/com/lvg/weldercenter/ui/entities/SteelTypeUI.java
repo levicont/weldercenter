@@ -21,7 +21,8 @@ public class SteelTypeUI extends  GenericEntityUI {
     public SteelTypeUI(SteelType steelType){
         this.id.set(steelType.getSteelTypeId());
         this.type.set(steelType.getType());
-        this.steelGroup.set(steelType.getStGroup());
+        if (steelType.getStGroup() != null)
+            this.steelGroup.set(steelType.getStGroup());
     }
 
     //Getters and Setters
@@ -51,5 +52,13 @@ public class SteelTypeUI extends  GenericEntityUI {
 
     public void setSteelGroup(SteelGroup steelGroup) {
         this.steelGroup.set(steelGroup);
+    }
+
+    @Override
+    public String toString() {
+        return "SteelTypeUI{" +
+                "type=" + type +
+                ", steelGroup=" + steelGroup +
+                '}';
     }
 }

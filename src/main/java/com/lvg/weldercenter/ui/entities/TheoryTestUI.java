@@ -50,4 +50,12 @@ public class TheoryTestUI extends GenericEntityUI {
     public void setRating(String rating) {
         this.rating.set(rating);
     }
+
+    @Override
+    public String toString() {
+        return "TheoryTestUI{" +
+                "ticketNumber=" + ticketNumber +
+                ", rating=" + rating +
+                '}';
+    }
 }

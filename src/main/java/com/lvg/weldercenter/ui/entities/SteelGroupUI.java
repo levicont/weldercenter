@@ -48,4 +48,12 @@ public class SteelGroupUI extends GenericEntityUI {
     public void setDescription(String description) {
         this.description.set(description);
     }
+
+    @Override
+    public String toString() {
+        return "SteelGroupUI{" +
+                "group=" + group +
+                ", description=" + description +
+                '}';
+    }
 }

@@ -79,4 +79,13 @@ public class CurriculumUI extends GenericEntityUI {
     public void setSections(ObservableList<SectionUI> sections) {
         this.sections.set(sections);
     }
+
+    @Override
+    public String toString() {
+        return "CurriculumUI{" +
+                "title=" + title +
+                ", description=" + description +
+                ", sections=" + sections +
+                '}';
+    }
 }

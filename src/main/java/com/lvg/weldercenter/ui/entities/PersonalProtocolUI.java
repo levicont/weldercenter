@@ -64,10 +64,15 @@ public class PersonalProtocolUI extends GenericEntityUI{
         this.number.set(personalProtocol.getNumber());
         this.datePeriodicalCert.set(personalProtocol.getDatePeriodicalCert());
         this.datePeriodicalCertFormat.set(DateUtil.format(this.datePeriodicalCert.get()));
-        this.welder.set(new WelderUI(personalProtocol.getWelder()));
-        this.journal.set(new JournalUI(personalProtocol.getJournal()));
-        this.resolutionCertification.set(new ResolutionCertificationUI(personalProtocol.getResolutionCertification()));
-        this.theoryTest.set(new TheoryTestUI(personalProtocol.getTheoryTest()));
+        if (personalProtocol.getWelder() != null)
+            this.welder.set(new WelderUI(personalProtocol.getWelder()));
+        if (personalProtocol.getJournal() != null)
+            this.journal.set(new JournalUI(personalProtocol.getJournal()));
+        if (personalProtocol.getResolutionCertification() != null)
+            this.resolutionCertification.set(new ResolutionCertificationUI(personalProtocol.getResolutionCertification()));
+        if (personalProtocol.getTheoryTest() != null)
+            this.theoryTest.set(new TheoryTestUI(personalProtocol.getTheoryTest()));
+
         this.ndtDocuments.set(FXCollections.observableArrayList(
                 getNDTDocumentUIList(personalProtocol.getNdtDocuments())));
         this.weldPatterns.set(FXCollections.observableArrayList(getWeldPatternUIList(personalProtocol.getWeldPatterns())));

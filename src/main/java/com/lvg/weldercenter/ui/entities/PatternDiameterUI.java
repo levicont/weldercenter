@@ -32,4 +32,11 @@ public class PatternDiameterUI extends GenericEntityUI {
     public void setDiameter(double diameter) {
         this.diameter.set(diameter);
     }
+
+    @Override
+    public String toString() {
+        return "PatternDiameterUI{" +
+                "diameter=" + diameter +
+                '}';
+    }
 }

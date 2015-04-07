@@ -33,4 +33,11 @@ public class WeldGasUI extends GenericEntityUI {
     public void setType(String type) {
         this.type.set(type);
     }
+
+    @Override
+    public String toString() {
+        return "WeldGasUI{" +
+                "type=" + type +
+                '}';
+    }
 }

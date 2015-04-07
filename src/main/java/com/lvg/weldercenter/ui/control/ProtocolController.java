@@ -7,6 +7,7 @@ import com.lvg.weldercenter.spring.factories.ServiceUIFactory;
 import com.lvg.weldercenter.ui.entities.*;
 import com.lvg.weldercenter.ui.servicesui.*;
 import com.lvg.weldercenter.ui.util.DateUtil;
+import com.lvg.weldercenter.ui.util.Printer;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 import javafx.collections.FXCollections;
@@ -60,6 +61,7 @@ public class ProtocolController extends GenericController {
     private RadiationTestService radiationTestService = ServiceFactory.getRadiationTestService();
     private VisualTestService visualTestService = ServiceFactory.getVisualTestService();
     private MechanicalTestService mechanicalTestService = ServiceFactory.getMechanicalTestService();
+    private WeldPatternService weldPatternService = ServiceFactory.getWeldPatternService();
 
     private TotalProtocolServiceUI totalProtocolServiceUI = ServiceUIFactory.getTotalProtocolServiceUI();
     private PersonalProtocolServiceUI personalProtocolServiceUI = ServiceUIFactory.getPersonalProtocolServiceUI();
@@ -1288,7 +1290,7 @@ public class ProtocolController extends GenericController {
                 deleteRadiationTestFromDB(selectedWeldPatternUI.getRadiationTest());
             }
             selectedWeldPattern.setRadiationTest(getRTFromPane());
-            saveRadiationTestInDB(selectedWeldPatternUI.getRadiationTest());
+            //saveRadiationTestInDB(selectedWeldPatternUI.getRadiationTest());
         }else {
             if (selectedWeldPattern.getRadiationTest()!=null){
                 deleteRadiationTestFromDB(selectedWeldPatternUI.getRadiationTest());
@@ -1302,7 +1304,7 @@ public class ProtocolController extends GenericController {
 
             }
             selectedWeldPattern.setVisualTest(getVTFromPane());
-            saveVisualTestInDB(selectedWeldPatternUI.getVisualTest());
+           // saveVisualTestInDB(selectedWeldPatternUI.getVisualTest());
         }else {
             if (selectedWeldPattern.getVisualTest()!=null){
                 deleteVisualTestFromDB(selectedWeldPatternUI.getVisualTest());
@@ -1315,7 +1317,7 @@ public class ProtocolController extends GenericController {
                 deleteMechTestUIFromDB(selectedWeldPatternUI.getMechanicalTest());
             }
             selectedWeldPattern.setMechanicalTest(getMechTestFromPane());
-            saveMechTestUIInDB(selectedWeldPatternUI.getMechanicalTest());
+            //saveMechTestUIInDB(selectedWeldPatternUI.getMechanicalTest());
         }else {
             if (selectedWeldPatternUI.getMechanicalTest() != null){
                 deleteMechTestUIFromDB(selectedWeldPatternUI.getMechanicalTest());
@@ -1486,7 +1488,8 @@ public class ProtocolController extends GenericController {
         WeldMethodUI weldMethodUI = null;
         for (WeldMethod wm : weldMethodService.getAll()){
             weldMethodUI = new WeldMethodUI(wm);
-            if (weldMethodUI.getNameCode().equals(cbWeldMethod.getValue())){
+            String nameCode = weldMethodUI.getNameCode();
+            if (nameCode.equals(cbWeldMethod.getValue())){
                 return weldMethodUI;
             }
         }
@@ -1540,19 +1543,23 @@ public class ProtocolController extends GenericController {
             LOGGER.warn("SAVE SELECTED WELD PATTERN: SelectedWeldPattern is null");
             return;
         }
+        updateSelectedWeldPatternFromFields(selectedWeldPatternUI);
+        WeldPattern weldPattern = weldPatternServiceUI.getWeldPatternFromWeldPatternUI(selectedWeldPatternUI);
+        weldPattern.setPersonalProtocol(personalProtocolServiceUI.getPersonalProtocolFromUIModel(selectedPersonalProtocolUI));
         if(selectedWeldPatternUI.getId()==0){
-            //updateSelectedWeldPatternFromFields(selectedWeldPatternUI);
-            LOGGER.debug("SAVE SELECTED WELD PATTERN: selectedWeldPattern is updated.");
-            LOGGER.debug("SAVE SELECTED WELD PATTERN: selectedWeldPattern: \n"+
-                    weldPatternServiceUI.getWeldPatternFromWeldPatternUI(selectedWeldPatternUI));
+            selectedWeldPatternUI.setPersonalProtocol(selectedPersonalProtocolUI);
+            Long id = weldPatternService.insert(weldPattern);
+            LOGGER.debug("SAVE SELECTED WELD PATTERN: selectedWeldPattern is inserted.");
+            selectedWeldPatternUI.setId(id);
+            tableViewWeldPatterns.getItems().add(selectedWeldPatternUI);
         }else{
-            //updateSelectedWeldPatternFromFields(selectedWeldPatternUI);
-            LOGGER.debug("SAVE SELECTED WELD PATTERN: selectedWeldPattern: \n"+
-                    weldPatternServiceUI.getWeldPatternFromWeldPatternUI(selectedWeldPatternUI));
+            weldPatternService.update(weldPattern);
+            LOGGER.debug("SAVE SELECTED WELD PATTERN: selectedWeldPattern is inserted.");
+
         }
-        LOGGER.debug("SAVE SELECTED WELD PATTERN: isSelectedWeldPatternChanged(): "
-                +isSelectedWeldPatternChanged(selectedWeldPatternUI)+
-        " changed in: "+chagedFields);
+        Printer.printWeldPatternUI(selectedWeldPatternUI);
+        Printer.printWeldPattern(weldPattern);
+
     }
 
 

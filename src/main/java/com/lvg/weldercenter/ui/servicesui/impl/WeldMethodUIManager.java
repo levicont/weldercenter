@@ -16,7 +16,7 @@ public class WeldMethodUIManager implements WeldMethodServiceUI {
 
     @Override
     public WeldMethod getWeldMethodFromUI(WeldMethodUI weldMethodUI) {
-        if (weldMethodUI != null){
+        if (weldMethodUI == null){
             return null;
         }
         WeldMethod wm = weldMethodService.get(weldMethodUI.getId());

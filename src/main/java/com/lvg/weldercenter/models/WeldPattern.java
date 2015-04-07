@@ -164,7 +164,7 @@ public class WeldPattern implements Serializable{
         this.steelType = steelType;
     }
 
-    @OneToOne
+    @OneToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name = "id_radiation_test")
     public RadiationTest getRadiationTest() {
         return radiationTest;
@@ -174,7 +174,7 @@ public class WeldPattern implements Serializable{
         this.radiationTest = radiationTest;
     }
 
-    @OneToOne
+    @OneToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name = "id_visual_test")
     public VisualTest getVisualTest() {
         return visualTest;
@@ -184,7 +184,7 @@ public class WeldPattern implements Serializable{
         this.visualTest = visualTest;
     }
 
-    @OneToOne
+    @OneToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name = "id_mechanical_test")
     public MechanicalTest getMechanicalTest() {
         return mechanicalTest;

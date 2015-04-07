@@ -79,20 +79,29 @@ public class WeldPatternUI extends GenericEntityUI {
         this.size.set(getSizeFromThicknesAndDiameter(this.diameter.get(), this.thickness.get()));
 
         this.personalProtocol.set(new PersonalProtocolUI());
-        this.weldMethod.set(new WeldMethodUI(weldPattern.getWeldMethod()));
-        this.weldMethodName.set(this.weldMethod.get().getName());
-        this.electrode.set(new ElectrodeUI(weldPattern.getElectrode()));
-        this.weldWire.set(new WeldWireUI(weldPattern.getWeldWire()));
-        this.weldGas.set(new WeldGasUI(weldPattern.getWeldGas()));
-        this.weldDetail.set(new WeldDetailUI(weldPattern.getWeldDetail()));
-        this.typeName.set(this.weldDetail.get().getType());
-        this.steelType.set(new SteelTypeUI(weldPattern.getSteelType()));
+        if (weldPattern.getWeldMethod()!=null) {
+            this.weldMethod.set(new WeldMethodUI(weldPattern.getWeldMethod()));
+            this.weldMethodName.set(this.weldMethod.get().getName());
+        }
+        if (weldPattern.getElectrode()!= null)
+            this.electrode.set(new ElectrodeUI(weldPattern.getElectrode()));
+        if (weldPattern.getWeldWire() != null)
+            this.weldWire.set(new WeldWireUI(weldPattern.getWeldWire()));
+        if (weldPattern.getWeldGas() != null)
+            this.weldGas.set(new WeldGasUI(weldPattern.getWeldGas()));
+        if (weldPattern.getWeldDetail() != null){
+            this.weldDetail.set(new WeldDetailUI(weldPattern.getWeldDetail()));
+            this.typeName.set(this.weldDetail.get().getType());
+        }
+        if (weldPattern.getSteelType() != null)
+            this.steelType.set(new SteelTypeUI(weldPattern.getSteelType()));
 
-
-
-        this.radiationTest.set(new RadiationTestUI(weldPattern.getRadiationTest()));
-        this.visualTest.set(new VisualTestUI(weldPattern.getVisualTest()));
-        this.mechanicalTest.set(new MechanicalTestUI(weldPattern.getMechanicalTest()));
+        if (weldPattern.getRadiationTest() != null)
+            this.radiationTest.set(new RadiationTestUI(weldPattern.getRadiationTest()));
+        if (weldPattern.getVisualTest() != null)
+            this.visualTest.set(new VisualTestUI(weldPattern.getVisualTest()));
+        if (weldPattern.getMechanicalTest() != null)
+            this.mechanicalTest.set(new MechanicalTestUI(weldPattern.getMechanicalTest()));
         this.weldPositions.set(FXCollections.observableArrayList(getWeldPositionsUIFromWeldPosition(weldPattern.getWeldPositions())));
     }
 
@@ -361,5 +370,34 @@ public class WeldPatternUI extends GenericEntityUI {
 
     public void setWeldPositions(ObservableList<WeldPositionUI> weldPositions) {
         this.weldPositions.set(weldPositions);
+
+    }
+
+    @Override
+    public String toString() {
+        return "WeldPatternUI{" +
+                "THICKNESS_MARK='" + THICKNESS_MARK + '\'' +
+                ", DIAMETER_MARK='" + DIAMETER_MARK + '\'' +
+                ", MEASURE_MARK='" + MEASURE_MARK + '\'' +
+                ", thickness=" + thickness +
+                ", diameter=" + diameter +
+                ", mark=" + mark +
+                ", isHeating=" + isHeating +
+                ", isHeatTreatment=" + isHeatTreatment +
+                ", typeName=" + typeName +
+                ", size=" + size +
+                ", weldMethodName=" + weldMethodName +
+                ", personalProtocol=" + personalProtocol +
+                ", weldMethod=" + weldMethod +
+                ", electrode=" + electrode +
+                ", weldWire=" + weldWire +
+                ", weldGas=" + weldGas +
+                ", weldDetail=" + weldDetail +
+                ", steelType=" + steelType +
+                ", radiationTest=" + radiationTest +
+                ", visualTest=" + visualTest +
+                ", mechanicalTest=" + mechanicalTest +
+                ", weldPositions=" + weldPositions +
+                '}';
     }
 }

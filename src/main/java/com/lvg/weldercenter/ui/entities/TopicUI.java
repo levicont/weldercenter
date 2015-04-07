@@ -47,7 +47,8 @@ public class TopicUI extends GenericEntityUI {
         this(topic);
         this.date.set(journal.getDateBegin());
         this.dateFormat.set(DateUtil.format(date.get()));
-        this.journal.set(new JournalUI(journal));
+        if (journal != null)
+            this.journal.set(new JournalUI(journal));
     }
 
     public double getTimeLong() {

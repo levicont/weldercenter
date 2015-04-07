@@ -64,4 +64,13 @@ public class OrganizationUI extends GenericEntityUI {
     public void setPhone(String phone) {
         this.phone.set(phone);
     }
+
+    @Override
+    public String toString() {
+        return "OrganizationUI{" +
+                "adress=" + adress +
+                ", name=" + name +
+                ", phone=" + phone +
+                '}';
+    }
 }
