@@ -22,29 +22,6 @@ CREATE DATABASE IF NOT EXISTS test;
 USE test;
 
 --
--- Definition of table `city`
---
-
-DROP TABLE IF EXISTS `city`;
-CREATE TABLE `city` (
-  `id_city` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(45) CHARACTER SET utf8 NOT NULL,
-  `country` varchar(45) CHARACTER SET utf8 NOT NULL,
-  PRIMARY KEY (`id_city`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=cp1251 COLLATE=cp1251_ukrainian_ci;
-
---
--- Dumping data for table `city`
---
-
-/*!40000 ALTER TABLE `city` DISABLE KEYS */;
-INSERT INTO `city` (`id_city`,`name`,`country`) VALUES
- (1,'Харьков','Украина'),
- (2,'Солихард','Россия');
-/*!40000 ALTER TABLE `city` ENABLE KEYS */;
-
-
---
 -- Definition of table `commission_certification`
 --
 
@@ -76,28 +53,6 @@ INSERT INTO `commission_certification` (`id_commission_certification`,`id_teache
 /*!40000 ALTER TABLE `commission_certification` ENABLE KEYS */;
 
 
---
--- Definition of table `company`
---
-
-DROP TABLE IF EXISTS `company`;
-CREATE TABLE `company` (
-  `id_company` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(45) CHARACTER SET utf8 DEFAULT NULL,
-  `adress` varchar(45) CHARACTER SET utf8 DEFAULT NULL,
-  `city` varchar(45) CHARACTER SET utf8 DEFAULT NULL,
-  PRIMARY KEY (`id_company`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=cp1251 COLLATE=cp1251_ukrainian_ci;
-
---
--- Dumping data for table `company`
---
-
-/*!40000 ALTER TABLE `company` DISABLE KEYS */;
-INSERT INTO `company` (`id_company`,`name`,`adress`,`city`) VALUES
- (1,'Нефтьстрой ОАО','ул. Пушкина, 13',NULL),
- (2,'Газконтакт','ул. Вавилова, 16',NULL);
-/*!40000 ALTER TABLE `company` ENABLE KEYS */;
 
 
 --
@@ -277,7 +232,7 @@ CREATE TABLE `journal` (
   PRIMARY KEY (`id_journal`),
   KEY `FKAB64AF377CD5F956` (`id_curriculum`),
   CONSTRAINT `FKAB64AF377CD5F956` FOREIGN KEY (`id_curriculum`) REFERENCES `curriculum` (`id_curriculum`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `journal`
@@ -285,11 +240,8 @@ CREATE TABLE `journal` (
 
 /*!40000 ALTER TABLE `journal` DISABLE KEYS */;
 INSERT INTO `journal` (`id_journal`,`date_begin`,`date_end`,`number`,`id_curriculum`) VALUES
- (1,'2014-11-04','2014-11-04','14-001',1),
- (7,'2015-01-05','2015-01-08','15-001',1),
- (8,'2015-01-12','2015-01-14','15-002',1),
- (9,'2015-01-19','2015-01-21','15-003',1),
- (10,'2015-01-26','2015-01-28','15-004',1);
+ (1,'2014-11-04','2014-11-06','14-001',1),
+ (2,'2015-01-21','2015-01-26','15-001',1);
 /*!40000 ALTER TABLE `journal` ENABLE KEYS */;
 
 
@@ -315,12 +267,7 @@ CREATE TABLE `journal_teacher` (
 INSERT INTO `journal_teacher` (`id_teacher`,`id_journal`) VALUES
  (1,1),
  (2,1),
- (1,8),
- (2,8),
- (2,9),
- (3,9),
- (1,10),
- (2,7);
+ (2,2);
 /*!40000 ALTER TABLE `journal_teacher` ENABLE KEYS */;
 
 
@@ -345,14 +292,7 @@ CREATE TABLE `journal_welder` (
 /*!40000 ALTER TABLE `journal_welder` DISABLE KEYS */;
 INSERT INTO `journal_welder` (`id_journal`,`id_welder`) VALUES
  (1,1),
- (1,2),
- (8,1),
- (9,1),
- (9,2),
- (10,1),
- (10,2),
- (7,2),
- (7,4);
+ (2,4);
 /*!40000 ALTER TABLE `journal_welder` ENABLE KEYS */;
 
 
@@ -373,7 +313,7 @@ CREATE TABLE `mechanical_test` (
   KEY `FKE3188822588CCF58` (`id_evaluation`),
   CONSTRAINT `FKE3188822588CCF58` FOREIGN KEY (`id_evaluation`) REFERENCES `evaluation` (`id_evaluation`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `FKE3188822D7AE25E9` FOREIGN KEY (`id_weld_pattern`) REFERENCES `weld_pattern` (`id_weld_pattern`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `mechanical_test`
@@ -381,33 +321,8 @@ CREATE TABLE `mechanical_test` (
 
 /*!40000 ALTER TABLE `mechanical_test` DISABLE KEYS */;
 INSERT INTO `mechanical_test` (`id_mechanical_test`,`angle`,`number`,`prot_date`,`id_evaluation`,`id_weld_pattern`) VALUES
- (1,120,'14-002Mech','2014-11-04',1,1);
+ (1,120,'14-002Mech','2014-11-04',1,NULL);
 /*!40000 ALTER TABLE `mechanical_test` ENABLE KEYS */;
-
-
---
--- Definition of table `method`
---
-
-DROP TABLE IF EXISTS `method`;
-CREATE TABLE `method` (
-  `id_method` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(45) CHARACTER SET utf8 NOT NULL,
-  PRIMARY KEY (`id_method`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=cp1251 COLLATE=cp1251_ukrainian_ci;
-
---
--- Dumping data for table `method`
---
-
-/*!40000 ALTER TABLE `method` DISABLE KEYS */;
-INSERT INTO `method` (`id_method`,`name`) VALUES
- (1,'VT'),
- (2,'PT'),
- (3,'RT'),
- (4,'UT'),
- (5,'MT');
-/*!40000 ALTER TABLE `method` ENABLE KEYS */;
 
 
 --
@@ -501,54 +416,6 @@ INSERT INTO `pattern_thickness` (`id_pattern_thickness`,`thickness`) VALUES
 /*!40000 ALTER TABLE `pattern_thickness` ENABLE KEYS */;
 
 
---
--- Definition of table `person`
---
-
-DROP TABLE IF EXISTS `person`;
-CREATE TABLE `person` (
-  `id_person` int(10) unsigned NOT NULL,
-  `surname` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`id_person`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `person`
---
-
-/*!40000 ALTER TABLE `person` DISABLE KEYS */;
-INSERT INTO `person` (`id_person`,`surname`) VALUES
- (1,'Иванов'),
- (2,'Петров'),
- (3,'Сидоров');
-/*!40000 ALTER TABLE `person` ENABLE KEYS */;
-
-
---
--- Definition of table `person_method`
---
-
-DROP TABLE IF EXISTS `person_method`;
-CREATE TABLE `person_method` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `id_person` int(10) unsigned NOT NULL,
-  `id_method` int(10) unsigned NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `person_method`
---
-
-/*!40000 ALTER TABLE `person_method` DISABLE KEYS */;
-INSERT INTO `person_method` (`id`,`id_person`,`id_method`) VALUES
- (1,1,1),
- (2,1,2),
- (3,1,3),
- (4,3,2),
- (5,3,5);
-/*!40000 ALTER TABLE `person_method` ENABLE KEYS */;
-
 
 --
 -- Definition of table `personal_protocol`
@@ -572,7 +439,7 @@ CREATE TABLE `personal_protocol` (
   CONSTRAINT `FKC06CA1B75F1D58C6` FOREIGN KEY (`id_welder`) REFERENCES `welder` (`id_welder`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `FKC06CA1B7C9E9C4DB` FOREIGN KEY (`id_theory_test`) REFERENCES `theory_test` (`id_theory_test`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `FKC06CA1B7DFC6EABD` FOREIGN KEY (`id_resolution_certification`) REFERENCES `resolution_certification` (`id_resolution_certification`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `personal_protocol`
@@ -580,7 +447,8 @@ CREATE TABLE `personal_protocol` (
 
 /*!40000 ALTER TABLE `personal_protocol` DISABLE KEYS */;
 INSERT INTO `personal_protocol` (`id_personal_protocol`,`number`,`date_periodical_cert`,`id_journal`,`id_resolution_certification`,`id_theory_test`,`id_welder`) VALUES
- (1,'14-001','2014-11-04',1,1,1,1);
+ (1,'14-001','2014-11-04',1,1,1,1),
+ (2,'15-001','2015-01-26',2,NULL,NULL,4);
 /*!40000 ALTER TABLE `personal_protocol` ENABLE KEYS */;
 
 
@@ -650,7 +518,7 @@ CREATE TABLE `radiation_test` (
   KEY `FK12C67D90588CCF58` (`id_evaluation`),
   CONSTRAINT `FK12C67D90588CCF58` FOREIGN KEY (`id_evaluation`) REFERENCES `evaluation` (`id_evaluation`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `FK12C67D90D7AE25E9` FOREIGN KEY (`id_weld_pattern`) REFERENCES `weld_pattern` (`id_weld_pattern`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `radiation_test`
@@ -870,7 +738,7 @@ CREATE TABLE `total_protocol` (
   KEY `FK_TOTAL_PROTOCOL_COMMISSION_idx` (`id_commission_certification`),
   CONSTRAINT `FK_TOTAL_PROTOCOL_COMMISSION` FOREIGN KEY (`id_commission_certification`) REFERENCES `commission_certification` (`id_commission_certification`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `FK_TOTAL_PROTOCOL_JOURNAL` FOREIGN KEY (`id_journal`) REFERENCES `journal` (`id_journal`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `total_protocol`
@@ -878,11 +746,8 @@ CREATE TABLE `total_protocol` (
 
 /*!40000 ALTER TABLE `total_protocol` DISABLE KEYS */;
 INSERT INTO `total_protocol` (`id_total_protocol`,`number`,`date_cert`,`id_journal`,`id_commission_certification`) VALUES
- (1,'14-001','2014-11-04',1,1),
- (11,'15-001','2015-01-08',7,NULL),
- (12,'15-002','2015-01-14',8,NULL),
- (13,'15-003','2015-01-21',9,NULL),
- (14,'15-004','2015-01-28',10,NULL);
+ (1,'14-001','2014-11-06',1,1),
+ (2,'15-001','2015-01-26',2,NULL);
 /*!40000 ALTER TABLE `total_protocol` ENABLE KEYS */;
 
 
@@ -903,7 +768,7 @@ CREATE TABLE `visual_test` (
   KEY `FKB129FE31588CCF58` (`id_evaluation`),
   CONSTRAINT `FKB129FE31588CCF58` FOREIGN KEY (`id_evaluation`) REFERENCES `evaluation` (`id_evaluation`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `FKB129FE31D7AE25E9` FOREIGN KEY (`id_weld_pattern`) REFERENCES `weld_pattern` (`id_weld_pattern`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `visual_test`
@@ -911,7 +776,8 @@ CREATE TABLE `visual_test` (
 
 /*!40000 ALTER TABLE `visual_test` DISABLE KEYS */;
 INSERT INTO `visual_test` (`id_visual_test`,`defects`,`number`,`prot_date`,`id_evaluation`,`id_weld_pattern`) VALUES
- (1,'ДНО','14-001vt','2014-11-04',1,1);
+ (1,'Подрез глубина 0,5 мм длина 10 мм;\nПора диам 0,8 мм','14-001','2015-04-07',1,NULL),
+ (2,'ДНО','15-004','2015-04-07',1,NULL);
 /*!40000 ALTER TABLE `visual_test` ENABLE KEYS */;
 
 
@@ -1028,7 +894,7 @@ CREATE TABLE `weld_pattern` (
   CONSTRAINT `FKA8EE0D17A5C46FBB` FOREIGN KEY (`id_steel_type`) REFERENCES `steel_type` (`id_steel_type`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `FKA8EE0D17B2D5D5D9` FOREIGN KEY (`id_weld_method`) REFERENCES `weld_method` (`id_weld_method`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `FKA8EE0D17FC0038FB` FOREIGN KEY (`id_weld_gas`) REFERENCES `weld_gas` (`id_weld_gas`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `weld_pattern`
@@ -1036,7 +902,8 @@ CREATE TABLE `weld_pattern` (
 
 /*!40000 ALTER TABLE `weld_pattern` DISABLE KEYS */;
 INSERT INTO `weld_pattern` (`id_weld_pattern`,`diameter`,`is_heat_treatment`,`is_heating`,`mark`,`thickness`,`id_electrode`,`id_mechanical_test`,`id_personal_protocol`,`id_radiation_test`,`id_steel_type`,`id_visual_test`,`id_weld_detail`,`id_weld_gas`,`id_weld_method`,`id_weld_wire`) VALUES
- (1,57,0,0,'14-001',2,3,1,1,1,1,1,1,1,2,1);
+ (1,57,0,0,'14-001',5,3,1,1,1,1,1,1,NULL,2,NULL),
+ (2,57,0,0,'V',5,1,NULL,1,NULL,1,2,2,NULL,1,NULL);
 /*!40000 ALTER TABLE `weld_pattern` ENABLE KEYS */;
 
 
@@ -1061,7 +928,8 @@ CREATE TABLE `weld_pattern_weld_position` (
 /*!40000 ALTER TABLE `weld_pattern_weld_position` DISABLE KEYS */;
 INSERT INTO `weld_pattern_weld_position` (`id_weld_pattern`,`id_weld_position`) VALUES
  (1,1),
- (1,2);
+ (1,2),
+ (2,3);
 /*!40000 ALTER TABLE `weld_pattern_weld_position` ENABLE KEYS */;
 
 
@@ -1075,7 +943,7 @@ CREATE TABLE `weld_position` (
   `code` varchar(255) DEFAULT NULL,
   `type` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id_weld_position`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `weld_position`

@@ -4,13 +4,11 @@ import com.lvg.weldercenter.models.Curriculum;
 import com.lvg.weldercenter.models.Journal;
 import com.lvg.weldercenter.models.Teacher;
 import com.lvg.weldercenter.models.Welder;
-import com.lvg.weldercenter.services.CurriculumService;
-import com.lvg.weldercenter.services.JournalService;
-import com.lvg.weldercenter.services.TeacherService;
-import com.lvg.weldercenter.services.WelderService;
+import com.lvg.weldercenter.services.*;
 import com.lvg.weldercenter.spring.factories.ServiceFactory;
 import com.lvg.weldercenter.spring.factories.ServiceUIFactory;
 import com.lvg.weldercenter.ui.entities.*;
+import com.lvg.weldercenter.ui.servicesui.PersonalProtocolServiceUI;
 import com.lvg.weldercenter.ui.servicesui.TotalProtocolServiceUI;
 import com.lvg.weldercenter.ui.util.DateUtil;
 import com.lvg.weldercenter.ui.util.TableUtil;
@@ -55,6 +53,7 @@ public class JournalController extends GenericController{
     private TimeTableUtil timeTableUtil = new TimeTableUtilManager();
     private TableUtil<JournalUI> tableUtil = new TableViewManager();
     private TotalProtocolServiceUI totalProtocolServiceUI = ServiceUIFactory.getTotalProtocolServiceUI();
+    private PersonalProtocolServiceUI personalProtocolUI = ServiceUIFactory.getPersonalProtocolServiceUI();
 
     @FXML
     BorderPane mainJournalPane;
@@ -484,6 +483,7 @@ public class JournalController extends GenericController{
             journal.setJournalId(id);
             totalProtocolServiceUI.saveTotalProtocolUIinDB(new TotalProtocolUI(journal));
             JournalUI newJournal = new JournalUI(journal);
+            personalProtocolUI.savePersonalProtocolsFromJournalUI(newJournal);
             journalTableView.getItems().remove(journalUI);
             journalTableView.getSelectionModel().clearSelection();
             journalTableView.getItems().add(newJournal);
@@ -494,6 +494,7 @@ public class JournalController extends GenericController{
         if(journalService.get(journal.getJournalId())!=null){
             JournalUI updJournal = new JournalUI(journal);
             journalService.update(journal);
+            personalProtocolUI.savePersonalProtocolsFromJournalUI(updJournal);
             totalProtocolServiceUI.saveTotalProtocolUIinDB(new TotalProtocolUI(journal));
             LOGGER.debug("SAVE JOURNAL IN DB: New journal was updated in data base");
             return;

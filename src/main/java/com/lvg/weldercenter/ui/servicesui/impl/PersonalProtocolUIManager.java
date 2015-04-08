@@ -1,7 +1,11 @@
 package com.lvg.weldercenter.ui.servicesui.impl;
 
+import com.lvg.weldercenter.models.Journal;
 import com.lvg.weldercenter.models.PersonalProtocol;
+import com.lvg.weldercenter.models.Welder;
+import com.lvg.weldercenter.services.JournalService;
 import com.lvg.weldercenter.services.PersonalProtocolService;
+import com.lvg.weldercenter.services.WelderService;
 import com.lvg.weldercenter.ui.entities.JournalUI;
 import com.lvg.weldercenter.ui.entities.PersonalProtocolUI;
 import com.lvg.weldercenter.ui.entities.TotalProtocolUI;
@@ -9,6 +13,7 @@ import com.lvg.weldercenter.ui.entities.WelderUI;
 import com.lvg.weldercenter.ui.servicesui.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -28,6 +33,10 @@ public class PersonalProtocolUIManager implements PersonalProtocolServiceUI {
     private NDTDocumentServiceUI ndtDocumentServiceUI;
     @Autowired
     private ResolutionCertificationServiceUI resolutionCertificationServiceUI;
+    @Autowired
+    private JournalService journalService;
+    @Autowired
+    private WelderService welderService;
 //    @Autowired
 //    private WeldPatternServiceUI weldPatternServiceUI;
 
@@ -80,6 +89,60 @@ public class PersonalProtocolUIManager implements PersonalProtocolServiceUI {
 
     }
 
+    @Override
+    public void savePersonalProtocolsFromJournalUI(JournalUI journalUI) {
+        if (journalUI == null)
+            return;
+        Journal journal = journalService.get(journalUI.getId());
+        List<Welder> welders = null;
+        List<Welder> weldersCopy = new ArrayList<Welder>();
+        if (journal!= null){
+            welders = journal.getWelders();
+            for (Welder w: welders){
+                weldersCopy.add(w);
+            }
+            for (Welder w: welders){
+                if (getPersonalProtocolByJournalWelder(journal,w)!=null){
+                    weldersCopy.remove(w);
+                }
+            }
+            for (Welder w : weldersCopy){
+                PersonalProtocol pp = createPersonalProtocol(journal,w);
+                if (pp != null)
+                    personalProtocolService.insert(pp);
+            }
+        }else {
+            return;
+        }
+    }
+
+    private PersonalProtocol getPersonalProtocolByJournalWelder(Journal journal, Welder welder){
+        if(journal == null || welder == null){
+            return null;
+        }
+        for (PersonalProtocol pp : personalProtocolService.getAll()){
+            if (pp.getWelder() == null || pp.getJournal() == null)
+                break;
+            else {
+                if (pp.getJournal().equals(journal) && pp.getWelder().equals(welder))
+                    return pp;
+            }
+        }
+        return null;
+    }
+
+    private PersonalProtocol createPersonalProtocol(Journal journal, Welder welder){
+        if (journal == null || welder == null)
+            return null;
+        PersonalProtocol result = new PersonalProtocol();
+        result.setJournal(journal);
+        result.setWelder(welder);
+        result.setNumber(journal.getNumber());
+        if (journal.getDateEnd()!= null)
+            result.setDatePeriodicalCert(journal.getDateEnd());
+        return result;
+    }
+
     private void updatePersonalProtocolFromUIModel(PersonalProtocol updPersonalPrptocol, PersonalProtocolUI modelUI){
         updPersonalPrptocol.setNumber(modelUI.getNumber());
         updPersonalPrptocol.setDatePeriodicalCert(modelUI.getDatePeriodicalCert());
@@ -93,4 +156,5 @@ public class PersonalProtocolUIManager implements PersonalProtocolServiceUI {
        // updPersonalPrptocol.setWeldPatterns(weldPatternServiceUI.getWeldPatternListFromObsList(modelUI.getWeldPatterns()));
 
     }
+
 }

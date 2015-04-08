@@ -976,9 +976,13 @@ public class ProtocolController extends GenericController {
 
     private void initTitlePanePersProtocolTheoryTest(PersonalProtocolUI selectedPersProtocol){
         TheoryTestUI theoryTestUI = selectedPersProtocol.getTheoryTest();
-
-        txfTheoryTestTicketNumber.setText(theoryTestUI.getTicketNumber());
-        initComboBoxTheoryTestRating(theoryTestUI);
+        if (theoryTestUI != null) {
+            txfTheoryTestTicketNumber.setText(theoryTestUI.getTicketNumber());
+            initComboBoxTheoryTestRating(theoryTestUI);
+        }else {
+            txfTheoryTestTicketNumber.clear();
+            cbTheoryTestRating.getSelectionModel().clearSelection();
+        }
 
     }
 
@@ -1550,16 +1554,28 @@ public class ProtocolController extends GenericController {
             selectedWeldPatternUI.setPersonalProtocol(selectedPersonalProtocolUI);
             Long id = weldPatternService.insert(weldPattern);
             LOGGER.debug("SAVE SELECTED WELD PATTERN: selectedWeldPattern is inserted.");
-            selectedWeldPatternUI.setId(id);
+            selectedWeldPatternUI = new WeldPatternUI(weldPatternService.get(id));
+            selectedWeldPatternUI.setPersonalProtocol(selectedPersonalProtocolUI);
+            tabWeldPattern.getTabPane().getSelectionModel().select(tabPersonalProtocol);
             tableViewWeldPatterns.getItems().add(selectedWeldPatternUI);
+            tableViewWeldPatterns.getSelectionModel().select(selectedWeldPatternUI);
         }else{
             weldPatternService.update(weldPattern);
-            LOGGER.debug("SAVE SELECTED WELD PATTERN: selectedWeldPattern is inserted.");
+            LOGGER.debug("SAVE SELECTED WELD PATTERN: selectedWeldPattern is updated.");
+            tableViewWeldPatterns.getItems().clear();
+            showSelectedTotalProtocol(selectedTotalProtocolUI);
+            showSelectedPersProtocol(selectedPersonalProtocolUI);
 
         }
         Printer.printWeldPatternUI(selectedWeldPatternUI);
         Printer.printWeldPattern(weldPattern);
 
+    }
+    private void refreshWeldPatternTableView(TableView<WeldPatternUI> tableView){
+        if (tableView.getColumns().get(0)!= null) {
+            tableView.getColumns().get(0).setVisible(false);
+            tableView.getColumns().get(0).setVisible(true);
+        }
     }
 
 
