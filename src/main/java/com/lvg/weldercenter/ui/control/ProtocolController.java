@@ -7,6 +7,7 @@ import com.lvg.weldercenter.spring.factories.ServiceUIFactory;
 import com.lvg.weldercenter.ui.entities.*;
 import com.lvg.weldercenter.ui.servicesui.*;
 import com.lvg.weldercenter.ui.util.DateUtil;
+import com.lvg.weldercenter.ui.util.EventFXUtil;
 import com.lvg.weldercenter.ui.util.Printer;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
@@ -17,12 +18,15 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.control.Dialog;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import org.apache.log4j.Logger;
+import org.controlsfx.control.action.Action;
+import org.controlsfx.dialog.*;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -641,6 +645,13 @@ public class ProtocolController extends GenericController {
             weldPatternDiameterList.add(patternDiameterUI.getDiameter());
         }
         cbWeldPatternDiameter.setItems(weldPatternDiameterList);
+        if(cbWeldPatternDetail.getValue()!=null && !cbWeldPatternDetail.getValue().contains("Труба")){
+            cbWeldPatternDiameter.setDisable(true);
+        }else{
+            cbWeldPatternDiameter.setDisable(false);
+        }
+
+
     }
 
     private void initComboBoxDetailType(){
@@ -650,6 +661,7 @@ public class ProtocolController extends GenericController {
             weldDetailList.addAll(weldDetailUI.getDetailTypeCode());
         }
         cbWeldPatternDetail.setItems(weldDetailList);
+        cbWeldPatternDetail.valueProperty().addListener(new ComboBoxWeldDetailHandler());
     }
 
 
@@ -1244,14 +1256,21 @@ public class ProtocolController extends GenericController {
 
         if (cbWeldPatternDetail.getValue()!=null) {
             selectedWeldPattern.setWeldDetail(getWeldDetailFromComboBox(cbWeldPatternDetail));
+        }else {
+            selectedWeldPattern.setWeldDetail(null);
         }
 
         if (cbWeldPatternDiameter.getValue()!=null) {
-            selectedWeldPattern.setDiameter(cbWeldPatternDiameter.getValue());
+            if (cbWeldPatternDiameter.isDisable())
+                selectedWeldPattern.setDiameter(0);
+            else
+                selectedWeldPattern.setDiameter(cbWeldPatternDiameter.getValue());
         }
 
         if(cbWeldPatternThickness.getValue()!=null) {
             selectedWeldPattern.setThickness(cbWeldPatternThickness.getValue());
+        }else {
+            selectedWeldPattern.setThickness(0);
         }
 
         if (!txfWeldPatternMark.getText().isEmpty()) {
@@ -1262,6 +1281,8 @@ public class ProtocolController extends GenericController {
 
         if (cbWeldPatternSteelType.getValue()!=null) {
             selectedWeldPattern.setSteelType(getSteelTypeFromComboBox(cbWeldPatternSteelType));
+        }else {
+            selectedWeldPattern.setSteelType(null);
         }
 
 
@@ -1269,6 +1290,8 @@ public class ProtocolController extends GenericController {
 
         if (cbWeldPatternWeldMethod.getValue()!=null) {
             selectedWeldPattern.setWeldMethod(getWeldMethodFromComboBox(cbWeldPatternWeldMethod));
+        }else {
+            selectedWeldPattern.setWeldMethod(null);
         }
 
         if (chkWeldPatternElectrode.isSelected()){
@@ -1366,6 +1389,8 @@ public class ProtocolController extends GenericController {
         mechanicalTestUI.setAngle(angle);
         if (cbWeldPatternMechEvaluation.getValue() != null){
             mechanicalTestUI.setEvaluation(getEvaluationFromComboBox(cbWeldPatternMechEvaluation));
+        }else{
+            mechanicalTestUI.setEvaluation(null);
         }
         return mechanicalTestUI;
     }
@@ -1399,6 +1424,8 @@ public class ProtocolController extends GenericController {
         visualTestUI.setDefects(textAreaWeldPatternVTDefects.getText().trim());
         if (cbWeldPatternVTEvaluation.getValue()!=null){
             visualTestUI.setEvaluation(getEvaluationFromComboBox(cbWeldPatternVTEvaluation));
+        }else {
+            visualTestUI.setEvaluation(null);
         }
         return visualTestUI;
     }
@@ -1439,6 +1466,8 @@ public class ProtocolController extends GenericController {
         }
         if(cbWeldPatternRTEvaluation.getValue()!=null){
             radiationTestUI.setEvaluation(getEvaluationFromComboBox(cbWeldPatternRTEvaluation));
+        }else {
+            radiationTestUI.setEvaluation(null);
         }
         return radiationTestUI;
     }
@@ -1540,6 +1569,16 @@ public class ProtocolController extends GenericController {
         return weldDetailUI;
     }
 
+    private void selectParentTotalProtocol(){
+        TreeItem<String> selectedItem = protocolsTreeView.getSelectionModel().getSelectedItem();
+        if (selectedItem == null)
+            return;
+        if (selectedItem.getValue().contains(PERSONAL_PROTOCOL_PREFIX_NAME)){
+            protocolsTreeView.getSelectionModel().select(selectedItem.getParent());
+            protocolsTreeView.requestFocus();
+        }
+    }
+
 
     @FXML
     private void saveSelectedWeldPattern(){
@@ -1556,15 +1595,16 @@ public class ProtocolController extends GenericController {
             LOGGER.debug("SAVE SELECTED WELD PATTERN: selectedWeldPattern is inserted.");
             selectedWeldPatternUI = new WeldPatternUI(weldPatternService.get(id));
             selectedWeldPatternUI.setPersonalProtocol(selectedPersonalProtocolUI);
-            tabWeldPattern.getTabPane().getSelectionModel().select(tabPersonalProtocol);
-            tableViewWeldPatterns.getItems().add(selectedWeldPatternUI);
-            tableViewWeldPatterns.getSelectionModel().select(selectedWeldPatternUI);
+            protocolsTreeView.requestFocus();
+            doSelectProtocol();
         }else{
             weldPatternService.update(weldPattern);
+            selectedWeldPatternUI = new WeldPatternUI(weldPatternService.get(weldPattern.getWeldPatternId()));
+            selectedWeldPatternUI.setPersonalProtocol(selectedPersonalProtocolUI);
             LOGGER.debug("SAVE SELECTED WELD PATTERN: selectedWeldPattern is updated.");
-            tableViewWeldPatterns.getItems().clear();
-            showSelectedTotalProtocol(selectedTotalProtocolUI);
-            showSelectedPersProtocol(selectedPersonalProtocolUI);
+            protocolsTreeView.requestFocus();
+            doSelectProtocol();
+
 
         }
         Printer.printWeldPatternUI(selectedWeldPatternUI);
@@ -1629,6 +1669,30 @@ public class ProtocolController extends GenericController {
         accordionWeldPatternPane.setExpandedPane(titlePaneWeldPatternOption);
         showSelectedWeldPattern(selectedWeldPatternUI);
     }
+
+    @FXML void deleteWeldPattern(){
+        if (selectedPersonalProtocolUI == null)
+            return;
+        Action response = Dialogs.create().owner(mainProtocolPane.getScene().getWindow())
+                .title("Удаление записей")
+                .masthead("Сделан выбор записей для удаления")
+                .message("Удалить образец из данного протокола?")
+                .actions(org.controlsfx.dialog.Dialog.Actions.OK, org.controlsfx.dialog.Dialog.Actions.CANCEL)
+                .showConfirm();
+        if (response == org.controlsfx.dialog.Dialog.Actions.OK) {
+            WeldPatternUI delWeldPattern = tableViewWeldPatterns.getSelectionModel().getSelectedItem();
+            if (delWeldPattern == null)
+                return;
+            if (delWeldPattern.getId() > 0) {
+                WeldPattern wp = weldPatternService.get(delWeldPattern.getId());
+                if (wp != null) {
+                    weldPatternService.delete(wp);
+                    tableViewWeldPatterns.getItems().remove(delWeldPattern);
+                }
+            }
+        }
+    }
+
     @FXML
     private void discardSaveWeldPattern(){
         tabWeldPattern.setDisable(true);
@@ -1639,9 +1703,47 @@ public class ProtocolController extends GenericController {
     @FXML
     private void weldPatternTabSelectionChanged(){
         if (!tabWeldPattern.isSelected()){
+            if (isSelectedWeldPatternChanged(selectedWeldPatternUI)){
+                Action response = Dialogs.create().owner(mainProtocolPane.getScene().getWindow())
+                        .title("Сохранение записей")
+                        .masthead("Выбранный образец был изменен.")
+                        .message("Сохранить изменения в образце?")
+                        .actions(org.controlsfx.dialog.Dialog.Actions.OK, org.controlsfx.dialog.Dialog.Actions.CANCEL)
+                        .showConfirm();
+                if (response == org.controlsfx.dialog.Dialog.Actions.OK){
+                    saveSelectedWeldPattern();
+                    tabWeldPattern.setDisable(true);
+                    LOGGER.debug("WELD_PATTERN_TAB_SELECTION_CHANGED: response OK");
+                    return;
+                }
+            }
             tabWeldPattern.setDisable(true);
         }
 
+    }
+
+    @FXML
+    private void personalProtocolTabSelectionChanged(){
+        if (!tabPersonalProtocol.isSelected()){
+            if (!tabWeldPattern.isDisabled()){
+                tabPersonalProtocol.setDisable(false);
+                return;
+            }
+             tabPersonalProtocol.setDisable(true);
+                    }else {
+            tabPersonalProtocol.setDisable(false);
+        }
+
+    }
+
+    @FXML
+    private void totalProtocolTabSelectionChanged(){
+        //TODO finish correct selector
+        if (tabPersonalProtocol==null || tabTotalProtocol==null)
+            return;
+        if (tabTotalProtocol.isSelected() && !tabPersonalProtocol.isSelected()){
+            selectParentTotalProtocol();
+        }
     }
 
     @FXML
@@ -1728,6 +1830,21 @@ public class ProtocolController extends GenericController {
         }
 
     }
+    private class ComboBoxWeldDetailHandler implements InvalidationListener{
+        @Override
+        public void invalidated(Observable observable) {
+            LOGGER.debug("COMBO BOX WELD DETAIL HANDLER: invalideted");
+            String detail = cbWeldPatternDetail.getSelectionModel().getSelectedItem();
+            if (detail != null){
+                if (!detail.contains("Труба")){
+                    cbWeldPatternDiameter.setDisable(true);
+                    return;
+                }
+
+            }
+            cbWeldPatternDiameter.setDisable(false);
+        }
+    }
 
     private class CheckMenuItemHandler implements EventHandler<ActionEvent>{
         @Override
@@ -1757,43 +1874,43 @@ public class ProtocolController extends GenericController {
             }
         }
     }
+    private void doSelectProtocol(){
+
+        TreeItem<String> protocolItem = protocolsTreeView.getSelectionModel().getSelectedItem();
+        if (protocolItem==null){
+            LOGGER.debug("TREE LIST VIEW HANDLER: No one tree item is selected");
+            return;
+        }
+        if(protocolItem.getValue().equals(TREE_ROOT_ITEM_NAME)){
+            selectedTotalProtocolUI = null;
+            LOGGER.debug("TREE LIST VIEW HANDLER: No one protocol is selected");
+            return;
+        }
+        if(protocolItem.getValue().contains(PERSONAL_PROTOCOL_PREFIX_NAME)){
+            TreeItem<String> totalProtocolItem = protocolItem.getParent();
+            selectedTotalProtocolUI =
+                    totalProtocolServiceUI.getTotalProtocolUIByToStringMethod(totalProtocolItem.getValue(),cachedTotalProtocols);
+            selectedPersonalProtocolUI = getPersProtocolByItemName(selectedTotalProtocolUI,protocolItem.getValue());
+            showSelectedTotalProtocol(selectedTotalProtocolUI);
+            showSelectedPersProtocol(selectedPersonalProtocolUI);
+
+            LOGGER.debug("TREE LIST VIEW HANDLER: The personal protocol is selected: "+
+                    selectedPersonalProtocolUI);
+            return;
+        }
+        selectedTotalProtocolUI =
+                totalProtocolServiceUI.getTotalProtocolUIByToStringMethod(protocolItem.getValue(), cachedTotalProtocols);
+        if(selectedTotalProtocolUI != null){
+            LOGGER.debug("TREE LIST VIEW HANDLER: Selected protocol is: \n"+"id = "+selectedTotalProtocolUI.getId()+
+                    "; "+selectedTotalProtocolUI+"\n");
+            showSelectedTotalProtocol(selectedTotalProtocolUI);
+            //if(!totalProtocolBorderPane.isDisabled())
+            //    totalProtocolBorderPane.setDisable(true);
+        }
+    }
 
     private class ListViewHandler implements EventHandler<Event> {
 
-        private void doSelectProtocol(){
-
-            TreeItem<String> protocolItem = protocolsTreeView.getSelectionModel().getSelectedItem();
-            if (protocolItem==null){
-                LOGGER.debug("TREE LIST VIEW HANDLER: No one tree item is selected");
-                return;
-            }
-            if(protocolItem.getValue().equals(TREE_ROOT_ITEM_NAME)){
-                selectedTotalProtocolUI = null;
-                LOGGER.debug("TREE LIST VIEW HANDLER: No one protocol is selected");
-                return;
-            }
-            if(protocolItem.getValue().contains(PERSONAL_PROTOCOL_PREFIX_NAME)){
-                TreeItem<String> totalProtocolItem = protocolItem.getParent();
-                selectedTotalProtocolUI =
-                        totalProtocolServiceUI.getTotalProtocolUIByToStringMethod(totalProtocolItem.getValue(),cachedTotalProtocols);
-                selectedPersonalProtocolUI = getPersProtocolByItemName(selectedTotalProtocolUI,protocolItem.getValue());
-                showSelectedTotalProtocol(selectedTotalProtocolUI);
-                showSelectedPersProtocol(selectedPersonalProtocolUI);
-
-                LOGGER.debug("TREE LIST VIEW HANDLER: The personal protocol is selected: "+
-                    selectedPersonalProtocolUI);
-                return;
-            }
-            selectedTotalProtocolUI =
-                    totalProtocolServiceUI.getTotalProtocolUIByToStringMethod(protocolItem.getValue(), cachedTotalProtocols);
-            if(selectedTotalProtocolUI != null){
-                LOGGER.debug("TREE LIST VIEW HANDLER: Selected protocol is: \n"+"id = "+selectedTotalProtocolUI.getId()+
-                        "; "+selectedTotalProtocolUI+"\n");
-                showSelectedTotalProtocol(selectedTotalProtocolUI);
-                //if(!totalProtocolBorderPane.isDisabled())
-                //    totalProtocolBorderPane.setDisable(true);
-            }
-        }
 
         @Override
         public void handle(Event event) {

@@ -73,7 +73,7 @@
                <center>
                   <TabPane fx:id="tabPaneAllProtocols" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #F4F4F4;" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
                      <tabs>
-                        <Tab fx:id="tabTotalProtocol" text="Общий протокол">
+                        <Tab fx:id="tabTotalProtocol" onSelectionChanged="#totalProtocolTabSelectionChanged" text="Общий протокол">
                            <content>
                               <BorderPane fx:id="totalProtocolBorderPane" prefHeight="200.0" prefWidth="200.0">
                                  <top>
@@ -349,7 +349,7 @@
                               </BorderPane>
                            </content>
                         </Tab>
-                        <Tab fx:id="tabPersonalProtocol" text="Персональный протокол">
+                        <Tab fx:id="tabPersonalProtocol" onSelectionChanged="#personalProtocolTabSelectionChanged" text="Персональный протокол">
                            <content>
                               <BorderPane fx:id="borderPanePersonalProtocol" prefHeight="200.0" prefWidth="200.0">
                                  <top>
@@ -437,7 +437,7 @@
                                                                   <Font size="12.0" />
                                                                </font>
                                                             </Button>
-                                                            <Button fx:id="btDeleteWeldPattern" mnemonicParsing="false" text="Удалить">
+                                                            <Button fx:id="btDeleteWeldPattern" mnemonicParsing="false" onAction="#deleteWeldPattern" text="Удалить">
                                                                <VBox.margin>
                                                                   <Insets left="5.0" right="5.0" top="5.0" />
                                                                </VBox.margin>

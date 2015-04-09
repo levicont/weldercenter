@@ -132,6 +132,8 @@ public class WeldPatternUI extends GenericEntityUI {
     //Getters and Setters
 
     private String getSizeFromThicknesAndDiameter(double diameter, double thickness){
+        if (diameter==0)
+            return THICKNESS_MARK+thickness+MEASURE_MARK;
         return DIAMETER_MARK+diameter+MEASURE_MARK+"\n"+THICKNESS_MARK+thickness+MEASURE_MARK;
     }
 
