@@ -71,7 +71,7 @@
                         </Label>
                     </top>
                <center>
-                  <TabPane fx:id="tabPaneAllProtocols" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #F4F4F4;" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+                  <TabPane fx:id="tabPaneAllProtocols" onMouseClicked="#mainTabPaneOnMouseClicked" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #F4F4F4;" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
                      <tabs>
                         <Tab fx:id="tabTotalProtocol" onSelectionChanged="#totalProtocolTabSelectionChanged" text="Общий протокол">
                            <content>

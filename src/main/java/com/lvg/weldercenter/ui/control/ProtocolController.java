@@ -319,6 +319,7 @@ public class ProtocolController extends GenericController {
         cbTheoryTestRating.setItems(theoryTestRatingsList);
         initAllNDTdocs();
         listViewAllDocs.setItems(allNTDdocs);
+        tabPersonalProtocol.setDisable(true);
 
     }
 
@@ -687,6 +688,7 @@ public class ProtocolController extends GenericController {
         initCommissionTitlePane(selectedTotalProtocol);
         initJournalTitledPane(selectedTotalProtocol);
         tabTotalProtocol.getTabPane().getSelectionModel().select(tabTotalProtocol);
+        tabPersonalProtocol.setDisable(true);
 
 
     }
@@ -701,6 +703,7 @@ public class ProtocolController extends GenericController {
         initTitlePanePersProtocolTheoryTest(selectedPersProtocol);
         initPersProtocolNTDdocs(selectedPersProtocol);
         initPersProtocolResolutionCert(selectedPersProtocol);
+        tabPersonalProtocol.setDisable(false);
 
 
     }
@@ -1571,7 +1574,7 @@ public class ProtocolController extends GenericController {
         TreeItem<String> selectedItem = protocolsTreeView.getSelectionModel().getSelectedItem();
         if (selectedItem == null)
             return;
-        if (selectedItem.getValue().contains(PERSONAL_PROTOCOL_PREFIX_NAME)){
+            if (selectedItem.getValue().contains(PERSONAL_PROTOCOL_PREFIX_NAME)){
             protocolsTreeView.getSelectionModel().select(selectedItem.getParent());
             protocolsTreeView.requestFocus();
         }
@@ -1722,26 +1725,59 @@ public class ProtocolController extends GenericController {
 
     @FXML
     private void personalProtocolTabSelectionChanged(){
-        if (!tabPersonalProtocol.isSelected()){
-            if (!tabWeldPattern.isDisabled()){
-                tabPersonalProtocol.setDisable(false);
-                return;
-            }
-             tabPersonalProtocol.setDisable(true);
-                    }else {
-            tabPersonalProtocol.setDisable(false);
+        Tab selTab = tabPaneAllProtocols.getSelectionModel().getSelectedItem();
+        if (selTab.equals(tabPersonalProtocol)) {
+            LOGGER.debug("PERSONAL_PROTOCOL_TAB_SELECTION_CHANGED: selected tab is tabPersonalProtocol");
+            return;
         }
+        if (selTab.equals(tabTotalProtocol)) {
+            LOGGER.debug("PERSONAL_PROTOCOL_TAB_SELECTION_CHANGED: selected tab is tabTotalProtocol");
+            return;
+        }
+        if (selTab.equals(tabWeldPattern)){
+            LOGGER.debug("PERSONAL_PROTOCOL_TAB_SELECTION_CHANGED: selected tab is tabWeldPattern");
+            return;
+        }
+        LOGGER.debug("PERSONAL_PROTOCOL_TAB_SELECTION_CHANGED: no one tab is selected");
 
     }
 
     @FXML
-    private void totalProtocolTabSelectionChanged(){
-        //TODO finish correct selector
-        if (tabPersonalProtocol==null || tabTotalProtocol==null)
+    private void mainTabPaneOnMouseClicked(){
+        Tab selTab = tabPaneAllProtocols.getSelectionModel().getSelectedItem();
+        if (selTab.equals(tabPersonalProtocol)) {
+            LOGGER.debug("MAIN_TAB_PANE_ON_MOUSE_CLICKED: selected tab is tabPersonalProtocol");
             return;
-        if (tabTotalProtocol.isSelected() && !tabPersonalProtocol.isSelected()){
-            selectParentTotalProtocol();
         }
+        if (selTab.equals(tabTotalProtocol)) {
+            selectParentTotalProtocol();
+            tabPersonalProtocol.setDisable(true);
+            LOGGER.debug("MAIN_TAB_PANE_ON_MOUSE_CLICKED: selected tab is tabTotalProtocol");
+            return;
+        }
+        if (selTab.equals(tabWeldPattern)){
+            LOGGER.debug("MAIN_TAB_PANE_ON_MOUSE_CLICKED: selected tab is tabWeldPattern");
+            return;
+        }
+        LOGGER.debug("MAIN_TAB_PANE_ON_MOUSE_CLICKED: no one tab is selected");
+    }
+
+    @FXML
+    private void totalProtocolTabSelectionChanged(){
+        Tab selTab = tabPaneAllProtocols.getSelectionModel().getSelectedItem();
+        if (selTab.equals(tabPersonalProtocol)) {
+            LOGGER.debug("TOTAL_PROTOCOL_TAB_SELECTION_CHANGED: selected tab is tabPersonalProtocol");
+            return;
+        }
+        if (selTab.equals(tabTotalProtocol)) {
+            LOGGER.debug("TOTAL_PROTOCOL_TAB_SELECTION_CHANGED: selected tab is tabTotalProtocol");
+            return;
+        }
+        if (selTab.equals(tabWeldPattern)){
+            LOGGER.debug("TOTAL_PROTOCOL_TAB_SELECTION_CHANGED: selected tab is tabWeldPattern");
+            return;
+        }
+        LOGGER.debug("TOTAL_PROTOCOL_TAB_SELECTION_CHANGED: no one tab is selected");
     }
 
     @FXML
