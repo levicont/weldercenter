@@ -346,6 +346,17 @@
                                       </panes>
                                     </Accordion>
                                  </center>
+                                 <bottom>
+                                    <HBox alignment="CENTER_RIGHT" prefHeight="45.0" prefWidth="200.0" spacing="8.0" BorderPane.alignment="CENTER">
+                                       <children>
+                                          <Button fx:id="btSaveTotalProtocol" mnemonicParsing="false" text="Сохранить" />
+                                          <Button fx:id="btCancelSaveTotalProtocol" mnemonicParsing="false" text="Отмена" />
+                                       </children>
+                                       <padding>
+                                          <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                       </padding>
+                                    </HBox>
+                                 </bottom>
                               </BorderPane>
                            </content>
                         </Tab>
@@ -615,7 +626,18 @@
                                           </TitledPane>
                                       </panes>
                                     </Accordion>
-                                 </center></BorderPane>
+                                 </center>
+                                 <bottom>
+                                    <HBox alignment="CENTER_RIGHT" prefHeight="45.0" prefWidth="200.0" spacing="8.0" BorderPane.alignment="CENTER">
+                                       <children>
+                                          <Button fx:id="btSavePersonalProtocol" contentDisplay="CENTER" mnemonicParsing="false" text="Сохранить" />
+                                          <Button fx:id="btCancelSavePersonalProtocol" mnemonicParsing="false" text="Отмена" />
+                                       </children>
+                                       <padding>
+                                          <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                       </padding>
+                                    </HBox>
+                                 </bottom></BorderPane>
                            </content>
                         </Tab>
                         <Tab fx:id="tabWeldPattern" onSelectionChanged="#weldPatternTabSelectionChanged" text="Контрольный образец">
@@ -999,33 +1021,8 @@
                 </BorderPane>
             </items>
             <BorderPane.margin>
-                <Insets left="12.0" top="12.0" />
+                <Insets left="12.0" right="12.0" top="12.0" />
             </BorderPane.margin>
         </SplitPane>
     </center>
-    <right>
-        <VBox spacing="10.0" BorderPane.alignment="CENTER">
-            <children>
-                <Button fx:id="btAdd" mnemonicParsing="false" text="Добавить" />
-                <Button fx:id="btEdit" mnemonicParsing="false" text="Изменить" />
-                <Button fx:id="btDelete" mnemonicParsing="false" text="Удалить" />
-                <Separator>
-                    <VBox.margin>
-                        <Insets top="12.0" />
-                    </VBox.margin>
-                </Separator>
-                <Button fx:id="btSave" contentDisplay="CENTER" mnemonicParsing="false" text="Сохранить">
-                    <VBox.margin>
-                        <Insets />
-                    </VBox.margin>
-                </Button>
-            </children>
-            <padding>
-                <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
-            </padding>
-            <BorderPane.margin>
-                <Insets top="12.0" />
-            </BorderPane.margin>
-        </VBox>
-    </right>
 </BorderPane>

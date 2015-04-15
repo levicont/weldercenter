@@ -140,6 +140,10 @@ public class ProtocolController extends GenericController {
     Button btPrintJournal;
     @FXML
     Button btGoToJournal;
+    @FXML
+    Button btCancelSaveTotalProtocol;
+    @FXML
+    Button btSaveTotalProtocol;
 
     //Personal protocol components
     @FXML
@@ -196,6 +200,10 @@ public class ProtocolController extends GenericController {
     TextArea textAreaResolutionCert;
     @FXML
     Button btCleanResolutionText;
+    @FXML
+    Button btCancelSavePersonalProtocol;
+    @FXML
+    Button btSavePersonalProtocol;
 
     //Weld pattern components
     @FXML
@@ -275,6 +283,8 @@ public class ProtocolController extends GenericController {
     @FXML
     Button btWeldPatternCancel;
 
+    private boolean isWeldPatternSaved = false;
+
 
 
     private TotalProtocolUI selectedTotalProtocolUI = null;
@@ -308,6 +318,10 @@ public class ProtocolController extends GenericController {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         LOGGER.debug("INITIALIZING ProtocolPane");
+        init();
+    }
+
+    private void init(){
         initProtocolsTreeView();
         initTotalProtocolTab();
         initWeldPatternTab();
@@ -724,6 +738,7 @@ public class ProtocolController extends GenericController {
         initMenuButtonWeldPosition(selectedWeldPattern);
         initTextFieldWeldPosition(selectedWeldPattern);
         initTitlePaneWeldPatternTest(selectedWeldPattern);
+        isWeldPatternSaved = false;
     }
 
     private void initTitlePaneWeldPatternTest(WeldPatternUI selectedWeldPattern){
@@ -1031,6 +1046,7 @@ public class ProtocolController extends GenericController {
 
     private boolean isSelectedWeldPatternChanged(WeldPatternUI selectedWeldPattern) {
         chagedFields.clear();
+
 
         if (cbWeldPatternDetail.getValue()!=null) {
             if (!cbWeldPatternDetail.getValue().equals(selectedWeldPattern.getWeldDetail().getDetailTypeCode())) {
@@ -1593,6 +1609,7 @@ public class ProtocolController extends GenericController {
         if(selectedWeldPatternUI.getId()==0){
             selectedWeldPatternUI.setPersonalProtocol(selectedPersonalProtocolUI);
             Long id = weldPatternService.insert(weldPattern);
+            isWeldPatternSaved = true;
             LOGGER.debug("SAVE SELECTED WELD PATTERN: selectedWeldPattern is inserted.");
             selectedWeldPatternUI = new WeldPatternUI(weldPatternService.get(id));
             selectedWeldPatternUI.setPersonalProtocol(selectedPersonalProtocolUI);
@@ -1600,6 +1617,7 @@ public class ProtocolController extends GenericController {
             doSelectProtocol();
         }else{
             weldPatternService.update(weldPattern);
+            isWeldPatternSaved = true;
             selectedWeldPatternUI = new WeldPatternUI(weldPatternService.get(weldPattern.getWeldPatternId()));
             selectedWeldPatternUI.setPersonalProtocol(selectedPersonalProtocolUI);
             LOGGER.debug("SAVE SELECTED WELD PATTERN: selectedWeldPattern is updated.");
@@ -1704,7 +1722,7 @@ public class ProtocolController extends GenericController {
     @FXML
     private void weldPatternTabSelectionChanged(){
         if (!tabWeldPattern.isSelected()){
-            if (isSelectedWeldPatternChanged(selectedWeldPatternUI)){
+            if (isSelectedWeldPatternChanged(selectedWeldPatternUI)&& !isWeldPatternSaved){
                 Action response = Dialogs.create().owner(mainProtocolPane.getScene().getWindow())
                         .title("Сохранение записей")
                         .masthead("Выбранный образец был изменен.")
