@@ -37,8 +37,8 @@ public class PersonalProtocolUIManager implements PersonalProtocolServiceUI {
     private JournalService journalService;
     @Autowired
     private WelderService welderService;
-//    @Autowired
-//    private WeldPatternServiceUI weldPatternServiceUI;
+    @Autowired
+    private WeldPatternServiceUI weldPatternServiceUI;
 
 
     @Override
@@ -143,17 +143,17 @@ public class PersonalProtocolUIManager implements PersonalProtocolServiceUI {
         return result;
     }
 
-    private void updatePersonalProtocolFromUIModel(PersonalProtocol updPersonalPrptocol, PersonalProtocolUI modelUI){
-        updPersonalPrptocol.setNumber(modelUI.getNumber());
-        updPersonalPrptocol.setDatePeriodicalCert(modelUI.getDatePeriodicalCert());
-        updPersonalPrptocol.setJournal(journalServiceUI.getJournalFromJournalUI(modelUI.getJournal()));
-        updPersonalPrptocol.setWelder(welderServiceUI.getWelderFromWelderUI(modelUI.getWelder()));
-        updPersonalPrptocol.setTheoryTest(theoryTestServiceUI.getTheoryTestFromUIModel(modelUI.getTheoryTest()));
-        updPersonalPrptocol.setNdtDocuments(ndtDocumentServiceUI.getNDTDocumentListFromObsList(modelUI.getNdtDocuments()));
-        updPersonalPrptocol.setResolutionCertification(resolutionCertificationServiceUI.getResolutionCertFromUIModel(
+    private void updatePersonalProtocolFromUIModel(PersonalProtocol updPersonalProtocol, PersonalProtocolUI modelUI){
+        updPersonalProtocol.setNumber(modelUI.getNumber());
+        updPersonalProtocol.setDatePeriodicalCert(modelUI.getDatePeriodicalCert());
+        updPersonalProtocol.setJournal(journalServiceUI.getJournalFromJournalUI(modelUI.getJournal()));
+        updPersonalProtocol.setWelder(welderServiceUI.getWelderFromWelderUI(modelUI.getWelder()));
+        updPersonalProtocol.setTheoryTest(theoryTestServiceUI.getTheoryTestFromUIModel(modelUI.getTheoryTest()));
+        updPersonalProtocol.setNdtDocuments(ndtDocumentServiceUI.getNDTDocumentListFromObsList(modelUI.getNdtDocuments()));
+        updPersonalProtocol.setResolutionCertification(resolutionCertificationServiceUI.getResolutionCertFromUIModel(
                 modelUI.getResolutionCertification()
         ));
-       // updPersonalPrptocol.setWeldPatterns(weldPatternServiceUI.getWeldPatternListFromObsList(modelUI.getWeldPatterns()));
+        updPersonalProtocol.setWeldPatterns(weldPatternServiceUI.getWeldPatternListFromObsList(modelUI.getWeldPatterns()));
 
     }
 

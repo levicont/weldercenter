@@ -29,6 +29,6 @@ public class ResolutionCeritificationUIManager implements ResolutionCertificatio
     }
 
     private void updateResolutionFromUIModel(ResolutionCertification updResolution, ResolutionCertificationUI modelUI){
-        updResolution.setTextResolution(updResolution.getTextResolution());
+        updResolution.setTextResolution(modelUI.getTextResolution());
     }
 }

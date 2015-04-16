@@ -1,6 +1,8 @@
 package com.lvg.weldercenter.ui.util;
 
+import com.lvg.weldercenter.models.PersonalProtocol;
 import com.lvg.weldercenter.models.WeldPattern;
+import com.lvg.weldercenter.ui.entities.PersonalProtocolUI;
 import com.lvg.weldercenter.ui.entities.WeldPatternUI;
 import org.apache.log4j.Logger;
 
@@ -53,5 +55,29 @@ public class Printer {
 
         );
 
+    }
+
+    public static void printPersonalProtocolUI(PersonalProtocolUI personalProtocolUI){
+        LOGGER.debug("PRINT PERSONAL_PROTOCOL_UI: id_personal_protocol: "+personalProtocolUI.getId()+"\n"+
+                        "\twelder: "+personalProtocolUI.getWelder()+"\n"+
+                        "\tnumber: "+personalProtocolUI.getNumber()+"\n"+
+                        "\tdate: "+personalProtocolUI.getDatePeriodicalCertFormat()+"\n"+
+                        "\tweld_patterns: "+personalProtocolUI.getWeldPatterns()+"\n"+
+                        "\ttheory_test: "+personalProtocolUI.getTheoryTest()+"\n"+
+                        "\tndt_documents: "+personalProtocolUI.getNdtDocuments()+"\n"+
+                        "\tresolution_certification: "+personalProtocolUI.getResolutionCertification()+"\n"
+        );
+    }
+
+    public static void printPersonalProtocol(PersonalProtocol personalProtocol){
+        LOGGER.debug("PRINT PERSONAL_PROTOCOL: id_personal_protocol: "+personalProtocol.getPersonalProtocolId()+"\n"+
+                        "\twelder: "+personalProtocol.getWelder()+"\n"+
+                        "\tnumber: "+personalProtocol.getNumber()+"\n"+
+                        "\tdate: "+personalProtocol.getDatePeriodicalCert()+"\n"+
+                        "\tweld_patterns: "+personalProtocol.getWeldPatterns()+"\n"+
+                        "\ttheory_test: "+personalProtocol.getTheoryTest()+"\n"+
+                        "\tndt_documents: "+personalProtocol.getNdtDocuments()+"\n"+
+                        "\tresolution_certification: "+personalProtocol.getResolutionCertification()+"\n"
+        );
     }
 }

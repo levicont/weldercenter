@@ -7,6 +7,7 @@ import com.lvg.weldercenter.spring.factories.ServiceUIFactory;
 import com.lvg.weldercenter.ui.entities.*;
 import com.lvg.weldercenter.ui.servicesui.*;
 import com.lvg.weldercenter.ui.util.DateUtil;
+import com.lvg.weldercenter.ui.util.EventFXUtil;
 import com.lvg.weldercenter.ui.util.Printer;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
@@ -1596,6 +1597,96 @@ public class ProtocolController extends GenericController {
         }
     }
 
+    private void updateSelectedPersonalProtocolFromFields(PersonalProtocolUI selectedPersProtocol){
+        if (selectedPersProtocol == null)
+            return;
+
+        if (txfPersonalProtocolNumber.getText().isEmpty()){
+            selectedPersProtocol.setNumber("");
+        }else {
+            selectedPersProtocol.setNumber(txfPersonalProtocolNumber.getText().trim());
+        }
+
+        if (dpPersonalProtocolDate.getValue()!=null){
+            selectedPersProtocol.setDatePeriodicalCert(DateUtil.getDate(dpPersonalProtocolDate.getValue()));
+            selectedPersProtocol.setDatePeriodicalCertFormat(
+                    DateUtil.format(selectedPersProtocol.getDatePeriodicalCert()));
+        }else {
+            selectedPersProtocol.setDatePeriodicalCert(null);
+            selectedPersProtocol.setDatePeriodicalCertFormat("");
+        }
+
+        ObservableList<WeldPatternUI> weldPatternUIs = tableViewWeldPatterns.getItems();
+        if (weldPatternUIs != null && !weldPatternUIs.isEmpty()) {
+            selectedPersProtocol.setWeldPatterns(weldPatternUIs);
+        }else {
+            selectedPersProtocol.getWeldPatterns().clear();
+        }
+
+        ObservableList<NDTDocumentUI> ndtDocumentUIs = getNDTDocumentsUIFromListView(listViewAttestDocs);
+        selectedPersProtocol.setNdtDocuments(ndtDocumentUIs);
+
+        selectedPersProtocol.setTheoryTest(getTheoryTestUIFromPane());
+
+        selectedPersProtocol.setResolutionCertification(getResolutionCertUIFromPane());
+
+
+
+    }
+    private  ResolutionCertificationUI getResolutionCertUIFromPane(){
+        ResolutionCertificationUI rsUI = new ResolutionCertificationUI();
+        rsUI.setTextResolution(textAreaResolutionCert.getText());
+        return rsUI;
+    }
+
+    private TheoryTestUI getTheoryTestUIFromPane(){
+        TheoryTestUI theoryTestUI = new TheoryTestUI();
+        if (txfTheoryTestTicketNumber.getText().trim().isEmpty()){
+            theoryTestUI.setTicketNumber("");
+        }else {
+            theoryTestUI.setTicketNumber(txfTheoryTestTicketNumber.getText().trim());
+        }
+        if (cbTheoryTestRating.getValue()!=null){
+            theoryTestUI.setRating(cbTheoryTestRating.getValue());
+        }else {
+            theoryTestUI.setRating("");
+        }
+        return theoryTestUI;
+    }
+
+    private ObservableList<NDTDocumentUI> getNDTDocumentsUIFromListView(ListView<String> listView){
+        ObservableList<NDTDocumentUI> ndtList = FXCollections.observableArrayList();
+        if (listView == null)
+            return ndtList;
+
+        ObservableList<String> names = listView.getItems();
+        for (NDTDocument ndtDocument : ndtDocumentService.getAll()){
+            NDTDocumentUI ndtDocumentUI = new NDTDocumentUI(ndtDocument);
+            if (names.contains(ndtDocument.getName())){
+                ndtList.add(ndtDocumentUI);
+            }
+        }
+        return ndtList;
+    }
+
+    @FXML
+    private void savePersonalProtocol(){
+        updateSelectedPersonalProtocolFromFields(selectedPersonalProtocolUI);
+        PersonalProtocol pp = personalProtocolServiceUI.getPersonalProtocolFromUIModel(selectedPersonalProtocolUI);
+        LOGGER.debug("SAVE_PERSONAL_PROTOCOL: updated protocol is:");
+        Printer.printPersonalProtocolUI(selectedPersonalProtocolUI);
+        Printer.printPersonalProtocol(pp);
+    }
+
+    @FXML
+    private void cancelSavePersonalProtocol(){
+        TreeItem<String> selectedItem = protocolsTreeView.getSelectionModel().getSelectedItem();
+        if (selectedItem != null) {
+            protocolsTreeView.getSelectionModel().select(selectedItem.getParent());
+            protocolsTreeView.requestFocus();
+            protocolsTreeView.fireEvent(EventFXUtil.getMouseClickEvent());
+        }
+    }
 
     @FXML
     private void saveSelectedWeldPattern(){
