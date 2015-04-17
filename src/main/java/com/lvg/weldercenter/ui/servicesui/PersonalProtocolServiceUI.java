@@ -13,4 +13,5 @@ public interface PersonalProtocolServiceUI {
     public PersonalProtocolUI getPersonalProtocolUIFromDB(TotalProtocolUI totalProtocolUI, String welderFullName);
     public PersonalProtocol getPersonalProtocolFromUIModel(PersonalProtocolUI personalProtocolUI);
     public void savePersonalProtocolsFromJournalUI(JournalUI journalUI);
+    public void savePersonalProtocolUIinDB(PersonalProtocolUI personalProtocolUI);
 }

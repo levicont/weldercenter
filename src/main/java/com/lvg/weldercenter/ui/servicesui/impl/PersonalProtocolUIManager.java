@@ -1,16 +1,13 @@
 package com.lvg.weldercenter.ui.servicesui.impl;
 
-import com.lvg.weldercenter.models.Journal;
-import com.lvg.weldercenter.models.PersonalProtocol;
-import com.lvg.weldercenter.models.Welder;
-import com.lvg.weldercenter.services.JournalService;
-import com.lvg.weldercenter.services.PersonalProtocolService;
-import com.lvg.weldercenter.services.WelderService;
+import com.lvg.weldercenter.models.*;
+import com.lvg.weldercenter.services.*;
 import com.lvg.weldercenter.ui.entities.JournalUI;
 import com.lvg.weldercenter.ui.entities.PersonalProtocolUI;
 import com.lvg.weldercenter.ui.entities.TotalProtocolUI;
 import com.lvg.weldercenter.ui.entities.WelderUI;
 import com.lvg.weldercenter.ui.servicesui.*;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
@@ -20,6 +17,7 @@ import java.util.List;
  * Created by Victor on 11.03.2015.
  */
 public class PersonalProtocolUIManager implements PersonalProtocolServiceUI {
+    private static final Logger LOGGER = Logger.getLogger(PersonalProtocolUIManager.class);
 
     @Autowired
     private PersonalProtocolService personalProtocolService;
@@ -33,6 +31,10 @@ public class PersonalProtocolUIManager implements PersonalProtocolServiceUI {
     private NDTDocumentServiceUI ndtDocumentServiceUI;
     @Autowired
     private ResolutionCertificationServiceUI resolutionCertificationServiceUI;
+    @Autowired
+    private ResolutionCertificationService resolutionCertificationService;
+    @Autowired
+    private TheoryTestService theoryTestService;
     @Autowired
     private JournalService journalService;
     @Autowired
@@ -113,6 +115,35 @@ public class PersonalProtocolUIManager implements PersonalProtocolServiceUI {
             }
         }else {
             return;
+        }
+    }
+
+    @Override
+    public void savePersonalProtocolUIinDB(PersonalProtocolUI personalProtocolUI) {
+        PersonalProtocol pp = getPersonalProtocolFromUIModel(personalProtocolUI);
+        if (pp == null){
+            return;
+        }
+        ResolutionCertification rs;
+        TheoryTest tt;
+        if (pp.getPersonalProtocolId()!=null){
+            PersonalProtocol ppTempory = personalProtocolService.get(pp.getPersonalProtocolId());
+            rs = ppTempory.getResolutionCertification();
+            tt = ppTempory.getTheoryTest();
+            if (rs!=null){
+                resolutionCertificationService.delete(rs);
+            }
+            if (tt!=null){
+                theoryTestService.delete(tt);
+            }
+        }
+
+        if (pp.getPersonalProtocolId()!=null){
+            personalProtocolService.update(pp);
+            LOGGER.debug("SAVE_PERSONAL_PROTOCOL_UI_IN_DB: personal protocol is updated");
+        }else {
+            personalProtocolService.insert(pp);
+            LOGGER.debug("SAVE_PERSONAL_PROTOCOL_UI_IN_DB: personal protocol is inserted");
         }
     }
 

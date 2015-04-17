@@ -93,7 +93,7 @@ public class PersonalProtocol implements Serializable{
     }
 
 
-    @OneToOne
+    @OneToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name = "id_resolution_certification")
     public ResolutionCertification getResolutionCertification() {
         return resolutionCertification;
@@ -103,7 +103,7 @@ public class PersonalProtocol implements Serializable{
         this.resolutionCertification = resolutionCertification;
     }
 
-    @OneToOne(targetEntity = TheoryTest.class)
+    @OneToOne(targetEntity = TheoryTest.class, cascade = {CascadeType.ALL})
     @JoinColumn(name = "id_theory_test")
     public TheoryTest getTheoryTest() {
         return theoryTest;

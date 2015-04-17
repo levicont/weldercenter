@@ -1671,11 +1671,13 @@ public class ProtocolController extends GenericController {
 
     @FXML
     private void savePersonalProtocol(){
+        btSavePersonalProtocol.setDisable(true);
         updateSelectedPersonalProtocolFromFields(selectedPersonalProtocolUI);
-        PersonalProtocol pp = personalProtocolServiceUI.getPersonalProtocolFromUIModel(selectedPersonalProtocolUI);
+        personalProtocolServiceUI.savePersonalProtocolUIinDB(selectedPersonalProtocolUI);
         LOGGER.debug("SAVE_PERSONAL_PROTOCOL: updated protocol is:");
+        btSavePersonalProtocol.setDisable(false);
         Printer.printPersonalProtocolUI(selectedPersonalProtocolUI);
-        Printer.printPersonalProtocol(pp);
+
     }
 
     @FXML
