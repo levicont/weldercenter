@@ -81,6 +81,8 @@ public class ProtocolController extends GenericController {
 
     @FXML
     TreeView<String> protocolsTreeView;
+    @FXML
+    TextField txfSearch;
 
     //Total protocol components
     @FXML
@@ -358,6 +360,7 @@ public class ProtocolController extends GenericController {
         protocolsTreeView.getRoot().setExpanded(true);
         protocolsTreeView.addEventHandler(MouseEvent.MOUSE_CLICKED, new ListViewHandler());
         protocolsTreeView.addEventHandler(KeyEvent.KEY_RELEASED, new ListViewHandler());
+        txfSearch.textProperty().addListener(new SearchInvalidateHandler());
     }
 
     private void initTotalProtocols(){
@@ -401,7 +404,7 @@ public class ProtocolController extends GenericController {
         accordionTotalProtocol.setExpandedPane(titlePaneTotalProtocolWelders);
         initTotalProtocolWeldersTableView();
         initCommissionComboBox();
-        //totalProtocolBorderPane.setDisable(true);
+        tabTotalProtocol.setDisable(true);
     }
 
     private void initTotalProtocolWeldersTableView(){
@@ -435,6 +438,9 @@ public class ProtocolController extends GenericController {
             txfCommissionWeldSpecialist.setText(currentCommission.getWeldSpecialist().getFullTeacherName());
             txfCommissionSafetySpecialist.setText(currentCommission.getSafetySpecialist().getFullTeacherName());
         }else{
+            clearCommissionTitlePane();
+        }
+        if (currentCommission == null){
             clearCommissionTitlePane();
         }
     }
@@ -704,6 +710,7 @@ public class ProtocolController extends GenericController {
         initJournalTitledPane(selectedTotalProtocol);
         tabTotalProtocol.getTabPane().getSelectionModel().select(tabTotalProtocol);
         tabPersonalProtocol.setDisable(true);
+        tabTotalProtocol.setDisable(false);
 
 
     }
@@ -719,6 +726,7 @@ public class ProtocolController extends GenericController {
         initPersProtocolNTDdocs(selectedPersProtocol);
         initPersProtocolResolutionCert(selectedPersProtocol);
         tabPersonalProtocol.setDisable(false);
+        tableViewWeldPatterns.setDisable(false);
 
 
     }
@@ -944,6 +952,8 @@ public class ProtocolController extends GenericController {
         ResolutionCertificationUI resolution = selectedPersProtocol.getResolutionCertification();
         if (resolution != null) {
             textAreaResolutionCert.setText(resolution.getTextResolution());
+        }else{
+            textAreaResolutionCert.clear();
         }
 
     }
@@ -1668,6 +1678,37 @@ public class ProtocolController extends GenericController {
         }
         return ndtList;
     }
+    private void updateSelectedTotalProtocolFromFields(TotalProtocolUI totalProtocolUI){
+        if (totalProtocolUI==null)
+            return;
+        if (cbIDCommissionCert.getValue()!=null){
+            totalProtocolUI.setCommissionCertification(getCommissionCertUIbyID(cbIDCommissionCert.getValue()));
+        }else {
+            totalProtocolUI.setCommissionCertification(null);
+        }
+    }
+
+    private CommissionCertificationUI getCommissionCertUIbyID(Long id){
+        if (id == null) {
+            return null;
+        }
+        CommissionCertification commissionCertification = commissionCertificationService.get(id);
+        if (commissionCertification != null){
+            return new CommissionCertificationUI(commissionCertification);
+        }
+        return null;
+    }
+
+    @FXML
+    private void saveTotalProtocol(){
+        btSaveTotalProtocol.setDisable(true);
+        updateSelectedTotalProtocolFromFields(selectedTotalProtocolUI);
+        totalProtocolServiceUI.saveTotalProtocolUIinDB(selectedTotalProtocolUI);
+        initTotalProtocols();
+        Printer.printTotalProtocolUI(selectedTotalProtocolUI);
+        LOGGER.debug("SAVE_TOTAL_PROTOCOL: total_protocol is updated");
+        btSaveTotalProtocol.setDisable(false);
+    }
 
     @FXML
     private void savePersonalProtocol(){
@@ -1689,6 +1730,15 @@ public class ProtocolController extends GenericController {
             protocolsTreeView.fireEvent(EventFXUtil.getMouseClickEvent());
         }
     }
+
+    @FXML
+    private void cancelSaveTotalProtocol(){
+        TreeItem<String> rootItem = protocolsTreeView.getRoot();
+        protocolsTreeView.getSelectionModel().select(rootItem);
+        protocolsTreeView.requestFocus();
+        protocolsTreeView.fireEvent(EventFXUtil.getMouseClickEvent());
+    }
+
 
     @FXML
     private void saveSelectedWeldPattern(){
@@ -1951,6 +2001,7 @@ public class ProtocolController extends GenericController {
             getControllerManager().showJournalPane();
             getControllerManager().getJournalController().journalTableView.getSelectionModel().clearSelection();
             getControllerManager().getJournalController().journalTableView.getSelectionModel().select(journalUI);
+            getControllerManager().getJournalController().journalTableView.fireEvent(EventFXUtil.getMouseClickEvent());
             getControllerManager().getJournalController().journalTableView.requestFocus();
         }
     }
@@ -2028,6 +2079,7 @@ public class ProtocolController extends GenericController {
         }
         if(protocolItem.getValue().equals(TREE_ROOT_ITEM_NAME)){
             selectedTotalProtocolUI = null;
+            tabTotalProtocol.setDisable(true);
             LOGGER.debug("TREE LIST VIEW HANDLER: No one protocol is selected");
             return;
         }
@@ -2073,6 +2125,30 @@ public class ProtocolController extends GenericController {
 
 
 
+        }
+    }
+
+    private class SearchInvalidateHandler implements InvalidationListener{
+
+        @Override
+        public void invalidated(Observable observable) {
+            if (txfSearch.getText().isEmpty()) {
+                protocolsTreeView.getRoot().getChildren().clear();
+                protocolsTreeView.getRoot().getChildren().addAll(totalProtocols);
+                return;
+            }
+            ObservableList<TreeItem<String>> temporyChildrens = FXCollections.observableArrayList();
+
+            for (TreeItem<String> item : totalProtocols){
+                if (item.getValue().contains(txfSearch.getText())){
+                    temporyChildrens.add(item);
+                }
+            }
+            protocolsTreeView.getRoot().getChildren().clear();
+            protocolsTreeView.getRoot().getChildren().addAll(temporyChildrens);
+            protocolsTreeView.getSelectionModel().select(protocolsTreeView.getRoot());
+            protocolsTreeView.fireEvent(EventFXUtil.getMouseClickEvent());
+            txfSearch.requestFocus();
         }
     }
 }

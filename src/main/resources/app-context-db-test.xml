@@ -114,6 +114,7 @@
     <bean id="resolutionCertificationServiceUI"
           class="com.lvg.weldercenter.ui.servicesui.impl.ResolutionCeritificationUIManager"/>
     <bean id="weldPatternServiceUI" class="com.lvg.weldercenter.ui.servicesui.impl.WeldPatternUIManager"/>
+    <bean id="commissionCertificationServiceUI" class="com.lvg.weldercenter.ui.servicesui.impl.CommissionCertificationUIManager"/>
 
 
 

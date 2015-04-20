@@ -3,6 +3,7 @@ package com.lvg.weldercenter.ui.util;
 import com.lvg.weldercenter.models.PersonalProtocol;
 import com.lvg.weldercenter.models.WeldPattern;
 import com.lvg.weldercenter.ui.entities.PersonalProtocolUI;
+import com.lvg.weldercenter.ui.entities.TotalProtocolUI;
 import com.lvg.weldercenter.ui.entities.WeldPatternUI;
 import org.apache.log4j.Logger;
 
@@ -78,6 +79,16 @@ public class Printer {
                         "\ttheory_test: "+personalProtocol.getTheoryTest()+"\n"+
                         "\tndt_documents: "+personalProtocol.getNdtDocuments()+"\n"+
                         "\tresolution_certification: "+personalProtocol.getResolutionCertification()+"\n"
+        );
+    }
+
+    public static void printTotalProtocolUI(TotalProtocolUI totalProtocolUI){
+        LOGGER.debug("PRINT_TOTAL_PROTOCOL: id_total_protocol: "+totalProtocolUI.getId()+"\n"+
+                        "\tnumber: "+totalProtocolUI.getNumber()+"\n"+
+                        "\tdate: "+totalProtocolUI.getDateCertFormat()+"\n"+
+                        "\tcommission_certification: "+totalProtocolUI.getCommissionCertification()+"\n"+
+                        "\tjournal: "+totalProtocolUI.getJournal()+"\n"
+
         );
     }
 }

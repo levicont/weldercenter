@@ -15,9 +15,6 @@ public class TeacherUIManager implements TeacherServiceUI {
     @Autowired
     private TeacherService teacherService;
 
-    public TeacherUIManager(){
-
-    }
 
     @Override
     public Teacher getTeacherFromTeacherUI(TeacherUI teacherUI) {

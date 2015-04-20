@@ -51,10 +51,10 @@ public class JournalUI extends GenericEntityUI {
     public JournalUI(){
         this.id.set(0);
         this.number.set("");
-        this.dateBegin.set(DateUtil.getDate(DateUtil.DEFAULT_DATE));
-        this.dateEnd.set(DateUtil.getDate(DateUtil.DEFAULT_DATE));
-        this.dateBeginFormat.set(DateUtil.format(DateUtil.DEFAULT_DATE));
-        this.dateEndFormat.set(DateUtil.format(DateUtil.DEFAULT_DATE));
+        this.dateBegin.set(DateUtil.getDate(DateUtil.TODAY));
+        this.dateEnd.set(DateUtil.getDate(DateUtil.TODAY));
+        this.dateBeginFormat.set(DateUtil.format(DateUtil.TODAY));
+        this.dateEndFormat.set(DateUtil.format(DateUtil.TODAY));
         this.curriculum.set("");
         this.weldersCount.set("0");
 

@@ -1,10 +1,13 @@
 package com.lvg.weldercenter.ui.servicesui.impl;
 
+import com.lvg.weldercenter.models.CommissionCertification;
 import com.lvg.weldercenter.models.TotalProtocol;
+import com.lvg.weldercenter.services.CommissionCertificationService;
 import com.lvg.weldercenter.services.TotalProtocolService;
 import com.lvg.weldercenter.spring.factories.ServiceFactory;
 import com.lvg.weldercenter.spring.factories.ServiceUIFactory;
 import com.lvg.weldercenter.ui.entities.TotalProtocolUI;
+import com.lvg.weldercenter.ui.servicesui.CommissionCertificationServiceUI;
 import com.lvg.weldercenter.ui.servicesui.JournalServiceUI;
 import com.lvg.weldercenter.ui.servicesui.TotalProtocolServiceUI;
 import com.lvg.weldercenter.ui.util.DateUtil;
@@ -24,10 +27,14 @@ public class TotalProtocolUIManager implements TotalProtocolServiceUI {
     private TotalProtocolService totalProtocolService;
     @Autowired
     private JournalServiceUI journalServiceUI;
+    @Autowired
+    private CommissionCertificationServiceUI commissionCertificationServiceUI;
 
 
     @Override
     public void saveTotalProtocolUIinDB(TotalProtocolUI totalProtocolUI) {
+        if (totalProtocolUI == null)
+            return;
         if(totalProtocolUI.getJournal()!=null){
             TotalProtocolUI protocolUIFromDB =
                     getTotalProtocolUIByJournalID(totalProtocolUI.getJournal().getId());
@@ -45,16 +52,16 @@ public class TotalProtocolUIManager implements TotalProtocolServiceUI {
 
     @Override
     public TotalProtocol getTotalProtocolFromTotalProtocolUI(TotalProtocolUI totalProtocolUI) {
-        TotalProtocol result;
-        if (totalProtocolUI.getId() == 0){
-            result = new TotalProtocol();
+        if (totalProtocolUI == null)
+            return null;
+        TotalProtocol result = totalProtocolService.get(totalProtocolUI.getId());
+        if (result != null){
+            updateTotalProtocolFromUIModel(result, totalProtocolUI);
+
         }else{
-            result = totalProtocolService.get(totalProtocolUI.getId());
+            result = new TotalProtocol();
+            updateTotalProtocolFromUIModel(result, totalProtocolUI);
         }
-        result.setIdTotalProtocol(totalProtocolUI.getId());
-        result.setNumber(totalProtocolUI.getNumber());
-        result.setDateCert(totalProtocolUI.getDateCert());
-        result.setJournal(journalServiceUI.getJournalFromJournalUI(totalProtocolUI.getJournal()));
         return result;
     }
 
@@ -130,5 +137,13 @@ public class TotalProtocolUIManager implements TotalProtocolServiceUI {
             LOGGER.debug("GET TOTAL PROTOCOL DATE STRING BY NAME: DateString: "+dateString);
         }
         return result;
+    }
+
+    private void updateTotalProtocolFromUIModel(TotalProtocol updTotalProtocol, TotalProtocolUI modelUI){
+        updTotalProtocol.setNumber(modelUI.getNumber());
+        updTotalProtocol.setDateCert(modelUI.getDateCert());
+        updTotalProtocol.setCommissionCertification(commissionCertificationServiceUI.
+                getCommissionCertificationFromUIModel(modelUI.getCommissionCertification()));
+        updTotalProtocol.setJournal(journalServiceUI.getJournalFromJournalUI(modelUI.getJournal()));
     }
 }

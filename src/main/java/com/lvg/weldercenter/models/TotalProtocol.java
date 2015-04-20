@@ -59,7 +59,7 @@ public class TotalProtocol implements Serializable {
         this.journal = journal;
     }
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name = "id_commission_certification")
     public CommissionCertification getCommissionCertification() {
         return commissionCertification;

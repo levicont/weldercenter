@@ -23,4 +23,5 @@ public interface TotalProtocolServiceUI {
     public TotalProtocolUI getTotalProtocolUIByNumberAndDate(String protocolNumber, String dateFormat);
     public TotalProtocolUI getTotalProtocolUIByToStringMethod(String stringName);
     public TotalProtocolUI getTotalProtocolUIByToStringMethod(String stringName, List<TotalProtocolUI> totalProtocolUIList);
+
 }

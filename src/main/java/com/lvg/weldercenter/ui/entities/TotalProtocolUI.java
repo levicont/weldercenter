@@ -44,7 +44,7 @@ public class TotalProtocolUI extends GenericEntityUI {
         this.dateCert.set(journalUI.getDateEnd());
         this.dateCertFormat.set(journalUI.getDateEndFormat());
         this.journal.set(journalUI);
-        this.commissionCertification.set(new CommissionCertificationUI());
+
     }
 
 

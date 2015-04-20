@@ -17,6 +17,7 @@ public class DateUtil implements Holidays{
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern(DATE_PATTERN);
     private static final SimpleDateFormat SIMPLE_DATE_FORMAT = new SimpleDateFormat(DATE_PATTERN);
     public static final LocalDate DEFAULT_DATE = LocalDate.of(2000, Month.JANUARY, 1);
+    public static final LocalDate TODAY = LocalDate.now();
 
 
     public static LocalDate getLocalDate(Date date) {

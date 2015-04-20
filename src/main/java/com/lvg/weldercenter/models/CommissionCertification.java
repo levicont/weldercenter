@@ -34,7 +34,7 @@ public class CommissionCertification implements Serializable{
         this.commissionCertificationId = commissionCertificationId;
     }
 
-    @ManyToOne(targetEntity = Teacher.class)
+    @ManyToOne(targetEntity = Teacher.class, cascade = {CascadeType.ALL})
     @JoinColumn(name = "id_teacher_head")
     public Teacher getHead() {
         return head;
@@ -44,7 +44,7 @@ public class CommissionCertification implements Serializable{
         this.head = head;
     }
 
-    @ManyToOne(targetEntity = Teacher.class)
+    @ManyToOne(targetEntity = Teacher.class, cascade = {CascadeType.ALL})
     @JoinColumn(name = "id_teacher_weld_spec")
     public Teacher getWeldSpecialist() {
         return weldSpecialist;
@@ -54,7 +54,7 @@ public class CommissionCertification implements Serializable{
         this.weldSpecialist = weldSpecialist;
     }
 
-    @ManyToOne(targetEntity = Teacher.class)
+    @ManyToOne(targetEntity = Teacher.class,cascade = {CascadeType.ALL} )
     @JoinColumn(name = "id_teacher_ndt_spec")
     public Teacher getNdtSpecialist() {
         return ndtSpecialist;
@@ -64,7 +64,7 @@ public class CommissionCertification implements Serializable{
         this.ndtSpecialist = ndtSpecialist;
     }
 
-    @ManyToOne(targetEntity = Teacher.class)
+    @ManyToOne(targetEntity = Teacher.class, cascade = {CascadeType.ALL})
     @JoinColumn(name = "id_teacher_safety_spec")
     public Teacher getSafetySpecialist() {
         return safetySpecialist;

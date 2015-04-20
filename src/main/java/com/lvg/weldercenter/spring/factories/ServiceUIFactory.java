@@ -30,6 +30,7 @@ public class ServiceUIFactory {
     private static NDTDocumentServiceUI ndtDocumentServiceUI;
     private static ResolutionCertificationServiceUI resolutionCertificationServiceUI;
     private static WeldPatternServiceUI weldPatternServiceUI;
+    private static CommissionCertificationServiceUI commissionCertificationServiceUI;
 
 
     private ServiceUIFactory(){
@@ -225,6 +226,16 @@ public class ServiceUIFactory {
         }else {
             weldPatternServiceUI = (WeldPatternServiceUI)context.getBean("weldPatternServiceUI");
             return weldPatternServiceUI;
+        }
+    }
+
+    public static CommissionCertificationServiceUI getCommissionCertificationServiceUI() {
+        if (commissionCertificationServiceUI != null) {
+            return commissionCertificationServiceUI;
+        }else {
+            commissionCertificationServiceUI = (CommissionCertificationServiceUI)context.
+                    getBean("commissionCertificationServiceUI");
+            return commissionCertificationServiceUI;
         }
     }
 }
