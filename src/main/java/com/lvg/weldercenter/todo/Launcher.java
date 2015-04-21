@@ -4,6 +4,7 @@ import com.lvg.weldercenter.models.Job;
 import com.lvg.weldercenter.services.JobService;
 import com.lvg.weldercenter.spring.ContextFactory;
 import com.lvg.weldercenter.ui.MainFrame;
+import com.lvg.weldercenter.ui.MainPreloader;
 import javafx.application.Application;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -36,6 +37,7 @@ public class Launcher {
 
     private Application getApplication(){
         Application app = (Application)context.getBean("fxApplication");
+
         return app;
     }
 }
