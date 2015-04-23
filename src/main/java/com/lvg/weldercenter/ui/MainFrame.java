@@ -31,9 +31,9 @@ public class MainFrame extends Application {
         Task task = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
-                int max = 10;
+                int max = 20;
                 for (int i = 1; i <= max; i++) {
-                    Thread.sleep(100);
+                    Thread.sleep(500);
                     // Send progress to preloader
                     notifyPreloader(new Preloader.ProgressNotification(((double) i)/max));
                 }
