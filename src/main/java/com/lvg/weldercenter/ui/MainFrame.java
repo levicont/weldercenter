@@ -1,5 +1,6 @@
 package com.lvg.weldercenter.ui;
 
+import com.lvg.weldercenter.spring.ContextFactory;
 import com.lvg.weldercenter.ui.control.*;
 import impl.org.controlsfx.i18n.Localization;
 import javafx.application.Application;
@@ -14,6 +15,7 @@ import javafx.scene.Scene;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
+import javax.swing.*;
 import java.util.Locale;
 import java.util.logging.Logger;
 
@@ -24,62 +26,25 @@ public class MainFrame extends Application {
     private static final Logger LOGGER = Logger.getLogger("MainFrame.class");
     private ControllerManager controllerManager;
     private Stage stage;
-    private BooleanProperty ready = new SimpleBooleanProperty(false);
-
-    private void longStart() {
-        //simulate long init in background
-        Task task = new Task<Void>() {
-            @Override
-            protected Void call() throws Exception {
-                int max = 20;
-                for (int i = 1; i <= max; i++) {
-                    Thread.sleep(500);
-                    // Send progress to preloader
-                    notifyPreloader(new Preloader.ProgressNotification(((double) i)/max));
-                }
-                // After init is ready, the app is ready to be shown
-                // Do this before hiding the preloader stage to prevent the
-                // app from exiting prematurely
-                ready.setValue(Boolean.TRUE);
-
-                notifyPreloader(new Preloader.StateChangeNotification(
-                        Preloader.StateChangeNotification.Type.BEFORE_START));
-
-                return null;
-            }
-        };
-        new Thread(task).start();
-    }
+    private JProgressBar progressBar;
+    private SplashSwingFrame splashWindow;
 
 
     @Override
     public void start(final Stage stage) throws Exception {
         LOGGER.info(" **** in start() method");
-        longStart();
+        progressBar.setValue(30);
         this.stage = stage;
         System.out.println(" **** in start() method");
         controllerManager = new ControllerManager(stage);
+        progressBar.setValue(75);
         Localization.setLocale(new Locale("ru","RU"));
         stage.setTitle("Welder center");
         stage.setScene(new Scene(controllerManager.getMainFrame(), Color.LIGHTBLUE));
         initControllers(controllerManager);
-
-        // After the app is ready, show the stage
-        ready.addListener(new ChangeListener<Boolean>(){
-            public void changed(
-                    ObservableValue<? extends Boolean> ov, Boolean t, Boolean t1) {
-                if (Boolean.TRUE.equals(t1)) {
-                    Platform.runLater(new Runnable() {
-                        public void run() {
-                            stage.show();
-                        }
-                    });
-                }
-            }
-        });
-
-
-        //stage.show();
+        progressBar.setValue(100);
+        splashWindow.dispose();
+        stage.show();
 
 
         System.out.println(" **** end of start() method");
@@ -87,8 +52,8 @@ public class MainFrame extends Application {
 
     @Override
     public void init() throws Exception {
-        super.init();
-
+       splashWindow = (SplashSwingFrame)ContextFactory.getApplicationContext().getBean("splashSwingFrame");
+       progressBar = splashWindow.getProgressBar();
     }
 
     private void initControllers(ControllerManager controllerManager){
