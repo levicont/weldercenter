@@ -45,8 +45,7 @@ public class MainFrame extends Application {
         progressBar.setValue(100);
         splashWindow.dispose();
         stage.show();
-
-
+        //upd
         System.out.println(" **** end of start() method");
     }
 
