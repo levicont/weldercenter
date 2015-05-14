@@ -4,6 +4,8 @@ package com.lvg.weldercenter.ui;
  * Created by Victor on 07.05.2015.
  */
 
+import net.miginfocom.swing.MigLayout;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -17,9 +19,13 @@ import java.io.IOException;
 
 public class SplashSwingFrame extends JWindow{
 
-    private final String IMAGE_FILE_NAME = "/img/splash_background.jpg";
+    private final String IMAGE_FILE_NAME = "src/main/resources/img/splash_background.jpg";
+    private final String LOADING_TEXT = "Загрузка";
+    private Timer timer;
+    private int doteCount = 0;
     private JWindow mainWindow;
     private JLabel lbCaption;
+    private JLabel lbLoadingModuleName;
     private BackgroundPanel backgroundPanel;
     private JPanel pnTop;
     private JPanel pnBottom;
@@ -33,7 +39,7 @@ public class SplashSwingFrame extends JWindow{
     public SplashSwingFrame(){
         super();
         mainWindow = this;
-        this.setSize(400, 300);
+        this.setSize(650, 300);
         setOnScreenCenter();
         init();
         this.setVisible(true);
@@ -41,10 +47,43 @@ public class SplashSwingFrame extends JWindow{
     }
 
     private void init(){
-        lbCaption = new JLabel(new ImageIcon(IMAGE_FILE_NAME));
+        lbCaption = new JLabel(LOADING_TEXT);
+        lbCaption.setForeground(Color.ORANGE);
+
+
+        timer = new Timer(1000, new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (doteCount==0) {
+                    lbCaption.setText(LOADING_TEXT + " .    ");
+                    doteCount++;
+                    return;
+                }
+                if (doteCount==1) {
+                    lbCaption.setText(LOADING_TEXT + " . .  ");
+                    doteCount++;
+                    return;
+                }
+                if (doteCount==2) {
+                    lbCaption.setText(LOADING_TEXT + " . . .");
+                    doteCount=0;
+                    return;
+                }
+            }
+        });
+        timer.start();
+
+        lbLoadingModuleName = new JLabel("Инициализация модулей базы данных");
+        lbLoadingModuleName.setForeground(Color.ORANGE);
+
         backgroundPanel = new BackgroundPanel();
-        backgroundPanel.setImageFile(new File(IMAGE_FILE_NAME));
-        backgroundPanel.setLayout(new BorderLayout());
+        backgroundPanel.setLayout(new MigLayout());
+
+        File imgFile = new File(IMAGE_FILE_NAME);
+
+        backgroundPanel.setImageFile(imgFile);
+
+
         pnTop = new JPanel();
         pnBottom = new JPanel();
         btClose = new JButton("close");
@@ -61,19 +100,17 @@ public class SplashSwingFrame extends JWindow{
         progressBar.setBorderPainted(false);
         progressBar.setMaximum(100);
         progressBar.setValue(10);
-        progressBar.setForeground(Color.BLUE);
+        progressBar.setForeground(Color.blue);
 
-        pnTop.add(btClose);
-        backgroundPanel.add(lbCaption);
-        pnBottom.add(progressBar);
+        backgroundPanel.add(lbCaption,"gapright 333");
+        backgroundPanel.add(lbLoadingModuleName,"gapright 25 ,wrap");
+        backgroundPanel.add(progressBar,"height 5:5:5, gaptop 263, span");
 
 
         Container pane = this.getContentPane();
 
-        pane.add(pnTop, BorderLayout.NORTH);
         pane.add(backgroundPanel, BorderLayout.CENTER);
-        pane.add(pnBottom, BorderLayout.SOUTH);
-       // pack();
+
     }
 
     private void setOnScreenCenter(){
@@ -84,6 +121,10 @@ public class SplashSwingFrame extends JWindow{
 
     public JProgressBar getProgressBar() {
         return progressBar;
+    }
+
+    public JLabel getLbLoadingModuleName() {
+        return lbLoadingModuleName;
     }
 
     private class BackgroundPanel extends JPanel{

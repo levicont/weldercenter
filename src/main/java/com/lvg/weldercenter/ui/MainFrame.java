@@ -37,7 +37,8 @@ public class MainFrame extends Application {
         this.stage = stage;
         System.out.println(" **** in start() method");
         controllerManager = new ControllerManager(stage);
-        progressBar.setValue(75);
+        progressBar.setValue(55);
+        splashWindow.getLbLoadingModuleName().setText(" Инициализация главного модуля");
         Localization.setLocale(new Locale("ru","RU"));
         stage.setTitle("Welder center");
         stage.setScene(new Scene(controllerManager.getMainFrame(), Color.LIGHTBLUE));
@@ -45,7 +46,7 @@ public class MainFrame extends Application {
         progressBar.setValue(100);
         splashWindow.dispose();
         stage.show();
-        //upd
+
         System.out.println(" **** end of start() method");
     }
 
@@ -56,16 +57,23 @@ public class MainFrame extends Application {
     }
 
     private void initControllers(ControllerManager controllerManager){
+
         MainFrameController mainFrameController = controllerManager.getMainFrameController();
         mainFrameController.setControllerManager(controllerManager);
         mainFrameController.setStageAndListeners(controllerManager.getStage());
 
+        splashWindow.getLbLoadingModuleName().setText(" Инициализация модуля сварщиков");
+        progressBar.setValue(80);
         WelderController welderController = controllerManager.getWelderController();
         welderController.setControllerManager(controllerManager);
 
+        splashWindow.getLbLoadingModuleName().setText(" Инициализация модуля журналов");
+        progressBar.setValue(85);
         JournalController journalController = controllerManager.getJournalController();
         journalController.setControllerManager(controllerManager);
 
+        splashWindow.getLbLoadingModuleName().setText(" Инициализация модуля протоколов");
+        progressBar.setValue(90);
         ProtocolController protocolController = controllerManager.getProtocolController();
         protocolController.setControllerManager(controllerManager);
     }
