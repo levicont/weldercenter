@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="total-protocol-rep" language="groovy" pageWidth="595" pageHeight="842" columnWidth="511" leftMargin="56" rightMargin="28" topMargin="28" bottomMargin="28" uuid="de5263b1-4e52-4913-b971-592546b3da88">
+	<property name="ireport.zoom" value="1.0000000000000004"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="511" height="20" uuid="9a37d314-afc3-42ac-add3-2dac8682e762"/>
+				<textElement textAlignment="Center">
+					<font fontName="Tahoma" size="12"/>
+				</textElement>
+				<text><![CDATA[ООО "Харьковский профессиональный колледж"]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="20" width="511" height="21" uuid="e5d39018-f62e-408d-83e1-1a00d9c72e7f"/>
+				<textElement textAlignment="Center">
+					<font fontName="Tahoma" size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[РЕШЕНИЕ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="41" width="511" height="23" uuid="e54af925-8bb2-439c-9913-994a2877eabf"/>
+				<textElement textAlignment="Center">
+					<font fontName="Tahoma" size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[аттестационной комиссии]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="30" height="20" uuid="be21798b-9c82-4576-823f-551f79c80b73"/>
+				<textElement textAlignment="Right">
+					<font fontName="Tahoma" size="12"/>
+				</textElement>
+				<text><![CDATA[от]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="395" y="0" width="30" height="20" uuid="15ff422a-c7e0-4c29-aafe-c5a3ff2461b5"/>
+				<textElement textAlignment="Right">
+					<font fontName="Tahoma" size="12"/>
+				</textElement>
+				<text><![CDATA[№]]></text>
+			</staticText>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement x="30" y="0" width="100" height="20" uuid="3f373876-a41e-4116-8fd1-7c9a6d84c19e"/>
+				<textElement>
+					<font size="12"/>
+					<paragraph leftIndent="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{protDate}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="11" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="546" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="150" height="20" uuid="1558e2d7-2d47-466f-8374-d7aec378c760"/>
+				<textElement textAlignment="Right">
+					<font fontName="Tahoma" size="14"/>
+				</textElement>
+				<text><![CDATA[Состав комиссии:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="20" width="243" height="20" uuid="5716ba6d-2808-4f90-98d4-054fbbad7cc0"/>
+				<textElement textAlignment="Right">
+					<font fontName="Tahoma" size="14"/>
+				</textElement>
+				<text><![CDATA[председатель комиссии:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="40" width="243" height="20" uuid="4e2510ea-bdab-4685-aa1d-fe41e1263471"/>
+				<textElement textAlignment="Right">
+					<font fontName="Tahoma" size="14"/>
+				</textElement>
+				<text><![CDATA[члены комиссии:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="127" y="100" width="384" height="20" uuid="7a732c87-86ed-4ad4-a26c-83f995cfaec2"/>
+				<textElement>
+					<font fontName="Tahoma" size="14" isBold="false"/>
+				</textElement>
+				<text><![CDATA[рассмотрение результатов квалификационных экзаменов.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="127" y="120" width="384" height="40" uuid="57fe21e1-be3e-4de9-b061-6d1dc04aa747"/>
+				<textElement>
+					<font fontName="Tahoma" size="14" isBold="false"/>
+				</textElement>
+				<text><![CDATA[результаты практических и теоретических квалификационных экзаменов.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="127" y="160" width="384" height="22" uuid="711e05cf-480b-4938-a618-135b17f3c541"/>
+				<textElement>
+					<font fontName="Tahoma" size="14" isBold="false"/>
+					<paragraph tabStopWidth="55"/>
+				</textElement>
+				<text><![CDATA[аттестовать сварщиков согласно протоколу №	от]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="182" width="511" height="22" uuid="ec52742c-37fb-4726-a32d-06f31f30304f"/>
+				<textElement>
+					<font fontName="Tahoma" size="14" isBold="true"/>
+					<paragraph tabStopWidth="55"/>
+				</textElement>
+				<text><![CDATA[4. Срок очередной аттестации:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="448" width="294" height="20" uuid="5e87a900-9ecd-4161-acb2-ee85e719bf96"/>
+				<textElement textAlignment="Right">
+					<font fontName="Tahoma" size="14"/>
+				</textElement>
+				<text><![CDATA[Председатель комиссии:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="468" width="294" height="20" uuid="51208519-01e2-44e4-a1bc-8f4749770d47"/>
+				<textElement textAlignment="Right">
+					<font fontName="Tahoma" size="14"/>
+				</textElement>
+				<text><![CDATA[Члены комиссии:]]></text>
+			</staticText>
+			<line>
+				<reportElement x="310" y="468" width="115" height="1" uuid="6d182470-45f3-4bc6-9a0f-005d49e134eb"/>
+			</line>
+			<line>
+				<reportElement x="310" y="488" width="115" height="1" uuid="2693e766-e8cf-4d19-a31a-0a5d092d45f3"/>
+			</line>
+			<line>
+				<reportElement x="310" y="508" width="115" height="1" uuid="d2287efa-7b88-4668-9523-fcd3815278c4"/>
+			</line>
+			<line>
+				<reportElement x="310" y="528" width="115" height="1" uuid="a608ac01-7361-4d0e-83da-5e541cb3f399"/>
+			</line>
+			<staticText>
+				<reportElement x="0" y="100" width="127" height="20" uuid="5bf3e641-7dfe-404f-b65c-8143f9f199dc"/>
+				<textElement>
+					<font fontName="Tahoma" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[1. Повестка дня:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="120" width="127" height="20" uuid="56c20a5f-093f-4c12-b983-4bb2a5b06dfc"/>
+				<textElement>
+					<font fontName="Tahoma" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[2. Слушали:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="162" width="127" height="20" uuid="87e6a964-43a8-4ffc-a278-7aaf943f339f"/>
+				<textElement>
+					<font fontName="Tahoma" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[3. Решили:]]></text>
+			</staticText>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="13" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="10" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="9" splitType="Stretch"/>
+	</summary>
+</jasperReport>
