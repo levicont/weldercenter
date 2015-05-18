@@ -65,11 +65,13 @@ public class ReportViewController extends GenericController {
             JasperReport report = JasperCompileManager.compileReport(TOTAL_PROTOCOL_REPORT_URL.getFile());
             JasperPrint print = JasperFillManager.fillReport(report, new HashMap<String, Object>(),new JREmptyDataSource());
             reportViewer = new JRViewer(print);
-
+            reportViewer.setMinimumSize(new Dimension(400,300));
+            //reportViewer.setPreferredSize(reportPanel.getPreferredSize());
             reportViewer.setBorder(BorderFactory.createLineBorder(Color.BLUE));
             reportViewer.setFitPageZoomRatio();
             reportPanel.add(reportViewer,BorderLayout.CENTER);
             reportPanel.setVisible(true);
+
         }catch (JRException ex){
             LOGGER.error("SHOW SIMPLE REPORT VIEW: Could not load report: "+ex.getMessage(),ex);
         }
