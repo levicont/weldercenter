@@ -2005,6 +2005,12 @@ public class ProtocolController extends GenericController {
             getControllerManager().getJournalController().journalTableView.requestFocus();
         }
     }
+    @FXML
+    private void showTotalProtocolReport(){
+        getControllerManager().showReportViewPane();
+        getControllerManager().getReportViewController().showTotalProtocolReport();
+
+    }
 
     private class ComboBoxCommissionHandler implements InvalidationListener{
 

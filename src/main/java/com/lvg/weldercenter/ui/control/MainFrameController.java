@@ -66,6 +66,11 @@ public class MainFrameController extends GenericController{
         controllerManager.showProtocolPane();
     }
 
+    private void showReportViewPane(){
+        LOGGER.debug("SHOWING ReportViewPane");
+        controllerManager.showReportViewPane();
+    }
+
     private void hideAllPanes(){
     }
 

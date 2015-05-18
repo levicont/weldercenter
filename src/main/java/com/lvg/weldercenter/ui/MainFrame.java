@@ -76,5 +76,12 @@ public class MainFrame extends Application {
         progressBar.setValue(90);
         ProtocolController protocolController = controllerManager.getProtocolController();
         protocolController.setControllerManager(controllerManager);
+
+        splashWindow.getLbLoadingModuleName().setText(" Инициализация модуля отчетов");
+        progressBar.setValue(95);
+        controllerManager.getReportViewPane();
+        ReportViewController reportViewController = controllerManager.getReportViewController();
+        reportViewController.setControllerManager(controllerManager);
+
     }
 }
