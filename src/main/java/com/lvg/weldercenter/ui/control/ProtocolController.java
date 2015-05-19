@@ -2008,7 +2008,7 @@ public class ProtocolController extends GenericController {
     @FXML
     private void showTotalProtocolReport(){
         getControllerManager().showReportViewPane();
-        getControllerManager().getReportViewController().showTotalProtocolReport();
+        getControllerManager().getReportViewController().showTotalProtocolReport(selectedTotalProtocolUI);
 
     }
 

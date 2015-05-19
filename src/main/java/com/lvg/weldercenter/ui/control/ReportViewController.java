@@ -1,5 +1,6 @@
 package com.lvg.weldercenter.ui.control;
 
+import com.lvg.weldercenter.ui.entities.TotalProtocolUI;
 import javafx.embed.swing.SwingNode;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -43,11 +44,28 @@ public class ReportViewController extends GenericController {
         reportPanel = new JPanel();
 
         swingNode.setContent(reportPanel);
+        reportPanel.setLayout(new BorderLayout());
 
     }
 
-    public void showTotalProtocolReport(){
-        showSimpleReportView();
+    public void showTotalProtocolReport(TotalProtocolUI protocolUI){
+        try {
+            JasperReport report = JasperCompileManager.compileReport(TOTAL_PROTOCOL_REPORT_URL.getFile());
+            JasperPrint print = JasperFillManager.fillReport(report, protocolUI.getParameters(),new JREmptyDataSource());
+            addReportPrintToPanel(print);
+            reportPanel.setVisible(true);
+        }catch (JRException ex){
+            LOGGER.error("SHOW TOTAL PROTOCOL REPORT VIEW: Could not load report: "+ex.getMessage(),ex);
+        }
+    }
+
+    private void addReportPrintToPanel(JasperPrint print){
+        reportViewer = new JRViewer(print);
+        reportViewer.setFitPageZoomRatio();
+        for (int i=0; i<reportPanel.getComponents().length; i++){
+            reportPanel.remove(i);
+        }
+        reportPanel.add(reportViewer, BorderLayout.CENTER);
     }
 
     @FXML
@@ -61,21 +79,15 @@ public class ReportViewController extends GenericController {
     @FXML
     private void showSimpleReportView(){
         try {
-
             JasperReport report = JasperCompileManager.compileReport(TOTAL_PROTOCOL_REPORT_URL.getFile());
             JasperPrint print = JasperFillManager.fillReport(report, new HashMap<String, Object>(),new JREmptyDataSource());
-            reportViewer = new JRViewer(print);
-            reportViewer.setMinimumSize(new Dimension(400,300));
-            //reportViewer.setPreferredSize(reportPanel.getPreferredSize());
-            reportViewer.setBorder(BorderFactory.createLineBorder(Color.BLUE));
-            reportViewer.setFitPageZoomRatio();
-            reportPanel.add(reportViewer,BorderLayout.CENTER);
+            addReportPrintToPanel(print);
             reportPanel.setVisible(true);
-
         }catch (JRException ex){
             LOGGER.error("SHOW SIMPLE REPORT VIEW: Could not load report: "+ex.getMessage(),ex);
         }
     }
+
 
 
 }

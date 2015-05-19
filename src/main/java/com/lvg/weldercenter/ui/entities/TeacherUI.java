@@ -100,6 +100,33 @@ public class TeacherUI extends GenericEntityUI {
         return this.getSurname()+" "+this.getName()+" "+this.getSecname();
     }
 
+    /**
+     *
+     * @param patternString
+     * "NN-SEC-SUR" - full name secname surname
+     * "SUR-NN-SEC" - full surname name secname
+     * "SUR-nn-sec" - full surname short name short secname
+     * "nn-sec-SUR" - short name short secname full surname
+     * default - "SUR-NN-SEC"
+     *
+     * @return
+     */
+    public String getFormatTeacherFullName(String patternString){
+        if (patternString.equals("NN-SEC-SUR")){
+            return this.getName()+" "+this.getSecname()+" "+this.getSurname();
+        }
+        if (patternString.equals("SUR-NN-SEC")){
+            return this.getSurname()+" "+this.getName()+" "+this.getSecname();
+        }
+        if (patternString.equals("SUR-nn-sec")){
+            return this.getSurname()+" "+this.getNameShort()+" "+this.getSecnameShort();
+        }
+        if (patternString.equals("nn-sec-SUR")){
+            return this.getNameShort()+" "+this.getSecnameShort()+" "+this.getSurname();
+        }
+        return getFullTeacherName();
+    }
+
     @Override
     public String toString() {
         return "TeacherUI{\n" +
