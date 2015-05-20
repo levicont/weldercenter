@@ -1,45 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="total-protocol-theory-rep" pageWidth="802" pageHeight="555" orientation="Landscape" columnWidth="746" leftMargin="28" rightMargin="28" topMargin="56" bottomMargin="28" uuid="85f85a2b-0943-449a-b2a2-d32b9d1f2df2">
-	<property name="ireport.zoom" value="1.1000000000000005"/>
-	<property name="ireport.x" value="119"/>
+	<property name="ireport.zoom" value="1.331000000000001"/>
+	<property name="ireport.x" value="255"/>
 	<property name="ireport.y" value="0"/>
-	<style name="table">
-		<box>
-			<pen lineWidth="1.0" lineColor="#000000"/>
-		</box>
-	</style>
-	<style name="table_TH" mode="Opaque" backcolor="#F0F8FF">
-		<box>
-			<pen lineWidth="0.5" lineColor="#000000"/>
-		</box>
-	</style>
-	<style name="table_CH" mode="Opaque" backcolor="#BFE1FF">
-		<box>
-			<pen lineWidth="0.5" lineColor="#000000"/>
-		</box>
-	</style>
-	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
-		<box>
-			<pen lineWidth="0.5" lineColor="#000000"/>
-		</box>
-	</style>
-	<subDataset name="Table Dataset 1" uuid="d3ecc129-789d-4999-977e-f2144160624f"/>
 	<parameter name="NUMBER" class="java.lang.String"/>
 	<parameter name="DATE_CERT_FORMAT" class="java.lang.String"/>
 	<parameter name="COMMISSION_CERTIFICATION_HEAD_INV" class="java.lang.String"/>
 	<parameter name="COMMISSION_CERTIFICATION_WELD_SPEC_INV" class="java.lang.String"/>
 	<parameter name="COMMISSION_CERTIFICATION_NDT_SPEC_INV" class="java.lang.String"/>
 	<parameter name="COMMISSION_CERTIFICATION_SAFETY_SPEC_INV" class="java.lang.String"/>
-	<background>
-		<band splitType="Stretch"/>
-	</background>
-	<title>
-		<band height="7" splitType="Stretch"/>
-	</title>
+	<field name="welder" class="java.lang.String"/>
+	<field name="weldMethods" class="java.lang.String"/>
+	<field name="ndtDocs" class="java.lang.String"/>
+	<field name="numberTickets" class="java.lang.String"/>
+	<field name="rating" class="java.lang.String"/>
+	<field name="notes" class="java.lang.String"/>
 	<pageHeader>
-		<band height="54" splitType="Stretch">
+		<band height="81" splitType="Stretch">
 			<staticText>
-				<reportElement x="178" y="34" width="403" height="20" uuid="c59e993a-6e3a-4ecb-a5dc-738e9368bc01"/>
+				<reportElement x="178" y="20" width="403" height="20" uuid="c59e993a-6e3a-4ecb-a5dc-738e9368bc01"/>
 				<textElement textAlignment="Center">
 					<font fontName="Tahoma" size="14" isBold="true"/>
 				</textElement>
@@ -66,102 +45,108 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$P{NUMBER}]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement x="0" y="51" width="43" height="30" uuid="616b2ed5-b1c6-4a55-a446-35a7f0445f1f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[№ П/П]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="43" y="51" width="170" height="30" uuid="f2d43e4e-5edd-4b77-ac6e-10c7a307e66b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ФИО сварщика]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="213" y="51" width="149" height="30" uuid="5deed77b-e994-490a-81d1-3b2be2cd2b74"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Способ сварки]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="362" y="51" width="156" height="30" uuid="8420a2ec-035b-40c0-a766-adbb3b3501d7"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Вид работ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="518" y="51" width="82" height="30" uuid="ba8974e0-7c4e-4579-a75e-fe3d6b9572cc"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Номера билетов]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="600" y="51" width="72" height="30" uuid="85122883-88a7-4267-a4c0-16508c56f70e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Оценка]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="672" y="51" width="73" height="30" uuid="68a9ca52-0407-4001-a457-c41831765539"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Примечания]]></text>
+			</staticText>
 		</band>
 	</pageHeader>
-	<columnHeader>
-		<band height="8" splitType="Stretch"/>
-	</columnHeader>
 	<detail>
-		<band height="184" splitType="Stretch">
-			<componentElement>
-				<reportElement key="table" style="table" x="3" y="0" width="743" height="50" uuid="6b36357c-8731-4933-8329-25141af5b074"/>
-				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
-					<datasetRun subDataset="Table Dataset 1" uuid="54f33957-517c-4974-a023-a5b77ccd1445">
-						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.JREmptyDataSource(1)]]></dataSourceExpression>
-					</datasetRun>
-					<jr:column width="44" uuid="caf4dfc9-fd8f-4613-9cac-a7a1b2e4eca2">
-						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
-							<staticText>
-								<reportElement x="0" y="0" width="43" height="30" uuid="4335f0be-a078-4907-8a3e-1558f804eb3e"/>
-								<textElement textAlignment="Center" verticalAlignment="Middle"/>
-								<text><![CDATA[№ П/П]]></text>
-							</staticText>
-						</jr:columnHeader>
-						<jr:detailCell style="table_TD" height="20" rowSpan="1"/>
-					</jr:column>
-					<jr:column width="201" uuid="359ba83f-f412-443d-830c-e697721a68cc">
-						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
-							<staticText>
-								<reportElement x="0" y="0" width="90" height="30" uuid="f4cb2676-a105-49dc-8850-7110cc9f20aa"/>
-								<textElement textAlignment="Center" verticalAlignment="Middle"/>
-								<text><![CDATA[ФИО сварщика]]></text>
-							</staticText>
-						</jr:columnHeader>
-						<jr:detailCell style="table_TD" height="20" rowSpan="1"/>
-					</jr:column>
-					<jr:column width="75" uuid="5029d4e0-cda2-494b-8f3f-0e2065357cb7">
-						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
-							<staticText>
-								<reportElement x="0" y="0" width="75" height="30" uuid="e564d76a-1710-4af3-aa9b-ce05edc37d39"/>
-								<textElement textAlignment="Center" verticalAlignment="Middle"/>
-								<text><![CDATA[Способ сварки]]></text>
-							</staticText>
-						</jr:columnHeader>
-						<jr:detailCell style="table_TD" height="20" rowSpan="1"/>
-					</jr:column>
-					<jr:column width="91" uuid="ffeffa24-1104-4653-a3a7-1042ba034bcb">
-						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
-							<staticText>
-								<reportElement x="0" y="0" width="90" height="30" uuid="7335f3e5-282f-40ad-b3e7-cb7ebab99503"/>
-								<textElement textAlignment="Center" verticalAlignment="Middle"/>
-								<text><![CDATA[Вид работ]]></text>
-							</staticText>
-						</jr:columnHeader>
-						<jr:detailCell style="table_TD" height="20" rowSpan="1"/>
-					</jr:column>
-					<jr:column width="93" uuid="188a88e4-19b6-4fb5-87ba-31fcf5bb3f6e">
-						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
-							<staticText>
-								<reportElement x="0" y="0" width="90" height="30" uuid="3914a872-36cc-4c61-bd8d-7eaa1c303d10"/>
-								<textElement textAlignment="Center" verticalAlignment="Middle"/>
-								<text><![CDATA[Номера билетов]]></text>
-							</staticText>
-						</jr:columnHeader>
-						<jr:detailCell style="table_TD" height="20" rowSpan="1"/>
-					</jr:column>
-					<jr:column width="74" uuid="b77c85fa-31cf-480d-b24b-bd2e1c912e12">
-						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
-							<staticText>
-								<reportElement x="2" y="0" width="72" height="30" uuid="d4048061-f029-4555-b395-6fe2d4324f04"/>
-								<textElement textAlignment="Center" verticalAlignment="Middle"/>
-								<text><![CDATA[Оценка]]></text>
-							</staticText>
-						</jr:columnHeader>
-						<jr:detailCell style="table_TD" height="20" rowSpan="1"/>
-					</jr:column>
-					<jr:column width="164" uuid="58698c11-19f3-40bc-ab32-54099c741eab">
-						<jr:columnHeader style="table_CH" height="30" rowSpan="1">
-							<staticText>
-								<reportElement x="0" y="0" width="115" height="30" uuid="a8ff16f6-1be5-46b0-91ed-c657d79250f7"/>
-								<textElement textAlignment="Center" verticalAlignment="Middle"/>
-								<text><![CDATA[Примечания]]></text>
-							</staticText>
-						</jr:columnHeader>
-						<jr:detailCell style="table_TD" height="20" rowSpan="1"/>
-					</jr:column>
-				</jr:table>
-			</componentElement>
+		<band height="20">
+			<textField>
+				<reportElement x="43" y="0" width="170" height="20" uuid="bbb9643b-01e8-48a2-810e-330b279be88d"/>
+				<textElement textAlignment="Left">
+					<paragraph leftIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{welder}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement stretchType="RelativeToBandHeight" x="213" y="0" width="149" height="20" uuid="e29e7cc1-6589-4e17-abdd-044ca79a7975"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{weldMethods}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement stretchType="RelativeToTallestObject" x="362" y="0" width="156" height="20" uuid="ddee2ed9-cc90-4807-b136-14c31b17fe0a"/>
+				<textElement textAlignment="Center">
+					<paragraph lineSpacing="Single" spacingAfter="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ndtDocs}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement stretchType="RelativeToBandHeight" x="518" y="0" width="82" height="20" uuid="71db9c9c-e8ff-48db-9012-f09dfcbe08db"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{numberTickets}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement stretchType="RelativeToBandHeight" x="600" y="0" width="72" height="20" uuid="8b7eb2e1-6a82-4817-92be-9855e1f60c10"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{rating}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement stretchType="RelativeToBandHeight" x="672" y="0" width="74" height="20" uuid="b42c23af-226a-4eca-aefc-892157e41c2b"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{notes}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="43" height="20" uuid="fa8a7b5a-4ab1-4bc3-bb54-3a94ec58b37f"/>
+				<textElement>
+					<paragraph leftIndent="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
-	<columnFooter>
-		<band height="10" splitType="Stretch"/>
-	</columnFooter>
 	<pageFooter>
 		<band height="62" splitType="Stretch">
 			<staticText>
-				<reportElement x="2" y="41" width="266" height="20" uuid="6385e680-e261-49e9-8e66-2c5d9fbfcc5b"/>
+				<reportElement x="2" y="41" width="234" height="20" uuid="6385e680-e261-49e9-8e66-2c5d9fbfcc5b"/>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Tahoma" size="12" isBold="true"/>
+					<font fontName="Tahoma" size="12" isBold="false"/>
 				</textElement>
 				<text><![CDATA[Председатель комиссии: _____________]]></text>
 			</staticText>
@@ -187,7 +172,7 @@
 				<text><![CDATA[ _____________]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="268" y="42" width="216" height="20" uuid="193e247d-083f-454f-a2ea-ba539584d76d"/>
+				<reportElement x="236" y="42" width="216" height="20" uuid="193e247d-083f-454f-a2ea-ba539584d76d"/>
 				<textElement>
 					<font fontName="Tahoma" size="12"/>
 				</textElement>
@@ -216,7 +201,4 @@
 			</textField>
 		</band>
 	</pageFooter>
-	<summary>
-		<band height="9" splitType="Stretch"/>
-	</summary>
 </jasperReport>

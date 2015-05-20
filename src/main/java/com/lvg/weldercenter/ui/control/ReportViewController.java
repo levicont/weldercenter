@@ -1,19 +1,22 @@
 package com.lvg.weldercenter.ui.control;
 
-import com.lvg.weldercenter.ui.entities.TotalProtocolUI;
+import com.lvg.weldercenter.spring.factories.ServiceUIFactory;
+import com.lvg.weldercenter.ui.entities.*;
+import com.lvg.weldercenter.ui.entities.report.TheoryReportEntity;
+import com.lvg.weldercenter.ui.servicesui.PersonalProtocolServiceUI;
 import javafx.embed.swing.SwingNode;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.swing.JRViewer;
 import org.apache.log4j.Logger;
 
 import javax.swing.*;
 import java.awt.*;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.ResourceBundle;
+import java.util.*;
 
 /**
  * Created by Victor on 18.05.2015.
@@ -22,6 +25,9 @@ public class ReportViewController extends GenericController {
     private final Logger LOGGER = Logger.getLogger(ReportViewController.class);
     private JRViewer reportViewer;
     private final URL TOTAL_PROTOCOL_REPORT_URL = getClass().getResource("/reports/total-protocol-rep.jrxml");
+    private final URL THEORY_PROTOCOL_REPORT_URL = getClass().getResource("/reports/total-protocol-theory-rep.jrxml");
+
+    private PersonalProtocolServiceUI personalProtocolServiceUI = ServiceUIFactory.getPersonalProtocolServiceUI();
 
     @FXML
     BorderPane mainReportViewPane;
@@ -33,7 +39,7 @@ public class ReportViewController extends GenericController {
     private JPanel reportPanel;
 
 
-
+    private Collection<TheoryReportEntity> theoryReportEntityList = new ArrayList<TheoryReportEntity>();
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         LOGGER.debug("INITIALIZING Report Pane");
@@ -56,6 +62,47 @@ public class ReportViewController extends GenericController {
             reportPanel.setVisible(true);
         }catch (JRException ex){
             LOGGER.error("SHOW TOTAL PROTOCOL REPORT VIEW: Could not load report: "+ex.getMessage(),ex);
+        }
+    }
+
+    public void showTheoryProtocolReport(TotalProtocolUI protocolUI){
+        initTheoryReportEntityList(protocolUI);
+        try {
+            JasperReport report = JasperCompileManager.compileReport(THEORY_PROTOCOL_REPORT_URL.getFile());
+            JasperPrint print = JasperFillManager.fillReport(report, protocolUI.getParameters(),
+                    new JRBeanCollectionDataSource(theoryReportEntityList));
+            addReportPrintToPanel(print);
+            LOGGER.debug("THEORY PROTOCOL: "+theoryReportEntityList);
+            reportPanel.setVisible(true);
+        }catch (JRException ex){
+            LOGGER.error("SHOW THEORY REPORT VIEW: Could not load report: "+ex.getMessage(),ex);
+        }
+    }
+
+    private void initTheoryReportEntityList(TotalProtocolUI protocolUI){
+        theoryReportEntityList.clear();
+        for (WelderUI welderUI: protocolUI.getJournal().getWelders()){
+            TheoryReportEntity te = new TheoryReportEntity();
+            StringBuilder weldMethodsAll = new StringBuilder();
+            te.setWelder(welderUI.getFormatName("SUR-nn-sec"));
+
+            for (String wm : welderUI.getWeldMethods()){
+                weldMethodsAll.append(wm+"; ");
+            }
+            te.setWeldMethods(weldMethodsAll.toString());
+            PersonalProtocolUI pp = personalProtocolServiceUI.getPersonalProtocolUIFromDB(protocolUI,welderUI.getSurnameNameSecname());
+            if(pp!=null){
+                StringBuilder ndtDocsAll = new StringBuilder();
+                for (NDTDocumentUI ndtDoc: pp.getNdtDocuments()) {
+                    ndtDocsAll.append(ndtDoc.getName()+"; ");
+                }
+                te.setNdtDocs(ndtDocsAll.toString());
+                if(pp.getTheoryTest() != null){
+                    te.setNumberTickets(pp.getTheoryTest().getTicketNumber());
+                    te.setRating(pp.getTheoryTest().getRating());
+                }
+            }
+            theoryReportEntityList.add(te);
         }
     }
 
@@ -87,6 +134,7 @@ public class ReportViewController extends GenericController {
             LOGGER.error("SHOW SIMPLE REPORT VIEW: Could not load report: "+ex.getMessage(),ex);
         }
     }
+
 
 
 

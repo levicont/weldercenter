@@ -2012,6 +2012,12 @@ public class ProtocolController extends GenericController {
 
     }
 
+    @FXML
+    private void showTheoryProtocolReport(){
+        getControllerManager().showReportViewPane();
+        getControllerManager().getReportViewController().showTheoryProtocolReport(selectedTotalProtocolUI);
+    }
+
     private class ComboBoxCommissionHandler implements InvalidationListener{
 
         @Override

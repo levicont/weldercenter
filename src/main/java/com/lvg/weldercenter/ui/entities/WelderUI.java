@@ -20,6 +20,8 @@ public class WelderUI extends GenericEntityUI{
     private final SimpleStringProperty name = new SimpleStringProperty();
     private final SimpleStringProperty surname = new SimpleStringProperty();
     private final SimpleStringProperty secname = new SimpleStringProperty();
+    private final SimpleStringProperty nameShort = new SimpleStringProperty();
+    private final SimpleStringProperty secnameShort = new SimpleStringProperty();
     private final SimpleObjectProperty<Date> birthday = new SimpleObjectProperty<Date>();
 
     private final SimpleStringProperty docNumber = new SimpleStringProperty();
@@ -71,6 +73,12 @@ public class WelderUI extends GenericEntityUI{
 
         this.address.set(welder.getAddress());
         this.weldMethods.set(getWeldMethodsNames(welder.getWeldMethods()));
+        if((name!=null) && (!name.get().isEmpty())){
+            this.nameShort.set(name.get().substring(0,1).toUpperCase()+".");
+        }
+        if((secname!=null) && (!secname.get().isEmpty())){
+            this.secnameShort.set(secname.get().substring(0,1).toUpperCase()+".");
+        }
 
 
     }
@@ -81,6 +89,8 @@ public class WelderUI extends GenericEntityUI{
         this.name.set("");
         this.surname.set("");
         this.secname.set("");
+        this.nameShort.set("");
+        this.secnameShort.set("");
         this.birthday.set(DateUtil.getDate(DateUtil.DEFAULT_DATE));
         this.dateBegin.set(DateUtil.getDate(DateUtil.DEFAULT_DATE));
         this.docNumber.set("");
@@ -103,6 +113,32 @@ public class WelderUI extends GenericEntityUI{
         }
 
         return weldMethodNames;
+    }
+    /**
+     *
+     * @param patternString
+     * "NN-SEC-SUR" - full name secname surname
+     * "SUR-NN-SEC" - full surname name secname
+     * "SUR-nn-sec" - full surname short name short secname
+     * "nn-sec-SUR" - short name short secname full surname
+     * default - "SUR-NN-SEC"
+     *
+     * @return
+     */
+    public String getFormatName(String patternString){
+        if (patternString.equals("NN-SEC-SUR")){
+            return this.getName()+" "+this.getSecname()+" "+this.getSurname();
+        }
+        if (patternString.equals("SUR-NN-SEC")){
+            return this.getSurname()+" "+this.getName()+" "+this.getSecname();
+        }
+        if (patternString.equals("SUR-nn-sec")){
+            return this.getSurname()+" "+this.getNameShort()+" "+this.getSecnameShort();
+        }
+        if (patternString.equals("nn-sec-SUR")){
+            return this.getNameShort()+" "+this.getSecnameShort()+" "+this.getSurname();
+        }
+        return getSurnameNameSecname();
     }
 
     //Getters and Setters
@@ -263,7 +299,21 @@ public class WelderUI extends GenericEntityUI{
         return birthdayFormat;
     }
 
+    public String getNameShort() {
+        return nameShort.get();
+    }
 
+    public SimpleStringProperty nameShortProperty() {
+        return nameShort;
+    }
+
+    public String getSecnameShort() {
+        return secnameShort.get();
+    }
+
+    public SimpleStringProperty secnameShortProperty() {
+        return secnameShort;
+    }
 
     public String getDateBeginFormat() {
         return DateUtil.format(dateBegin.get());
