@@ -1,5 +1,6 @@
 package com.lvg.weldercenter.ui.control;
 
+import com.lvg.weldercenter.models.TotalProtocol;
 import com.lvg.weldercenter.spring.factories.ServiceUIFactory;
 import com.lvg.weldercenter.ui.entities.*;
 import com.lvg.weldercenter.ui.entities.report.TheoryReportEntity;
@@ -10,6 +11,7 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.engine.export.JRPdfExporter;
 import net.sf.jasperreports.swing.JRViewer;
 import org.apache.log4j.Logger;
 
@@ -26,6 +28,7 @@ public class ReportViewController extends GenericController {
     private JRViewer reportViewer;
     private final URL TOTAL_PROTOCOL_REPORT_URL = getClass().getResource("/reports/total-protocol-rep.jrxml");
     private final URL THEORY_PROTOCOL_REPORT_URL = getClass().getResource("/reports/total-protocol-theory-rep.jrxml");
+    private final URL UNIVERS_FONT_URL = getClass().getResource("/fonts/Univers_Medium.ttf");
 
     private PersonalProtocolServiceUI personalProtocolServiceUI = ServiceUIFactory.getPersonalProtocolServiceUI();
 
@@ -59,6 +62,7 @@ public class ReportViewController extends GenericController {
             JasperReport report = JasperCompileManager.compileReport(TOTAL_PROTOCOL_REPORT_URL.getFile());
             JasperPrint print = JasperFillManager.fillReport(report, protocolUI.getParameters(),new JREmptyDataSource());
             addReportPrintToPanel(print);
+
             reportPanel.setVisible(true);
         }catch (JRException ex){
             LOGGER.error("SHOW TOTAL PROTOCOL REPORT VIEW: Could not load report: "+ex.getMessage(),ex);
@@ -67,6 +71,7 @@ public class ReportViewController extends GenericController {
 
     public void showTheoryProtocolReport(TotalProtocolUI protocolUI){
         initTheoryReportEntityList(protocolUI);
+        fillTotalProtocolParameters(protocolUI);
         try {
             JasperReport report = JasperCompileManager.compileReport(THEORY_PROTOCOL_REPORT_URL.getFile());
             JasperPrint print = JasperFillManager.fillReport(report, protocolUI.getParameters(),
@@ -89,13 +94,16 @@ public class ReportViewController extends GenericController {
             for (String wm : welderUI.getWeldMethods()){
                 weldMethodsAll.append(wm+"; ");
             }
+            weldMethodsAll.deleteCharAt(weldMethodsAll.lastIndexOf(";"));
             te.setWeldMethods(weldMethodsAll.toString());
             PersonalProtocolUI pp = personalProtocolServiceUI.getPersonalProtocolUIFromDB(protocolUI,welderUI.getSurnameNameSecname());
             if(pp!=null){
                 StringBuilder ndtDocsAll = new StringBuilder();
                 for (NDTDocumentUI ndtDoc: pp.getNdtDocuments()) {
+
                     ndtDocsAll.append(ndtDoc.getName()+"; ");
                 }
+                ndtDocsAll.deleteCharAt(ndtDocsAll.lastIndexOf(";"));
                 te.setNdtDocs(ndtDocsAll.toString());
                 if(pp.getTheoryTest() != null){
                     te.setNumberTickets(pp.getTheoryTest().getTicketNumber());
@@ -104,6 +112,10 @@ public class ReportViewController extends GenericController {
             }
             theoryReportEntityList.add(te);
         }
+    }
+
+    private void fillTotalProtocolParameters(TotalProtocolUI totalProtocolUI){
+        totalProtocolUI.getParameters().put("UNIVERS_FONT_PATH",UNIVERS_FONT_URL.getFile());
     }
 
     private void addReportPrintToPanel(JasperPrint print){

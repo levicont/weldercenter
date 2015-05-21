@@ -87,32 +87,32 @@ public class TotalProtocolUI extends GenericEntityUI {
         parameters.replace(KEY_NEXT_DATE_CERT, this.getDateCert()!=null?
                 DateUtil.format(DateUtil.getLocalDate(this.getDateCert()).plusYears(2)):"");
         parameters.replace(KEY_DATE_CERT_FORMAT, this.getDateCertFormat());
-
-        parameters.replace(KEY_COMMISSION_CERTIFICATION_HEAD,
-                this.getCommissionCertification().getHead()!=null?
-                        this.getCommissionCertification().getHead().getFormatTeacherFullName("SUR-nn-sec"):"");
-        parameters.replace(KEY_COMMISSION_CERTIFICATION_NDT_SPEC,
-                this.getCommissionCertification().getNdtSpecialist()!=null?
-                        this.getCommissionCertification().getNdtSpecialist().getFormatTeacherFullName("SUR-nn-sec"):"");
-        parameters.replace(KEY_COMMISSION_CERTIFICATION_WELD_SPEC,
-                this.getCommissionCertification().getWeldSpecialist()!=null?
-                        this.getCommissionCertification().getWeldSpecialist().getFormatTeacherFullName("SUR-nn-sec"):"");
-        parameters.replace(KEY_COMMISSION_CERTIFICATION_SAFETY_SPEC,
-                this.getCommissionCertification().getSafetySpecialist()!=null?
-                        this.getCommissionCertification().getSafetySpecialist().getFormatTeacherFullName("SUR-nn-sec"):"");
-        parameters.replace(KEY_COMMISSION_CERTIFICATION_HEAD_INV,
-                this.getCommissionCertification().getHead()!=null?
-                        this.getCommissionCertification().getHead().getFormatTeacherFullName("nn-sec-SUR"):"");
-        parameters.replace(KEY_COMMISSION_CERTIFICATION_NDT_SPEC_INV,
-                this.getCommissionCertification().getNdtSpecialist()!=null?
-                        this.getCommissionCertification().getNdtSpecialist().getFormatTeacherFullName("nn-sec-SUR"):"");
-        parameters.replace(KEY_COMMISSION_CERTIFICATION_WELD_SPEC_INV,
-                this.getCommissionCertification().getWeldSpecialist()!=null?
-                        this.getCommissionCertification().getWeldSpecialist().getFormatTeacherFullName("nn-sec-SUR"):"");
-        parameters.replace(KEY_COMMISSION_CERTIFICATION_SAFETY_SPEC_INV,
-                this.getCommissionCertification().getSafetySpecialist()!=null?
-                        this.getCommissionCertification().getSafetySpecialist().getFormatTeacherFullName("nn-sec-SUR"):"");
-
+        if(this.getCommissionCertification()!=null) {
+            parameters.replace(KEY_COMMISSION_CERTIFICATION_HEAD,
+                    this.getCommissionCertification().getHead() != null ?
+                            this.getCommissionCertification().getHead().getFormatTeacherFullName("SUR-nn-sec") : "");
+            parameters.replace(KEY_COMMISSION_CERTIFICATION_NDT_SPEC,
+                    this.getCommissionCertification().getNdtSpecialist() != null ?
+                            this.getCommissionCertification().getNdtSpecialist().getFormatTeacherFullName("SUR-nn-sec") : "");
+            parameters.replace(KEY_COMMISSION_CERTIFICATION_WELD_SPEC,
+                    this.getCommissionCertification().getWeldSpecialist() != null ?
+                            this.getCommissionCertification().getWeldSpecialist().getFormatTeacherFullName("SUR-nn-sec") : "");
+            parameters.replace(KEY_COMMISSION_CERTIFICATION_SAFETY_SPEC,
+                    this.getCommissionCertification().getSafetySpecialist() != null ?
+                            this.getCommissionCertification().getSafetySpecialist().getFormatTeacherFullName("SUR-nn-sec") : "");
+            parameters.replace(KEY_COMMISSION_CERTIFICATION_HEAD_INV,
+                    this.getCommissionCertification().getHead() != null ?
+                            this.getCommissionCertification().getHead().getFormatTeacherFullName("nn-sec-SUR") : "");
+            parameters.replace(KEY_COMMISSION_CERTIFICATION_NDT_SPEC_INV,
+                    this.getCommissionCertification().getNdtSpecialist() != null ?
+                            this.getCommissionCertification().getNdtSpecialist().getFormatTeacherFullName("nn-sec-SUR") : "");
+            parameters.replace(KEY_COMMISSION_CERTIFICATION_WELD_SPEC_INV,
+                    this.getCommissionCertification().getWeldSpecialist() != null ?
+                            this.getCommissionCertification().getWeldSpecialist().getFormatTeacherFullName("nn-sec-SUR") : "");
+            parameters.replace(KEY_COMMISSION_CERTIFICATION_SAFETY_SPEC_INV,
+                    this.getCommissionCertification().getSafetySpecialist() != null ?
+                            this.getCommissionCertification().getSafetySpecialist().getFormatTeacherFullName("nn-sec-SUR") : "");
+        }
     }
 
 
