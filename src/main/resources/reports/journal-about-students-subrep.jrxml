@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="journal-about-students-subrep" pageWidth="555" pageHeight="802" whenNoDataType="AllSectionsNoDetail" columnWidth="471" leftMargin="56" rightMargin="28" topMargin="14" bottomMargin="14" uuid="491826f4-482a-44cc-accc-1929f56a7f7b">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["C:\\Users\\Victor\\Desktop\\"]]></defaultValueExpression>
+	</parameter>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="20" splitType="Stretch">
+			<staticText>
+				<reportElement x="85" y="0" width="273" height="20" uuid="d7703f2b-fa58-4c57-a08f-b549e529d3eb"/>
+				<textElement textAlignment="Center">
+					<font fontName="Univers" size="12"/>
+				</textElement>
+				<text><![CDATA[СВЕДЕНИЯ ОБ УЧАЩИХСЯ ГРУППЫ]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="700" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="4" width="26" height="17" uuid="dc9d55b1-88dc-4fda-8afd-78baf806c105"/>
+				<textElement>
+					<font fontName="Univers" size="12"/>
+				</textElement>
+				<text><![CDATA[1. ]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="3" width="471" height="1" uuid="cbd91b4e-f060-4a73-b416-db8bc42fb523"/>
+			</line>
+			<staticText>
+				<reportElement x="26" y="4" width="185" height="17" uuid="e260b458-fcd4-4ba4-b81b-882be65f9c4b"/>
+				<textElement>
+					<font fontName="Univers" size="12" isBold="true"/>
+					<paragraph leftIndent="5"/>
+				</textElement>
+				<text><![CDATA[Иванов Иван Иванович]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="26" y="21" width="107" height="17" uuid="009d1296-058f-46fd-a474-49acb45e38ed"/>
+				<textElement>
+					<font fontName="Univers" size="12"/>
+				</textElement>
+				<text><![CDATA[Дата рождения:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="26" y="38" width="107" height="17" uuid="ffa70d2a-7917-4fc7-9e8d-b0c038767a00"/>
+				<textElement>
+					<font fontName="Univers" size="12"/>
+				</textElement>
+				<text><![CDATA[Способ сварки:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="26" y="55" width="107" height="17" uuid="8d2eacb2-37b3-4486-a779-025bae61410a"/>
+				<textElement>
+					<font fontName="Univers" size="12"/>
+				</textElement>
+				<text><![CDATA[Место работы:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="26" y="72" width="107" height="17" uuid="2e4c8daf-d72c-41ec-8a71-a6fc54d595ef"/>
+				<textElement>
+					<font fontName="Univers" size="12"/>
+				</textElement>
+				<text><![CDATA[Домашний адрес:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="133" y="21" width="94" height="17" uuid="cfe0414e-7cd6-4454-a12a-524be5d40953"/>
+				<textElement>
+					<font fontName="Univers" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[01.02.1984]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="228" y="21" width="103" height="17" uuid="d39a67e4-b003-490f-a5a6-1c5024619c95"/>
+				<textElement textAlignment="Right">
+					<font fontName="Univers" size="12"/>
+				</textElement>
+				<text><![CDATA[Образование:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="331" y="21" width="140" height="17" uuid="cc1266cd-1df5-475e-bb9f-87fe399e78ae"/>
+				<textElement>
+					<font fontName="Univers" size="12" isBold="true"/>
+					<paragraph leftIndent="5"/>
+				</textElement>
+				<text><![CDATA[средне-техническое]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="228" y="38" width="58" height="17" uuid="b4948ae1-e5d8-483b-81b8-8a68df7dfb48"/>
+				<textElement textAlignment="Right">
+					<font fontName="Univers" size="12"/>
+				</textElement>
+				<text><![CDATA[Стаж:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="286" y="38" width="185" height="17" uuid="16a0359e-c903-45d5-83b2-ddf8871ddfeb"/>
+				<textElement>
+					<font fontName="Univers" size="12" isBold="true"/>
+					<paragraph leftIndent="5"/>
+				</textElement>
+				<text><![CDATA[ 01.01.2000  (4года)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="134" y="38" width="94" height="17" uuid="ae895f9c-1b8d-488e-a0b5-545ac74223c5"/>
+				<textElement>
+					<font fontName="Univers" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[111; 311]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="134" y="55" width="337" height="17" uuid="8b1a7f50-fc38-441d-aeb6-2f968e6084df"/>
+				<textElement>
+					<font fontName="Univers" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[111; 311]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="134" y="72" width="337" height="17" uuid="47fc9ddc-e0ca-4816-850d-b1876372f82a"/>
+				<textElement>
+					<font fontName="Univers" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[111; 311]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="89" width="471" height="1" uuid="3ab49b88-3165-4290-8887-53838a56c079"/>
+			</line>
+			<textField>
+				<reportElement x="0" y="21" width="26" height="17" uuid="d77a408d-6234-493e-98ca-05256399c2e6"/>
+				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="211" y="1" width="120" height="20" uuid="a24ebfe0-a62d-4846-a7b0-763c98c7484d"/>
+				<textFieldExpression><![CDATA[$P{SUBREPORT_DIR}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="54" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="61" height="17" uuid="272468b1-35c8-4a2a-abaa-a7e41c5e00ac"/>
+				<textElement>
+					<font fontName="Univers" size="10"/>
+				</textElement>
+				<text><![CDATA[Группа №]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="388" y="0" width="23" height="17" uuid="4fec412b-3739-4e18-90f1-5230e9ccdf29"/>
+				<textElement>
+					<font fontName="Univers" size="10"/>
+				</textElement>
+				<text><![CDATA[стр.]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="411" y="0" width="60" height="17" uuid="a16882cf-810a-4e76-8bf4-4ede3ff0bc5c"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Univers"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>

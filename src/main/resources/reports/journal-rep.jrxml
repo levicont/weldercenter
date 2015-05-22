@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="journal-rep" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="511" leftMargin="56" rightMargin="28" topMargin="14" bottomMargin="14" uuid="2166879d-58eb-45f8-afd3-2ced7e057eb9">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="37"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["C:\\Users\\Victor\\Desktop\\"]]></defaultValueExpression>
+	</parameter>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="567" splitType="Stretch">
+			<staticText>
+				<reportElement x="96" y="95" width="327" height="23" uuid="5a369992-565d-47cc-b204-6e1b3c76999a"/>
+				<textElement textAlignment="Center">
+					<font fontName="Univers" size="18" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ЖУРНАЛ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="68" y="118" width="380" height="44" uuid="02621e82-66e9-4668-816f-0f59e8e4af80"/>
+				<textElement textAlignment="Center">
+					<font fontName="Univers" size="18" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ТЕОРЕТИЧЕСКОГО И ПРАКТИЧЕСКОГО ОБУЧЕНИЯ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="369" width="175" height="20" uuid="c5ae14ab-8c48-4ecf-a398-0dfb5ac54929"/>
+				<textElement textAlignment="Right">
+					<font fontName="Univers" size="14"/>
+				</textElement>
+				<text><![CDATA[Группа №	]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="421" width="175" height="20" uuid="3815d68c-6c19-4cb6-aff3-72420ad89ab7"/>
+				<textElement textAlignment="Right">
+					<font fontName="Univers" size="14"/>
+				</textElement>
+				<text><![CDATA[Начало обучения]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="458" width="175" height="20" uuid="1655af64-4b64-415e-8e2a-f9e10b390fa9"/>
+				<textElement textAlignment="Right">
+					<font fontName="Univers" size="14"/>
+				</textElement>
+				<text><![CDATA[Окончание обучения]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="100" y="0" width="327" height="20" uuid="8214353b-d8d9-4999-8f68-34601c164776"/>
+				<textElement textAlignment="Center">
+					<font fontName="Univers" size="12"/>
+				</textElement>
+				<text><![CDATA[ООО "Харьковский профессиональный колледж"]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="175" y="547" width="175" height="20" uuid="25b58feb-d20b-4378-8395-3c8910e5c698"/>
+				<textElement textAlignment="Center">
+					<font fontName="Univers" size="14"/>
+				</textElement>
+				<text><![CDATA[Харьков - 2015 г.]]></text>
+			</staticText>
+		</band>
+		<band height="47">
+			<subreport runToBottom="false">
+				<reportElement x="0" y="5" width="511" height="42" uuid="8aa83254-7034-416b-b96a-e887e2cdae24"/>
+				<connectionExpression><![CDATA[]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "journal-about-students-subrep.jasper"]]></subreportExpression>
+			</subreport>
+			<break>
+				<reportElement x="0" y="3" width="100" height="1" uuid="02375218-12f3-49bb-9cff-43fbbb3bc38d"/>
+			</break>
+		</band>
+	</detail>
+</jasperReport>
