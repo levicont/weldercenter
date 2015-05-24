@@ -1,8 +1,10 @@
 package com.lvg.weldercenter.ui.control;
 
-import com.lvg.weldercenter.models.TotalProtocol;
 import com.lvg.weldercenter.spring.factories.ServiceUIFactory;
-import com.lvg.weldercenter.ui.entities.*;
+import com.lvg.weldercenter.ui.entities.NDTDocumentUI;
+import com.lvg.weldercenter.ui.entities.PersonalProtocolUI;
+import com.lvg.weldercenter.ui.entities.TotalProtocolUI;
+import com.lvg.weldercenter.ui.entities.WelderUI;
 import com.lvg.weldercenter.ui.entities.report.TheoryReportEntity;
 import com.lvg.weldercenter.ui.servicesui.PersonalProtocolServiceUI;
 import javafx.embed.swing.SwingNode;
@@ -11,14 +13,16 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
-import net.sf.jasperreports.engine.export.JRPdfExporter;
 import net.sf.jasperreports.swing.JRViewer;
 import org.apache.log4j.Logger;
 
 import javax.swing.*;
 import java.awt.*;
 import java.net.URL;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.ResourceBundle;
 
 /**
  * Created by Victor on 18.05.2015.
@@ -94,7 +98,8 @@ public class ReportViewController extends GenericController {
             for (String wm : welderUI.getWeldMethods()){
                 weldMethodsAll.append(wm+"; ");
             }
-            weldMethodsAll.deleteCharAt(weldMethodsAll.lastIndexOf(";"));
+            if (weldMethodsAll.length()>0)
+                weldMethodsAll.deleteCharAt(weldMethodsAll.lastIndexOf(";"));
             te.setWeldMethods(weldMethodsAll.toString());
             PersonalProtocolUI pp = personalProtocolServiceUI.getPersonalProtocolUIFromDB(protocolUI,welderUI.getSurnameNameSecname());
             if(pp!=null){
@@ -103,7 +108,8 @@ public class ReportViewController extends GenericController {
 
                     ndtDocsAll.append(ndtDoc.getName()+"; ");
                 }
-                ndtDocsAll.deleteCharAt(ndtDocsAll.lastIndexOf(";"));
+                if(ndtDocsAll.length()>0)
+                    ndtDocsAll.deleteCharAt(ndtDocsAll.lastIndexOf(";"));
                 te.setNdtDocs(ndtDocsAll.toString());
                 if(pp.getTheoryTest() != null){
                     te.setNumberTickets(pp.getTheoryTest().getTicketNumber());
