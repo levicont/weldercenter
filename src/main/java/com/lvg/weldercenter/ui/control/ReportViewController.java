@@ -3,6 +3,7 @@ package com.lvg.weldercenter.ui.control;
 import com.lvg.weldercenter.models.TotalProtocol;
 import com.lvg.weldercenter.spring.factories.ServiceUIFactory;
 import com.lvg.weldercenter.ui.entities.*;
+import com.lvg.weldercenter.ui.entities.report.JournalReportEntity;
 import com.lvg.weldercenter.ui.entities.report.TheoryReportEntity;
 import com.lvg.weldercenter.ui.servicesui.PersonalProtocolServiceUI;
 import javafx.embed.swing.SwingNode;
@@ -28,6 +29,8 @@ public class ReportViewController extends GenericController {
     private JRViewer reportViewer;
     private final URL TOTAL_PROTOCOL_REPORT_URL = getClass().getResource("/reports/total-protocol-rep.jrxml");
     private final URL THEORY_PROTOCOL_REPORT_URL = getClass().getResource("/reports/total-protocol-theory-rep.jrxml");
+    private final URL JOURNAL_REPORT_URL = getClass().getResource("/reports/journal-rep.jrxml");
+    private final URL JOURNAL_SUBREPORT_WELDERS_DETAIL_URL = getClass().getResource("/reports/journal-about-students-subrep.jrxml");
     private final URL UNIVERS_FONT_URL = getClass().getResource("/fonts/Univers_Medium.ttf");
 
     private PersonalProtocolServiceUI personalProtocolServiceUI = ServiceUIFactory.getPersonalProtocolServiceUI();
@@ -43,6 +46,7 @@ public class ReportViewController extends GenericController {
 
 
     private Collection<TheoryReportEntity> theoryReportEntityList = new ArrayList<TheoryReportEntity>();
+    private Collection<JournalReportEntity> journalReportEntities = new ArrayList<JournalReportEntity>();
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         LOGGER.debug("INITIALIZING Report Pane");
@@ -84,6 +88,8 @@ public class ReportViewController extends GenericController {
         }
     }
 
+
+
     private void initTheoryReportEntityList(TotalProtocolUI protocolUI){
         theoryReportEntityList.clear();
         for (WelderUI welderUI: protocolUI.getJournal().getWelders()){
@@ -111,6 +117,31 @@ public class ReportViewController extends GenericController {
                 }
             }
             theoryReportEntityList.add(te);
+        }
+    }
+
+    public void showJournalReport(JournalUI journalUI){
+        initJournalReportEntityList(journalUI);
+        try{
+
+            JasperReport subReport = JasperCompileManager.compileReport(JOURNAL_SUBREPORT_WELDERS_DETAIL_URL.getFile());
+            journalUI.getParameters().put("WELDER_DETAIL_SUBREPORT",subReport);
+            journalUI.getParameters().put("WELDER_DETAIL_DATA_SOURCE",new JRBeanCollectionDataSource(journalReportEntities));
+            JasperReport report = JasperCompileManager.compileReport(JOURNAL_REPORT_URL.getFile());
+
+            JasperPrint print = JasperFillManager.fillReport(report, journalUI.getParameters(),
+                    new JREmptyDataSource());
+            addReportPrintToPanel(print);
+            reportPanel.setVisible(true);
+        }catch (JRException ex){
+            LOGGER.error("SHOW JOURNAL REPORT VIEW: Could not load report: "+ex.getMessage(),ex);
+        }
+    }
+
+    private void initJournalReportEntityList(JournalUI journalUI){
+        journalReportEntities.clear();
+        for (WelderUI welderUI: journalUI.getWelders()){
+            journalReportEntities.add(new JournalReportEntity(journalUI,welderUI));
         }
     }
 

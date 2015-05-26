@@ -42,6 +42,7 @@ public class WelderUI extends GenericEntityUI{
 
 
     private final SimpleListProperty<String> weldMethods = new SimpleListProperty<String>();
+    private final SimpleListProperty<WeldMethodUI> weldMethodUIList = new SimpleListProperty<WeldMethodUI>();
 
 
     public WelderUI(com.lvg.weldercenter.models.Welder welder){
@@ -73,6 +74,7 @@ public class WelderUI extends GenericEntityUI{
 
         this.address.set(welder.getAddress());
         this.weldMethods.set(getWeldMethodsNames(welder.getWeldMethods()));
+        this.weldMethodUIList.set(getWeldMethoUIList(welder.getWeldMethods()));
         if((name!=null) && (!name.get().isEmpty())){
             this.nameShort.set(name.get().substring(0,1).toUpperCase()+".");
         }
@@ -101,7 +103,7 @@ public class WelderUI extends GenericEntityUI{
         this.organization.set("");
         this.address.set("");
 
-
+        this.weldMethodUIList.set(FXCollections.observableArrayList(new ArrayList<WeldMethodUI>()));
         this.weldMethods.set(FXCollections.observableArrayList(new ArrayList<String>()));
 
     }
@@ -114,6 +116,20 @@ public class WelderUI extends GenericEntityUI{
 
         return weldMethodNames;
     }
+
+    private ObservableList<WeldMethodUI> getWeldMethoUIList(List<WeldMethod> weldMethodList){
+        ObservableList<WeldMethodUI> result = FXCollections.observableArrayList();
+        if(weldMethodList==null)
+            return result;
+        if (weldMethodList.isEmpty())
+            return result;
+        for (WeldMethod wm : weldMethodList){
+            WeldMethodUI weldMethodUI = new WeldMethodUI(wm);
+            result.add(weldMethodUI);
+        }
+        return result;
+    }
+
     /**
      *
      * @param patternString
@@ -321,6 +337,14 @@ public class WelderUI extends GenericEntityUI{
 
     public SimpleStringProperty dateBeginFormatProperty() {
         return dateBeginFormat;
+    }
+
+    public ObservableList<WeldMethodUI> getWeldMethodUIList() {
+        return weldMethodUIList.get();
+    }
+
+    public SimpleListProperty<WeldMethodUI> weldMethodUIListProperty() {
+        return weldMethodUIList;
     }
 
     public String getFullName(){

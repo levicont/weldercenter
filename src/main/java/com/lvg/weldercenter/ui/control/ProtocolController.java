@@ -2013,6 +2013,13 @@ public class ProtocolController extends GenericController {
     }
 
     @FXML
+    private void showJournalReport(){
+        getControllerManager().showReportViewPane();
+        getControllerManager().getReportViewController().showJournalReport(selectedTotalProtocolUI.getJournal());
+
+    }
+
+    @FXML
     private void showTheoryProtocolReport(){
         getControllerManager().showReportViewPane();
         getControllerManager().getReportViewController().showTheoryProtocolReport(selectedTotalProtocolUI);
