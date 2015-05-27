@@ -1,6 +1,5 @@
 package com.lvg.weldercenter.ui.control;
 
-import com.lvg.weldercenter.models.TotalProtocol;
 import com.lvg.weldercenter.spring.factories.ServiceUIFactory;
 import com.lvg.weldercenter.ui.entities.*;
 import com.lvg.weldercenter.ui.entities.report.JournalReportEntity;
@@ -12,14 +11,16 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
-import net.sf.jasperreports.engine.export.JRPdfExporter;
 import net.sf.jasperreports.swing.JRViewer;
 import org.apache.log4j.Logger;
 
 import javax.swing.*;
 import java.awt.*;
 import java.net.URL;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.ResourceBundle;
 
 /**
  * Created by Victor on 18.05.2015.
