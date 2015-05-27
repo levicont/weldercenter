@@ -33,6 +33,7 @@ public class JournalUI extends GenericEntityUI {
     private final SimpleStringProperty dateEndFormat = new SimpleStringProperty();
     private final SimpleStringProperty curriculum = new SimpleStringProperty();
     private final SimpleStringProperty weldersCount = new SimpleStringProperty();
+    private final SimpleObjectProperty<CurriculumUI> curriculumUIobject = new SimpleObjectProperty<CurriculumUI>();
 
     private final SimpleListProperty<WelderUI> welders = new SimpleListProperty<WelderUI>();
     private final SimpleListProperty<TeacherUI> teachers = new SimpleListProperty<TeacherUI>();
@@ -58,8 +59,10 @@ public class JournalUI extends GenericEntityUI {
 
         if (journal.getCurriculum() == null){
             this.curriculum.set("");
+            this.curriculumUIobject.set(new CurriculumUI());
         }else {
             this.curriculum.set(journal.getCurriculum().getTitle());
+            this.curriculumUIobject.set(new CurriculumUI(journal.getCurriculum()));
         }
 
         this.teachers.set(getTeachersUI(journal));
@@ -75,6 +78,7 @@ public class JournalUI extends GenericEntityUI {
         this.dateBeginFormat.set(DateUtil.format(DateUtil.TODAY));
         this.dateEndFormat.set(DateUtil.format(DateUtil.TODAY));
         this.curriculum.set("");
+        this.curriculumUIobject.set(new CurriculumUI());
         this.weldersCount.set("0");
 
         this.teachers.set(FXCollections.observableArrayList(new ArrayList<TeacherUI>()));
@@ -188,6 +192,18 @@ public class JournalUI extends GenericEntityUI {
 
     public void setCurriculum(String curriculum) {
         this.curriculum.set(curriculum);
+    }
+
+    public CurriculumUI getCurriculumUIobject() {
+        return curriculumUIobject.get();
+    }
+
+    public SimpleObjectProperty<CurriculumUI> curriculumUIobjectProperty() {
+        return curriculumUIobject;
+    }
+
+    public void setCurriculumUIobject(CurriculumUI curriculumUIobject) {
+        this.curriculumUIobject.set(curriculumUIobject);
     }
 
     public String getWeldersCount() {

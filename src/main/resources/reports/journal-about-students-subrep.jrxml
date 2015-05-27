@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="journal-about-students-subrep" pageWidth="555" pageHeight="802" whenNoDataType="AllSectionsNoDetail" columnWidth="471" leftMargin="56" rightMargin="28" topMargin="14" bottomMargin="14" uuid="491826f4-482a-44cc-accc-1929f56a7f7b">
 	<property name="ireport.zoom" value="1.3310000000000004"/>
-	<property name="ireport.x" value="54"/>
+	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA["C:\\Users\\Victor\\Desktop\\"]]></defaultValueExpression>
@@ -18,6 +18,9 @@
 	<field name="jrnWelderExperience" class="java.lang.String"/>
 	<field name="jrnNumber" class="java.lang.String"/>
 	<variable name="FULL_NAME" class="java.lang.String"/>
+	<variable name="MAIN_PAGE_NUMBER" class="java.lang.Integer" calculation="System">
+		<variableExpression><![CDATA[$V{PAGE_NUMBER}]]></variableExpression>
+	</variable>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -146,36 +149,4 @@
 			</textField>
 		</band>
 	</detail>
-	<pageFooter>
-		<band height="23" splitType="Immediate">
-			<staticText>
-				<reportElement positionType="FixRelativeToBottom" x="0" y="3" width="61" height="20" uuid="272468b1-35c8-4a2a-abaa-a7e41c5e00ac"/>
-				<textElement>
-					<font fontName="Univers" size="10"/>
-				</textElement>
-				<text><![CDATA[Группа №]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="388" y="6" width="23" height="17" uuid="4fec412b-3739-4e18-90f1-5230e9ccdf29"/>
-				<textElement verticalAlignment="Middle">
-					<font fontName="Univers" size="10"/>
-				</textElement>
-				<text><![CDATA[стр.]]></text>
-			</staticText>
-			<textField>
-				<reportElement x="61" y="3" width="100" height="20" uuid="55961dc6-5ae0-41c7-81ef-f953139be99e"/>
-				<textElement>
-					<font fontName="Univers"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{jrnNumber}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="411" y="6" width="52" height="17" uuid="09a3b59f-85b1-4451-b029-fcdcb32c5aa3"/>
-				<textElement>
-					<font size="10"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
-			</textField>
-		</band>
-	</pageFooter>
 </jasperReport>

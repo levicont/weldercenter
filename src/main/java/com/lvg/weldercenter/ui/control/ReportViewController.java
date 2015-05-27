@@ -3,6 +3,7 @@ package com.lvg.weldercenter.ui.control;
 import com.lvg.weldercenter.spring.factories.ServiceUIFactory;
 import com.lvg.weldercenter.ui.entities.*;
 import com.lvg.weldercenter.ui.entities.report.JournalReportEntity;
+import com.lvg.weldercenter.ui.entities.report.JournalVisitTableReportEntity;
 import com.lvg.weldercenter.ui.entities.report.TheoryReportEntity;
 import com.lvg.weldercenter.ui.servicesui.PersonalProtocolServiceUI;
 import javafx.embed.swing.SwingNode;
@@ -32,6 +33,7 @@ public class ReportViewController extends GenericController {
     private final URL THEORY_PROTOCOL_REPORT_URL = getClass().getResource("/reports/total-protocol-theory-rep.jrxml");
     private final URL JOURNAL_REPORT_URL = getClass().getResource("/reports/journal-rep.jrxml");
     private final URL JOURNAL_SUBREPORT_WELDERS_DETAIL_URL = getClass().getResource("/reports/journal-about-students-subrep.jrxml");
+    private final URL JOURNAL_SUBREPORT_VISIT_TABLE_URL = getClass().getResource("/reports/journal-visit-table-subrep.jrxml");
     private final URL UNIVERS_FONT_URL = getClass().getResource("/fonts/Univers_Medium.ttf");
 
     private PersonalProtocolServiceUI personalProtocolServiceUI = ServiceUIFactory.getPersonalProtocolServiceUI();
@@ -48,6 +50,7 @@ public class ReportViewController extends GenericController {
 
     private Collection<TheoryReportEntity> theoryReportEntityList = new ArrayList<TheoryReportEntity>();
     private Collection<JournalReportEntity> journalReportEntities = new ArrayList<JournalReportEntity>();
+    private Collection<JournalVisitTableReportEntity> journalVisitTableReportEntities  = new ArrayList<JournalVisitTableReportEntity>();
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         LOGGER.debug("INITIALIZING Report Pane");
@@ -101,7 +104,8 @@ public class ReportViewController extends GenericController {
             for (String wm : welderUI.getWeldMethods()){
                 weldMethodsAll.append(wm+"; ");
             }
-            weldMethodsAll.deleteCharAt(weldMethodsAll.lastIndexOf(";"));
+            if (weldMethodsAll.length()>0)
+                weldMethodsAll.deleteCharAt(weldMethodsAll.lastIndexOf(";"));
             te.setWeldMethods(weldMethodsAll.toString());
             PersonalProtocolUI pp = personalProtocolServiceUI.getPersonalProtocolUIFromDB(protocolUI,welderUI.getSurnameNameSecname());
             if(pp!=null){
@@ -110,7 +114,8 @@ public class ReportViewController extends GenericController {
 
                     ndtDocsAll.append(ndtDoc.getName()+"; ");
                 }
-                ndtDocsAll.deleteCharAt(ndtDocsAll.lastIndexOf(";"));
+                if (ndtDocsAll.length()>0)
+                 ndtDocsAll.deleteCharAt(ndtDocsAll.lastIndexOf(";"));
                 te.setNdtDocs(ndtDocsAll.toString());
                 if(pp.getTheoryTest() != null){
                     te.setNumberTickets(pp.getTheoryTest().getTicketNumber());
@@ -123,11 +128,18 @@ public class ReportViewController extends GenericController {
 
     public void showJournalReport(JournalUI journalUI){
         initJournalReportEntityList(journalUI);
+        initJournalVisitTableReportEntityList(journalUI);
         try{
 
             JasperReport subReport = JasperCompileManager.compileReport(JOURNAL_SUBREPORT_WELDERS_DETAIL_URL.getFile());
             journalUI.getParameters().put("WELDER_DETAIL_SUBREPORT",subReport);
             journalUI.getParameters().put("WELDER_DETAIL_DATA_SOURCE",new JRBeanCollectionDataSource(journalReportEntities));
+
+            JasperReport subReportVisitTable = JasperCompileManager.compileReport(JOURNAL_SUBREPORT_VISIT_TABLE_URL.getFile());
+            journalUI.getParameters().put("VISIT_TABLE_SUBREPORT",subReportVisitTable);
+            journalUI.getParameters().put("VISIT_TABLE_DATA_SOURCE",
+                    new JRBeanCollectionDataSource(journalVisitTableReportEntities));
+
             JasperReport report = JasperCompileManager.compileReport(JOURNAL_REPORT_URL.getFile());
 
             JasperPrint print = JasperFillManager.fillReport(report, journalUI.getParameters(),
@@ -139,6 +151,12 @@ public class ReportViewController extends GenericController {
         }
     }
 
+    private void initJournalVisitTableReportEntityList(JournalUI journalUI){
+        journalVisitTableReportEntities.clear();
+        for (WelderUI welderUI : journalUI.getWelders()){
+            journalVisitTableReportEntities.add(new JournalVisitTableReportEntity(journalUI, welderUI));
+        }
+    }
     private void initJournalReportEntityList(JournalUI journalUI){
         journalReportEntities.clear();
         for (WelderUI welderUI: journalUI.getWelders()){
