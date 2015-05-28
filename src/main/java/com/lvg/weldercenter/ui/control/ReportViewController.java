@@ -3,9 +3,13 @@ package com.lvg.weldercenter.ui.control;
 import com.lvg.weldercenter.spring.factories.ServiceUIFactory;
 import com.lvg.weldercenter.ui.entities.*;
 import com.lvg.weldercenter.ui.entities.report.JournalReportEntity;
+import com.lvg.weldercenter.ui.entities.report.JournalTimeTableReportEntity;
 import com.lvg.weldercenter.ui.entities.report.JournalVisitTableReportEntity;
 import com.lvg.weldercenter.ui.entities.report.TheoryReportEntity;
 import com.lvg.weldercenter.ui.servicesui.PersonalProtocolServiceUI;
+import com.lvg.weldercenter.ui.util.DateUtil;
+import com.lvg.weldercenter.ui.util.TimeTableUtil;
+import com.lvg.weldercenter.ui.util.managers.TimeTableUtilManager;
 import javafx.embed.swing.SwingNode;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -18,10 +22,8 @@ import org.apache.log4j.Logger;
 import javax.swing.*;
 import java.awt.*;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.ResourceBundle;
+import java.util.*;
+import java.util.List;
 
 /**
  * Created by Victor on 18.05.2015.
@@ -34,6 +36,7 @@ public class ReportViewController extends GenericController {
     private final URL JOURNAL_REPORT_URL = getClass().getResource("/reports/journal-rep.jrxml");
     private final URL JOURNAL_SUBREPORT_WELDERS_DETAIL_URL = getClass().getResource("/reports/journal-about-students-subrep.jrxml");
     private final URL JOURNAL_SUBREPORT_VISIT_TABLE_URL = getClass().getResource("/reports/journal-visit-table-subrep.jrxml");
+    private final URL JOURNAL_SUBREPORT_TIME_TABLE_URL = getClass().getResource("/reports/journal-time-table-subrep.jrxml");
     private final URL UNIVERS_FONT_URL = getClass().getResource("/fonts/Univers_Medium.ttf");
 
     private PersonalProtocolServiceUI personalProtocolServiceUI = ServiceUIFactory.getPersonalProtocolServiceUI();
@@ -51,6 +54,7 @@ public class ReportViewController extends GenericController {
     private Collection<TheoryReportEntity> theoryReportEntityList = new ArrayList<TheoryReportEntity>();
     private Collection<JournalReportEntity> journalReportEntities = new ArrayList<JournalReportEntity>();
     private Collection<JournalVisitTableReportEntity> journalVisitTableReportEntities  = new ArrayList<JournalVisitTableReportEntity>();
+    private Collection<JournalTimeTableReportEntity> journalTimeTableReportEntities = new ArrayList<JournalTimeTableReportEntity>();
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         LOGGER.debug("INITIALIZING Report Pane");
@@ -129,6 +133,7 @@ public class ReportViewController extends GenericController {
     public void showJournalReport(JournalUI journalUI){
         initJournalReportEntityList(journalUI);
         initJournalVisitTableReportEntityList(journalUI);
+        initJournalTimeTableReportEntityList(journalUI);
         try{
 
             JasperReport subReport = JasperCompileManager.compileReport(JOURNAL_SUBREPORT_WELDERS_DETAIL_URL.getFile());
@@ -140,6 +145,11 @@ public class ReportViewController extends GenericController {
             journalUI.getParameters().put("VISIT_TABLE_DATA_SOURCE",
                     new JRBeanCollectionDataSource(journalVisitTableReportEntities));
 
+            JasperReport subReportTimeTable = JasperCompileManager.compileReport(JOURNAL_SUBREPORT_TIME_TABLE_URL.getFile());
+            journalUI.getParameters().put("TIME_TABLE_SUBREPORT", subReportTimeTable);
+            journalUI.getParameters().put("TIME_TABLE_DATA_SOURCE",
+                    new JRBeanCollectionDataSource(journalTimeTableReportEntities));
+
             JasperReport report = JasperCompileManager.compileReport(JOURNAL_REPORT_URL.getFile());
 
             JasperPrint print = JasperFillManager.fillReport(report, journalUI.getParameters(),
@@ -149,6 +159,25 @@ public class ReportViewController extends GenericController {
         }catch (JRException ex){
             LOGGER.error("SHOW JOURNAL REPORT VIEW: Could not load report: "+ex.getMessage(),ex);
         }
+    }
+    private void initJournalTimeTableReportEntityList(JournalUI journalUI){
+        TimeTableUtil timeTableUtil = new TimeTableUtilManager();
+        java.util.List<TopicUI> topicsUI = timeTableUtil.getTimeTable(journalUI.getCurriculum(),
+                DateUtil.getLocalDate(journalUI.getDateBegin()));
+        CurriculumUI curriculumUI = journalUI.getCurriculumUIobject();
+        java.util.List<SectionUI> sections = curriculumUI.getSections();
+        for (TopicUI topic : topicsUI){
+            for (SectionUI section : sections){
+                for (TopicUI top: section.getTopics()){
+                    if (topic.equals(top)){
+                        journalTimeTableReportEntities.add(new JournalTimeTableReportEntity(journalUI,topic,section));
+                        break;
+                    }
+
+                }
+            }
+        }
+
     }
 
     private void initJournalVisitTableReportEntityList(JournalUI journalUI){
