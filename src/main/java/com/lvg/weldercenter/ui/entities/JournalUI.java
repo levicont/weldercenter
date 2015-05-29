@@ -24,6 +24,7 @@ public class JournalUI extends GenericEntityUI {
     private final String KEY_DATE_END_FORMAT = "DATE_END_FORMAT";
     private final String KEY_CURRICULUM_TITLE = "CURRICULUM_TITLE";
     private final String KEY_WELDERS_COUNT = "WELDERS_COUNT";
+    private final String KEY_TEACHERS = "TEACHERS";
 
 
     private final SimpleStringProperty number = new SimpleStringProperty();
@@ -47,6 +48,7 @@ public class JournalUI extends GenericEntityUI {
         put(KEY_DATE_END_FORMAT, null);
         put(KEY_CURRICULUM_TITLE, null);
         put(KEY_WELDERS_COUNT, null);
+        put(KEY_TEACHERS, null);
     }};
 
     public JournalUI(Journal journal){
@@ -118,6 +120,14 @@ public class JournalUI extends GenericEntityUI {
             parameters.replace(KEY_CURRICULUM_TITLE, this.getCurriculum());
         }
         parameters.replace(KEY_WELDERS_COUNT, this.getWeldersCount());
+        StringBuilder teachersAll = new StringBuilder();
+        for(TeacherUI teacherUI: teachers.get()){
+            teachersAll.append(teacherUI.getFormatTeacherFullName("SUR-nn-sec")+", ");
+        }
+        if (teachersAll.length()>0){
+            teachersAll.deleteCharAt(teachersAll.lastIndexOf(","));
+        }
+        parameters.replace(KEY_TEACHERS, teachersAll.toString());
 
         return parameters;
     }

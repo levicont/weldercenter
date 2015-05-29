@@ -2,10 +2,7 @@ package com.lvg.weldercenter.ui.control;
 
 import com.lvg.weldercenter.spring.factories.ServiceUIFactory;
 import com.lvg.weldercenter.ui.entities.*;
-import com.lvg.weldercenter.ui.entities.report.JournalReportEntity;
-import com.lvg.weldercenter.ui.entities.report.JournalTimeTableReportEntity;
-import com.lvg.weldercenter.ui.entities.report.JournalVisitTableReportEntity;
-import com.lvg.weldercenter.ui.entities.report.TheoryReportEntity;
+import com.lvg.weldercenter.ui.entities.report.*;
 import com.lvg.weldercenter.ui.servicesui.PersonalProtocolServiceUI;
 import com.lvg.weldercenter.ui.util.DateUtil;
 import com.lvg.weldercenter.ui.util.TimeTableUtil;
@@ -23,7 +20,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.net.URL;
 import java.util.*;
-import java.util.List;
 
 /**
  * Created by Victor on 18.05.2015.
@@ -54,7 +50,7 @@ public class ReportViewController extends GenericController {
     private Collection<TheoryReportEntity> theoryReportEntityList = new ArrayList<TheoryReportEntity>();
     private Collection<JournalReportEntity> journalReportEntities = new ArrayList<JournalReportEntity>();
     private Collection<JournalVisitTableReportEntity> journalVisitTableReportEntities  = new ArrayList<JournalVisitTableReportEntity>();
-    private Collection<JournalTimeTableReportEntity> journalTimeTableReportEntities = new ArrayList<JournalTimeTableReportEntity>();
+    private Collection<JournalSectionReportEntity> journalSectionReportEntities = new ArrayList<JournalSectionReportEntity>();
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         LOGGER.debug("INITIALIZING Report Pane");
@@ -133,7 +129,7 @@ public class ReportViewController extends GenericController {
     public void showJournalReport(JournalUI journalUI){
         initJournalReportEntityList(journalUI);
         initJournalVisitTableReportEntityList(journalUI);
-        initJournalTimeTableReportEntityList(journalUI);
+        initJournalSectionReportEntityList(journalUI);
         try{
 
             JasperReport subReport = JasperCompileManager.compileReport(JOURNAL_SUBREPORT_WELDERS_DETAIL_URL.getFile());
@@ -146,9 +142,12 @@ public class ReportViewController extends GenericController {
                     new JRBeanCollectionDataSource(journalVisitTableReportEntities));
 
             JasperReport subReportTimeTable = JasperCompileManager.compileReport(JOURNAL_SUBREPORT_TIME_TABLE_URL.getFile());
+
             journalUI.getParameters().put("TIME_TABLE_SUBREPORT", subReportTimeTable);
             journalUI.getParameters().put("TIME_TABLE_DATA_SOURCE",
-                    new JRBeanCollectionDataSource(journalTimeTableReportEntities));
+                    new JRBeanCollectionDataSource(journalSectionReportEntities));
+            journalUI.getParameters().put("PARAMETERS_MAP", journalUI.getParameters());
+
 
             JasperReport report = JasperCompileManager.compileReport(JOURNAL_REPORT_URL.getFile());
 
@@ -160,22 +159,14 @@ public class ReportViewController extends GenericController {
             LOGGER.error("SHOW JOURNAL REPORT VIEW: Could not load report: "+ex.getMessage(),ex);
         }
     }
-    private void initJournalTimeTableReportEntityList(JournalUI journalUI){
-        TimeTableUtil timeTableUtil = new TimeTableUtilManager();
-        java.util.List<TopicUI> topicsUI = timeTableUtil.getTimeTable(journalUI.getCurriculum(),
-                DateUtil.getLocalDate(journalUI.getDateBegin()));
+    private void initJournalSectionReportEntityList(JournalUI journalUI){
+        if (journalUI==null)
+            return;
+        journalSectionReportEntities.clear();
         CurriculumUI curriculumUI = journalUI.getCurriculumUIobject();
         java.util.List<SectionUI> sections = curriculumUI.getSections();
-        for (TopicUI topic : topicsUI){
-            for (SectionUI section : sections){
-                for (TopicUI top: section.getTopics()){
-                    if (topic.equals(top)){
-                        journalTimeTableReportEntities.add(new JournalTimeTableReportEntity(journalUI,topic,section));
-                        break;
-                    }
-
-                }
-            }
+        for (SectionUI sectionUI: sections){
+            journalSectionReportEntities.add(new JournalSectionReportEntity(sectionUI));
         }
 
     }
