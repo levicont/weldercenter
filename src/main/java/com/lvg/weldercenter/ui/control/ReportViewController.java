@@ -148,7 +148,6 @@ public class ReportViewController extends GenericController {
                     new JRBeanCollectionDataSource(journalSectionReportEntities));
             journalUI.getParameters().put("PARAMETERS_MAP", journalUI.getParameters());
 
-
             JasperReport report = JasperCompileManager.compileReport(JOURNAL_REPORT_URL.getFile());
 
             JasperPrint print = JasperFillManager.fillReport(report, journalUI.getParameters(),
@@ -166,7 +165,7 @@ public class ReportViewController extends GenericController {
         CurriculumUI curriculumUI = journalUI.getCurriculumUIobject();
         java.util.List<SectionUI> sections = curriculumUI.getSections();
         for (SectionUI sectionUI: sections){
-            journalSectionReportEntities.add(new JournalSectionReportEntity(sectionUI));
+            journalSectionReportEntities.add(new JournalSectionReportEntity(sectionUI, journalUI));
         }
 
     }

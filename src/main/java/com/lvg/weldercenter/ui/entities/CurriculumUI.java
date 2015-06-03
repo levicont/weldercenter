@@ -30,11 +30,13 @@ public class CurriculumUI extends GenericEntityUI {
         this.id.set(curriculum.getCurriculumId());
         this.title.set(curriculum.getTitle());
         this.description.set(curriculum.getDescription());
-        this.sections.set(FXCollections.observableArrayList(new ArrayList<SectionUI>()));
+        this.sections.set(FXCollections.observableArrayList(getSectionUIList(curriculum.getSections())));
     }
 
-    private List<SectionUI> getSectioUIList(List<Section> dbSectionList){
+    private List<SectionUI> getSectionUIList(List<Section> dbSectionList){
         List<SectionUI> result = new ArrayList<SectionUI>();
+        if (dbSectionList==null)
+            return result;
         for(Section s : dbSectionList){
             SectionUI sectionUI = new SectionUI(s);
             result.add(sectionUI);

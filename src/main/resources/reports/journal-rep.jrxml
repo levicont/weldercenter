@@ -21,7 +21,7 @@
 		<band splitType="Stretch"/>
 	</background>
 	<detail>
-		<band height="439" splitType="Stretch">
+		<band height="429" splitType="Stretch">
 			<staticText>
 				<reportElement x="100" y="60" width="327" height="23" uuid="5a369992-565d-47cc-b204-6e1b3c76999a"/>
 				<textElement textAlignment="Center">
@@ -64,13 +64,6 @@
 				</textElement>
 				<text><![CDATA[ООО "Харьковский профессиональный колледж"]]></text>
 			</staticText>
-			<staticText>
-				<reportElement x="175" y="419" width="175" height="20" uuid="25b58feb-d20b-4378-8395-3c8910e5c698"/>
-				<textElement textAlignment="Center">
-					<font fontName="Univers" size="14"/>
-				</textElement>
-				<text><![CDATA[Харьков - 2015 г.]]></text>
-			</staticText>
 			<textField>
 				<reportElement x="175" y="264" width="100" height="20" uuid="3e7feaa9-3cc3-4b6a-9282-05e7a5276607"/>
 				<textElement verticalAlignment="Middle">
@@ -95,6 +88,13 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$P{DATE_END_FORMAT}]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement x="175" y="409" width="175" height="20" uuid="25b58feb-d20b-4378-8395-3c8910e5c698"/>
+				<textElement textAlignment="Center">
+					<font fontName="Univers" size="14"/>
+				</textElement>
+				<text><![CDATA[Харьков - 2015 г.]]></text>
+			</staticText>
 		</band>
 		<band height="49" splitType="Stretch">
 			<break>
@@ -113,10 +113,10 @@
 				<subreportExpression><![CDATA[$P{VISIT_TABLE_SUBREPORT}]]></subreportExpression>
 			</subreport>
 		</band>
-		<band height="50">
+		<band height="47">
 			<subreport runToBottom="true">
-				<reportElement x="0" y="7" width="511" height="35" uuid="90409f0f-0fa1-4382-86cd-26c52d1a3ac5"/>
-				<parametersMapExpression><![CDATA[$P{PARAMETERS_MAP}]]></parametersMapExpression>
+				<reportElement x="0" y="11" width="511" height="36" uuid="90409f0f-0fa1-4382-86cd-26c52d1a3ac5"/>
+				<parametersMapExpression><![CDATA[$P{REPORT_PARAMETERS_MAP}]]></parametersMapExpression>
 				<subreportParameter name="TIME_TABLE_DATA_SOURCE">
 					<subreportParameterExpression><![CDATA[$P{TIME_TABLE_DATA_SOURCE}]]></subreportParameterExpression>
 				</subreportParameter>
@@ -157,7 +157,7 @@
 				<subreportExpression><![CDATA[$P{TIME_TABLE_SUBREPORT}]]></subreportExpression>
 			</subreport>
 			<break>
-				<reportElement x="0" y="6" width="100" height="1" uuid="4a779d0b-121b-4e73-bd66-279b7a490336"/>
+				<reportElement x="0" y="10" width="100" height="1" uuid="4a779d0b-121b-4e73-bd66-279b7a490336"/>
 			</break>
 		</band>
 	</detail>

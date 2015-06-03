@@ -1,10 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="journal-time-table-subrep" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="595" leftMargin="0" rightMargin="0" topMargin="20" bottomMargin="20" uuid="c7966f9e-6c46-4c13-b6fd-ac586d13305b">
-	<property name="ireport.zoom" value="1.0"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.zoom" value="1.3310000000000015"/>
+	<property name="ireport.x" value="31"/>
 	<property name="ireport.y" value="0"/>
+	<subDataset name="dataset1" uuid="a2024322-f952-4d58-9e5a-7b0e0aabaf64">
+		<field name="topicTitle" class="java.lang.String"/>
+		<field name="topicDate" class="java.lang.String"/>
+		<field name="topicHours" class="java.lang.String"/>
+	</subDataset>
 	<parameter name="TEACHERS" class="java.lang.String"/>
-	<field name="teachers" class="java.lang.String"/>
+	<parameter name="TOPIC_DATA_SOURCE" class="net.sf.jasperreports.engine.JRDataSource"/>
+	<parameter name="TOPIC_SUBREPORT" class="java.lang.Object"/>
+	<field name="sectionTitle" class="java.lang.String"/>
+	<field name="topics" class="java.util.Collection"/>
+	<field name="sectionTotalHours" class="java.lang.Double"/>
+	<variable name="HOURS_SUM" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{sectionTotalHours}]]></variableExpression>
+	</variable>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -44,7 +56,7 @@
 				<text><![CDATA[Кол-во часов]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="107" y="20" width="406" height="48" uuid="f79d1a92-d15d-40d1-828b-7db06ff72c80"/>
+				<reportElement x="107" y="20" width="324" height="48" uuid="f79d1a92-d15d-40d1-828b-7db06ff72c80"/>
 				<box>
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -57,7 +69,7 @@
 				<text><![CDATA[Пройдено на занятии]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="513" y="20" width="82" height="48" uuid="5e4a4e11-db3a-4f4c-8b2a-ff473a240f08"/>
+				<reportElement x="431" y="20" width="82" height="48" uuid="5e4a4e11-db3a-4f4c-8b2a-ff473a240f08"/>
 				<box>
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -69,9 +81,180 @@
 				</textElement>
 				<text><![CDATA[Подпись преподавателя]]></text>
 			</staticText>
+			<textField>
+				<reportElement x="127" y="0" width="386" height="20" uuid="1e0be546-49e2-4124-8692-4439f0bf128b"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Univers" size="12" isBold="true"/>
+					<paragraph leftIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{TEACHERS}]]></textFieldExpression>
+			</textField>
 		</band>
 	</pageHeader>
 	<detail>
-		<band height="125" splitType="Stretch"/>
+		<band height="61" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="513" height="20" uuid="bd47a524-af23-47ca-931d-aad1366809db"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Univers" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{sectionTitle}]]></textFieldExpression>
+			</textField>
+			<componentElement>
+				<reportElement x="0" y="20" width="513" height="20" uuid="6ea35247-5734-4312-9a85-20f839b99ad2"/>
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<datasetRun subDataset="dataset1" uuid="3586a93e-fe53-4620-9e0d-c3277b0b6dcd">
+						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{topics})]]></dataSourceExpression>
+					</datasetRun>
+					<jr:listContents height="20" width="513">
+						<textField>
+							<reportElement x="107" y="0" width="324" height="20" uuid="19f715eb-97d0-4b41-9c60-b3a6c8bc7c21"/>
+							<box>
+								<pen lineWidth="1.0"/>
+								<topPen lineWidth="1.0"/>
+								<leftPen lineWidth="1.0"/>
+								<bottomPen lineWidth="1.0"/>
+								<rightPen lineWidth="1.0"/>
+							</box>
+							<textElement verticalAlignment="Middle">
+								<font fontName="Univers"/>
+								<paragraph leftIndent="3"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{topicTitle}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement x="0" y="0" width="66" height="20" uuid="a3a94e92-54b5-4b5b-879d-4445ec94804b"/>
+							<box>
+								<pen lineWidth="1.0"/>
+								<topPen lineWidth="1.0"/>
+								<leftPen lineWidth="1.0"/>
+								<bottomPen lineWidth="1.0"/>
+								<rightPen lineWidth="1.0"/>
+							</box>
+							<textElement verticalAlignment="Middle">
+								<font fontName="Univers"/>
+								<paragraph leftIndent="3"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{topicDate}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement x="66" y="0" width="41" height="20" uuid="52aab088-61a7-4ac9-bd0b-42f623310cf2"/>
+							<box>
+								<pen lineWidth="1.0"/>
+								<topPen lineWidth="1.0"/>
+								<leftPen lineWidth="1.0"/>
+								<bottomPen lineWidth="1.0"/>
+								<rightPen lineWidth="1.0"/>
+							</box>
+							<textElement verticalAlignment="Middle">
+								<font fontName="Univers"/>
+								<paragraph leftIndent="3"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{topicHours}]]></textFieldExpression>
+						</textField>
+						<staticText>
+							<reportElement x="431" y="0" width="82" height="20" uuid="80dc7c02-d6f8-4096-bf5c-460f49ff5924"/>
+							<box>
+								<pen lineWidth="1.0"/>
+								<topPen lineWidth="1.0"/>
+								<leftPen lineWidth="1.0"/>
+								<bottomPen lineWidth="1.0"/>
+								<rightPen lineWidth="1.0"/>
+							</box>
+							<text><![CDATA[]]></text>
+						</staticText>
+					</jr:listContents>
+				</jr:list>
+			</componentElement>
+			<staticText>
+				<reportElement positionType="Float" x="0" y="40" width="66" height="20" uuid="9a913ec9-35e3-4680-9abe-e33bebb75409"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Univers" isBold="true"/>
+					<paragraph leftIndent="3"/>
+				</textElement>
+				<text><![CDATA[Итого:]]></text>
+			</staticText>
+			<textField>
+				<reportElement positionType="Float" x="66" y="40" width="41" height="20" uuid="247e0769-bb0b-4016-bdf9-c210a1ffe23b"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Univers" isBold="true"/>
+					<paragraph leftIndent="3"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{sectionTotalHours}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="107" y="40" width="406" height="20" uuid="e29fd65b-3a15-4ca4-9266-9dd3039114f7"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<text><![CDATA[]]></text>
+			</staticText>
+		</band>
 	</detail>
+	<summary>
+		<band height="20">
+			<staticText>
+				<reportElement positionType="Float" x="0" y="0" width="66" height="20" uuid="0a74d114-2131-426e-98c2-76490851ea0b"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Univers" isBold="true"/>
+					<paragraph leftIndent="3"/>
+				</textElement>
+				<text><![CDATA[Всего:]]></text>
+			</staticText>
+			<textField>
+				<reportElement positionType="Float" x="66" y="0" width="41" height="20" uuid="a5f4191f-13c9-40de-acdd-6fe7533063d3"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Univers" isBold="true"/>
+					<paragraph leftIndent="3"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{HOURS_SUM}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="107" y="0" width="406" height="20" uuid="7532e0f5-86be-4780-a371-5a82f5b94bac"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<text><![CDATA[]]></text>
+			</staticText>
+		</band>
+	</summary>
 </jasperReport>
