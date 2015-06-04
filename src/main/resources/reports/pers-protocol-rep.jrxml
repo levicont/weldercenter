@@ -1,0 +1,443 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="pers-protocol-rep" pageWidth="595" pageHeight="842" columnWidth="525" leftMargin="56" rightMargin="14" topMargin="14" bottomMargin="14" uuid="067b331b-9d02-428e-ad99-23a3b633b330">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="655" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="525" height="20" uuid="8ee75240-6ce0-471b-ac44-6f63b69f31b8"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Univers"/>
+				</textElement>
+				<text><![CDATA[ООО "Харьковский профессиональный колледж"]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="20" width="525" height="20" uuid="335665ad-8c72-498f-8734-f9a601907ffe"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Univers" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ПРОТОКОЛ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="40" width="525" height="20" uuid="19461719-5ecd-4299-b975-1ae8fd339618"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Univers" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[заседания аттестационной комиссии]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="60" width="24" height="20" uuid="896452f3-8908-4dbe-94a7-a41b87134019"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Univers" size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[от]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="450" y="60" width="18" height="20" uuid="4f63f4dc-8722-44da-965d-81bcf2fbcff7"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Univers" size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[№]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="80" width="141" height="20" uuid="e606c10d-17aa-4f3f-9a20-79c98902c1b6"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Univers" size="12"/>
+				</textElement>
+				<text><![CDATA[Комиссия в составе:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="24" y="100" width="150" height="20" uuid="7010fa2e-c927-4430-ada7-e290e70d40a0"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Univers" size="12"/>
+				</textElement>
+				<text><![CDATA[председатель комиссии:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="24" y="120" width="150" height="20" uuid="cce5b392-c625-477d-9e4c-551cc147f7e2"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Univers" size="12"/>
+				</textElement>
+				<text><![CDATA[члены комиссии:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="174" y="100" width="119" height="20" uuid="2bf5c2be-605e-4697-ab31-edfacc89e109"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Univers" size="12"/>
+				</textElement>
+				<text><![CDATA[Чуйко А.А.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="174" y="120" width="119" height="20" uuid="a9d454ff-2c82-4f9e-8367-8fde87695d70"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Univers" size="12"/>
+				</textElement>
+				<text><![CDATA[Ашукин А.В.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="174" y="140" width="119" height="20" uuid="3e6fc20e-a568-4bd2-88c7-0ae0e49c3979"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Univers" size="12"/>
+				</textElement>
+				<text><![CDATA[Крапива Д.А.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="174" y="160" width="119" height="20" uuid="106d7bfa-dd07-4566-be8c-89a947af503c"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Univers" size="12"/>
+				</textElement>
+				<text><![CDATA[Касьяненко С.А.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="180" width="396" height="20" uuid="9da80c8e-3991-4bb6-b1eb-7666c25bda68"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Univers" size="12"/>
+				</textElement>
+				<text><![CDATA[рассмотрела вопрос: Аттестация сварщиков НПАОП 0.00-1.16-96;]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="200" width="219" height="20" uuid="6dce9c0a-4658-4134-8df2-2386a3860766"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Univers" size="12"/>
+				</textElement>
+				<text><![CDATA[1. Фамилия имя отчество сварщика:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="220" width="108" height="20" uuid="16ea24a3-f465-4a5d-a12e-1d15f196752e"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Univers" size="12"/>
+				</textElement>
+				<text><![CDATA[2. Год рождения:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="240" width="525" height="20" uuid="dadbca86-b725-4325-b00a-ecca5963b704"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Univers" size="12"/>
+				</textElement>
+				<text><![CDATA[3. Номер документа о присвоении квалификации сварщика или номер предыдущего ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="12" y="260" width="192" height="20" uuid="d560d231-66cc-4bb1-a2ff-40b8db6a7c97"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Univers" size="12"/>
+				</textElement>
+				<text><![CDATA[удостоверения об аттестации:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="280" width="204" height="20" uuid="33e96fba-3fbb-4f30-a62f-06861204b3bb"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Univers" size="12"/>
+				</textElement>
+				<text><![CDATA[4. Стаж работы по сварке:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="300" width="108" height="20" uuid="f9701db3-ccce-4f23-a90a-b2f968aa918e"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Univers" size="12"/>
+				</textElement>
+				<text><![CDATA[5. Вид аттестации:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="320" width="239" height="20" uuid="fa216a45-b6fd-458b-9567-bc95a70d89bd"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Univers" size="12"/>
+				</textElement>
+				<text><![CDATA[6. Характеристики сварного соединения:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="12" y="340" width="227" height="20" uuid="2a31f45e-d41a-490c-8abb-f7fb1e69fb2b"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Univers" size="12"/>
+				</textElement>
+				<text><![CDATA[6.1. Маркировка образца (клеймо):]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="12" y="360" width="129" height="20" uuid="5a7fe00f-dbf1-4806-9297-8e7b7eeeb4f4"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Univers" size="12"/>
+				</textElement>
+				<text><![CDATA[6.2. Способ сварки:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="12" y="380" width="207" height="20" uuid="873ac771-6f36-4997-a70b-af7a387b201a"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Univers" size="12"/>
+				</textElement>
+				<text><![CDATA[6.3. Вид свариваемых деталей:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="12" y="400" width="339" height="20" uuid="52c90b70-ce32-4821-9ad2-3367da659066"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Univers" size="12"/>
+				</textElement>
+				<text><![CDATA[6.4. Тип шва, вид и характеристика сварного соединения:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="12" y="420" width="162" height="20" uuid="b899048e-311a-44a5-82a6-c91479760056"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Univers" size="12"/>
+				</textElement>
+				<text><![CDATA[6.5. Положение при сварке:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="12" y="440" width="296" height="20" uuid="0ebf77fc-c7b7-4516-91e1-00150113dba4"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Univers" size="12"/>
+				</textElement>
+				<text><![CDATA[6.6. Предварительный и сопутствующий подогрев:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="12" y="460" width="192" height="20" uuid="ec0f1659-a050-4c2c-b03e-76ab8a6668bc"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Univers" size="12"/>
+				</textElement>
+				<text><![CDATA[6.7. Термическая обработка:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="480" width="204" height="20" uuid="ba7fa3f6-29da-453c-8e6c-339a3b958e2c"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Univers" size="12"/>
+				</textElement>
+				<text><![CDATA[7. Материал образца:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="12" y="500" width="149" height="20" uuid="09365910-ff3c-4e67-94a3-7b0099cfd70b"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Univers" size="12"/>
+				</textElement>
+				<text><![CDATA[7.1. Марка и группа:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="12" y="520" width="192" height="20" uuid="6fa3ac9e-2d89-4dbb-a8db-6c26ccb91264"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Univers" size="12"/>
+				</textElement>
+				<text><![CDATA[7.2. Толщина образца (мм):]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="12" y="540" width="227" height="20" uuid="4dfb7cf1-1da9-47d9-968a-472c1a05db2c"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Univers" size="12"/>
+				</textElement>
+				<text><![CDATA[7.3. Наружный диаметр трубы (мм):]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="560" width="239" height="20" uuid="85ca5bca-f167-4f17-8292-e0301d48f23b"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Univers" size="12"/>
+				</textElement>
+				<text><![CDATA[8. Сварочные материалы: ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="12" y="580" width="281" height="20" uuid="216cb312-10af-44ce-9c69-1941526c3f91"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Univers" size="12"/>
+				</textElement>
+				<text><![CDATA[8.1. Электрод или присадочная проволока:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="12" y="600" width="192" height="20" uuid="94069d0d-53eb-420b-9886-9c11dd7c016a"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Univers" size="12"/>
+				</textElement>
+				<text><![CDATA[8.2. Защитный газ или флюс:]]></text>
+			</staticText>
+			<break>
+				<reportElement x="0" y="623" width="525" height="1" uuid="2656e729-d7e0-4f88-a2e9-2e31a7964db9"/>
+			</break>
+		</band>
+		<band height="814">
+			<staticText>
+				<reportElement x="0" y="0" width="204" height="20" uuid="0e8fad1f-01fa-48ca-817b-2528a4b99049"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Univers" size="12"/>
+				</textElement>
+				<text><![CDATA[9. Результаты контроля качества образца:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="12" y="20" width="245" height="20" uuid="372db6a5-3dff-4b66-a27d-0f385ae33d49"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Univers" size="12"/>
+				</textElement>
+				<text><![CDATA[9.1. Визуальный осмотр:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="257" y="40" width="74" height="20" uuid="f0a10968-4119-4ba2-9ef4-176af0e236f7"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Univers" size="12"/>
+				</textElement>
+				<text><![CDATA[Протокол №]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="396" y="40" width="15" height="20" uuid="80221412-e7c3-4091-b022-47e6aaa830cc"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Univers" size="12"/>
+				</textElement>
+				<text><![CDATA[от]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="12" y="60" width="245" height="20" uuid="1d5aad5c-c1da-4019-962d-cda84f86337b"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Univers" size="12"/>
+				</textElement>
+				<text><![CDATA[9.2. Радиографический контроль:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="257" y="80" width="74" height="20" uuid="7316dfdf-d668-4bee-9dc9-9c1095ceef0a"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Univers" size="12"/>
+				</textElement>
+				<text><![CDATA[Протокол №]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="396" y="80" width="15" height="20" uuid="1be9210b-1109-41ab-a755-c742d3bf51af"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Univers" size="12"/>
+				</textElement>
+				<text><![CDATA[от]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="12" y="100" width="245" height="20" uuid="16f130b8-7253-4710-a98b-fd52060ded41"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Univers" size="12"/>
+				</textElement>
+				<text><![CDATA[9.3. Ультразвуковой контроль:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="257" y="100" width="68" height="20" uuid="0bdd0ee7-831d-41fc-a6fa-b0e77cc31381"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Univers" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[нет]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="12" y="120" width="245" height="20" uuid="49aa179f-19b6-4fd7-8317-1ed44ef07149"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Univers" size="12"/>
+				</textElement>
+				<text><![CDATA[9.4. Испытания на изгиб:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="257" y="140" width="74" height="20" uuid="39263018-f1b3-4b9a-9385-34051e026249"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Univers" size="12"/>
+				</textElement>
+				<text><![CDATA[Протокол №]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="396" y="140" width="15" height="20" uuid="98d138d1-0616-4cfb-8553-b39972ca8bbd"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Univers" size="12"/>
+				</textElement>
+				<text><![CDATA[от]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="257" y="160" width="68" height="20" uuid="3ef141bf-bfcf-4ba3-99be-e9645988c000"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Univers" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[нет]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="12" y="160" width="245" height="20" uuid="faa0d82d-d0f4-4c72-a3bd-3a1aa59c8ede"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Univers" size="12"/>
+				</textElement>
+				<text><![CDATA[9.5. Металлографические исследования:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="180" width="325" height="20" uuid="48aee636-5ae1-4b55-b351-65e62e04cd4b"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Univers" size="12"/>
+				</textElement>
+				<text><![CDATA[10. Наименование НД по нормам оценки качесва:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="220" width="204" height="20" uuid="7b1024db-3204-4017-ab4a-51420c1594cd"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Univers" size="12"/>
+				</textElement>
+				<text><![CDATA[11. Оценка теоретических знаний:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="240" width="239" height="20" uuid="348535e2-a64e-4f7c-94c9-3cb4893a65e6"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Univers" size="12"/>
+				</textElement>
+				<text><![CDATA[12. Решение аттестационной комиссии:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="24" y="260" width="501" height="140" uuid="0ec7f712-1250-4947-9830-ded783795e73"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Univers" size="12"/>
+				</textElement>
+				<text><![CDATA[12. Решение аттестационной комиссии:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="400" width="239" height="20" uuid="1113b824-18e3-4bcc-8608-7b1f4d119f7d"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Univers" size="12"/>
+				</textElement>
+				<text><![CDATA[13. Срок периодической аттестации:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="269" y="614" width="119" height="20" uuid="a6d3e40b-813d-48ce-81ff-60e58f245106"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Univers" size="12"/>
+				</textElement>
+				<text><![CDATA[Чуйко А.А.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="269" y="654" width="119" height="20" uuid="bd27f8b4-6ea5-4f6a-8d04-d37e66d59f85"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Univers" size="12"/>
+				</textElement>
+				<text><![CDATA[Крапива Д.А.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="614" width="150" height="20" uuid="6e75ee49-cc39-43a9-baf2-4f96191c08f5"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Univers" size="12"/>
+				</textElement>
+				<text><![CDATA[Председатель комиссии:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="634" width="150" height="20" uuid="39cdbed6-2176-4a92-a09f-7b21bf067e73"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Univers" size="12"/>
+				</textElement>
+				<text><![CDATA[Члены комиссии:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="269" y="634" width="119" height="20" uuid="d828c7f2-cf51-4ce3-9283-5fe0fe2a85ea"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Univers" size="12"/>
+				</textElement>
+				<text><![CDATA[Ашукин А.В.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="269" y="674" width="119" height="20" uuid="c26d92ab-111e-45ec-84a7-0711eed87c98"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Univers" size="12"/>
+				</textElement>
+				<text><![CDATA[Касьяненко С.А.]]></text>
+			</staticText>
+			<line>
+				<reportElement x="150" y="633" width="119" height="1" uuid="684402b3-475d-4c1a-a9f8-bc30f745c276"/>
+			</line>
+			<line>
+				<reportElement x="150" y="654" width="119" height="1" uuid="d3dc5aea-4dee-43c2-8946-b32e0436ce0f"/>
+			</line>
+			<line>
+				<reportElement x="150" y="673" width="119" height="1" uuid="427d3af1-8f75-477f-b901-c14e6cb244ab"/>
+			</line>
+			<line>
+				<reportElement x="150" y="693" width="119" height="1" uuid="a796c505-d15f-4c8a-95b7-98464e8620f5"/>
+			</line>
+		</band>
+	</detail>
+</jasperReport>

@@ -14,6 +14,7 @@ import javafx.scene.layout.BorderPane;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.swing.JRViewer;
+import org.apache.commons.collections.map.HashedMap;
 import org.apache.log4j.Logger;
 
 import javax.swing.*;
@@ -33,6 +34,7 @@ public class ReportViewController extends GenericController {
     private final URL JOURNAL_SUBREPORT_WELDERS_DETAIL_URL = getClass().getResource("/reports/journal-about-students-subrep.jrxml");
     private final URL JOURNAL_SUBREPORT_VISIT_TABLE_URL = getClass().getResource("/reports/journal-visit-table-subrep.jrxml");
     private final URL JOURNAL_SUBREPORT_TIME_TABLE_URL = getClass().getResource("/reports/journal-time-table-subrep.jrxml");
+    private final URL PERSONAL_PROTOCOL_REPORT_URL = getClass().getResource("/reports/pers-protocol-rep.jrxml");
     private final URL UNIVERS_FONT_URL = getClass().getResource("/fonts/Univers_Medium.ttf");
 
     private PersonalProtocolServiceUI personalProtocolServiceUI = ServiceUIFactory.getPersonalProtocolServiceUI();
@@ -158,6 +160,20 @@ public class ReportViewController extends GenericController {
             LOGGER.error("SHOW JOURNAL REPORT VIEW: Could not load report: "+ex.getMessage(),ex);
         }
     }
+
+    public void showPersonalProtocolReport(PersonalProtocolUI personalProtocolUI){
+        try {
+            JasperReport report = JasperCompileManager.compileReport(PERSONAL_PROTOCOL_REPORT_URL.getFile());
+            JasperPrint print = JasperFillManager.fillReport(report, new HashedMap(),
+                    new JREmptyDataSource());
+            addReportPrintToPanel(print);
+            reportPanel.setVisible(true);
+        }catch(JRException ex){
+            LOGGER.error("SHOW PERSONAL PROTOCOL REPORT VIEW: Could not load report: "+ex.getMessage(),ex);
+        }
+    }
+
+
     private void initJournalSectionReportEntityList(JournalUI journalUI){
         if (journalUI==null)
             return;
