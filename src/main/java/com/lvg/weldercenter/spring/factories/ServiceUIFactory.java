@@ -31,6 +31,7 @@ public class ServiceUIFactory {
     private static ResolutionCertificationServiceUI resolutionCertificationServiceUI;
     private static WeldPatternServiceUI weldPatternServiceUI;
     private static CommissionCertificationServiceUI commissionCertificationServiceUI;
+    private static WeldJoinTypeServiceUI weldJoinTypeServiceUI;
 
 
     private ServiceUIFactory(){
@@ -236,6 +237,15 @@ public class ServiceUIFactory {
             commissionCertificationServiceUI = (CommissionCertificationServiceUI)context.
                     getBean("commissionCertificationServiceUI");
             return commissionCertificationServiceUI;
+        }
+    }
+
+    public static WeldJoinTypeServiceUI getWeldJoinTypeServiceUI() {
+        if (weldJoinTypeServiceUI != null) {
+            return weldJoinTypeServiceUI;
+        }else {
+            weldJoinTypeServiceUI  = (WeldJoinTypeServiceUI)context.getBean("weldJoinTypeServiceUI");
+            return weldJoinTypeServiceUI;
         }
     }
 }

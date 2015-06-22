@@ -44,6 +44,7 @@ public class ServiceFactory {
     private static VisualTestService visualTestService;
     private static MechanicalTestService mechanicalTestService;
     private static WeldPatternService weldPatternService;
+    private static WeldJoinTypeService weldJoinTypeService;
 
     private ServiceFactory(){
 
@@ -337,6 +338,15 @@ public class ServiceFactory {
         }else {
             weldPatternService = (WeldPatternService)context.getBean("weldPatternService");
             return weldPatternService;
+        }
+    }
+
+    public static WeldJoinTypeService getWeldJoinTypeService() {
+        if (null != weldJoinTypeService){
+            return weldJoinTypeService;
+        }else {
+            weldJoinTypeService = (WeldJoinTypeService)context.getBean("weldJoinTypeService");
+            return weldJoinTypeService;
         }
     }
 }

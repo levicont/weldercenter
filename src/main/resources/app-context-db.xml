@@ -79,6 +79,7 @@
     <bean id="steelTypeService" class="com.lvg.weldercenter.services.hibernate.SteelTypeServiceHiberImpl"/>
     <bean id="weldDetailService" class="com.lvg.weldercenter.services.hibernate.WeldDetailServiceHiberImpl"/>
     <bean id="weldPositionService" class="com.lvg.weldercenter.services.hibernate.WeldPositionServiceHiberImpl"/>
+    <bean id="weldJoinTypeService" class="com.lvg.weldercenter.services.hibernate.WeldJoinTypeServiceHiberImpl"/>
     <bean id="patternDiameterService" class="com.lvg.weldercenter.services.hibernate.PatternDiameterServiceHiberImpl"/>
     <bean id="patternThicknessService" class="com.lvg.weldercenter.services.hibernate.PatternThicknessServiceHiberImpl"/>
     <bean id="evaluationService" class="com.lvg.weldercenter.services.hibernate.EvaluationServiceHiberImpl"/>
@@ -118,5 +119,6 @@
           class="com.lvg.weldercenter.ui.servicesui.impl.ResolutionCeritificationUIManager"/>
     <bean id="weldPatternServiceUI" class="com.lvg.weldercenter.ui.servicesui.impl.WeldPatternUIManager"/>
     <bean id="commissionCertificationServiceUI" class="com.lvg.weldercenter.ui.servicesui.impl.CommissionCertificationUIManager"/>
+    <bean id="weldJoinTypeServiceUI" class="com.lvg.weldercenter.ui.servicesui.impl.WeldJoinTypeUIManager"/>
 
 </beans>

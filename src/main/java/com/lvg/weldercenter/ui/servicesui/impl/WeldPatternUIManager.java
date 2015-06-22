@@ -39,6 +39,8 @@ public class WeldPatternUIManager implements WeldPatternServiceUI {
     private VisualTestServiceUI visualTestServiceUI;
     @Autowired
     private MechanicalTestServiceUI mechanicalTestServiceUI;
+    @Autowired
+    private WeldJoinTypeServiceUI weldJoinTypeServiceUI;
 
 
     @Override
@@ -81,6 +83,7 @@ public class WeldPatternUIManager implements WeldPatternServiceUI {
         updWeldPattern.setWeldDetail(weldDetailServiceUI.getWeldDetailFromUIModel(modelWeldPattern.getWeldDetail()));
         updWeldPattern.setSteelType(steelTypeServiceUI.getSteelTypeFromUIModel(modelWeldPattern.getSteelType()));
         updWeldPattern.setWeldPositions(weldPositionServiceUI.getWeldPositionListFromObsList(modelWeldPattern.getWeldPositions()));
+        updWeldPattern.setWeldJoinTypes(weldJoinTypeServiceUI.getWeldJoinTypeListFromObs(modelWeldPattern.getWeldJoinTypes()));
         updWeldPattern.setWeldMethod(weldMethodServiceUI.getWeldMethodFromUI(modelWeldPattern.getWeldMethod()));
         updWeldPattern.setElectrode(electrodeServiceUI.getElectrodeFromUIModel(modelWeldPattern.getElectrode()));
         updWeldPattern.setWeldWire(weldWireServiceUI.getWeldWireFromUIModel(modelWeldPattern.getWeldWire()));

@@ -40,6 +40,8 @@ public class WeldPatternUI extends GenericEntityUI {
 
     private final SimpleListProperty<WeldPositionUI> weldPositions = new SimpleListProperty<WeldPositionUI>(
             FXCollections.observableArrayList(new ArrayList<WeldPositionUI>()));
+    private final SimpleListProperty<WeldJoinTypeUI> weldJoinTypes = new SimpleListProperty<WeldJoinTypeUI>(
+            FXCollections.observableArrayList(new ArrayList<WeldJoinTypeUI>()));
 
     public WeldPatternUI(){
         this.id.set(0);
@@ -103,6 +105,7 @@ public class WeldPatternUI extends GenericEntityUI {
         if (weldPattern.getMechanicalTest() != null)
             this.mechanicalTest.set(new MechanicalTestUI(weldPattern.getMechanicalTest()));
         this.weldPositions.set(FXCollections.observableArrayList(getWeldPositionsUIFromWeldPosition(weldPattern.getWeldPositions())));
+        this.weldJoinTypes.set(FXCollections.observableArrayList(getWeldJoinTypeUIFromWeldJoinTypes(weldPattern.getWeldJoinTypes())));
     }
 
     public WeldPatternUI(PersonalProtocolUI personalProtocolUI){
@@ -143,6 +146,14 @@ public class WeldPatternUI extends GenericEntityUI {
             result.add(new WeldPositionUI(wp));
         }
         return result;
+    }
+
+    private List<WeldJoinTypeUI> getWeldJoinTypeUIFromWeldJoinTypes(List<WeldJoinType> weldJoinTypes){
+        List<WeldJoinTypeUI> result = new ArrayList<WeldJoinTypeUI>();
+        for (WeldJoinType wjt: weldJoinTypes){
+            result.add(new WeldJoinTypeUI(wjt));
+        }
+        return  result;
     }
 
 
@@ -373,6 +384,18 @@ public class WeldPatternUI extends GenericEntityUI {
     public void setWeldPositions(ObservableList<WeldPositionUI> weldPositions) {
         this.weldPositions.set(weldPositions);
 
+    }
+
+    public ObservableList<WeldJoinTypeUI> getWeldJoinTypes() {
+        return weldJoinTypes.get();
+    }
+
+    public SimpleListProperty<WeldJoinTypeUI> weldJoinTypesProperty() {
+        return weldJoinTypes;
+    }
+
+    public void setWeldJoinTypes(ObservableList<WeldJoinTypeUI> weldJoinTypes) {
+        this.weldJoinTypes.set(weldJoinTypes);
     }
 
     @Override

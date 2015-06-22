@@ -36,6 +36,7 @@ public class WeldPattern implements Serializable{
     private MechanicalTest mechanicalTest;
 
     private List<WeldPosition> weldPositions = new ArrayList<WeldPosition>();
+    private List<WeldJoinType> weldJoinTypes = new ArrayList<WeldJoinType>();
 
 
 
@@ -205,6 +206,19 @@ public class WeldPattern implements Serializable{
 
     public void setWeldPositions(List<WeldPosition> weldPositions) {
         this.weldPositions = weldPositions;
+    }
+
+    @ManyToMany
+    @LazyCollection(value = LazyCollectionOption.FALSE)
+    @JoinTable(name = "weld_pattern_weld_join_type",
+            joinColumns = {@JoinColumn(name = "id_weld_pattern")},
+            inverseJoinColumns = {@JoinColumn(name = "id_weld_join_type")})
+    public List<WeldJoinType> getWeldJoinTypes() {
+        return weldJoinTypes;
+    }
+
+    public void setWeldJoinTypes(List<WeldJoinType> weldJoinTypes) {
+        this.weldJoinTypes = weldJoinTypes;
     }
 
     @Override
