@@ -374,7 +374,8 @@
                                       </columnConstraints>
                                       <rowConstraints>
                                         <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
-                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="10.0" prefHeight="45.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                       </rowConstraints>
                                        <children>
                                           <Label fx:id="lbWelderFullName" text="Фамилия Имя Отчество" GridPane.columnSpan="4" GridPane.halignment="CENTER" GridPane.rowIndex="1">
@@ -382,7 +383,7 @@
                                                 <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                              </GridPane.margin>
                                              <font>
-                                                <Font name="System Bold" size="14.0" />
+                                                <Font name="System Bold" size="16.0" />
                                              </font>
                                           </Label>
                                           <Label text="Номер:">
@@ -405,10 +406,23 @@
                                                 <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                              </GridPane.margin>
                                           </DatePicker>
+                                          <Label text="Вид аттестации:" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
+                                             <GridPane.margin>
+                                                <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                             </GridPane.margin>
+                                          </Label>
+                                          <ComboBox fx:id="cbAttestType" prefWidth="174.0" GridPane.columnIndex="3" GridPane.rowIndex="2">
+                                             <GridPane.margin>
+                                                <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                             </GridPane.margin>
+                                          </ComboBox>
                                        </children>
                                        <BorderPane.margin>
                                           <Insets top="8.0" />
                                        </BorderPane.margin>
+                                       <padding>
+                                          <Insets bottom="8.0" />
+                                       </padding>
                                     </GridPane>
                                  </top>
                                  <center>
@@ -673,8 +687,8 @@
                                                    <content>
                                                       <GridPane>
                                                         <columnConstraints>
-                                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="180.0" />
-                                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="220.0" />
+                                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="80.0" />
                                                         </columnConstraints>
                                                         <rowConstraints>
                                                             <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="38.0" vgrow="SOMETIMES" />
@@ -682,6 +696,7 @@
                                                           <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="38.0" vgrow="SOMETIMES" />
                                                             <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="38.0" vgrow="SOMETIMES" />
                                                           <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="38.0" vgrow="SOMETIMES" />
+                                                            <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="38.0" vgrow="SOMETIMES" />
                                                             <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="38.0" vgrow="SOMETIMES" />
                                                             <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="38.0" vgrow="SOMETIMES" />
                                                             <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="38.0" vgrow="SOMETIMES" />
@@ -761,61 +776,80 @@
                                                                   <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                                                </GridPane.margin>
                                                             </Label>
-                                                            <Label text="Метод сварки:" GridPane.rowIndex="8">
+                                                            <Label text="Метод сварки:" GridPane.rowIndex="9">
                                                                <GridPane.margin>
                                                                   <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                                                </GridPane.margin>
                                                             </Label>
-                                                            <ComboBox fx:id="cbWeldPatternWeldMethod" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="8">
+                                                            <ComboBox fx:id="cbWeldPatternWeldMethod" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="9">
                                                                <GridPane.margin>
                                                                   <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                                                </GridPane.margin>
                                                             </ComboBox>
-                                                            <CheckBox fx:id="chkWeldPatternElectrode" mnemonicParsing="false" onAction="#activeComboBoxElectrode" text="Электроды:" GridPane.rowIndex="9">
+                                                            <CheckBox fx:id="chkWeldPatternElectrode" mnemonicParsing="false" onAction="#activeComboBoxElectrode" text="Электроды:" GridPane.rowIndex="10">
                                                                <GridPane.margin>
                                                                   <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                                                </GridPane.margin>
                                                             </CheckBox>
-                                                            <CheckBox fx:id="chkWeldPatternWeldWire" mnemonicParsing="false" onAction="#activeComboBoxWeldWire" text="Св. проволока:" GridPane.rowIndex="10">
+                                                            <CheckBox fx:id="chkWeldPatternWeldWire" mnemonicParsing="false" onAction="#activeComboBoxWeldWire" text="Св. проволока:" GridPane.rowIndex="11">
                                                                <GridPane.margin>
                                                                   <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                                                </GridPane.margin>
                                                             </CheckBox>
-                                                            <CheckBox fx:id="chkWeldPatternWeldGas" mnemonicParsing="false" onAction="#activeComboBoxWeldGas" text="Защитный газ:" GridPane.rowIndex="11">
+                                                            <CheckBox fx:id="chkWeldPatternWeldGas" mnemonicParsing="false" onAction="#activeComboBoxWeldGas" text="Защитный газ:" GridPane.rowIndex="12">
                                                                <GridPane.margin>
                                                                   <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                                                </GridPane.margin>
                                                             </CheckBox>
-                                                            <ComboBox fx:id="cbWeldPatternElectrode" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="9">
+                                                            <ComboBox fx:id="cbWeldPatternElectrode" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="10">
                                                                <GridPane.margin>
                                                                   <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                                                </GridPane.margin>
                                                             </ComboBox>
-                                                            <ComboBox fx:id="cbWeldPatternWeldWire" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="10">
+                                                            <ComboBox fx:id="cbWeldPatternWeldWire" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="11">
                                                                <GridPane.margin>
                                                                   <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                                                </GridPane.margin>
                                                             </ComboBox>
-                                                            <ComboBox fx:id="cbWeldPatternWeldGas" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="11">
+                                                            <ComboBox fx:id="cbWeldPatternWeldGas" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="12">
                                                                <GridPane.margin>
                                                                   <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                                                </GridPane.margin>
                                                             </ComboBox>
-                                                            <Label text="Положения при сварке:" GridPane.rowIndex="7">
+                                                            <Label text="Положения при сварке:" GridPane.rowIndex="8">
                                                                <GridPane.margin>
                                                                   <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                                                </GridPane.margin>
                                                             </Label>
-                                                            <TextField fx:id="txfWeldPatternWeldPosition" editable="false" maxWidth="-Infinity" prefWidth="120.0" GridPane.columnIndex="1" GridPane.rowIndex="7">
+                                                            <TextField fx:id="txfWeldPatternWeldPosition" editable="false" maxWidth="-Infinity" prefWidth="120.0" GridPane.columnIndex="1" GridPane.rowIndex="8">
                                                                <GridPane.margin>
                                                                   <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                                                </GridPane.margin>
                                                             </TextField>
-                                                            <MenuButton fx:id="menuButtonWeldPosition" mnemonicParsing="false" text="Положение" GridPane.columnIndex="1" GridPane.rowIndex="7">
+                                                            <MenuButton fx:id="menuButtonWeldPosition" mnemonicParsing="false" text="Положение" GridPane.columnIndex="1" GridPane.rowIndex="8">
                                                               <items>
                                                                 <MenuItem mnemonicParsing="false" text="Action 1" />
                                                                 <MenuItem mnemonicParsing="false" text="Action 2" />
                                                               </items>
+                                                               <GridPane.margin>
+                                                                  <Insets bottom="8.0" left="128.0" right="8.0" top="8.0" />
+                                                               </GridPane.margin>
+                                                            </MenuButton>
+                                                            <Label text="Тип шва, вид и хар-ка соединения:" GridPane.rowIndex="7">
+                                                               <GridPane.margin>
+                                                                  <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                                               </GridPane.margin>
+                                                            </Label>
+                                                            <TextField fx:id="txfWeldPatternWeldJoinType" editable="false" maxWidth="-Infinity" prefWidth="120.0" GridPane.columnIndex="1" GridPane.rowIndex="7">
+                                                               <GridPane.margin>
+                                                                  <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                                               </GridPane.margin>
+                                                            </TextField>
+                                                            <MenuButton fx:id="menuButtonWeldJoinType" mnemonicParsing="false" text="Тип шва" GridPane.columnIndex="1" GridPane.rowIndex="7">
+                                                               <items>
+                                                                  <MenuItem mnemonicParsing="false" text="Action 1" />
+                                                                  <MenuItem mnemonicParsing="false" text="Action 2" />
+                                                               </items>
                                                                <GridPane.margin>
                                                                   <Insets bottom="8.0" left="128.0" right="8.0" top="8.0" />
                                                                </GridPane.margin>

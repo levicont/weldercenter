@@ -20,6 +20,7 @@ public class PersonalProtocolUI extends GenericEntityUI{
     private final SimpleStringProperty number = new SimpleStringProperty();
     private final SimpleObjectProperty<Date> datePeriodicalCert = new SimpleObjectProperty<Date>();
     private final SimpleStringProperty datePeriodicalCertFormat = new SimpleStringProperty();
+    private final SimpleStringProperty attestType = new SimpleStringProperty();
     private final SimpleObjectProperty<WelderUI> welder = new SimpleObjectProperty<WelderUI>();
     private final SimpleObjectProperty<JournalUI> journal = new SimpleObjectProperty<JournalUI>();
     private final SimpleObjectProperty<ResolutionCertificationUI> resolutionCertification =
@@ -37,6 +38,7 @@ public class PersonalProtocolUI extends GenericEntityUI{
         this.number.set("");
         this.datePeriodicalCert.set(DateUtil.getDate(DateUtil.DEFAULT_DATE));
         this.datePeriodicalCertFormat.set(DateUtil.format(this.datePeriodicalCert.get()));
+        this.attestType.set("");
         this.welder.set(new WelderUI());
         this.journal.set(new JournalUI());
         this.resolutionCertification.set(new ResolutionCertificationUI());
@@ -51,6 +53,7 @@ public class PersonalProtocolUI extends GenericEntityUI{
         this.number.set(journal.getNumber());
         this.datePeriodicalCert.set(journal.getDateEnd());
         this.datePeriodicalCertFormat.set(DateUtil.format(this.datePeriodicalCert.get()));
+        this.attestType.set("");
         this.welder.set(welder);
         this.journal.set(journal);
         this.resolutionCertification.set(new ResolutionCertificationUI());
@@ -64,6 +67,7 @@ public class PersonalProtocolUI extends GenericEntityUI{
         this.number.set(personalProtocol.getNumber());
         this.datePeriodicalCert.set(personalProtocol.getDatePeriodicalCert());
         this.datePeriodicalCertFormat.set(DateUtil.format(this.datePeriodicalCert.get()));
+        this.attestType.set(personalProtocol.getAttestType());
         if (personalProtocol.getWelder() != null)
             this.welder.set(new WelderUI(personalProtocol.getWelder()));
         if (personalProtocol.getJournal() != null)
@@ -134,6 +138,18 @@ public class PersonalProtocolUI extends GenericEntityUI{
 
     public void setDatePeriodicalCertFormat(String datePeriodicalCertFormat) {
         this.datePeriodicalCertFormat.set(datePeriodicalCertFormat);
+    }
+
+    public String getAttestType() {
+        return attestType.get();
+    }
+
+    public SimpleStringProperty attestTypeProperty() {
+        return attestType;
+    }
+
+    public void setAttestType(String attestType) {
+        this.attestType.set(attestType);
     }
 
     public WelderUI getWelder() {

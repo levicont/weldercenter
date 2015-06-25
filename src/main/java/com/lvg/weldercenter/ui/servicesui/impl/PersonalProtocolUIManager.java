@@ -177,6 +177,7 @@ public class PersonalProtocolUIManager implements PersonalProtocolServiceUI {
     private void updatePersonalProtocolFromUIModel(PersonalProtocol updPersonalProtocol, PersonalProtocolUI modelUI){
         updPersonalProtocol.setNumber(modelUI.getNumber());
         updPersonalProtocol.setDatePeriodicalCert(modelUI.getDatePeriodicalCert());
+        updPersonalProtocol.setAttestType(modelUI.getAttestType());
         updPersonalProtocol.setJournal(journalServiceUI.getJournalFromJournalUI(modelUI.getJournal()));
         updPersonalProtocol.setWelder(welderServiceUI.getWelderFromWelderUI(modelUI.getWelder()));
         updPersonalProtocol.setTheoryTest(theoryTestServiceUI.getTheoryTestFromUIModel(modelUI.getTheoryTest()));

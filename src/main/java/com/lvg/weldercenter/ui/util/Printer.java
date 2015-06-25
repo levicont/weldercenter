@@ -23,6 +23,7 @@ public class Printer {
                         "\theat_treatment: "+weldPatternUI.getIsHeatTreatment()+"\n"+
                         "\tsteel_type: "+weldPatternUI.getSteelType()+"\n"+
                         "\tweld_positions: "+weldPatternUI.getWeldPositions()+"\n"+
+                        "\tweld_join_types: "+weldPatternUI.getWeldJoinTypes()+"\n"+
                         "\tweld_method: "+weldPatternUI.getWeldMethod()+"\n"+
                         "\telectrode: "+weldPatternUI.getElectrode()+"\n"+
                         "\tweld_wire: "+weldPatternUI.getWeldWire()+"\n"+
@@ -45,6 +46,7 @@ public class Printer {
                         "\theat_treatment: "+weldPattern.getIsHeatTreatment()+"\n"+
                         "\tsteel_type: "+weldPattern.getSteelType()+"\n"+
                         "\tweld_positions: "+weldPattern.getWeldPositions()+"\n"+
+                        "\tweld_join_types: "+weldPattern.getWeldJoinTypes()+"\n"+
                         "\tweld_method: "+weldPattern.getWeldMethod()+"\n"+
                         "\telectrode: "+weldPattern.getElectrode()+"\n"+
                         "\tweld_wire: "+weldPattern.getWeldWire()+"\n"+
@@ -63,6 +65,7 @@ public class Printer {
                         "\twelder: "+personalProtocolUI.getWelder()+"\n"+
                         "\tnumber: "+personalProtocolUI.getNumber()+"\n"+
                         "\tdate: "+personalProtocolUI.getDatePeriodicalCertFormat()+"\n"+
+                        "\tattest_type: "+personalProtocolUI.getAttestType()+"\n"+
                         "\tweld_patterns: "+personalProtocolUI.getWeldPatterns()+"\n"+
                         "\ttheory_test: "+personalProtocolUI.getTheoryTest()+"\n"+
                         "\tndt_documents: "+personalProtocolUI.getNdtDocuments()+"\n"+
@@ -75,6 +78,7 @@ public class Printer {
                         "\twelder: "+personalProtocol.getWelder()+"\n"+
                         "\tnumber: "+personalProtocol.getNumber()+"\n"+
                         "\tdate: "+personalProtocol.getDatePeriodicalCert()+"\n"+
+                        "\tattest_type: "+personalProtocol.getAttestType()+"\n"+
                         "\tweld_patterns: "+personalProtocol.getWeldPatterns()+"\n"+
                         "\ttheory_test: "+personalProtocol.getTheoryTest()+"\n"+
                         "\tndt_documents: "+personalProtocol.getNdtDocuments()+"\n"+

@@ -113,6 +113,7 @@ public class MainFrameController extends GenericController{
                     event.consume();
                 if(response.equals(Dialog.Actions.OK)){
                     Platform.exit();
+                    System.exit(0);
                 }
 
         }

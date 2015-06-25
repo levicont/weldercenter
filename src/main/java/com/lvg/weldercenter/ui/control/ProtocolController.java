@@ -57,6 +57,7 @@ public class ProtocolController extends GenericController {
     private PatternThicknessService patternThicknessService = ServiceFactory.getPatternThicknessService();
     private SteelTypeService steelTypeService = ServiceFactory.getSteelTypeService();
     private WeldPositionService weldPositionService = ServiceFactory.getWeldPositionService();
+    private WeldJoinTypeService weldJoinTypeService = ServiceFactory.getWeldJoinTypeService();
     private ElectrodeService electrodeService = ServiceFactory.getElectrodeService();
     private WeldWireService weldWireService = ServiceFactory.getWeldWireService();
     private WeldGasService weldGasService = ServiceFactory.getWeldGasService();
@@ -160,6 +161,8 @@ public class ProtocolController extends GenericController {
     @FXML
     Label lbWelderFullName;
     @FXML
+    ComboBox<String> cbAttestType;
+    @FXML
     TitledPane titlePanePersProtocolWeldPattern;
     @FXML
     TableView<WeldPatternUI> tableViewWeldPatterns;
@@ -230,6 +233,10 @@ public class ProtocolController extends GenericController {
     @FXML
     ComboBox<String> cbWeldPatternSteelType;
     @FXML
+    TextField txfWeldPatternWeldJoinType;
+    @FXML
+    MenuButton menuButtonWeldJoinType;
+    @FXML
     TextField txfWeldPatternWeldPosition;
     @FXML
     MenuButton menuButtonWeldPosition;
@@ -294,6 +301,12 @@ public class ProtocolController extends GenericController {
     private PersonalProtocolUI selectedPersonalProtocolUI = null;
     private WeldPatternUI selectedWeldPatternUI = null;
     private List<String> chagedFields = new ArrayList<String>();
+    private List<String> attestTypes = new ArrayList<String>(){{
+       add("Первичная");
+       add("Дополнительная");
+       add("Периодическая");
+       add("Внеочередная");
+    }};
 
     private ObservableList<TreeItem<String>> totalProtocols = FXCollections.observableArrayList();
     private ObservableList<TotalProtocolUI> cachedTotalProtocols = FXCollections.observableArrayList();
@@ -315,6 +328,8 @@ public class ProtocolController extends GenericController {
     private ObservableList<String> weldPatternWeldGasList = FXCollections.observableArrayList();
     private ObservableList<CheckMenuItem> weldPatternAllWeldPosition = FXCollections.observableArrayList();
     private ObservableList<String> weldPatternSelectedWeldPosition = FXCollections.observableArrayList();
+    private ObservableList<CheckMenuItem> weldPatternAllWeldJoinTypes = FXCollections.observableArrayList();
+    private ObservableList<String> weldPatternSelectedWeldJoinTypes = FXCollections.observableArrayList();
     private ObservableList<String> weldPatternEvaluationList = FXCollections.observableArrayList();
 
 
@@ -337,7 +352,19 @@ public class ProtocolController extends GenericController {
         initAllNDTdocs();
         listViewAllDocs.setItems(allNTDdocs);
         tabPersonalProtocol.setDisable(true);
+        initComboBoxAttestType();
 
+    }
+
+    private void initComboBoxAttestType(){
+        cbAttestType.getItems().clear();
+        cbAttestType.getItems().addAll(attestTypes);
+    }
+
+    private void initComboBoxAttestType(PersonalProtocolUI pp){
+        initComboBoxAttestType();
+        if(cbAttestType.getItems().contains(pp.getAttestType()))
+            cbAttestType.getSelectionModel().select(pp.getAttestType());
     }
 
     private void initAllNDTdocs(){
@@ -480,9 +507,41 @@ public class ProtocolController extends GenericController {
         initComboBoxWeldWire();
         initComboBoxWeldGas();
         initMenuButtonWeldPosition();
+        initMenuButtonWeldJoinType();
         initTextFieldWeldPosition();
         initWeldPatternTestPane();
+        initTextFieldWeldJoinType();
 
+    }
+
+    private void initMenuButtonWeldJoinType(){
+        weldPatternAllWeldJoinTypes.clear();
+        for(WeldJoinType wjt: weldJoinTypeService.getAll()){
+            CheckMenuItem item = new CheckMenuItem(wjt.getType());
+            weldPatternAllWeldJoinTypes.add(item);
+            item.addEventHandler(ActionEvent.ACTION, new CheckMenuItemHandler());
+        }
+        menuButtonWeldJoinType.getItems().clear();
+        menuButtonWeldJoinType.getItems().addAll(weldPatternAllWeldJoinTypes);
+    }
+
+    private void initTextFieldWeldJoinType(){ fillTextFieldWeldJoinType();}
+
+    private void fillTextFieldWeldJoinType(){
+        txfWeldPatternWeldJoinType.clear();
+        if(menuButtonWeldJoinType.getItems().isEmpty())
+            return;
+        StringBuilder text = new StringBuilder();
+        for(MenuItem mi : menuButtonWeldJoinType.getItems()){
+            CheckMenuItem chkItem = (CheckMenuItem)mi;
+            if (chkItem.isSelected()){
+                text.append(chkItem.getText());
+                if (menuButtonWeldJoinType.getItems().iterator().hasNext()){
+                    text.append(" ");
+                }
+            }
+        }
+        txfWeldPatternWeldJoinType.setText(text.toString());
     }
 
     private void initTextFieldWeldPosition(){
@@ -719,6 +778,7 @@ public class ProtocolController extends GenericController {
         txfPersonalProtocolNumber.setText(selectedPersProtocol.getNumber());
         dpPersonalProtocolDate.setValue(DateUtil.getLocalDate(selectedPersProtocol.getDatePeriodicalCert()));
         lbWelderFullName.setText(selectedPersProtocol.toString());
+        initComboBoxAttestType(selectedPersProtocol);
         tabPersonalProtocol.getTabPane().getSelectionModel().select(tabPersonalProtocol);
         titlePanePersProtocolWeldPattern.setExpanded(true);
         initPersProtocolWeldPatterns(selectedPersProtocol);
@@ -730,6 +790,8 @@ public class ProtocolController extends GenericController {
 
 
     }
+
+
 
     private void showSelectedWeldPattern(WeldPatternUI selectedWeldPattern){
 
@@ -745,9 +807,24 @@ public class ProtocolController extends GenericController {
         initComboBoxWeldWire(selectedWeldPattern);
         initComboBoxWeldGas(selectedWeldPattern);
         initMenuButtonWeldPosition(selectedWeldPattern);
+        initMenuButtonWeldJoinType(selectedWeldPattern);
         initTextFieldWeldPosition(selectedWeldPattern);
+        initTextFieldWeldJoinType(selectedWeldPattern);
         initTitlePaneWeldPatternTest(selectedWeldPattern);
         isWeldPatternSaved = false;
+    }
+
+    private void initMenuButtonWeldJoinType(WeldPatternUI selectedWeldPatternUI) {
+        initMenuButtonWeldJoinType();
+        ObservableList<WeldJoinTypeUI> weldJoinTypes = selectedWeldPatternUI.getWeldJoinTypes();
+        for (MenuItem mi : menuButtonWeldJoinType.getItems()) {
+            CheckMenuItem chkItem = (CheckMenuItem) mi;
+            for (WeldJoinTypeUI wjt : weldJoinTypes) {
+                if (mi.getText().equals(wjt.getType())) {
+                    chkItem.setSelected(true);
+                }
+            }
+        }
     }
 
     private void initTitlePaneWeldPatternTest(WeldPatternUI selectedWeldPattern){
@@ -822,6 +899,10 @@ public class ProtocolController extends GenericController {
 
     private void initTextFieldWeldPosition(WeldPatternUI selectedWeldPattern){
         initTextFieldWeldPosition();
+    }
+
+    private void initTextFieldWeldJoinType(WeldPatternUI selectedWeldPattern){
+        initTextFieldWeldJoinType();
     }
 
     private void initMenuButtonWeldPosition(WeldPatternUI selectedWeldPattern){
@@ -1315,6 +1396,7 @@ public class ProtocolController extends GenericController {
 
 
         selectedWeldPattern.setWeldPositions(getWeldPositionsFromMenuButton(menuButtonWeldPosition));
+        selectedWeldPattern.setWeldJoinTypes(getWeldJoinTypesFromMenuButton(menuButtonWeldJoinType));
 
         if (cbWeldPatternWeldMethod.getValue()!=null) {
             selectedWeldPattern.setWeldMethod(getWeldMethodFromComboBox(cbWeldPatternWeldMethod));
@@ -1575,6 +1657,24 @@ public class ProtocolController extends GenericController {
         return weldPositionUIList;
     }
 
+    private ObservableList<WeldJoinTypeUI> getWeldJoinTypesFromMenuButton(MenuButton mbtWeldJoinType){
+        ObservableList<WeldJoinTypeUI> weldJoinTypeList = FXCollections.observableArrayList();
+        ObservableList<String> checkedWeldJoinTypes = FXCollections.observableArrayList();
+        for (MenuItem mi : mbtWeldJoinType.getItems()){
+            CheckMenuItem chkItem = (CheckMenuItem)mi;
+            if (chkItem.isSelected()){
+                checkedWeldJoinTypes.add(chkItem.getText());
+            }
+        }
+        for (WeldJoinType wjt : weldJoinTypeService.getAll()){
+            WeldJoinTypeUI weldJoinTypeUI = new WeldJoinTypeUI(wjt);
+            if (checkedWeldJoinTypes.contains(weldJoinTypeUI.getType())){
+                weldJoinTypeList.addAll(weldJoinTypeUI);
+            }
+        }
+        return weldJoinTypeList;
+    }
+
     private SteelTypeUI getSteelTypeFromComboBox(ComboBox<String> cbSteelType){
         SteelTypeUI steelTypeUI = null;
         for (SteelType st : steelTypeService.getAll()){
@@ -1624,6 +1724,12 @@ public class ProtocolController extends GenericController {
         }else {
             selectedPersProtocol.setDatePeriodicalCert(null);
             selectedPersProtocol.setDatePeriodicalCertFormat("");
+        }
+
+        if (cbAttestType.getValue()!=null){
+            selectedPersProtocol.setAttestType(cbAttestType.getValue());
+        }else {
+            selectedPersProtocol.setAttestType("");
         }
 
         ObservableList<WeldPatternUI> weldPatternUIs = tableViewWeldPatterns.getItems();
@@ -2070,7 +2176,14 @@ public class ProtocolController extends GenericController {
     private class CheckMenuItemHandler implements EventHandler<ActionEvent>{
         @Override
         public void handle(ActionEvent event) {
-            fillTextFieldWeldPosition();
+
+            if (event.getSource().getClass().equals(CheckMenuItem.class)) {
+                CheckMenuItem source = (CheckMenuItem) event.getSource();
+                if (menuButtonWeldPosition.getItems().contains(source))
+                    fillTextFieldWeldPosition();
+                if (menuButtonWeldJoinType.getItems().contains(source))
+                    fillTextFieldWeldJoinType();
+            }
         }
     }
 

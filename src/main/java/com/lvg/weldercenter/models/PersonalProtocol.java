@@ -21,6 +21,7 @@ public class PersonalProtocol implements Serializable{
     private Long personalProtocolId;
     private Date datePeriodicalCert;
     private String number;
+    private String attestType;
 
     private Welder welder;
     private Journal journal;
@@ -60,6 +61,15 @@ public class PersonalProtocol implements Serializable{
 
     public void setNumber(String number) {
         this.number = number;
+    }
+
+    @Column(name = "attest_type")
+    public String getAttestType() {
+        return attestType;
+    }
+
+    public void setAttestType(String attestType) {
+        this.attestType = attestType;
     }
 
     @ManyToOne(targetEntity = Welder.class)

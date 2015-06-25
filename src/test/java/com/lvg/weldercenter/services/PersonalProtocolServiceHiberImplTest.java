@@ -58,6 +58,7 @@ public class PersonalProtocolServiceHiberImplTest extends GenericServiceHibernat
         record.setTheoryTest(theoryTestService.get(1l));
         record.setNdtDocuments(ndtDocumentService.getAll());
         record.setDatePeriodicalCert(new Date());
+        record.setAttestType("First");
         record.setWeldPatterns(weldPatternService.getAll());
 
         String journalNumber = journalService.get(1l).getNumber();
@@ -67,6 +68,7 @@ public class PersonalProtocolServiceHiberImplTest extends GenericServiceHibernat
 
         record = service.get(id);
         assertEquals(journalNumber, record.getJournal().getNumber());
+        assertEquals("First", record.getAttestType());
 
     }
 
