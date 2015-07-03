@@ -2121,7 +2121,7 @@ public class ProtocolController extends GenericController {
     @FXML
     private void showPersonalProtocolReport(){
         getControllerManager().showReportViewPane();
-        getControllerManager().getReportViewController().showPersonalProtocolReport(selectedPersonalProtocolUI);
+        getControllerManager().getReportViewController().showPersonalProtocolReport(selectedPersonalProtocolUI,selectedTotalProtocolUI);
     }
 
     @FXML

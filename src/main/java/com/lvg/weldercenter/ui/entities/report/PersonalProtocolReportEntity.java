@@ -1,16 +1,13 @@
 package com.lvg.weldercenter.ui.entities.report;
 
 import com.lvg.weldercenter.models.NDTDocument;
-import com.lvg.weldercenter.ui.entities.NDTDocumentUI;
-import com.lvg.weldercenter.ui.entities.PersonalProtocolUI;
-import com.lvg.weldercenter.ui.entities.TotalProtocolUI;
+import com.lvg.weldercenter.models.SteelType;
+import com.lvg.weldercenter.models.WeldMethod;
+import com.lvg.weldercenter.ui.entities.*;
 import com.lvg.weldercenter.ui.util.DateUtil;
 
 import java.time.LocalDate;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by Victor on 05.06.2015.
@@ -33,6 +30,32 @@ public class PersonalProtocolReportEntity {
     private final String KEY_WELD_PATTERN_DETAILS_TYPES = "WELD_PATTERN_DETAILS_TYPES";
     private final String KEY_WELD_PATTERN_WELD_POSITIONS = "WELD_PATTERN_WELD_POSITIONS";
     private final String KEY_WELD_JOIN_TYPES = "WELD_JOIN_TYPES";
+    private final String KEY_WELD_PATTERN_HEATING = "WELD_PATTERN_HEATING";
+    private final String KEY_WELD_PATTERN_HEAT_TREATMENT = "WELD_PATTERN_HEAT_TREATMENT";
+    private final String KEY_WELD_PATTERN_STEEL_TYPE = "WELD_PATTERN_STEEL_TYPE";
+    private final String KEY_WELD_PATTERN_THICKNESS = "WELD_PATTERN_THICKNESS";
+    private final String KEY_WELD_PATTERN_DIAMETER = "WELD_PATTERN_DIAMETER";
+    private final String KEY_WELD_PATTERN_ELECTRODE_WIRE = "WELD_PATTERN_ELECTRODE_WIRE";
+    private final String KEY_WELD_PATTERN_GAS = "WELD_PATTERN_GAS";
+    private final String KEY_WELD_PATTERN_VT_NUMBERS = "WELD_PATTERN_VT_NUMBERS";
+    private final String KEY_WELD_PATTERN_VT_DATE = "WELD_PATTERN_VT_DATE";
+    private final String KEY_WELD_PATTERN_VT_EVALUATION = "WELD_PATTERN_VT_EVALUATION";
+    private final String KEY_WELD_PATTERN_RT_NUMBERS = "WELD_PATTERN_RT_NUMBERS";
+    private final String KEY_WELD_PATTERN_RT_DATE = "WELD_PATTERN_RT_DATE";
+    private final String KEY_WELD_PATTERN_RT_EVALUATION = "WELD_PATTERN_RT_EVALUATION";
+    private final String KEY_WELD_PATTERN_MT_NUMBERS = "WELD_PATTERN_MT_NUMBERS";
+    private final String KEY_WELD_PATTERN_MT_DATE = "WELD_PATTERN_MT_DATE";
+    private final String KEY_WELD_PATTERN_MT_EVALUATION = "WELD_PATTERN_MT_EVALUATION";
+    private final String KEY_THEORY_EVALUATION = "WELD_PATTERN_THEORY_EVALUATION";
+    private final String KEY_RESOLUTION_CERT = "RESOLUTION_CERT";
+    private final String KEY_PERIOD_DATE_CERT = "PERIOD_DATE_CERT";
+
+
+
+    private final String WELD_PATTERN_MARK_SEPARATOR = " /";
+    private final String NULL_STRING = "NULL";
+    private final String YES_STRING = "есть";
+    private final String NO_STRING = "нет";
 
 
     private Map<String, Object> parameters = new HashMap<String, Object>(){{
@@ -53,6 +76,25 @@ public class PersonalProtocolReportEntity {
         put(KEY_WELD_PATTERN_DETAILS_TYPES,null);
         put(KEY_WELD_PATTERN_WELD_POSITIONS,null);
         put(KEY_WELD_JOIN_TYPES,null);
+        put(KEY_WELD_PATTERN_HEATING,null);
+        put(KEY_WELD_PATTERN_HEAT_TREATMENT,null);
+        put(KEY_WELD_PATTERN_STEEL_TYPE,null);
+        put(KEY_WELD_PATTERN_THICKNESS,null);
+        put(KEY_WELD_PATTERN_DIAMETER,null);
+        put(KEY_WELD_PATTERN_ELECTRODE_WIRE,null);
+        put(KEY_WELD_PATTERN_GAS,null);
+        put(KEY_WELD_PATTERN_VT_NUMBERS,null);
+        put(KEY_WELD_PATTERN_VT_DATE,null);
+        put(KEY_WELD_PATTERN_VT_EVALUATION,null);
+        put(KEY_WELD_PATTERN_RT_NUMBERS,null);
+        put(KEY_WELD_PATTERN_RT_DATE,null);
+        put(KEY_WELD_PATTERN_RT_EVALUATION,null);
+        put(KEY_WELD_PATTERN_MT_NUMBERS,null);
+        put(KEY_WELD_PATTERN_MT_DATE,null);
+        put(KEY_WELD_PATTERN_MT_EVALUATION,null);
+        put(KEY_THEORY_EVALUATION,null);
+        put(KEY_RESOLUTION_CERT,null);
+        put(KEY_PERIOD_DATE_CERT,null);
     }};
 
     public PersonalProtocolReportEntity(PersonalProtocolUI personalProtocolUI, TotalProtocolUI totalProtocolUI){
@@ -70,18 +112,30 @@ public class PersonalProtocolReportEntity {
             parameters.replace(KEY_WELDER_BIRTHDAY, personalProtocolUI.getWelder().getBirthdayFormat());
             parameters.replace(KEY_WELDER_DOC_NUMBER, personalProtocolUI.getWelder().getDocNumber());
             parameters.replace(KEY_WELDER_EXPERIENCE, getExperience(personalProtocolUI.getWelder().getDateBegin()));
-            parameters.replace(KEY_WELDER_ATTEST_TYPE, null);
+            parameters.replace(KEY_WELDER_ATTEST_TYPE, personalProtocolUI.getAttestType());
         }
-        parameters.replace(KEY_WELD_PATTERN_MARKS,null);
-        parameters.replace(KEY_WELD_PATTERN_WELD_METHODS,null);
-        parameters.replace(KEY_WELD_PATTERN_DETAILS_TYPES,null);
-        parameters.replace(KEY_WELD_PATTERN_WELD_POSITIONS,null);
-        parameters.replace(KEY_WELD_JOIN_TYPES,null);
+        if (personalProtocolUI.getWeldPatterns()!=null && !personalProtocolUI.getWeldPatterns().isEmpty()) {
+            List<WeldPatternUI> weldPatterns = personalProtocolUI.getWeldPatterns();
+            parameters.replace(KEY_WELD_PATTERN_MARKS, getWeldPatternsMarks(weldPatterns));
+            parameters.replace(KEY_WELD_PATTERN_WELD_METHODS, getWeldPatternWeldMethods(weldPatterns));
+            parameters.replace(KEY_WELD_PATTERN_DETAILS_TYPES, getWeldPatternDetailTypes(weldPatterns));
+            parameters.replace(KEY_WELD_PATTERN_WELD_POSITIONS, getWeldPatternWeldPositions(weldPatterns));
+            parameters.replace(KEY_WELD_JOIN_TYPES,getWeldPatternWeldJoinTypes(weldPatterns));
+            parameters.replace(KEY_WELD_PATTERN_HEATING, getWeldPatternHeating(weldPatterns));
+            parameters.replace(KEY_WELD_PATTERN_HEAT_TREATMENT, getWeldPatternHeatTreatment(weldPatterns));
+            parameters.replace(KEY_WELD_PATTERN_STEEL_TYPE, getWeldPatternSteelTypes(weldPatterns));
+            parameters.replace(KEY_WELD_PATTERN_THICKNESS, getWeldPatternThicknesses(weldPatterns));
+            parameters.replace(KEY_WELD_PATTERN_DIAMETER, getWeldPatternDiameters(weldPatterns));
+            parameters.replace(KEY_WELD_PATTERN_ELECTRODE_WIRE, getWeldPatternElectrodeWire(weldPatterns));
+            parameters.replace(KEY_WELD_PATTERN_GAS, getWeldPatternGas(weldPatterns));
+        }
+
+
     }
 
     private String getNdtDocs(List<NDTDocumentUI> ndtDocumentUIList){
         if (ndtDocumentUIList==null)
-            return "null";
+            return NULL_STRING;
         StringBuilder result = new StringBuilder();
         for (NDTDocumentUI ndt : ndtDocumentUIList){
             result.append(ndt.getName());
@@ -93,10 +147,251 @@ public class PersonalProtocolReportEntity {
 
     private String getExperience(Date dateBegin){
         if (dateBegin==null)
-            return "null";
+            return NULL_STRING;
         LocalDate begin = DateUtil.getLocalDate(dateBegin);
         return LocalDate.now().getYear()-begin.getYear()+"";
     }
 
+    private String getWeldPatternsMarks(List<WeldPatternUI> weldPatterns){
+        if (weldPatterns==null || weldPatterns.isEmpty())
+            return NULL_STRING;
+        StringBuilder result = new StringBuilder();
+        for (WeldPatternUI wp: weldPatterns){
+            result.append(wp.getMark());
+            if (weldPatterns.iterator().hasNext())
+                result.append(WELD_PATTERN_MARK_SEPARATOR);
+        }
+        return result.toString();
+    }
 
+    private String getWeldPatternWeldMethods(List<WeldPatternUI> weldPatterns){
+        if (weldPatterns == null || weldPatterns.isEmpty())
+            return NULL_STRING;
+        StringBuilder result = new StringBuilder();
+        for (WeldPatternUI wp : weldPatterns){
+            if (wp.getWeldMethod()!=null)
+                result.append(wp.getWeldMethod().getCode());
+            else
+                result.append(NULL_STRING);
+
+            if (weldPatterns.iterator().hasNext())
+                result.append("; ");
+        }
+        return result.toString();
+    }
+
+    private String getWeldPatternDetailTypes(List<WeldPatternUI> weldPatterns){
+        if (weldPatterns == null || weldPatterns.isEmpty())
+            return NULL_STRING;
+        StringBuilder result = new StringBuilder();
+        for (WeldPatternUI wp : weldPatterns){
+            if (wp.getWeldDetail()!=null)
+                result.append(wp.getWeldDetail().getCode());
+            else
+                result.append(NULL_STRING);
+
+            if (weldPatterns.iterator().hasNext())
+                result.append("; ");
+        }
+        return result.toString();
+    }
+
+    private String getWeldPatternWeldPositions(List<WeldPatternUI> weldPatterns){
+        if (weldPatterns == null || weldPatterns.isEmpty())
+            return NULL_STRING;
+        StringBuilder result = new StringBuilder();
+        for (WeldPatternUI wp : weldPatterns){
+            if (wp.getWeldPositions()==null || wp.getWeldPositions().isEmpty())
+                continue;
+            List<WeldPositionUI> weldPositions = wp.getWeldPositions();
+            for (WeldPositionUI position : weldPositions){
+                if (!result.toString().contains(position.getCode())) {
+                    result.append(position.getCode());
+                    if (weldPositions.iterator().hasNext())
+                        result.append(" ");
+                }
+            }
+        }
+        return result.toString();
+
+    }
+
+    private String getWeldPatternWeldJoinTypes(List<WeldPatternUI> weldPatterns){
+        if (weldPatterns == null || weldPatterns.isEmpty())
+            return NULL_STRING;
+        StringBuilder result = new StringBuilder();
+        for (WeldPatternUI wp : weldPatterns){
+            List<WeldJoinTypeUI> joinTypes = wp.getWeldJoinTypes();
+            if (joinTypes==null || joinTypes.isEmpty())
+                continue;
+            for (WeldJoinTypeUI wjt : joinTypes){
+                if (!result.toString().contains(wjt.getType())){
+                    result.append(wjt.getType());
+                    if (joinTypes.iterator().hasNext()){
+                        result.append(" ");
+                    }
+                }
+            }
+        }
+        return result.toString();
+    }
+
+    private String getWeldPatternHeating(List<WeldPatternUI> weldPatterns){
+        if (weldPatterns == null || weldPatterns.isEmpty())
+            return NULL_STRING;
+        StringBuilder result = new StringBuilder();
+        List<String> heatings = new ArrayList<String>();
+        for (WeldPatternUI wp : weldPatterns){
+            if (wp.getIsHeating())
+                heatings.add(YES_STRING);
+            else
+                heatings.add(NO_STRING);
+        }
+        if (!heatings.contains(YES_STRING))
+            return NO_STRING;
+        if (!heatings.contains(NO_STRING))
+            return YES_STRING;
+        for (String heating: heatings){
+            result.append(heating);
+            if (heatings.iterator().hasNext())
+                result.append("; ");
+        }
+        return result.toString();
+
+    }
+
+    private String getWeldPatternHeatTreatment(List<WeldPatternUI> weldPatterns){
+        if (weldPatterns == null || weldPatterns.isEmpty())
+            return NULL_STRING;
+        StringBuilder result = new StringBuilder();
+        List<String> heatTreatmentList = new ArrayList<String>();
+        for (WeldPatternUI wp : weldPatterns){
+            if (wp.getIsHeatTreatment())
+                heatTreatmentList.add(YES_STRING);
+            else
+                heatTreatmentList.add(NO_STRING);
+        }
+        if (!heatTreatmentList.contains(YES_STRING))
+            return NO_STRING;
+        if (!heatTreatmentList.contains(NO_STRING))
+            return YES_STRING;
+        for (String heatTreatment: heatTreatmentList){
+            result.append(heatTreatment);
+            if (heatTreatmentList.iterator().hasNext())
+                result.append("; ");
+        }
+        return result.toString();
+    }
+
+    private String getWeldPatternSteelTypes(List<WeldPatternUI> weldPatterns){
+        if (weldPatterns == null || weldPatterns.isEmpty())
+            return NULL_STRING;
+        StringBuilder result = new StringBuilder();
+        for (WeldPatternUI wp : weldPatterns){
+            SteelTypeUI steelTypeUI = wp.getSteelType();
+            if (steelTypeUI==null)
+                continue;
+            SteelGroupUI steelGroupUI = steelTypeUI.getSteelGroupUI();
+            if (steelGroupUI==null)
+                continue;
+
+            if (!result.toString().contains(steelGroupUI.getGroup())){
+                result.append(steelGroupUI.getGroup()+" ");
+                if (!result.toString().contains(steelTypeUI.getType())) {
+                    result.append(steelTypeUI.getType());
+                    if (weldPatterns.iterator().hasNext())
+                        result.append("; ");
+                }
+            }
+        }
+        return result.toString();
+    }
+
+    private String getWeldPatternThicknesses(List<WeldPatternUI> weldPatterns){
+        if (weldPatterns == null || weldPatterns.isEmpty())
+            return NULL_STRING;
+        StringBuilder result = new StringBuilder();
+        for (WeldPatternUI wp : weldPatterns){
+            if (wp.getThickness()!= 0){
+                if (!result.toString().contains(wp.getThickness()+"")){
+                    result.append(wp.getThickness());
+                    if (weldPatterns.iterator().hasNext())
+                        result.append("; ");
+                }
+            }
+        }
+        return result.toString();
+    }
+
+    private String getWeldPatternDiameters(List<WeldPatternUI> weldPatterns){
+        if (weldPatterns == null || weldPatterns.isEmpty())
+            return NULL_STRING;
+        StringBuilder result = new StringBuilder();
+        for (WeldPatternUI wp : weldPatterns){
+            if (wp.getDiameter()!= 0){
+                if (!result.toString().contains(wp.getDiameter()+"")){
+                    result.append(wp.getDiameter());
+                    if (weldPatterns.iterator().hasNext())
+                        result.append("; ");
+                }
+            }
+        }
+        return result.toString();
+    }
+
+    private String getWeldPatternElectrodeWire(List<WeldPatternUI> weldPatterns){
+        if (weldPatterns == null || weldPatterns.isEmpty())
+            return NULL_STRING;
+        StringBuilder result = new StringBuilder();
+        List<String> electrodes = new ArrayList<String>();
+        List<String> weldWires = new ArrayList<String>();
+
+        for (WeldPatternUI wp : weldPatterns){
+            ElectrodeUI electrode = wp.getElectrode();
+            if (electrode != null){
+                if (!electrodes.contains(electrode.getType())) {
+                    electrodes.add(electrode.getType());
+                }
+            }
+            WeldWireUI weldWire = wp.getWeldWire();
+            if (weldWire!=null){
+                if (!weldWires.contains(weldWire.getType()))
+                    weldWires.add(weldWire.getType());
+            }
+        }
+        for (String el : electrodes){
+            result.append(el);
+            if (electrodes.iterator().hasNext() || !weldWires.isEmpty())
+                result.append("; ");
+        }
+        for (String ww: weldWires){
+            result.append(ww);
+            if (weldWires.iterator().hasNext())
+                result.append("; ");
+        }
+        return result.toString();
+
+    }
+
+    private String getWeldPatternGas(List<WeldPatternUI> weldPatterns){
+        if (weldPatterns == null || weldPatterns.isEmpty())
+            return NULL_STRING;
+        StringBuilder result = new StringBuilder();
+        for (WeldPatternUI wp : weldPatterns){
+            WeldGasUI weldGas = wp.getWeldGas();
+            if (weldGas!=null){
+                if (!result.toString().contains(weldGas.getType())){
+                    result.append(weldGas.getType());
+                    if (weldPatterns.iterator().hasNext())
+                        result.append("; ");
+                }
+
+            }
+        }
+        return result.toString();
+    }
+
+    public Map<String, Object> getParameters() {
+        return parameters;
+    }
 }

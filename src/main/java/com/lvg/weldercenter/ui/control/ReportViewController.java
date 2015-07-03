@@ -161,10 +161,11 @@ public class ReportViewController extends GenericController {
         }
     }
 
-    public void showPersonalProtocolReport(PersonalProtocolUI personalProtocolUI){
+    public void showPersonalProtocolReport(PersonalProtocolUI personalProtocolUI, TotalProtocolUI totalProtocolUI){
+        PersonalProtocolReportEntity protocolReportEntity = new PersonalProtocolReportEntity(personalProtocolUI,totalProtocolUI);
         try {
             JasperReport report = JasperCompileManager.compileReport(PERSONAL_PROTOCOL_REPORT_URL.getFile());
-            JasperPrint print = JasperFillManager.fillReport(report, new HashedMap(),
+            JasperPrint print = JasperFillManager.fillReport(report, protocolReportEntity.getParameters(),
                     new JREmptyDataSource());
             addReportPrintToPanel(print);
             reportPanel.setVisible(true);
