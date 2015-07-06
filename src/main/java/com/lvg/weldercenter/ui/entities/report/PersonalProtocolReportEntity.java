@@ -1,8 +1,6 @@
 package com.lvg.weldercenter.ui.entities.report;
 
-import com.lvg.weldercenter.models.NDTDocument;
-import com.lvg.weldercenter.models.SteelType;
-import com.lvg.weldercenter.models.WeldMethod;
+import com.lvg.weldercenter.models.*;
 import com.lvg.weldercenter.ui.entities.*;
 import com.lvg.weldercenter.ui.util.DateUtil;
 
@@ -46,7 +44,7 @@ public class PersonalProtocolReportEntity {
     private final String KEY_WELD_PATTERN_MT_NUMBERS = "WELD_PATTERN_MT_NUMBERS";
     private final String KEY_WELD_PATTERN_MT_DATE = "WELD_PATTERN_MT_DATE";
     private final String KEY_WELD_PATTERN_MT_EVALUATION = "WELD_PATTERN_MT_EVALUATION";
-    private final String KEY_THEORY_EVALUATION = "WELD_PATTERN_THEORY_EVALUATION";
+    private final String KEY_THEORY_EVALUATION = "THEORY_EVALUATION";
     private final String KEY_RESOLUTION_CERT = "RESOLUTION_CERT";
     private final String KEY_PERIOD_DATE_CERT = "PERIOD_DATE_CERT";
 
@@ -108,7 +106,7 @@ public class PersonalProtocolReportEntity {
         }
         parameters.replace(KEY_NDT_DOCUMENTS,getNdtDocs(personalProtocolUI.getNdtDocuments()));
         if (personalProtocolUI.getWelder()!=null) {
-            parameters.replace(KEY_WELDER_FULL_NAME, personalProtocolUI.getWelder().getFullName());
+            parameters.replace(KEY_WELDER_FULL_NAME, personalProtocolUI.getWelder().getFormatName("SUR-NN-SEC"));
             parameters.replace(KEY_WELDER_BIRTHDAY, personalProtocolUI.getWelder().getBirthdayFormat());
             parameters.replace(KEY_WELDER_DOC_NUMBER, personalProtocolUI.getWelder().getDocNumber());
             parameters.replace(KEY_WELDER_EXPERIENCE, getExperience(personalProtocolUI.getWelder().getDateBegin()));
@@ -128,6 +126,27 @@ public class PersonalProtocolReportEntity {
             parameters.replace(KEY_WELD_PATTERN_DIAMETER, getWeldPatternDiameters(weldPatterns));
             parameters.replace(KEY_WELD_PATTERN_ELECTRODE_WIRE, getWeldPatternElectrodeWire(weldPatterns));
             parameters.replace(KEY_WELD_PATTERN_GAS, getWeldPatternGas(weldPatterns));
+            Map<String, String> vtParameters = getWeldPatternVTParameters(weldPatterns);
+            Map<String, String> rtParameters = getWeldPatternRTParameters(weldPatterns);
+            Map<String, String> mtParameters = getWeldPatternMTParameters(weldPatterns);
+            parameters.replace(KEY_WELD_PATTERN_VT_NUMBERS,vtParameters.get(KEY_WELD_PATTERN_VT_NUMBERS));
+            parameters.replace(KEY_WELD_PATTERN_VT_DATE,vtParameters.get(KEY_WELD_PATTERN_VT_DATE));
+            parameters.replace(KEY_WELD_PATTERN_VT_EVALUATION,vtParameters.get(KEY_WELD_PATTERN_VT_EVALUATION));
+
+            parameters.replace(KEY_WELD_PATTERN_RT_NUMBERS,rtParameters.get(KEY_WELD_PATTERN_RT_NUMBERS));
+            parameters.replace(KEY_WELD_PATTERN_RT_DATE,rtParameters.get(KEY_WELD_PATTERN_RT_DATE));
+            parameters.replace(KEY_WELD_PATTERN_RT_EVALUATION,rtParameters.get(KEY_WELD_PATTERN_RT_EVALUATION));
+
+            parameters.replace(KEY_WELD_PATTERN_MT_NUMBERS,mtParameters.get(KEY_WELD_PATTERN_MT_NUMBERS));
+            parameters.replace(KEY_WELD_PATTERN_MT_DATE,mtParameters.get(KEY_WELD_PATTERN_MT_DATE));
+            parameters.replace(KEY_WELD_PATTERN_MT_EVALUATION,mtParameters.get(KEY_WELD_PATTERN_MT_EVALUATION));
+
+        }
+        if (personalProtocolUI.getTheoryTest()!=null){
+            parameters.replace(KEY_THEORY_EVALUATION, personalProtocolUI.getTheoryTest().getRating());
+        }
+        if (personalProtocolUI.getResolutionCertification()!=null){
+            parameters.replace(KEY_RESOLUTION_CERT, personalProtocolUI.getResolutionCertification().getTextResolution());
         }
 
 
@@ -389,6 +408,171 @@ public class PersonalProtocolReportEntity {
             }
         }
         return result.toString();
+    }
+
+    private Map<String,String> getWeldPatternVTParameters(List<WeldPatternUI> weldPatterns){
+        Map<String, String> parameters = new HashMap<String, String>();
+        parameters.put(KEY_WELD_PATTERN_VT_NUMBERS, "");
+        parameters.put(KEY_WELD_PATTERN_VT_DATE, "");
+        parameters.put(KEY_WELD_PATTERN_VT_EVALUATION, "");
+        if (weldPatterns == null || weldPatterns.isEmpty())
+            return parameters;
+        List<String> numberList = new ArrayList<String>();
+        List<String> dateList = new ArrayList<String>();
+        List<String> evaluationList = new ArrayList<String>();
+
+        for (WeldPatternUI wp : weldPatterns){
+            VisualTestUI vt = wp.getVisualTest();
+            if (vt==null)
+                continue;
+            EvaluationUI vtEvaluation = vt.getEvaluation();
+            if (!numberList.contains(vt.getNumber())){
+                numberList.add(vt.getNumber());
+            }
+            if (!dateList.contains(vt.getDateFormat())){
+                dateList.add(vt.getDateFormat());
+            }
+            if (vtEvaluation==null)
+                continue;
+            if (!evaluationList.contains(vtEvaluation.getType())){
+                evaluationList.add(vtEvaluation.getType());
+            }
+        }
+
+        StringBuilder numbers = new StringBuilder();
+        StringBuilder dates = new StringBuilder();
+        StringBuilder evaluations = new StringBuilder();
+
+        for (String num : numberList){
+            numbers.append(num);
+            if (numberList.iterator().hasNext())
+                numbers.append("; ");
+        }
+        for (String date: dateList){
+            dates.append(date);
+            if (dateList.iterator().hasNext())
+                dates.append("; ");
+        }
+        for (String evaluation : evaluationList){
+            evaluations.append(evaluation);
+            if (evaluationList.iterator().hasNext())
+                evaluations.append("; ");
+        }
+
+        parameters.replace(KEY_WELD_PATTERN_VT_NUMBERS, numbers.toString());
+        parameters.replace(KEY_WELD_PATTERN_VT_DATE, dates.toString());
+        parameters.replace(KEY_WELD_PATTERN_VT_EVALUATION, evaluations.toString());
+        return parameters;
+    }
+
+    private Map<String, String> getWeldPatternRTParameters(List<WeldPatternUI> weldPatterns){
+        Map<String, String> parameters = new HashMap<String, String>();
+        parameters.put(KEY_WELD_PATTERN_RT_NUMBERS, "");
+        parameters.put(KEY_WELD_PATTERN_RT_DATE, "");
+        parameters.put(KEY_WELD_PATTERN_RT_EVALUATION, "");
+        if (weldPatterns == null || weldPatterns.isEmpty())
+            return parameters;
+        List<String> numberList = new ArrayList<String>();
+        List<String> dateList = new ArrayList<String>();
+        List<String> evaluationList = new ArrayList<String>();
+
+        for (WeldPatternUI wp : weldPatterns){
+            RadiationTestUI rt = wp.getRadiationTest();
+            if (rt==null)
+                continue;
+            EvaluationUI rtEvaluation = rt.getEvaluation();
+            if (!numberList.contains(rt.getNumber())){
+                numberList.add(rt.getNumber());
+            }
+            if (!dateList.contains(rt.getDateFormat())){
+                dateList.add(rt.getDateFormat());
+            }
+            if (rtEvaluation==null)
+                continue;
+            if (!evaluationList.contains(rtEvaluation.getType())){
+                evaluationList.add(rtEvaluation.getType());
+            }
+        }
+
+        StringBuilder numbers = new StringBuilder();
+        StringBuilder dates = new StringBuilder();
+        StringBuilder evaluations = new StringBuilder();
+
+        for (String num : numberList){
+            numbers.append(num);
+            if (numberList.iterator().hasNext())
+                numbers.append("; ");
+        }
+        for (String date: dateList){
+            dates.append(date);
+            if (dateList.iterator().hasNext())
+                dates.append("; ");
+        }
+        for (String evaluation : evaluationList){
+            evaluations.append(evaluation);
+            if (evaluationList.iterator().hasNext())
+                evaluations.append("; ");
+        }
+
+        parameters.replace(KEY_WELD_PATTERN_RT_NUMBERS, numbers.toString());
+        parameters.replace(KEY_WELD_PATTERN_RT_DATE, dates.toString());
+        parameters.replace(KEY_WELD_PATTERN_RT_EVALUATION, evaluations.toString());
+        return parameters;
+    }
+
+    private Map<String, String> getWeldPatternMTParameters(List<WeldPatternUI> weldPatterns){
+        Map<String, String> parameters = new HashMap<String, String>();
+        parameters.put(KEY_WELD_PATTERN_MT_NUMBERS, "");
+        parameters.put(KEY_WELD_PATTERN_MT_DATE, "");
+        parameters.put(KEY_WELD_PATTERN_MT_EVALUATION, "");
+        if (weldPatterns == null || weldPatterns.isEmpty())
+            return parameters;
+        List<String> numberList = new ArrayList<String>();
+        List<String> dateList = new ArrayList<String>();
+        List<String> evaluationList = new ArrayList<String>();
+
+        for (WeldPatternUI wp : weldPatterns){
+            MechanicalTestUI mt = wp.getMechanicalTest();
+            if (mt==null)
+                continue;
+            EvaluationUI mtEvaluation = mt.getEvaluation();
+            if (!numberList.contains(mt.getNumber())){
+                numberList.add(mt.getNumber());
+            }
+            if (!dateList.contains(mt.getDateFormat())){
+                dateList.add(mt.getDateFormat());
+            }
+            if (mtEvaluation==null)
+                continue;
+            if (!evaluationList.contains(mtEvaluation.getType())){
+                evaluationList.add(mtEvaluation.getType());
+            }
+        }
+
+        StringBuilder numbers = new StringBuilder();
+        StringBuilder dates = new StringBuilder();
+        StringBuilder evaluations = new StringBuilder();
+
+        for (String num : numberList){
+            numbers.append(num);
+            if (numberList.iterator().hasNext())
+                numbers.append("; ");
+        }
+        for (String date: dateList){
+            dates.append(date);
+            if (dateList.iterator().hasNext())
+                dates.append("; ");
+        }
+        for (String evaluation : evaluationList){
+            evaluations.append(evaluation);
+            if (evaluationList.iterator().hasNext())
+                evaluations.append("; ");
+        }
+
+        parameters.replace(KEY_WELD_PATTERN_MT_NUMBERS, numbers.toString());
+        parameters.replace(KEY_WELD_PATTERN_MT_DATE, dates.toString());
+        parameters.replace(KEY_WELD_PATTERN_MT_EVALUATION, evaluations.toString());
+        return parameters;
     }
 
     public Map<String, Object> getParameters() {
