@@ -2137,6 +2137,12 @@ public class ProtocolController extends GenericController {
         getControllerManager().getReportViewController().showTheoryProtocolReport(selectedTotalProtocolUI);
     }
 
+    @FXML
+    private void showVisualTestProtocolReport(){
+        getControllerManager().showReportViewPane();
+        getControllerManager().getReportViewController().showVisualTestProtocolReport(selectedTotalProtocolUI);
+    }
+
     private class ComboBoxCommissionHandler implements InvalidationListener{
 
         @Override

@@ -1,6 +1,5 @@
 package com.lvg.weldercenter.ui.entities.report;
 
-import com.lvg.weldercenter.models.*;
 import com.lvg.weldercenter.ui.entities.*;
 import com.lvg.weldercenter.ui.util.DateUtil;
 
@@ -50,10 +49,16 @@ public class PersonalProtocolReportEntity {
 
 
 
-    private final String WELD_PATTERN_MARK_SEPARATOR = " /";
+    private final String WELD_PATTERN_MARK_SEPARATOR = " / ";
+    private final String SEMICOLON_SEPARATOR = "; ";
+    private final String COLON_SEPARATOR = ": ";
     private final String NULL_STRING = "NULL";
     private final String YES_STRING = "есть";
     private final String NO_STRING = "нет";
+    private final String DATE_SUFFIX = " г.";
+
+    private final int PERIOD_CERTIFICATION = 2;
+
 
 
     private Map<String, Object> parameters = new HashMap<String, Object>(){{
@@ -97,7 +102,8 @@ public class PersonalProtocolReportEntity {
 
     public PersonalProtocolReportEntity(PersonalProtocolUI personalProtocolUI, TotalProtocolUI totalProtocolUI){
         parameters.replace(KEY_PROT_NUMBER, personalProtocolUI.getNumber());
-        parameters.replace(KEY_PROT_DATE, personalProtocolUI.getDatePeriodicalCertFormat());
+        parameters.replace(KEY_PROT_DATE, personalProtocolUI.getDatePeriodicalCertFormat()+DATE_SUFFIX);
+        parameters.replace(KEY_PERIOD_DATE_CERT,getNextDateCertification(personalProtocolUI.getDatePeriodicalCert()));
         if (totalProtocolUI.getCommissionCertification()!=null) {
             parameters.replace(KEY_COMISSION_HEAD, totalProtocolUI.getCommissionCertification().getHead().getFormatTeacherFullName("SUR-nn-sec"));
             parameters.replace(KEY_COMISSION_NDT_SPEC, totalProtocolUI.getCommissionCertification().getNdtSpecialist().getFormatTeacherFullName("SUR-nn-sec"));
@@ -107,7 +113,7 @@ public class PersonalProtocolReportEntity {
         parameters.replace(KEY_NDT_DOCUMENTS,getNdtDocs(personalProtocolUI.getNdtDocuments()));
         if (personalProtocolUI.getWelder()!=null) {
             parameters.replace(KEY_WELDER_FULL_NAME, personalProtocolUI.getWelder().getFormatName("SUR-NN-SEC"));
-            parameters.replace(KEY_WELDER_BIRTHDAY, personalProtocolUI.getWelder().getBirthdayFormat());
+            parameters.replace(KEY_WELDER_BIRTHDAY, personalProtocolUI.getWelder().getBirthdayFormat()+DATE_SUFFIX);
             parameters.replace(KEY_WELDER_DOC_NUMBER, personalProtocolUI.getWelder().getDocNumber());
             parameters.replace(KEY_WELDER_EXPERIENCE, getExperience(personalProtocolUI.getWelder().getDateBegin()));
             parameters.replace(KEY_WELDER_ATTEST_TYPE, personalProtocolUI.getAttestType());
@@ -158,9 +164,9 @@ public class PersonalProtocolReportEntity {
         StringBuilder result = new StringBuilder();
         for (NDTDocumentUI ndt : ndtDocumentUIList){
             result.append(ndt.getName());
-            if (ndtDocumentUIList.iterator().hasNext())
-                result.append("; ");
+            result.append("; ");
         }
+        deleteLastSeparator(result,SEMICOLON_SEPARATOR);
         return result.toString();
     }
 
@@ -168,7 +174,8 @@ public class PersonalProtocolReportEntity {
         if (dateBegin==null)
             return NULL_STRING;
         LocalDate begin = DateUtil.getLocalDate(dateBegin);
-        return LocalDate.now().getYear()-begin.getYear()+"";
+        int yearsCount = LocalDate.now().getYear()-begin.getYear();
+        return yearsCount+" "+DateUtil.formatedYearEndString(yearsCount);
     }
 
     private String getWeldPatternsMarks(List<WeldPatternUI> weldPatterns){
@@ -177,9 +184,9 @@ public class PersonalProtocolReportEntity {
         StringBuilder result = new StringBuilder();
         for (WeldPatternUI wp: weldPatterns){
             result.append(wp.getMark());
-            if (weldPatterns.iterator().hasNext())
-                result.append(WELD_PATTERN_MARK_SEPARATOR);
+            result.append(WELD_PATTERN_MARK_SEPARATOR);
         }
+        deleteLastSeparator(result,WELD_PATTERN_MARK_SEPARATOR);
         return result.toString();
     }
 
@@ -189,13 +196,12 @@ public class PersonalProtocolReportEntity {
         StringBuilder result = new StringBuilder();
         for (WeldPatternUI wp : weldPatterns){
             if (wp.getWeldMethod()!=null)
-                result.append(wp.getWeldMethod().getCode());
+                result.append(wp.getWeldMethod().getNameCode());
             else
                 result.append(NULL_STRING);
-
-            if (weldPatterns.iterator().hasNext())
-                result.append("; ");
+            result.append(SEMICOLON_SEPARATOR);
         }
+        deleteLastSeparator(result, SEMICOLON_SEPARATOR);
         return result.toString();
     }
 
@@ -204,14 +210,18 @@ public class PersonalProtocolReportEntity {
             return NULL_STRING;
         StringBuilder result = new StringBuilder();
         for (WeldPatternUI wp : weldPatterns){
-            if (wp.getWeldDetail()!=null)
-                result.append(wp.getWeldDetail().getCode());
+            if (wp.getWeldDetail()!=null) {
+                String code = wp.getWeldDetail().getCode();
+                String describe = wp.getWeldDetail().getType();
+                if (describe!=null)
+                    describe=describe.toLowerCase();
+                result.append(code + " (" + describe + ")");
+            }
             else
                 result.append(NULL_STRING);
-
-            if (weldPatterns.iterator().hasNext())
-                result.append("; ");
+            result.append(SEMICOLON_SEPARATOR);
         }
+        deleteLastSeparator(result, SEMICOLON_SEPARATOR);
         return result.toString();
     }
 
@@ -306,23 +316,40 @@ public class PersonalProtocolReportEntity {
         if (weldPatterns == null || weldPatterns.isEmpty())
             return NULL_STRING;
         StringBuilder result = new StringBuilder();
+        Map<String,List<String>> steelGroupsMap = new HashMap<String, List<String>>();
+        List<String> steelTypesWithoutGroup = new ArrayList<String>();
         for (WeldPatternUI wp : weldPatterns){
             SteelTypeUI steelTypeUI = wp.getSteelType();
+            String steelType = steelTypeUI.getType();
             if (steelTypeUI==null)
                 continue;
             SteelGroupUI steelGroupUI = steelTypeUI.getSteelGroupUI();
-            if (steelGroupUI==null)
+            if (steelGroupUI==null) {
+                if (!steelTypesWithoutGroup.contains(steelType))
+                    steelTypesWithoutGroup.add(steelType);
                 continue;
+            }
+            String steelGroup = steelGroupUI.getGroup();
 
-            if (!result.toString().contains(steelGroupUI.getGroup())){
-                result.append(steelGroupUI.getGroup()+" ");
-                if (!result.toString().contains(steelTypeUI.getType())) {
-                    result.append(steelTypeUI.getType());
-                    if (weldPatterns.iterator().hasNext())
-                        result.append("; ");
-                }
+            if (steelGroupsMap.containsKey(steelGroup)){
+                if (!steelGroupsMap.get(steelGroup).contains(steelType))
+                    steelGroupsMap.get(steelGroup).add(steelType);
+            }else {
+                List<String> steelTypesWithGroup = new ArrayList<String>();
+                steelTypesWithGroup.add(steelType);
+                steelGroupsMap.put(steelGroup,steelTypesWithGroup);
             }
         }
+        for (String group: steelGroupsMap.keySet()){
+            result.append(group+ COLON_SEPARATOR);
+            for (String type: steelGroupsMap.get(group)){
+                result.append(type+ SEMICOLON_SEPARATOR);
+            }
+        }
+        for (String type: steelTypesWithoutGroup){
+            result.append(type+ SEMICOLON_SEPARATOR);
+        }
+        deleteLastSeparator(result, SEMICOLON_SEPARATOR);
         return result.toString();
     }
 
@@ -334,11 +361,11 @@ public class PersonalProtocolReportEntity {
             if (wp.getThickness()!= 0){
                 if (!result.toString().contains(wp.getThickness()+"")){
                     result.append(wp.getThickness());
-                    if (weldPatterns.iterator().hasNext())
-                        result.append("; ");
+                    result.append(SEMICOLON_SEPARATOR);
                 }
             }
         }
+        deleteLastSeparator(result, SEMICOLON_SEPARATOR);
         return result.toString();
     }
 
@@ -350,11 +377,11 @@ public class PersonalProtocolReportEntity {
             if (wp.getDiameter()!= 0){
                 if (!result.toString().contains(wp.getDiameter()+"")){
                     result.append(wp.getDiameter());
-                    if (weldPatterns.iterator().hasNext())
-                        result.append("; ");
+                    result.append(SEMICOLON_SEPARATOR);
                 }
             }
         }
+        deleteLastSeparator(result, SEMICOLON_SEPARATOR);
         return result.toString();
     }
 
@@ -380,14 +407,13 @@ public class PersonalProtocolReportEntity {
         }
         for (String el : electrodes){
             result.append(el);
-            if (electrodes.iterator().hasNext() || !weldWires.isEmpty())
-                result.append("; ");
+            result.append(SEMICOLON_SEPARATOR);
         }
         for (String ww: weldWires){
             result.append(ww);
-            if (weldWires.iterator().hasNext())
-                result.append("; ");
+            result.append(SEMICOLON_SEPARATOR);
         }
+        deleteLastSeparator(result, SEMICOLON_SEPARATOR);
         return result.toString();
 
     }
@@ -401,12 +427,14 @@ public class PersonalProtocolReportEntity {
             if (weldGas!=null){
                 if (!result.toString().contains(weldGas.getType())){
                     result.append(weldGas.getType());
-                    if (weldPatterns.iterator().hasNext())
-                        result.append("; ");
+                    result.append(SEMICOLON_SEPARATOR);
                 }
 
             }
         }
+        deleteLastSeparator(result, SEMICOLON_SEPARATOR);
+        if (result.toString().isEmpty())
+            return NO_STRING;
         return result.toString();
     }
 
@@ -430,7 +458,7 @@ public class PersonalProtocolReportEntity {
                 numberList.add(vt.getNumber());
             }
             if (!dateList.contains(vt.getDateFormat())){
-                dateList.add(vt.getDateFormat());
+                dateList.add(vt.getDateFormat()+DATE_SUFFIX);
             }
             if (vtEvaluation==null)
                 continue;
@@ -445,19 +473,19 @@ public class PersonalProtocolReportEntity {
 
         for (String num : numberList){
             numbers.append(num);
-            if (numberList.iterator().hasNext())
-                numbers.append("; ");
+            numbers.append(SEMICOLON_SEPARATOR);
         }
         for (String date: dateList){
             dates.append(date);
-            if (dateList.iterator().hasNext())
-                dates.append("; ");
+            dates.append(SEMICOLON_SEPARATOR);
         }
         for (String evaluation : evaluationList){
             evaluations.append(evaluation);
-            if (evaluationList.iterator().hasNext())
-                evaluations.append("; ");
+            evaluations.append(SEMICOLON_SEPARATOR);
         }
+        deleteLastSeparator(numbers, SEMICOLON_SEPARATOR);
+        deleteLastSeparator(dates, SEMICOLON_SEPARATOR);
+        deleteLastSeparator(evaluations, SEMICOLON_SEPARATOR);
 
         parameters.replace(KEY_WELD_PATTERN_VT_NUMBERS, numbers.toString());
         parameters.replace(KEY_WELD_PATTERN_VT_DATE, dates.toString());
@@ -485,7 +513,7 @@ public class PersonalProtocolReportEntity {
                 numberList.add(rt.getNumber());
             }
             if (!dateList.contains(rt.getDateFormat())){
-                dateList.add(rt.getDateFormat());
+                dateList.add(rt.getDateFormat()+DATE_SUFFIX);
             }
             if (rtEvaluation==null)
                 continue;
@@ -500,19 +528,19 @@ public class PersonalProtocolReportEntity {
 
         for (String num : numberList){
             numbers.append(num);
-            if (numberList.iterator().hasNext())
-                numbers.append("; ");
+            numbers.append(SEMICOLON_SEPARATOR);
         }
         for (String date: dateList){
             dates.append(date);
-            if (dateList.iterator().hasNext())
-                dates.append("; ");
+            dates.append(SEMICOLON_SEPARATOR);
         }
         for (String evaluation : evaluationList){
             evaluations.append(evaluation);
-            if (evaluationList.iterator().hasNext())
-                evaluations.append("; ");
+            evaluations.append(SEMICOLON_SEPARATOR);
         }
+        deleteLastSeparator(numbers, SEMICOLON_SEPARATOR);
+        deleteLastSeparator(dates, SEMICOLON_SEPARATOR);
+        deleteLastSeparator(evaluations, SEMICOLON_SEPARATOR);
 
         parameters.replace(KEY_WELD_PATTERN_RT_NUMBERS, numbers.toString());
         parameters.replace(KEY_WELD_PATTERN_RT_DATE, dates.toString());
@@ -540,7 +568,7 @@ public class PersonalProtocolReportEntity {
                 numberList.add(mt.getNumber());
             }
             if (!dateList.contains(mt.getDateFormat())){
-                dateList.add(mt.getDateFormat());
+                dateList.add(mt.getDateFormat()+DATE_SUFFIX);
             }
             if (mtEvaluation==null)
                 continue;
@@ -555,24 +583,41 @@ public class PersonalProtocolReportEntity {
 
         for (String num : numberList){
             numbers.append(num);
-            if (numberList.iterator().hasNext())
-                numbers.append("; ");
+            numbers.append(SEMICOLON_SEPARATOR);
         }
         for (String date: dateList){
             dates.append(date);
-            if (dateList.iterator().hasNext())
-                dates.append("; ");
+            dates.append(SEMICOLON_SEPARATOR);
         }
         for (String evaluation : evaluationList){
             evaluations.append(evaluation);
-            if (evaluationList.iterator().hasNext())
-                evaluations.append("; ");
+            evaluations.append(SEMICOLON_SEPARATOR);
         }
+
+        deleteLastSeparator(numbers, SEMICOLON_SEPARATOR);
+        deleteLastSeparator(dates, SEMICOLON_SEPARATOR);
+        deleteLastSeparator(evaluations, SEMICOLON_SEPARATOR);
 
         parameters.replace(KEY_WELD_PATTERN_MT_NUMBERS, numbers.toString());
         parameters.replace(KEY_WELD_PATTERN_MT_DATE, dates.toString());
         parameters.replace(KEY_WELD_PATTERN_MT_EVALUATION, evaluations.toString());
         return parameters;
+    }
+
+    private String getNextDateCertification(Date protDate){
+        if (protDate==null){
+            return NULL_STRING;
+        }
+        LocalDate nextDate = DateUtil.getLocalDate(protDate).plusYears(PERIOD_CERTIFICATION);
+        return DateUtil.format(nextDate)+DATE_SUFFIX;
+    }
+
+    private void deleteLastSeparator(StringBuilder string, String separator){
+        if (string.toString().isEmpty())
+            return;
+        if (string.toString().endsWith(separator)){
+            string.delete(string.length()-separator.length(),string.length());
+        }
     }
 
     public Map<String, Object> getParameters() {

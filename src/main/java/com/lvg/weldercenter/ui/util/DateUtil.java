@@ -60,5 +60,20 @@ public class DateUtil implements Holidays{
          return false;
     }
 
+    public static String formatedYearEndString(int yearCount){
+
+        String god = "год";
+        String goda = "года";
+        String let = "лет";
+        String value = String.valueOf(yearCount);
+        if (value.equals("11")||value.equals("12")||value.equals("13")||value.equals("14"))
+            return let;
+        if(value.endsWith("1"))
+            return god;
+        if (value.endsWith("2")||value.endsWith("3")||value.endsWith("4"))
+            return goda;
+        return let;
+    }
+
 }
 

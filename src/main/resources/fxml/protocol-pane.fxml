@@ -250,7 +250,7 @@
                                                                   <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                                                </GridPane.margin>
                                                             </Button>
-                                                            <Button fx:id="btPrintVTProtocol" mnemonicParsing="false" text="Печать" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                                            <Button fx:id="btPrintVTProtocol" mnemonicParsing="false" onAction="#showVisualTestProtocolReport" text="Печать" GridPane.columnIndex="1" GridPane.rowIndex="3">
                                                                <GridPane.margin>
                                                                   <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                                                </GridPane.margin>
@@ -622,12 +622,12 @@
                                                             <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                                          </GridPane.margin>
                                                       </Label>
-                                                      <TextArea fx:id="textAreaResolutionCert" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="1">
+                                                      <TextArea fx:id="textAreaResolutionCert" prefHeight="200.0" prefWidth="200.0" wrapText="true" GridPane.columnSpan="2" GridPane.rowIndex="1">
                                                          <GridPane.margin>
                                                             <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                                          </GridPane.margin>
                                                          <font>
-                                                            <Font size="14.0" />
+                                                            <Font name="System Bold" size="14.0" />
                                                          </font>
                                                       </TextArea>
                                                       <Button fx:id="btCleanResolutionText" mnemonicParsing="false" onAction="#cleanResolutionText" text="Очистить" GridPane.rowIndex="2">

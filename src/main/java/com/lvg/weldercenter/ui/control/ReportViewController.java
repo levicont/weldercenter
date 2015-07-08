@@ -35,6 +35,7 @@ public class ReportViewController extends GenericController {
     private final URL JOURNAL_SUBREPORT_VISIT_TABLE_URL = getClass().getResource("/reports/journal-visit-table-subrep.jrxml");
     private final URL JOURNAL_SUBREPORT_TIME_TABLE_URL = getClass().getResource("/reports/journal-time-table-subrep.jrxml");
     private final URL PERSONAL_PROTOCOL_REPORT_URL = getClass().getResource("/reports/pers-protocol-rep.jrxml");
+    private final URL VISUAL_TEST_PROTOCOL_REPORT_URL = getClass().getResource("/reports/visual-test-rep.jrxml");
     private final URL UNIVERS_FONT_URL = getClass().getResource("/fonts/Univers_Medium.ttf");
 
     private PersonalProtocolServiceUI personalProtocolServiceUI = ServiceUIFactory.getPersonalProtocolServiceUI();
@@ -171,6 +172,18 @@ public class ReportViewController extends GenericController {
             reportPanel.setVisible(true);
         }catch(JRException ex){
             LOGGER.error("SHOW PERSONAL PROTOCOL REPORT VIEW: Could not load report: "+ex.getMessage(),ex);
+        }
+    }
+
+    public void showVisualTestProtocolReport(TotalProtocolUI totalProtocolUI){
+        try {
+            JasperReport report = JasperCompileManager.compileReport(VISUAL_TEST_PROTOCOL_REPORT_URL.getFile());
+            JasperPrint print = JasperFillManager.fillReport(report, new HashMap<String, Object>(),
+                    new JREmptyDataSource());
+            addReportPrintToPanel(print);
+            reportPanel.setVisible(true);
+        }catch(JRException ex){
+            LOGGER.error("SHOW VISUAL TEST PROTOCOL REPORT VIEW: Could not load report: "+ex.getMessage(),ex);
         }
     }
 

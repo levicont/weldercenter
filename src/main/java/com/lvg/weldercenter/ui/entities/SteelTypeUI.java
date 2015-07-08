@@ -11,23 +11,40 @@ import javafx.beans.property.SimpleStringProperty;
 public class SteelTypeUI extends  GenericEntityUI {
     private final SimpleStringProperty type = new SimpleStringProperty();
     private final SimpleObjectProperty<SteelGroup> steelGroup = new SimpleObjectProperty<SteelGroup>();
+    private final SimpleObjectProperty<SteelGroupUI> steelGroupUI = new SimpleObjectProperty<SteelGroupUI>();
 
     public SteelTypeUI(){
         this.id.set(0);
         this.type.set("");
         this.steelGroup.set(null);
+        this.steelGroupUI.set(new SteelGroupUI());
     }
 
     public SteelTypeUI(SteelType steelType){
         this.id.set(steelType.getSteelTypeId());
         this.type.set(steelType.getType());
-        if (steelType.getStGroup() != null)
+        if (steelType.getStGroup() != null) {
             this.steelGroup.set(steelType.getStGroup());
+            this.steelGroupUI.set(new SteelGroupUI(steelType.getStGroup()));
+        }else {
+            this.steelGroup.set(null);
+            this.steelGroupUI.set(new SteelGroupUI());
+        }
     }
 
     //Getters and Setters
-    public SteelGroupUI getSteelGroupUI(){
-        return new SteelGroupUI(steelGroup.get());
+
+
+    public SteelGroupUI getSteelGroupUI() {
+        return steelGroupUI.get();
+    }
+
+    public SimpleObjectProperty<SteelGroupUI> steelGroupUIProperty() {
+        return steelGroupUI;
+    }
+
+    public void setSteelGroupUI(SteelGroupUI steelGroupUI) {
+        this.steelGroupUI.set(steelGroupUI);
     }
 
     public String getType() {

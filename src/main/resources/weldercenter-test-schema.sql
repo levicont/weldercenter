@@ -721,7 +721,7 @@ CREATE TABLE `steel_type` (
 /*!40000 ALTER TABLE `steel_type` DISABLE KEYS */;
 INSERT INTO `steel_type` (`id_steel_type`,`type`,`id_steel_group`) VALUES
  (1,'Сталь 20',1),
- (2,'Ст. 2пс',NULL);
+ (2,'Ст. 2пс',1);
 /*!40000 ALTER TABLE `steel_type` ENABLE KEYS */;
 
 

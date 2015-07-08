@@ -4,6 +4,7 @@ import com.lvg.weldercenter.ui.entities.JournalUI;
 import com.lvg.weldercenter.ui.entities.WeldMethodUI;
 import com.lvg.weldercenter.ui.entities.WelderUI;
 import com.lvg.weldercenter.ui.util.DateUtil;
+import org.omg.CORBA.DATA_CONVERSION;
 
 import java.time.LocalDate;
 import java.util.Date;
@@ -70,21 +71,8 @@ public class JournalReportEntity {
             return result;
         LocalDate today = LocalDate.now();
         int expirience = today.getYear()- DateUtil.getLocalDate(dateBegin).getYear();
-        result = expirience>0?DateUtil.format(dateBegin)+" ("+expirience+" "+formatedYearEndString(expirience)+") ":"";
+        result = expirience>0?DateUtil.format(dateBegin)+" ("+expirience+" "+ DateUtil.formatedYearEndString(expirience)+") ":"";
         return result;
-    }
-
-    private String formatedYearEndString(int yearCount){
-
-        String god = "год";
-        String goda = "года";
-        String let = "лет";
-        String value = String.valueOf(yearCount);
-        if(value.endsWith("1"))
-            return god;
-        if (value.endsWith("2")||value.endsWith("3")||value.endsWith("4"))
-            return goda;
-        return let;
     }
 
     public String getJrnNumber() {
