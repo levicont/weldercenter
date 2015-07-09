@@ -9,9 +9,11 @@ import java.util.*;
 /**
  * Created by Victor on 05.06.2015.
  */
-public class PersonalProtocolReportEntity {
+public class PersonalProtocolReportEntity extends GenericReportEntity{
     private final String KEY_PROT_NUMBER = "PROT_NUMBER";
     private final String KEY_PROT_DATE = "PROT_DATE";
+    private final String KEY_TOTAL_PROT_NUMBER = "TOTAL_PROT_NUMBER";
+    private final String KEY_TOTAL_PROT_DATE = "TOTAL_PROT_DATE";
     private final String KEY_COMISSION_HEAD = "COMISSION_HEAD";
     private final String KEY_COMISSION_WELD_SPEC = "COMISSION_WELD_SPEC";
     private final String KEY_COMISSION_NDT_SPEC = "COMISSION_NDT_SPEC";
@@ -49,21 +51,22 @@ public class PersonalProtocolReportEntity {
 
 
 
-    private final String WELD_PATTERN_MARK_SEPARATOR = " / ";
-    private final String SEMICOLON_SEPARATOR = "; ";
-    private final String COLON_SEPARATOR = ": ";
-    private final String NULL_STRING = "NULL";
-    private final String YES_STRING = "есть";
-    private final String NO_STRING = "нет";
-    private final String DATE_SUFFIX = " г.";
+
 
     private final int PERIOD_CERTIFICATION = 2;
+
+    private String fio = NULL_FIELD;
+    private String mark = NULL_FIELD;
+    private String ndtDocs = NULL_FIELD;
+    private List<WeldPatternReportEntity> patterns = new ArrayList<WeldPatternReportEntity>();
 
 
 
     private Map<String, Object> parameters = new HashMap<String, Object>(){{
         put(KEY_PROT_NUMBER,null);
         put(KEY_PROT_DATE,null);
+        put(KEY_TOTAL_PROT_NUMBER,null);
+        put(KEY_TOTAL_PROT_DATE,null);
         put(KEY_COMISSION_HEAD, null);
         put(KEY_COMISSION_NDT_SPEC,null);
         put(KEY_COMISSION_SAFETY_SPEC,null);
@@ -101,9 +104,12 @@ public class PersonalProtocolReportEntity {
     }};
 
     public PersonalProtocolReportEntity(PersonalProtocolUI personalProtocolUI, TotalProtocolUI totalProtocolUI){
+
         parameters.replace(KEY_PROT_NUMBER, personalProtocolUI.getNumber());
         parameters.replace(KEY_PROT_DATE, personalProtocolUI.getDatePeriodicalCertFormat()+DATE_SUFFIX);
         parameters.replace(KEY_PERIOD_DATE_CERT,getNextDateCertification(personalProtocolUI.getDatePeriodicalCert()));
+        parameters.replace(KEY_TOTAL_PROT_NUMBER, totalProtocolUI.getNumber());
+        parameters.replace(KEY_TOTAL_PROT_DATE, totalProtocolUI.getDateCertFormat());
         if (totalProtocolUI.getCommissionCertification()!=null) {
             parameters.replace(KEY_COMISSION_HEAD, totalProtocolUI.getCommissionCertification().getHead().getFormatTeacherFullName("SUR-nn-sec"));
             parameters.replace(KEY_COMISSION_NDT_SPEC, totalProtocolUI.getCommissionCertification().getNdtSpecialist().getFormatTeacherFullName("SUR-nn-sec"));
@@ -111,7 +117,9 @@ public class PersonalProtocolReportEntity {
             parameters.replace(KEY_COMISSION_WELD_SPEC, totalProtocolUI.getCommissionCertification().getWeldSpecialist().getFormatTeacherFullName("SUR-nn-sec"));
         }
         parameters.replace(KEY_NDT_DOCUMENTS,getNdtDocs(personalProtocolUI.getNdtDocuments()));
+        this.ndtDocs = (String)parameters.get(KEY_NDT_DOCUMENTS);
         if (personalProtocolUI.getWelder()!=null) {
+            this.fio = personalProtocolUI.getWelder().getFormatName("SUR-nn-sec");
             parameters.replace(KEY_WELDER_FULL_NAME, personalProtocolUI.getWelder().getFormatName("SUR-NN-SEC"));
             parameters.replace(KEY_WELDER_BIRTHDAY, personalProtocolUI.getWelder().getBirthdayFormat()+DATE_SUFFIX);
             parameters.replace(KEY_WELDER_DOC_NUMBER, personalProtocolUI.getWelder().getDocNumber());
@@ -120,6 +128,7 @@ public class PersonalProtocolReportEntity {
         }
         if (personalProtocolUI.getWeldPatterns()!=null && !personalProtocolUI.getWeldPatterns().isEmpty()) {
             List<WeldPatternUI> weldPatterns = personalProtocolUI.getWeldPatterns();
+            this.patterns = getPatternsReportEntities(weldPatterns);
             parameters.replace(KEY_WELD_PATTERN_MARKS, getWeldPatternsMarks(weldPatterns));
             parameters.replace(KEY_WELD_PATTERN_WELD_METHODS, getWeldPatternWeldMethods(weldPatterns));
             parameters.replace(KEY_WELD_PATTERN_DETAILS_TYPES, getWeldPatternDetailTypes(weldPatterns));
@@ -160,7 +169,7 @@ public class PersonalProtocolReportEntity {
 
     private String getNdtDocs(List<NDTDocumentUI> ndtDocumentUIList){
         if (ndtDocumentUIList==null)
-            return NULL_STRING;
+            return NULL_FIELD;
         StringBuilder result = new StringBuilder();
         for (NDTDocumentUI ndt : ndtDocumentUIList){
             result.append(ndt.getName());
@@ -172,7 +181,7 @@ public class PersonalProtocolReportEntity {
 
     private String getExperience(Date dateBegin){
         if (dateBegin==null)
-            return NULL_STRING;
+            return NULL_FIELD;
         LocalDate begin = DateUtil.getLocalDate(dateBegin);
         int yearsCount = LocalDate.now().getYear()-begin.getYear();
         return yearsCount+" "+DateUtil.formatedYearEndString(yearsCount);
@@ -180,25 +189,25 @@ public class PersonalProtocolReportEntity {
 
     private String getWeldPatternsMarks(List<WeldPatternUI> weldPatterns){
         if (weldPatterns==null || weldPatterns.isEmpty())
-            return NULL_STRING;
+            return NULL_FIELD;
         StringBuilder result = new StringBuilder();
         for (WeldPatternUI wp: weldPatterns){
             result.append(wp.getMark());
-            result.append(WELD_PATTERN_MARK_SEPARATOR);
+            result.append(SLASH_SEPARATOR);
         }
-        deleteLastSeparator(result,WELD_PATTERN_MARK_SEPARATOR);
+        deleteLastSeparator(result, SLASH_SEPARATOR);
         return result.toString();
     }
 
     private String getWeldPatternWeldMethods(List<WeldPatternUI> weldPatterns){
         if (weldPatterns == null || weldPatterns.isEmpty())
-            return NULL_STRING;
+            return NULL_FIELD;
         StringBuilder result = new StringBuilder();
         for (WeldPatternUI wp : weldPatterns){
             if (wp.getWeldMethod()!=null)
                 result.append(wp.getWeldMethod().getNameCode());
             else
-                result.append(NULL_STRING);
+                result.append(NULL_FIELD);
             result.append(SEMICOLON_SEPARATOR);
         }
         deleteLastSeparator(result, SEMICOLON_SEPARATOR);
@@ -207,7 +216,7 @@ public class PersonalProtocolReportEntity {
 
     private String getWeldPatternDetailTypes(List<WeldPatternUI> weldPatterns){
         if (weldPatterns == null || weldPatterns.isEmpty())
-            return NULL_STRING;
+            return NULL_FIELD;
         StringBuilder result = new StringBuilder();
         for (WeldPatternUI wp : weldPatterns){
             if (wp.getWeldDetail()!=null) {
@@ -218,7 +227,7 @@ public class PersonalProtocolReportEntity {
                 result.append(code + " (" + describe + ")");
             }
             else
-                result.append(NULL_STRING);
+                result.append(NULL_FIELD);
             result.append(SEMICOLON_SEPARATOR);
         }
         deleteLastSeparator(result, SEMICOLON_SEPARATOR);
@@ -227,7 +236,7 @@ public class PersonalProtocolReportEntity {
 
     private String getWeldPatternWeldPositions(List<WeldPatternUI> weldPatterns){
         if (weldPatterns == null || weldPatterns.isEmpty())
-            return NULL_STRING;
+            return NULL_FIELD;
         StringBuilder result = new StringBuilder();
         for (WeldPatternUI wp : weldPatterns){
             if (wp.getWeldPositions()==null || wp.getWeldPositions().isEmpty())
@@ -247,7 +256,7 @@ public class PersonalProtocolReportEntity {
 
     private String getWeldPatternWeldJoinTypes(List<WeldPatternUI> weldPatterns){
         if (weldPatterns == null || weldPatterns.isEmpty())
-            return NULL_STRING;
+            return NULL_FIELD;
         StringBuilder result = new StringBuilder();
         for (WeldPatternUI wp : weldPatterns){
             List<WeldJoinTypeUI> joinTypes = wp.getWeldJoinTypes();
@@ -267,7 +276,7 @@ public class PersonalProtocolReportEntity {
 
     private String getWeldPatternHeating(List<WeldPatternUI> weldPatterns){
         if (weldPatterns == null || weldPatterns.isEmpty())
-            return NULL_STRING;
+            return NULL_FIELD;
         StringBuilder result = new StringBuilder();
         List<String> heatings = new ArrayList<String>();
         for (WeldPatternUI wp : weldPatterns){
@@ -291,7 +300,7 @@ public class PersonalProtocolReportEntity {
 
     private String getWeldPatternHeatTreatment(List<WeldPatternUI> weldPatterns){
         if (weldPatterns == null || weldPatterns.isEmpty())
-            return NULL_STRING;
+            return NULL_FIELD;
         StringBuilder result = new StringBuilder();
         List<String> heatTreatmentList = new ArrayList<String>();
         for (WeldPatternUI wp : weldPatterns){
@@ -314,7 +323,7 @@ public class PersonalProtocolReportEntity {
 
     private String getWeldPatternSteelTypes(List<WeldPatternUI> weldPatterns){
         if (weldPatterns == null || weldPatterns.isEmpty())
-            return NULL_STRING;
+            return NULL_FIELD;
         StringBuilder result = new StringBuilder();
         Map<String,List<String>> steelGroupsMap = new HashMap<String, List<String>>();
         List<String> steelTypesWithoutGroup = new ArrayList<String>();
@@ -355,7 +364,7 @@ public class PersonalProtocolReportEntity {
 
     private String getWeldPatternThicknesses(List<WeldPatternUI> weldPatterns){
         if (weldPatterns == null || weldPatterns.isEmpty())
-            return NULL_STRING;
+            return NULL_FIELD;
         StringBuilder result = new StringBuilder();
         for (WeldPatternUI wp : weldPatterns){
             if (wp.getThickness()!= 0){
@@ -371,7 +380,7 @@ public class PersonalProtocolReportEntity {
 
     private String getWeldPatternDiameters(List<WeldPatternUI> weldPatterns){
         if (weldPatterns == null || weldPatterns.isEmpty())
-            return NULL_STRING;
+            return NULL_FIELD;
         StringBuilder result = new StringBuilder();
         for (WeldPatternUI wp : weldPatterns){
             if (wp.getDiameter()!= 0){
@@ -387,7 +396,7 @@ public class PersonalProtocolReportEntity {
 
     private String getWeldPatternElectrodeWire(List<WeldPatternUI> weldPatterns){
         if (weldPatterns == null || weldPatterns.isEmpty())
-            return NULL_STRING;
+            return NULL_FIELD;
         StringBuilder result = new StringBuilder();
         List<String> electrodes = new ArrayList<String>();
         List<String> weldWires = new ArrayList<String>();
@@ -420,7 +429,7 @@ public class PersonalProtocolReportEntity {
 
     private String getWeldPatternGas(List<WeldPatternUI> weldPatterns){
         if (weldPatterns == null || weldPatterns.isEmpty())
-            return NULL_STRING;
+            return NULL_FIELD;
         StringBuilder result = new StringBuilder();
         for (WeldPatternUI wp : weldPatterns){
             WeldGasUI weldGas = wp.getWeldGas();
@@ -606,21 +615,41 @@ public class PersonalProtocolReportEntity {
 
     private String getNextDateCertification(Date protDate){
         if (protDate==null){
-            return NULL_STRING;
+            return NULL_FIELD;
         }
         LocalDate nextDate = DateUtil.getLocalDate(protDate).plusYears(PERIOD_CERTIFICATION);
         return DateUtil.format(nextDate)+DATE_SUFFIX;
     }
 
-    private void deleteLastSeparator(StringBuilder string, String separator){
-        if (string.toString().isEmpty())
-            return;
-        if (string.toString().endsWith(separator)){
-            string.delete(string.length()-separator.length(),string.length());
+    private List<WeldPatternReportEntity> getPatternsReportEntities(List<WeldPatternUI> weldPatterns){
+        List<WeldPatternReportEntity> resultList = new ArrayList<WeldPatternReportEntity>();
+        if (weldPatterns==null)
+            return resultList;
+        for (WeldPatternUI wp : weldPatterns){
+            resultList.add(new WeldPatternReportEntity(wp));
         }
+        return resultList;
     }
+
+
 
     public Map<String, Object> getParameters() {
         return parameters;
+    }
+
+    public String getFio() {
+        return fio;
+    }
+
+    public String getMark() {
+        return mark;
+    }
+
+    public String getNdtDocs() {
+        return ndtDocs;
+    }
+
+    public List<WeldPatternReportEntity> getPatterns() {
+        return patterns;
     }
 }

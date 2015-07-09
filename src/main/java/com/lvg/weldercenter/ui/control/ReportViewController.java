@@ -21,6 +21,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.net.URL;
 import java.util.*;
+import java.util.List;
 
 /**
  * Created by Victor on 18.05.2015.
@@ -38,6 +39,7 @@ public class ReportViewController extends GenericController {
     private final URL VISUAL_TEST_PROTOCOL_REPORT_URL = getClass().getResource("/reports/visual-test-rep.jrxml");
     private final URL UNIVERS_FONT_URL = getClass().getResource("/fonts/Univers_Medium.ttf");
 
+
     private PersonalProtocolServiceUI personalProtocolServiceUI = ServiceUIFactory.getPersonalProtocolServiceUI();
 
     @FXML
@@ -54,6 +56,7 @@ public class ReportViewController extends GenericController {
     private Collection<JournalReportEntity> journalReportEntities = new ArrayList<JournalReportEntity>();
     private Collection<JournalVisitTableReportEntity> journalVisitTableReportEntities  = new ArrayList<JournalVisitTableReportEntity>();
     private Collection<JournalSectionReportEntity> journalSectionReportEntities = new ArrayList<JournalSectionReportEntity>();
+    private Collection<PersonalProtocolReportEntity> personalProtocolReportEntities = new ArrayList<PersonalProtocolReportEntity>();
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         LOGGER.debug("INITIALIZING Report Pane");
@@ -176,15 +179,31 @@ public class ReportViewController extends GenericController {
     }
 
     public void showVisualTestProtocolReport(TotalProtocolUI totalProtocolUI){
+        initPersonalProtocolReportEntityList(totalProtocolUI);
+
         try {
             JasperReport report = JasperCompileManager.compileReport(VISUAL_TEST_PROTOCOL_REPORT_URL.getFile());
-            JasperPrint print = JasperFillManager.fillReport(report, new HashMap<String, Object>(),
-                    new JREmptyDataSource());
+            JasperPrint print = JasperFillManager.fillReport(report, totalProtocolUI.getParameters(),
+                    new JRBeanCollectionDataSource(personalProtocolReportEntities));
             addReportPrintToPanel(print);
             reportPanel.setVisible(true);
         }catch(JRException ex){
             LOGGER.error("SHOW VISUAL TEST PROTOCOL REPORT VIEW: Could not load report: "+ex.getMessage(),ex);
         }
+    }
+
+    private void initPersonalProtocolReportEntityList(TotalProtocolUI totalProtocolUI){
+        if (totalProtocolUI==null || totalProtocolUI.getJournal().getWelders()==null)
+            return;
+        personalProtocolReportEntities.clear();
+        List<WelderUI> welders = totalProtocolUI.getJournal().getWelders();
+
+        for (WelderUI welderUI: welders){
+            PersonalProtocolUI pp = personalProtocolServiceUI.getPersonalProtocolUIFromDB(totalProtocolUI,welderUI.getSurnameNameSecname());
+            PersonalProtocolReportEntity ppReport = new PersonalProtocolReportEntity(pp, totalProtocolUI);
+            personalProtocolReportEntities.add(ppReport);
+        }
+
     }
 
 
