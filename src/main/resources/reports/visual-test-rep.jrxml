@@ -270,7 +270,7 @@
 					<leftPen lineWidth="0.75"/>
 					<rightPen lineWidth="0.75"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Top">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Univers"/>
 					<paragraph leftIndent="3"/>
 				</textElement>
@@ -278,104 +278,120 @@
 			</textField>
 			<componentElement>
 				<reportElement x="33" y="0" width="772" height="20" uuid="2c37147a-a29b-4388-a04d-dc6a97f0ee7b"/>
-				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
 					<datasetRun subDataset="dataset1" uuid="1f90f9b6-4453-4044-8c32-3f98565a2ecc">
 						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{patterns})]]></dataSourceExpression>
 					</datasetRun>
 					<jr:listContents height="20" width="772">
-						<textField>
-							<reportElement x="259" y="0" width="54" height="20" uuid="ac17fb5a-999f-4c43-b1db-4bdeeab62bf1"/>
+						<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+							<reportElement stretchType="RelativeToTallestObject" x="259" y="0" width="54" height="20" uuid="ac17fb5a-999f-4c43-b1db-4bdeeab62bf1"/>
 							<box>
+								<topPen lineWidth="0.5" lineStyle="Dashed"/>
 								<leftPen lineWidth="0.75"/>
+								<bottomPen lineWidth="0.5" lineStyle="Dashed"/>
 								<rightPen lineWidth="0.75"/>
 							</box>
-							<textElement>
+							<textElement verticalAlignment="Middle">
 								<font fontName="Univers"/>
-								<paragraph leftIndent="3"/>
+								<paragraph leftIndent="3" spacingBefore="2" spacingAfter="2"/>
 							</textElement>
 							<textFieldExpression><![CDATA[$F{size}]]></textFieldExpression>
 						</textField>
-						<textField>
-							<reportElement x="216" y="0" width="43" height="20" uuid="e8c76cb5-4c20-4a26-b67b-1cbec33ee4c7"/>
+						<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+							<reportElement stretchType="RelativeToTallestObject" x="216" y="0" width="43" height="20" uuid="e8c76cb5-4c20-4a26-b67b-1cbec33ee4c7"/>
 							<box>
+								<topPen lineWidth="0.5" lineStyle="Dashed"/>
 								<leftPen lineWidth="0.75"/>
+								<bottomPen lineWidth="0.5" lineStyle="Dashed"/>
 								<rightPen lineWidth="0.75"/>
 							</box>
-							<textElement>
+							<textElement verticalAlignment="Middle">
 								<font fontName="Univers"/>
-								<paragraph leftIndent="3"/>
+								<paragraph leftIndent="3" spacingBefore="2" spacingAfter="2"/>
 							</textElement>
 							<textFieldExpression><![CDATA[$F{weldMethod}]]></textFieldExpression>
 						</textField>
-						<textField>
-							<reportElement x="313" y="0" width="40" height="20" uuid="a2264cae-224b-4511-8379-fbcffd326b24"/>
+						<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+							<reportElement stretchType="RelativeToTallestObject" x="313" y="0" width="40" height="20" uuid="a2264cae-224b-4511-8379-fbcffd326b24"/>
 							<box>
+								<topPen lineWidth="0.5" lineStyle="Dashed"/>
 								<leftPen lineWidth="0.75"/>
+								<bottomPen lineWidth="0.5" lineStyle="Dashed"/>
 								<rightPen lineWidth="0.75"/>
 							</box>
-							<textElement>
+							<textElement verticalAlignment="Middle">
 								<font fontName="Univers"/>
-								<paragraph leftIndent="3"/>
+								<paragraph leftIndent="3" spacingBefore="2" spacingAfter="2"/>
 							</textElement>
 							<textFieldExpression><![CDATA[$F{weldType}]]></textFieldExpression>
 						</textField>
-						<textField>
-							<reportElement x="353" y="0" width="40" height="20" uuid="e7950640-a8d8-49bd-8ccd-8959c087b828"/>
+						<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+							<reportElement stretchType="RelativeToTallestObject" x="353" y="0" width="40" height="20" uuid="e7950640-a8d8-49bd-8ccd-8959c087b828"/>
 							<box>
+								<topPen lineWidth="0.5" lineStyle="Dashed"/>
 								<leftPen lineWidth="0.75"/>
+								<bottomPen lineWidth="0.5" lineStyle="Dashed"/>
 								<rightPen lineWidth="0.75"/>
 							</box>
-							<textElement>
+							<textElement verticalAlignment="Middle">
 								<font fontName="Univers"/>
-								<paragraph leftIndent="3"/>
+								<paragraph leftIndent="3" spacingBefore="2" spacingAfter="2"/>
 							</textElement>
 							<textFieldExpression><![CDATA[$F{weldPosition}]]></textFieldExpression>
 						</textField>
-						<textField>
-							<reportElement x="393" y="0" width="56" height="20" uuid="cde17e61-f726-4b86-b678-68743514eea4"/>
+						<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+							<reportElement stretchType="RelativeToTallestObject" x="393" y="0" width="56" height="20" uuid="cde17e61-f726-4b86-b678-68743514eea4"/>
 							<box>
+								<topPen lineWidth="0.5" lineStyle="Dashed"/>
 								<leftPen lineWidth="0.75"/>
+								<bottomPen lineWidth="0.5" lineStyle="Dashed"/>
 								<rightPen lineWidth="0.75"/>
 							</box>
-							<textElement>
+							<textElement verticalAlignment="Middle">
 								<font fontName="Univers"/>
-								<paragraph leftIndent="3"/>
+								<paragraph leftIndent="3" spacingBefore="2" spacingAfter="2"/>
 							</textElement>
 							<textFieldExpression><![CDATA[$F{weldMaterials}]]></textFieldExpression>
 						</textField>
-						<textField>
-							<reportElement x="449" y="0" width="65" height="20" uuid="da6118ee-1fa0-457b-b3e4-4018609970fb"/>
+						<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+							<reportElement stretchType="RelativeToTallestObject" x="449" y="0" width="65" height="20" uuid="da6118ee-1fa0-457b-b3e4-4018609970fb"/>
 							<box>
+								<topPen lineWidth="0.5" lineStyle="Dashed"/>
 								<leftPen lineWidth="0.75"/>
+								<bottomPen lineWidth="0.5" lineStyle="Dashed"/>
 								<rightPen lineWidth="0.75"/>
 							</box>
-							<textElement>
+							<textElement verticalAlignment="Middle">
 								<font fontName="Univers"/>
-								<paragraph leftIndent="3"/>
+								<paragraph leftIndent="3" spacingBefore="2" spacingAfter="2"/>
 							</textElement>
 							<textFieldExpression><![CDATA[$F{electrodes}]]></textFieldExpression>
 						</textField>
-						<textField>
-							<reportElement x="514" y="0" width="109" height="20" uuid="b99a1bd1-c38d-4df1-9b10-682a35e4dbda"/>
+						<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+							<reportElement stretchType="RelativeToTallestObject" x="514" y="0" width="109" height="20" uuid="b99a1bd1-c38d-4df1-9b10-682a35e4dbda"/>
 							<box>
+								<topPen lineWidth="0.5" lineStyle="Dashed"/>
 								<leftPen lineWidth="0.75"/>
+								<bottomPen lineWidth="0.5" lineStyle="Dashed"/>
 								<rightPen lineWidth="0.75"/>
 							</box>
-							<textElement>
+							<textElement verticalAlignment="Middle">
 								<font fontName="Univers"/>
-								<paragraph leftIndent="3"/>
+								<paragraph leftIndent="3" spacingBefore="2" spacingAfter="2"/>
 							</textElement>
 							<textFieldExpression><![CDATA[$F{vtDefects}]]></textFieldExpression>
 						</textField>
-						<textField>
-							<reportElement x="623" y="0" width="43" height="20" uuid="d1daecbc-7bd4-415e-a118-9dac3a5f0d94"/>
+						<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+							<reportElement stretchType="RelativeToTallestObject" x="623" y="0" width="43" height="20" uuid="d1daecbc-7bd4-415e-a118-9dac3a5f0d94"/>
 							<box>
+								<topPen lineWidth="0.5" lineStyle="Dashed"/>
 								<leftPen lineWidth="0.75"/>
+								<bottomPen lineWidth="0.5" lineStyle="Dashed"/>
 								<rightPen lineWidth="0.75"/>
 							</box>
-							<textElement>
+							<textElement verticalAlignment="Middle">
 								<font fontName="Univers"/>
-								<paragraph leftIndent="3"/>
+								<paragraph leftIndent="3" spacingBefore="2" spacingAfter="2"/>
 							</textElement>
 							<textFieldExpression><![CDATA[$F{vtEvaluation}]]></textFieldExpression>
 						</textField>
