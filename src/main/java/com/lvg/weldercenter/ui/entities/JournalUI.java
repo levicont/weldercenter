@@ -16,17 +16,6 @@ import java.util.*;
  */
 public class JournalUI extends GenericEntityUI {
 
-    private final String KEY_ID = "ID";
-    private final String KEY_NUMBER = "NUMBER";
-    private final String KEY_DATE_BEGIN = "DATE_BEGIN";
-    private final String KEY_DATE_BEGIN_FORMAT = "DATE_BEGIN_FORMAT";
-    private final String KEY_DATE_END = "DATE_END";
-    private final String KEY_DATE_END_FORMAT = "DATE_END_FORMAT";
-    private final String KEY_CURRICULUM_TITLE = "CURRICULUM_TITLE";
-    private final String KEY_WELDERS_COUNT = "WELDERS_COUNT";
-    private final String KEY_TEACHERS = "TEACHERS";
-
-
     private final SimpleStringProperty number = new SimpleStringProperty();
     private final SimpleObjectProperty<Date> dateBegin = new SimpleObjectProperty<Date>();
     private final SimpleObjectProperty<Date> dateEnd = new SimpleObjectProperty<Date>();
@@ -39,17 +28,6 @@ public class JournalUI extends GenericEntityUI {
     private final SimpleListProperty<WelderUI> welders = new SimpleListProperty<WelderUI>();
     private final SimpleListProperty<TeacherUI> teachers = new SimpleListProperty<TeacherUI>();
 
-    private final Map<String, Object> parameters = new HashMap<String, Object>(){{
-        put(KEY_ID,null);
-        put(KEY_NUMBER,null);
-        put(KEY_DATE_BEGIN, null);
-        put(KEY_DATE_BEGIN_FORMAT,null);
-        put(KEY_DATE_END, null);
-        put(KEY_DATE_END_FORMAT, null);
-        put(KEY_CURRICULUM_TITLE, null);
-        put(KEY_WELDERS_COUNT, null);
-        put(KEY_TEACHERS, null);
-    }};
 
     public JournalUI(Journal journal){
         this.id.set(journal.getJournalId());
@@ -107,30 +85,6 @@ public class JournalUI extends GenericEntityUI {
 
 
     //Getters and Setters
-
-
-    public Map<String, Object> getParameters() {
-        parameters.replace(KEY_ID,this.getId());
-        parameters.replace(KEY_NUMBER, this.getNumber());
-        parameters.replace(KEY_DATE_BEGIN, this.getDateBegin());
-        parameters.replace(KEY_DATE_BEGIN_FORMAT, this.getDateBeginFormat());
-        parameters.replace(KEY_DATE_END,this.getDateEnd());
-        parameters.replace(KEY_DATE_END_FORMAT, this.getDateEndFormat());
-        if(this.getCurriculum()!=null){
-            parameters.replace(KEY_CURRICULUM_TITLE, this.getCurriculum());
-        }
-        parameters.replace(KEY_WELDERS_COUNT, this.getWeldersCount());
-        StringBuilder teachersAll = new StringBuilder();
-        for(TeacherUI teacherUI: teachers.get()){
-            teachersAll.append(teacherUI.getFormatTeacherFullName("SUR-nn-sec")+", ");
-        }
-        if (teachersAll.length()>0){
-            teachersAll.deleteCharAt(teachersAll.lastIndexOf(","));
-        }
-        parameters.replace(KEY_TEACHERS, teachersAll.toString());
-
-        return parameters;
-    }
 
     public String getNumber() {
         return number.get();

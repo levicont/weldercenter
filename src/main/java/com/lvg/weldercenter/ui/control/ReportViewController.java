@@ -72,9 +72,11 @@ public class ReportViewController extends GenericController {
     }
 
     public void showTotalProtocolReport(TotalProtocolUI protocolUI){
+        TotalProtocolReportEntity totalProtocolReportEntity = new TotalProtocolReportEntity(protocolUI);
         try {
             JasperReport report = JasperCompileManager.compileReport(TOTAL_PROTOCOL_REPORT_URL.getFile());
-            JasperPrint print = JasperFillManager.fillReport(report, protocolUI.getParameters(),new JREmptyDataSource());
+            JasperPrint print = JasperFillManager.fillReport(report,
+                    totalProtocolReportEntity.getParameters(),new JREmptyDataSource());
             addReportPrintToPanel(print);
 
             reportPanel.setVisible(true);
@@ -85,10 +87,11 @@ public class ReportViewController extends GenericController {
 
     public void showTheoryProtocolReport(TotalProtocolUI protocolUI){
         initTheoryReportEntityList(protocolUI);
-        fillTotalProtocolParameters(protocolUI);
+        TotalProtocolReportEntity totalProtocolReportEntity = new TotalProtocolReportEntity(protocolUI);
+        totalProtocolReportEntity.getParameters().put("UNIVERS_FONT_PATH",UNIVERS_FONT_URL.getFile());
         try {
             JasperReport report = JasperCompileManager.compileReport(THEORY_PROTOCOL_REPORT_URL.getFile());
-            JasperPrint print = JasperFillManager.fillReport(report, protocolUI.getParameters(),
+            JasperPrint print = JasperFillManager.fillReport(report, totalProtocolReportEntity.getParameters(),
                     new JRBeanCollectionDataSource(theoryReportEntityList));
             addReportPrintToPanel(print);
             LOGGER.debug("THEORY PROTOCOL: "+theoryReportEntityList);
@@ -136,27 +139,27 @@ public class ReportViewController extends GenericController {
         initJournalReportEntityList(journalUI);
         initJournalVisitTableReportEntityList(journalUI);
         initJournalSectionReportEntityList(journalUI);
+        JournalReportEntity journalReportEntity = journalReportEntities.iterator().next();
         try{
 
             JasperReport subReport = JasperCompileManager.compileReport(JOURNAL_SUBREPORT_WELDERS_DETAIL_URL.getFile());
-            journalUI.getParameters().put("WELDER_DETAIL_SUBREPORT",subReport);
-            journalUI.getParameters().put("WELDER_DETAIL_DATA_SOURCE",new JRBeanCollectionDataSource(journalReportEntities));
+            journalReportEntity.getParameters().put("WELDER_DETAIL_SUBREPORT",subReport);
+            journalReportEntity.getParameters().put("WELDER_DETAIL_DATA_SOURCE",new JRBeanCollectionDataSource(journalReportEntities));
 
             JasperReport subReportVisitTable = JasperCompileManager.compileReport(JOURNAL_SUBREPORT_VISIT_TABLE_URL.getFile());
-            journalUI.getParameters().put("VISIT_TABLE_SUBREPORT",subReportVisitTable);
-            journalUI.getParameters().put("VISIT_TABLE_DATA_SOURCE",
+            journalReportEntity.getParameters().put("VISIT_TABLE_SUBREPORT",subReportVisitTable);
+            journalReportEntity.getParameters().put("VISIT_TABLE_DATA_SOURCE",
                     new JRBeanCollectionDataSource(journalVisitTableReportEntities));
 
             JasperReport subReportTimeTable = JasperCompileManager.compileReport(JOURNAL_SUBREPORT_TIME_TABLE_URL.getFile());
 
-            journalUI.getParameters().put("TIME_TABLE_SUBREPORT", subReportTimeTable);
-            journalUI.getParameters().put("TIME_TABLE_DATA_SOURCE",
+            journalReportEntity.getParameters().put("TIME_TABLE_SUBREPORT", subReportTimeTable);
+            journalReportEntity.getParameters().put("TIME_TABLE_DATA_SOURCE",
                     new JRBeanCollectionDataSource(journalSectionReportEntities));
-            journalUI.getParameters().put("PARAMETERS_MAP", journalUI.getParameters());
-
+            journalReportEntity.getParameters().put("PARAMETERS_MAP", journalReportEntity.getParameters());
             JasperReport report = JasperCompileManager.compileReport(JOURNAL_REPORT_URL.getFile());
 
-            JasperPrint print = JasperFillManager.fillReport(report, journalUI.getParameters(),
+            JasperPrint print = JasperFillManager.fillReport(report, journalReportEntity.getParameters(),
                     new JREmptyDataSource());
             addReportPrintToPanel(print);
             reportPanel.setVisible(true);
@@ -180,10 +183,11 @@ public class ReportViewController extends GenericController {
 
     public void showVisualTestProtocolReport(TotalProtocolUI totalProtocolUI){
         initPersonalProtocolReportEntityList(totalProtocolUI);
+        TotalProtocolReportEntity totalProtocolReportEntity = new TotalProtocolReportEntity(totalProtocolUI);
 
         try {
             JasperReport report = JasperCompileManager.compileReport(VISUAL_TEST_PROTOCOL_REPORT_URL.getFile());
-            JasperPrint print = JasperFillManager.fillReport(report, totalProtocolUI.getParameters(),
+            JasperPrint print = JasperFillManager.fillReport(report, totalProtocolReportEntity.getParameters(),
                     new JRBeanCollectionDataSource(personalProtocolReportEntities));
             addReportPrintToPanel(print);
             reportPanel.setVisible(true);
@@ -230,10 +234,6 @@ public class ReportViewController extends GenericController {
         for (WelderUI welderUI: journalUI.getWelders()){
             journalReportEntities.add(new JournalReportEntity(journalUI,welderUI));
         }
-    }
-
-    private void fillTotalProtocolParameters(TotalProtocolUI totalProtocolUI){
-        totalProtocolUI.getParameters().put("UNIVERS_FONT_PATH",UNIVERS_FONT_URL.getFile());
     }
 
     private void addReportPrintToPanel(JasperPrint print){

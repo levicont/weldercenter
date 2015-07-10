@@ -5,7 +5,7 @@ import com.lvg.weldercenter.ui.entities.TopicUI;
 /**
  * Created by Victor on 29.05.2015.
  */
-public class JournalTopicReportEntity {
+public class JournalTopicReportEntity extends GenericReportEntity{
 
     private String topicTitle = "";
     private String topicDate = "";

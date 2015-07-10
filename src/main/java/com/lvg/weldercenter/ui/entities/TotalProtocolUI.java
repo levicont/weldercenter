@@ -17,19 +17,6 @@ import java.util.Map;
  * Created by Victor Levchenko LVG Corp. on 23.01.15.
  */
 public class TotalProtocolUI extends GenericEntityUI {
-    private final String KEY_ID = "ID";
-    private final String KEY_NUMBER = "NUMBER";
-    private final String KEY_DATE_CERT = "DATE_CERT";
-    private final String KEY_NEXT_DATE_CERT = "NEXT_DATE_CERT";
-    private final String KEY_DATE_CERT_FORMAT = "DATE_CERT_FORMAT";
-    private final String KEY_COMMISSION_CERTIFICATION_HEAD = "COMMISSION_CERTIFICATION_HEAD";
-    private final String KEY_COMMISSION_CERTIFICATION_WELD_SPEC = "COMMISSION_CERTIFICATION_WELD_SPEC";
-    private final String KEY_COMMISSION_CERTIFICATION_NDT_SPEC = "COMMISSION_CERTIFICATION_NDT_SPEC";
-    private final String KEY_COMMISSION_CERTIFICATION_SAFETY_SPEC = "COMMISSION_CERTIFICATION_SAFETY_SPEC";
-    private final String KEY_COMMISSION_CERTIFICATION_HEAD_INV = "COMMISSION_CERTIFICATION_HEAD_INV";
-    private final String KEY_COMMISSION_CERTIFICATION_WELD_SPEC_INV = "COMMISSION_CERTIFICATION_WELD_SPEC_INV";
-    private final String KEY_COMMISSION_CERTIFICATION_NDT_SPEC_INV = "COMMISSION_CERTIFICATION_NDT_SPEC_INV";
-    private final String KEY_COMMISSION_CERTIFICATION_SAFETY_SPEC_INV = "COMMISSION_CERTIFICATION_SAFETY_SPEC_INV";
 
     private final SimpleStringProperty number = new SimpleStringProperty();
     private final SimpleObjectProperty<Date> dateCert = new SimpleObjectProperty<Date>();
@@ -37,21 +24,7 @@ public class TotalProtocolUI extends GenericEntityUI {
     private final SimpleObjectProperty<JournalUI> journal = new SimpleObjectProperty<JournalUI>();
     private final SimpleObjectProperty<CommissionCertificationUI> commissionCertification =
                             new SimpleObjectProperty<CommissionCertificationUI>();
-    private final Map<String, Object> parameters = new HashMap<String, Object>(){{
-        put(KEY_ID,null);
-        put(KEY_NUMBER,null);
-        put(KEY_DATE_CERT, null);
-        put(KEY_NEXT_DATE_CERT, null);
-        put(KEY_DATE_CERT_FORMAT, null);
-        put(KEY_COMMISSION_CERTIFICATION_HEAD, null);
-        put(KEY_COMMISSION_CERTIFICATION_WELD_SPEC, null);
-        put(KEY_COMMISSION_CERTIFICATION_NDT_SPEC, null);
-        put(KEY_COMMISSION_CERTIFICATION_SAFETY_SPEC, null);
-        put(KEY_COMMISSION_CERTIFICATION_HEAD_INV, null);
-        put(KEY_COMMISSION_CERTIFICATION_WELD_SPEC_INV, null);
-        put(KEY_COMMISSION_CERTIFICATION_NDT_SPEC_INV, null);
-        put(KEY_COMMISSION_CERTIFICATION_SAFETY_SPEC_INV, null);
-    }};
+
 
     public TotalProtocolUI(TotalProtocol totalProtocol){
         this.id.set(totalProtocol.getIdTotalProtocol());
@@ -63,7 +36,7 @@ public class TotalProtocolUI extends GenericEntityUI {
             this.commissionCertification.set(
                     new CommissionCertificationUI(totalProtocol.getCommissionCertification()));
         else this.commissionCertification.set(new CommissionCertificationUI());
-        fillParameters();
+
     }
 
     public TotalProtocolUI(Journal journal){
@@ -77,44 +50,9 @@ public class TotalProtocolUI extends GenericEntityUI {
         this.dateCert.set(journalUI.getDateEnd());
         this.dateCertFormat.set(journalUI.getDateEndFormat());
         this.journal.set(journalUI);
-        fillParameters();
+
 
     }
-    private void fillParameters(){
-        parameters.replace(KEY_ID,this.getId());
-        parameters.replace(KEY_NUMBER, this.getNumber());
-        parameters.replace(KEY_DATE_CERT, this.getDateCert());
-        parameters.replace(KEY_NEXT_DATE_CERT, this.getDateCert()!=null?
-                DateUtil.format(DateUtil.getLocalDate(this.getDateCert()).plusYears(2)):"");
-        parameters.replace(KEY_DATE_CERT_FORMAT, this.getDateCertFormat());
-        if(this.getCommissionCertification()!=null) {
-            parameters.replace(KEY_COMMISSION_CERTIFICATION_HEAD,
-                    this.getCommissionCertification().getHead() != null ?
-                            this.getCommissionCertification().getHead().getFormatTeacherFullName("SUR-nn-sec") : "");
-            parameters.replace(KEY_COMMISSION_CERTIFICATION_NDT_SPEC,
-                    this.getCommissionCertification().getNdtSpecialist() != null ?
-                            this.getCommissionCertification().getNdtSpecialist().getFormatTeacherFullName("SUR-nn-sec") : "");
-            parameters.replace(KEY_COMMISSION_CERTIFICATION_WELD_SPEC,
-                    this.getCommissionCertification().getWeldSpecialist() != null ?
-                            this.getCommissionCertification().getWeldSpecialist().getFormatTeacherFullName("SUR-nn-sec") : "");
-            parameters.replace(KEY_COMMISSION_CERTIFICATION_SAFETY_SPEC,
-                    this.getCommissionCertification().getSafetySpecialist() != null ?
-                            this.getCommissionCertification().getSafetySpecialist().getFormatTeacherFullName("SUR-nn-sec") : "");
-            parameters.replace(KEY_COMMISSION_CERTIFICATION_HEAD_INV,
-                    this.getCommissionCertification().getHead() != null ?
-                            this.getCommissionCertification().getHead().getFormatTeacherFullName("nn-sec-SUR") : "");
-            parameters.replace(KEY_COMMISSION_CERTIFICATION_NDT_SPEC_INV,
-                    this.getCommissionCertification().getNdtSpecialist() != null ?
-                            this.getCommissionCertification().getNdtSpecialist().getFormatTeacherFullName("nn-sec-SUR") : "");
-            parameters.replace(KEY_COMMISSION_CERTIFICATION_WELD_SPEC_INV,
-                    this.getCommissionCertification().getWeldSpecialist() != null ?
-                            this.getCommissionCertification().getWeldSpecialist().getFormatTeacherFullName("nn-sec-SUR") : "");
-            parameters.replace(KEY_COMMISSION_CERTIFICATION_SAFETY_SPEC_INV,
-                    this.getCommissionCertification().getSafetySpecialist() != null ?
-                            this.getCommissionCertification().getSafetySpecialist().getFormatTeacherFullName("nn-sec-SUR") : "");
-        }
-    }
-
 
     //Getters and Setters
 
@@ -179,9 +117,6 @@ public class TotalProtocolUI extends GenericEntityUI {
         this.commissionCertification.set(commissionCertification);
     }
 
-    public Map<String, Object> getParameters() {
-        return parameters;
-    }
 
     @Override
     public String toString() {

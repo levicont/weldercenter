@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * Created by Victor on 28.05.2015.
  */
-public class JournalTimeTableReportEntity {
+public class JournalTimeTableReportEntity extends GenericReportEntity{
 
     private String teachers = "";
     private String section = "";
@@ -28,7 +28,7 @@ public class JournalTimeTableReportEntity {
         this.curriculumUI = journalUI.getCurriculum();
         this.section = sectionUI.getTitle();
         this.topic = topicUI.getTitle();
-        this.date = topicUI.getDateFormat();
+        this.date = topicUI.getDateFormat()+DATE_SUFFIX;
         this.hours = topicUI.getTimeLong()+"";
         initTeachers(journalUI);
 

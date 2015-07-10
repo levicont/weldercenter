@@ -7,7 +7,7 @@ import javax.persistence.Entity;
  * Created by Victor on 20.05.2015.
  */
 @Entity
-public class TheoryReportEntity {
+public class TheoryReportEntity extends GenericReportEntity{
 
     @Column(name = "welder")
     private String welder;

@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * Created by Victor on 29.05.2015.
  */
-public class JournalSectionReportEntity {
+public class JournalSectionReportEntity extends GenericReportEntity{
 
     private String sectionTitle = "";
     private List<JournalTopicReportEntity> topics = new ArrayList<JournalTopicReportEntity>();
