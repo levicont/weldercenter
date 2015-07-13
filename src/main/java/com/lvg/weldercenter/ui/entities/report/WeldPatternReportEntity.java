@@ -22,8 +22,6 @@ public class WeldPatternReportEntity extends GenericReportEntity{
     private final String KEY_MT_ANGLE = "MT_ANGLE";
     private final String KEY_MT_EVALUATION = "MT_EVALUATION";
 
-
-
     private String mark;
     private String weldMethod;
     private String thickness;

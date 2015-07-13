@@ -1073,16 +1073,6 @@ public class ProtocolController extends GenericController {
 
     private void initPersProtocolWeldPatterns(PersonalProtocolUI selectedPersProtocol ){
         weldPatternsUIinPersProtocol.clear();
-        //If current pers protocol exist in DB than load weld patterns from db
-//        PersonalProtocol pp = personalProtocolService.get(selectedPersProtocol.getId());
-//        if(pp!=null){
-//            List<WeldPattern> weldPatterns = pp.getWeldPatterns();
-//            for (WeldPattern wp : weldPatterns){
-//                weldPatternsUIinPersProtocol.add(new WeldPatternUI(wp));
-//            }
-//        }else {
-//            weldPatternsUIinPersProtocol.addAll(selectedPersProtocol.getWeldPatterns());
-//        }
         weldPatternsUIinPersProtocol.addAll(selectedPersProtocol.getWeldPatterns());
         LOGGER.debug("INIT PERS PROTOCOL WELD PATTERNS: weldPatternUIs list: "+weldPatternsUIinPersProtocol);
         tcolWeldPatternID.setCellValueFactory(new PropertyValueFactory<WeldPatternUI, Long>("id"));
@@ -2141,6 +2131,18 @@ public class ProtocolController extends GenericController {
     private void showVisualTestProtocolReport(){
         getControllerManager().showReportViewPane();
         getControllerManager().getReportViewController().showVisualTestProtocolReport(selectedTotalProtocolUI);
+    }
+
+    @FXML
+    private void showRadiationTestProtocolReport(){
+        getControllerManager().showReportViewPane();
+        getControllerManager().getReportViewController().showRadiationTestProtocolReport(selectedTotalProtocolUI);
+    }
+
+    @FXML
+    private void showMechanicalTestProtocolReport(){
+        getControllerManager().showReportViewPane();
+        getControllerManager().getReportViewController().showMechanicalTestProtocolReport(selectedTotalProtocolUI);
     }
 
     private class ComboBoxCommissionHandler implements InvalidationListener{

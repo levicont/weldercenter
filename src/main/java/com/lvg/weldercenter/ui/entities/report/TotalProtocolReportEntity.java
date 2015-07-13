@@ -23,6 +23,11 @@ public class TotalProtocolReportEntity extends GenericReportEntity {
     private final String KEY_COMMISSION_CERTIFICATION_WELD_SPEC_INV = "COMMISSION_CERTIFICATION_WELD_SPEC_INV";
     private final String KEY_COMMISSION_CERTIFICATION_NDT_SPEC_INV = "COMMISSION_CERTIFICATION_NDT_SPEC_INV";
     private final String KEY_COMMISSION_CERTIFICATION_SAFETY_SPEC_INV = "COMMISSION_CERTIFICATION_SAFETY_SPEC_INV";
+    private final String KEY_HEAD_OF_NDT_LABORATORY = "HEAD_OF_NDT_LABORATORY";
+    private final String KEY_RT_CERT_OF_HEAD_LABORATORY = "RT_CERT_OF_HEAD_LABORATORY";
+    private final String KEY_RT_SPEC = "RT_SPEC";
+    private final String KEY_RT_SPEC_CERT_NUMBER = "RT_SPEC_CERT_NUMBER";
+    private final String KEY_MECH_TEST_SPEC = "MECH_TEST_SPEC";
 
     private final Map<String, Object> parameters = new HashMap<String, Object>(){{
         put(KEY_ID,null);
@@ -38,6 +43,11 @@ public class TotalProtocolReportEntity extends GenericReportEntity {
         put(KEY_COMMISSION_CERTIFICATION_WELD_SPEC_INV, null);
         put(KEY_COMMISSION_CERTIFICATION_NDT_SPEC_INV, null);
         put(KEY_COMMISSION_CERTIFICATION_SAFETY_SPEC_INV, null);
+        put(KEY_HEAD_OF_NDT_LABORATORY, HEAD_OF_NDT_LABORATORY);
+        put(KEY_RT_CERT_OF_HEAD_LABORATORY, RT_CERT_OF_HEAD_LABORATORY);
+        put(KEY_RT_SPEC, RT_NDT_SPEC);
+        put(KEY_RT_SPEC_CERT_NUMBER, RT_CERT_OF_NDT_SPEC);
+        put(KEY_MECH_TEST_SPEC, MECH_TEST_SPEC);
     }};
 
     public TotalProtocolReportEntity(TotalProtocolUI totalProtocolUI){

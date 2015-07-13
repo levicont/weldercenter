@@ -37,6 +37,8 @@ public class ReportViewController extends GenericController {
     private final URL JOURNAL_SUBREPORT_TIME_TABLE_URL = getClass().getResource("/reports/journal-time-table-subrep.jrxml");
     private final URL PERSONAL_PROTOCOL_REPORT_URL = getClass().getResource("/reports/pers-protocol-rep.jrxml");
     private final URL VISUAL_TEST_PROTOCOL_REPORT_URL = getClass().getResource("/reports/visual-test-rep.jrxml");
+    private final URL RADIATION_TEST_PROTOCOL_REPORT_URL = getClass().getResource("/reports/radiation-test-rep.jrxml");
+    private final URL MECHANICAL_TEST_PROTOCOL_REPORT_URL = getClass().getResource("/reports/mech-test-rep.jrxml");
     private final URL UNIVERS_FONT_URL = getClass().getResource("/fonts/Univers_Medium.ttf");
 
 
@@ -194,6 +196,49 @@ public class ReportViewController extends GenericController {
         }catch(JRException ex){
             LOGGER.error("SHOW VISUAL TEST PROTOCOL REPORT VIEW: Could not load report: "+ex.getMessage(),ex);
         }
+    }
+
+    public void showRadiationTestProtocolReport(TotalProtocolUI totalProtocolUI){
+        initPersonalProtocolReportEntityList(totalProtocolUI);
+        TotalProtocolReportEntity totalProtocolReportEntity = new TotalProtocolReportEntity(totalProtocolUI);
+        try {
+            JasperReport report = JasperCompileManager.compileReport(RADIATION_TEST_PROTOCOL_REPORT_URL.getFile());
+            JasperPrint print = JasperFillManager.fillReport(report, totalProtocolReportEntity.getParameters(),
+                    new JRBeanCollectionDataSource(personalProtocolReportEntities));
+            addReportPrintToPanel(print);
+            reportPanel.setVisible(true);
+        }catch(JRException ex){
+            LOGGER.error("SHOW RADIATION TEST PROTOCOL REPORT VIEW: Could not load report: "+ex.getMessage(),ex);
+        }
+    }
+
+    public void showMechanicalTestProtocolReport(TotalProtocolUI totalProtocolUI){
+        initPersonalProtocolReportEntityList(totalProtocolUI);
+        initPersonalProtocolReportEntityListForMT(
+                (List<PersonalProtocolReportEntity>) personalProtocolReportEntities);
+        TotalProtocolReportEntity totalProtocolReportEntity = new TotalProtocolReportEntity(totalProtocolUI);
+        try {
+            JasperReport report = JasperCompileManager.compileReport(MECHANICAL_TEST_PROTOCOL_REPORT_URL.getFile());
+            JasperPrint print = JasperFillManager.fillReport(report, totalProtocolReportEntity.getParameters(),
+                    new JRBeanCollectionDataSource(personalProtocolReportEntities));
+            addReportPrintToPanel(print);
+            reportPanel.setVisible(true);
+        }catch(JRException ex){
+            LOGGER.error("SHOW MECHANICAL TEST PROTOCOL REPORT VIEW: Could not load report: "+ex.getMessage(),ex);
+        }
+    }
+
+    private void initPersonalProtocolReportEntityListForMT(List<PersonalProtocolReportEntity> ppList){
+        if (ppList == null || ppList.isEmpty())
+            return;
+        List<PersonalProtocolReportEntity> result = new ArrayList<PersonalProtocolReportEntity>();
+        for (PersonalProtocolReportEntity ppReportEntity : ppList){
+            ppReportEntity.deleteWeldPatternsWithoutMechTest();
+            if(!ppReportEntity.getPatterns().isEmpty())
+                result.add(ppReportEntity);
+        }
+        ppList.clear();
+        ppList.addAll(result);
     }
 
     private void initPersonalProtocolReportEntityList(TotalProtocolUI totalProtocolUI){

@@ -1,36 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="total-protocol-theory-rep" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="842" leftMargin="0" rightMargin="0" topMargin="56" bottomMargin="42" uuid="85f85a2b-0943-449a-b2a2-d32b9d1f2df2">
-	<property name="ireport.zoom" value="1.579987525836482"/>
-	<property name="ireport.x" value="147"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.zoom" value="1.9117849062621457"/>
+	<property name="ireport.x" value="420"/>
+	<property name="ireport.y" value="91"/>
 	<subDataset name="dataset1" uuid="8646df78-ce36-4663-b00e-472cf91e6546">
 		<field name="mark" class="java.lang.String"/>
 		<field name="weldMethod" class="java.lang.String"/>
 		<field name="size" class="java.lang.String"/>
 		<field name="weldType" class="java.lang.String"/>
-		<field name="rtSensitivity" class="java.lang.String"/>
 		<field name="weldMaterials" class="java.lang.String"/>
-		<field name="rtDefects" class="java.lang.String"/>
-		<field name="rtEvaluation" class="java.lang.String"/>
 		<field name="electrodes" class="java.lang.String"/>
+		<field name="thickness" class="java.lang.String"/>
+		<field name="diameter" class="java.lang.String"/>
+		<field name="mtAngle" class="java.lang.String"/>
+		<field name="mtEvaluation" class="java.lang.String"/>
 	</subDataset>
 	<parameter name="NUMBER" class="java.lang.String"/>
 	<parameter name="DATE_CERT_FORMAT" class="java.lang.String"/>
 	<parameter name="HEAD_OF_NDT_LABORATORY" class="java.lang.String"/>
-	<parameter name="RT_CERT_OF_HEAD_LABORATORY" class="java.lang.String"/>
 	<parameter name="RT_SPEC" class="java.lang.String"/>
-	<parameter name="RT_SPEC_CERT_NUMBER" class="java.lang.String"/>
+	<parameter name="MECH_TEST_SPEC" class="java.lang.String"/>
 	<field name="fio" class="java.lang.String"/>
 	<field name="ndtDocs" class="java.lang.String"/>
 	<field name="patterns" class="java.util.List"/>
 	<pageHeader>
-		<band height="129" splitType="Stretch">
+		<band height="170" splitType="Stretch">
 			<staticText>
 				<reportElement x="0" y="20" width="842" height="20" uuid="c59e993a-6e3a-4ecb-a5dc-738e9368bc01"/>
 				<textElement textAlignment="Center">
 					<font fontName="Univers" size="14" isBold="true" isStrikeThrough="false" isPdfEmbedded="true"/>
 				</textElement>
-				<text><![CDATA[Сварка контрольных сварных соединений и их проверка визуально-оптическим методом]]></text>
+				<text><![CDATA[Механические испытания образцов из контрольных сварных соединений,]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="178" y="0" width="361" height="20" uuid="b0bf5184-85e2-4c30-b279-31db5789193a"/>
@@ -40,7 +40,7 @@
 				<text><![CDATA[Протокол №		от]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="33" y="59" width="28" height="70" uuid="616b2ed5-b1c6-4a55-a446-35a7f0445f1f"/>
+				<reportElement x="33" y="59" width="28" height="111" uuid="616b2ed5-b1c6-4a55-a446-35a7f0445f1f"/>
 				<box>
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>
@@ -54,7 +54,7 @@
 				<text><![CDATA[№ П/П]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="61" y="59" width="144" height="70" uuid="f2d43e4e-5edd-4b77-ac6e-10c7a307e66b"/>
+				<reportElement x="61" y="59" width="144" height="111" uuid="f2d43e4e-5edd-4b77-ac6e-10c7a307e66b"/>
 				<box>
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>
@@ -68,7 +68,7 @@
 				<text><![CDATA[ФИО сварщика]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="303" y="59" width="75" height="70" uuid="8420a2ec-035b-40c0-a766-adbb3b3501d7"/>
+				<reportElement x="285" y="59" width="75" height="111" uuid="8420a2ec-035b-40c0-a766-adbb3b3501d7"/>
 				<box>
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>
@@ -83,7 +83,7 @@
 				<text><![CDATA[Марка и группа стали]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="440" y="59" width="66" height="70" uuid="ba8974e0-7c4e-4579-a75e-fe3d6b9572cc"/>
+				<reportElement x="422" y="59" width="66" height="111" uuid="ba8974e0-7c4e-4579-a75e-fe3d6b9572cc"/>
 				<box>
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>
@@ -94,10 +94,10 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Univers" size="10" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Чувстви-тельность контроля]]></text>
+				<text><![CDATA[Сварочные материалы]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="506" y="59" width="150" height="70" uuid="85122883-88a7-4267-a4c0-16508c56f70e"/>
+				<reportElement x="624" y="59" width="39" height="111" uuid="85122883-88a7-4267-a4c0-16508c56f70e"/>
 				<box>
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>
@@ -105,13 +105,14 @@
 					<bottomPen lineWidth="0.5"/>
 					<rightPen lineWidth="0.5"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
+				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="Left">
 					<font fontName="Univers" size="10" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Описание дефектов]]></text>
+				<text><![CDATA[Угол изгиба (град)
+или просвет (мм)]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="656" y="59" width="43" height="70" uuid="68a9ca52-0407-4001-a457-c41831765539"/>
+				<reportElement x="663" y="59" width="36" height="111" uuid="68a9ca52-0407-4001-a457-c41831765539"/>
 				<box>
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>
@@ -119,13 +120,13 @@
 					<bottomPen lineWidth="0.5"/>
 					<rightPen lineWidth="0.5"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
+				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="Left">
 					<font fontName="Univers" size="10" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Оценка]]></text>
+				<text><![CDATA[Оценка результатов контроля]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="205" y="59" width="31" height="70" uuid="e3d170e3-d8c4-44c7-8b89-88b83f0f8e1a"/>
+				<reportElement x="205" y="59" width="20" height="111" uuid="e3d170e3-d8c4-44c7-8b89-88b83f0f8e1a"/>
 				<box>
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>
@@ -139,7 +140,7 @@
 				<text><![CDATA[Клеймо сварщика]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="236" y="59" width="67" height="70" uuid="78de9384-1fc8-40f6-bc79-a5ed4b7e7967"/>
+				<reportElement x="225" y="59" width="60" height="48" uuid="78de9384-1fc8-40f6-bc79-a5ed4b7e7967"/>
 				<box>
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>
@@ -147,13 +148,14 @@
 					<bottomPen lineWidth="0.5"/>
 					<rightPen lineWidth="0.5"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="Left">
+				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None">
 					<font fontName="Univers" size="10" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Размер образца]]></text>
+				<text><![CDATA[Размер образца,
+ мм]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="378" y="59" width="62" height="70" uuid="8b0a48bb-dbec-46a3-9092-cd408b5cd202"/>
+				<reportElement x="360" y="59" width="62" height="111" uuid="8b0a48bb-dbec-46a3-9092-cd408b5cd202"/>
 				<box>
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>
@@ -167,7 +169,7 @@
 				<text><![CDATA[Вид шва]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="699" y="59" width="106" height="70" uuid="35f57d5d-7510-4f3a-be57-db5cb6c4798d"/>
+				<reportElement x="699" y="59" width="106" height="111" uuid="35f57d5d-7510-4f3a-be57-db5cb6c4798d"/>
 				<box>
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>
@@ -198,9 +200,93 @@
 			<staticText>
 				<reportElement x="0" y="40" width="842" height="20" uuid="fbdd2720-35d8-4fbf-b39b-54fa744b91a6"/>
 				<textElement textAlignment="Center">
-					<font fontName="Univers" size="14" isBold="false" isStrikeThrough="false" isPdfEmbedded="true"/>
+					<font fontName="Univers" size="14" isBold="true" isStrikeThrough="false" isPdfEmbedded="true"/>
 				</textElement>
-				<text><![CDATA[Просвечивание проводилось АРИНА-05 (зав. №242), ГОСТ 7512]]></text>
+				<text><![CDATA[проведенные в соответствии с ГОСТ 6996]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="225" y="107" width="30" height="63" uuid="65ec7bce-0695-47ec-a903-578a2b5d1bb5"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="Left">
+					<font fontName="Univers" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Толщина]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="255" y="107" width="30" height="63" uuid="87a28ef2-271c-43d2-b806-5977843e9dd9"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="Left">
+					<font fontName="Univers" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Ширина (диаметр)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="488" y="59" width="52" height="111" uuid="f7b748c0-3b99-4213-bc7b-b4fa7e6961e4"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Univers" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Способ сварки]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="540" y="59" width="28" height="111" uuid="73cf97bb-9106-4807-870f-ab7086206512"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="Left">
+					<font fontName="Univers" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Разрыв (кгс) или работа (кгм)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="568" y="59" width="28" height="111" uuid="bb3a3e53-a7a2-4857-b4bc-cebe689030af"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="Left">
+					<font fontName="Univers" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Предел прочности кгс/мм2]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="596" y="59" width="28" height="111" uuid="41d64be7-fcdf-4f22-8382-542620df6043"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="Left">
+					<font fontName="Univers" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Ударная вязкость дж/мм2]]></text>
 			</staticText>
 		</band>
 	</pageHeader>
@@ -231,7 +317,7 @@
 				<textFieldExpression><![CDATA[$F{fio}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement stretchType="RelativeToTallestObject" x="205" y="0" width="31" height="20" uuid="6cbef6f9-98a3-4c91-94ac-09e9432f57cf"/>
+				<reportElement stretchType="RelativeToTallestObject" x="205" y="0" width="20" height="20" uuid="6cbef6f9-98a3-4c91-94ac-09e9432f57cf"/>
 				<box>
 					<leftPen lineWidth="0.75"/>
 					<rightPen lineWidth="0.75"/>
@@ -255,96 +341,169 @@
 				<textFieldExpression><![CDATA[$F{ndtDocs}]]></textFieldExpression>
 			</textField>
 			<componentElement>
-				<reportElement x="33" y="0" width="772" height="20" uuid="2c37147a-a29b-4388-a04d-dc6a97f0ee7b"/>
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="33" y="0" width="772" height="20" uuid="2c37147a-a29b-4388-a04d-dc6a97f0ee7b"/>
 				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
 					<datasetRun subDataset="dataset1" uuid="1f90f9b6-4453-4044-8c32-3f98565a2ecc">
 						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{patterns})]]></dataSourceExpression>
 					</datasetRun>
 					<jr:listContents height="20" width="772">
 						<textField isStretchWithOverflow="true" isBlankWhenNull="false">
-							<reportElement stretchType="RelativeToTallestObject" x="203" y="0" width="67" height="20" uuid="ac17fb5a-999f-4c43-b1db-4bdeeab62bf1"/>
+							<reportElement stretchType="RelativeToTallestObject" x="327" y="0" width="62" height="20" uuid="a2264cae-224b-4511-8379-fbcffd326b24"/>
 							<box>
-								<topPen lineWidth="0.5" lineStyle="Dashed"/>
-								<leftPen lineWidth="0.75"/>
-								<bottomPen lineWidth="0.5" lineStyle="Dashed"/>
-								<rightPen lineWidth="0.75"/>
+								<topPen lineWidth="0.0" lineStyle="Dashed"/>
+								<leftPen lineWidth="0.0"/>
+								<bottomPen lineWidth="0.0" lineStyle="Dashed"/>
+								<rightPen lineWidth="0.0"/>
 							</box>
 							<textElement verticalAlignment="Middle">
 								<font fontName="Univers"/>
-								<paragraph leftIndent="3" spacingBefore="2" spacingAfter="2"/>
-							</textElement>
-							<textFieldExpression><![CDATA[$F{size}]]></textFieldExpression>
-						</textField>
-						<textField isStretchWithOverflow="true" isBlankWhenNull="false">
-							<reportElement stretchType="RelativeToTallestObject" x="345" y="0" width="62" height="20" uuid="a2264cae-224b-4511-8379-fbcffd326b24"/>
-							<box>
-								<topPen lineWidth="0.5" lineStyle="Dashed"/>
-								<leftPen lineWidth="0.75"/>
-								<bottomPen lineWidth="0.5" lineStyle="Dashed"/>
-								<rightPen lineWidth="0.75"/>
-							</box>
-							<textElement verticalAlignment="Middle">
-								<font fontName="Univers"/>
-								<paragraph leftIndent="3" spacingBefore="2" spacingAfter="2"/>
+								<paragraph leftIndent="3"/>
 							</textElement>
 							<textFieldExpression><![CDATA[$F{weldType}]]></textFieldExpression>
 						</textField>
 						<textField isStretchWithOverflow="true" isBlankWhenNull="false">
-							<reportElement stretchType="RelativeToTallestObject" x="270" y="0" width="75" height="20" uuid="cde17e61-f726-4b86-b678-68743514eea4"/>
+							<reportElement stretchType="RelativeToTallestObject" x="252" y="0" width="75" height="20" uuid="cde17e61-f726-4b86-b678-68743514eea4"/>
 							<box>
-								<topPen lineWidth="0.5" lineStyle="Dashed"/>
+								<topPen lineWidth="0.0" lineStyle="Dashed"/>
 								<leftPen lineWidth="0.75"/>
-								<bottomPen lineWidth="0.5" lineStyle="Dashed"/>
+								<bottomPen lineWidth="0.0" lineStyle="Dashed"/>
 								<rightPen lineWidth="0.75"/>
 							</box>
 							<textElement verticalAlignment="Middle">
 								<font fontName="Univers"/>
-								<paragraph leftIndent="3" spacingBefore="2" spacingAfter="2"/>
+								<paragraph leftIndent="3" spacingAfter="2"/>
 							</textElement>
 							<textFieldExpression><![CDATA[$F{weldMaterials}]]></textFieldExpression>
 						</textField>
 						<textField>
-							<reportElement stretchType="RelativeToTallestObject" x="407" y="0" width="66" height="20" uuid="1f77da94-0532-44e1-a608-d4c8d87ac4a5"/>
+							<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="222" y="0" width="30" height="20" uuid="339aa936-6c41-4a30-9eb0-2334ce5b2ec2"/>
 							<box>
-								<topPen lineWidth="0.5" lineStyle="Dashed"/>
+								<topPen lineWidth="0.0" lineStyle="Dashed"/>
 								<leftPen lineWidth="0.75"/>
-								<bottomPen lineWidth="0.5" lineStyle="Dashed"/>
+								<bottomPen lineWidth="0.0" lineStyle="Dashed"/>
+								<rightPen lineWidth="0.75"/>
+							</box>
+							<textElement verticalAlignment="Middle">
+								<font fontName="Univers"/>
+								<paragraph leftIndent="3"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{diameter}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement stretchType="RelativeToTallestObject" x="389" y="0" width="66" height="20" uuid="225f2307-8aa7-499c-91f4-8885d3093861"/>
+							<box>
+								<topPen lineWidth="0.0" lineStyle="Dashed"/>
+								<leftPen lineWidth="0.75"/>
+								<bottomPen lineWidth="0.0" lineStyle="Dashed"/>
+								<rightPen lineWidth="0.75"/>
+							</box>
+							<textElement verticalAlignment="Middle">
+								<font fontName="Univers"/>
+								<paragraph leftIndent="3"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{electrodes}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement stretchType="RelativeToTallestObject" x="455" y="0" width="52" height="20" uuid="0438acc5-394f-4767-a5af-d73cfce0e8eb"/>
+							<box>
+								<topPen lineWidth="0.0" lineStyle="Dashed"/>
+								<leftPen lineWidth="0.75"/>
+								<bottomPen lineWidth="0.0" lineStyle="Dashed"/>
+								<rightPen lineWidth="0.75"/>
+							</box>
+							<textElement verticalAlignment="Middle">
+								<font fontName="Univers"/>
+								<paragraph leftIndent="3"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{weldMethod}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement stretchType="RelativeToTallestObject" x="591" y="0" width="39" height="20" uuid="be64cfad-3853-4d19-bc9f-01b1752c6e9b"/>
+							<box>
+								<topPen lineWidth="0.0" lineStyle="Dashed"/>
+								<leftPen lineWidth="0.75"/>
+								<bottomPen lineWidth="0.0" lineStyle="Dashed"/>
+								<rightPen lineWidth="0.75"/>
+							</box>
+							<textElement verticalAlignment="Middle">
+								<font fontName="Univers"/>
+								<paragraph leftIndent="3"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{mtAngle}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement stretchType="RelativeToTallestObject" x="630" y="0" width="36" height="20" uuid="ea5b9ad8-1d44-4896-a3eb-efa4f1b5f30b"/>
+							<box>
+								<topPen lineWidth="0.0" lineStyle="Dashed"/>
+								<leftPen lineWidth="0.75"/>
+								<bottomPen lineWidth="0.0" lineStyle="Dashed"/>
+								<rightPen lineWidth="0.75"/>
+							</box>
+							<textElement verticalAlignment="Middle">
+								<font fontName="Univers"/>
+								<paragraph leftIndent="3"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{mtEvaluation}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement stretchType="RelativeToTallestObject" x="192" y="0" width="30" height="20" uuid="0b406256-3113-48dc-8df7-c63b2648da8c"/>
+							<box>
+								<topPen lineWidth="0.0" lineStyle="Dashed"/>
+								<leftPen lineWidth="0.75"/>
+								<bottomPen lineWidth="0.0" lineStyle="Dashed"/>
+								<rightPen lineWidth="0.75"/>
+							</box>
+							<textElement verticalAlignment="Middle">
+								<font fontName="Univers"/>
+								<paragraph leftIndent="3"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{thickness}]]></textFieldExpression>
+						</textField>
+						<staticText>
+							<reportElement stretchType="RelativeToTallestObject" x="507" y="0" width="28" height="20" uuid="a96dc8c8-38b3-4e43-8b2b-d49d047d4532"/>
+							<box>
+								<topPen lineWidth="0.0" lineStyle="Dashed"/>
+								<leftPen lineWidth="0.75"/>
+								<bottomPen lineWidth="0.0" lineStyle="Dashed"/>
 								<rightPen lineWidth="0.75"/>
 							</box>
 							<textElement textAlignment="Center" verticalAlignment="Middle">
 								<font fontName="Univers"/>
-								<paragraph leftIndent="3"/>
 							</textElement>
-							<textFieldExpression><![CDATA[$F{rtSensitivity}]]></textFieldExpression>
-						</textField>
-						<textField isStretchWithOverflow="true">
-							<reportElement stretchType="RelativeToTallestObject" x="623" y="0" width="43" height="20" uuid="ef252f97-770e-4b5a-8a4b-1b9061063ce4"/>
+							<text><![CDATA[-]]></text>
+						</staticText>
+						<staticText>
+							<reportElement stretchType="RelativeToTallestObject" x="535" y="0" width="28" height="20" uuid="538a2906-b2f4-4533-b6dc-3e0c188ac92b"/>
 							<box>
-								<topPen lineWidth="0.5" lineStyle="Dashed"/>
+								<topPen lineWidth="0.0" lineStyle="Dashed"/>
 								<leftPen lineWidth="0.75"/>
-								<bottomPen lineWidth="0.5" lineStyle="Dashed"/>
+								<bottomPen lineWidth="0.0" lineStyle="Dashed"/>
 								<rightPen lineWidth="0.75"/>
 							</box>
-							<textElement verticalAlignment="Middle">
+							<textElement textAlignment="Center" verticalAlignment="Middle">
 								<font fontName="Univers"/>
-								<paragraph leftIndent="3"/>
 							</textElement>
-							<textFieldExpression><![CDATA[$F{rtEvaluation}]]></textFieldExpression>
-						</textField>
-						<textField>
-							<reportElement stretchType="RelativeToTallestObject" x="473" y="0" width="150" height="20" uuid="5cd13138-f165-4143-a46b-1455251fe23e"/>
+							<text><![CDATA[-]]></text>
+						</staticText>
+						<staticText>
+							<reportElement stretchType="RelativeToTallestObject" x="563" y="0" width="28" height="20" uuid="d5b20aaf-05e0-45e4-95b4-21e6cccc3a20"/>
 							<box>
-								<topPen lineWidth="0.5" lineStyle="Dashed"/>
+								<topPen lineWidth="0.0" lineStyle="Dashed"/>
 								<leftPen lineWidth="0.75"/>
-								<bottomPen lineWidth="0.5" lineStyle="Dashed"/>
+								<bottomPen lineWidth="0.0" lineStyle="Dashed"/>
 								<rightPen lineWidth="0.75"/>
 							</box>
-							<textElement verticalAlignment="Middle">
+							<textElement textAlignment="Center" verticalAlignment="Middle">
 								<font fontName="Univers"/>
-								<paragraph leftIndent="3"/>
 							</textElement>
-							<textFieldExpression><![CDATA[$F{rtDefects}]]></textFieldExpression>
-						</textField>
+							<text><![CDATA[-]]></text>
+						</staticText>
+						<rectangle>
+							<reportElement stretchType="RelativeToTallestObject" mode="Transparent" x="389" y="0" width="66" height="20" uuid="6eeed579-b2d8-4160-b39d-a9080b419537"/>
+							<graphicElement>
+								<pen lineWidth="1.25"/>
+							</graphicElement>
+						</rectangle>
 					</jr:listContents>
 				</jr:list>
 			</componentElement>
@@ -370,7 +529,7 @@
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Univers" size="12" isBold="false"/>
 				</textElement>
-				<text><![CDATA[Специалист НК: _____________]]></text>
+				<text><![CDATA[Лаборант: _____________]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="295" y="41" width="145" height="20" uuid="9e157785-73cd-4938-943f-a0acc089783d"/>
@@ -380,25 +539,11 @@
 				<textFieldExpression><![CDATA[$P{HEAD_OF_NDT_LABORATORY}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="440" y="41" width="365" height="20" uuid="c0bd682f-4de9-4e17-8f1f-0f61115c7269"/>
-				<textElement verticalAlignment="Middle">
-					<font fontName="Univers" size="12"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{RT_CERT_OF_HEAD_LABORATORY}]]></textFieldExpression>
-			</textField>
-			<textField>
 				<reportElement x="295" y="61" width="145" height="20" uuid="b801224b-e2ab-4159-a940-c8f99b74015c"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Univers" size="12"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{RT_SPEC}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="440" y="61" width="365" height="20" uuid="2f921f3c-5356-48ae-a127-a01e97e6645a"/>
-				<textElement verticalAlignment="Middle">
-					<font fontName="Univers" size="12"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{RT_SPEC_CERT_NUMBER}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{MECH_TEST_SPEC}]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageFooter>

@@ -633,6 +633,20 @@ public class PersonalProtocolReportEntity extends GenericReportEntity{
 
 
 
+    public void deleteWeldPatternsWithoutMechTest(){
+        if (this.patterns==null || patterns.isEmpty() )
+            return;
+        List<WeldPatternReportEntity> result = new ArrayList<WeldPatternReportEntity>();
+
+        for (WeldPatternReportEntity weldPattern : this.patterns){
+            if (!weldPattern.getMtEvaluation().equals(NULL_FIELD)){
+                result.add(weldPattern);
+            }
+        }
+        this.patterns.clear();
+        this.patterns.addAll(result);
+    }
+
     public Map<String, Object> getParameters() {
         return parameters;
     }

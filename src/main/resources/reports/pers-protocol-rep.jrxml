@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="pers-protocol-rep" language="groovy" pageWidth="595" pageHeight="842" columnWidth="525" leftMargin="56" rightMargin="14" topMargin="14" bottomMargin="14" uuid="067b331b-9d02-428e-ad99-23a3b633b330">
 	<property name="ireport.zoom" value="0.9090909090909095"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="411"/>
+	<property name="ireport.y" value="480"/>
 	<parameter name="WELDER_FULL_NAME" class="java.lang.String"/>
 	<parameter name="PROT_NUMBER" class="java.lang.String"/>
 	<parameter name="PROT_DATE" class="java.lang.String"/>
@@ -530,7 +530,7 @@
 				<textElement verticalAlignment="Middle">
 					<font fontName="Univers" size="12"/>
 				</textElement>
-				<text><![CDATA[10. Наименование НД по нормам оценки качесва:]]></text>
+				<text><![CDATA[10. Наименование НД по нормам оценки качества:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="0" y="255" width="204" height="20" uuid="7b1024db-3204-4017-ab4a-51420c1594cd"/>
