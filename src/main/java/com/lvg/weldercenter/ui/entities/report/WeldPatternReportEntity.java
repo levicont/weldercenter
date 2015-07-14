@@ -38,6 +38,7 @@ public class WeldPatternReportEntity extends GenericReportEntity{
     private String rtSensitivity;
     private String mtAngle;
     private String mtEvaluation;
+    private String mtWidth;
 
     public WeldPatternReportEntity(WeldPatternUI weldPatternUI){
         this.mark = weldPatternUI.getMark();
@@ -62,6 +63,7 @@ public class WeldPatternReportEntity extends GenericReportEntity{
         parameters = getWeldPatternMTParameters(weldPatternUI.getMechanicalTest());
         this.mtAngle = parameters.get(KEY_MT_ANGLE);
         this.mtEvaluation = parameters.get(KEY_MT_EVALUATION);
+        this.mtWidth = getWeldPatternWidthByGOST6996();
     }
 
     private String getSizeFromThicknessDiameter(String thickness, String diameter){
@@ -75,8 +77,8 @@ public class WeldPatternReportEntity extends GenericReportEntity{
             diameterD = 0.0;
         }
         if(diameterD == 0)
-            return thickness;
-        return diameterD+SIZE_SEPARATOR+thicknessD;
+            return "250"+SIZE_SEPARATOR+"300"+SIZE_SEPARATOR+deleteFloatZeroSuffix(thickness);
+        return deleteFloatZeroSuffix(diameterD+"")+SIZE_SEPARATOR+deleteFloatZeroSuffix(""+thicknessD);
     }
     private String getWeldPatternWeldJoinTypes(List<WeldJoinTypeUI> weldJoinTypes){
         if (weldJoinTypes==null)
@@ -156,6 +158,30 @@ public class WeldPatternReportEntity extends GenericReportEntity{
         resultMap.replace(KEY_MT_EVALUATION,mechanicalTest.getEvaluation().getType());
         return resultMap;
     }
+    private String getWeldPatternWidthByGOST6996(){
+        if (this.thickness==null || this.thickness.isEmpty())
+            return ZERO;
+        Double thicknessD;
+        try {
+            thicknessD = Double.parseDouble(this.thickness);
+        }catch (NumberFormatException ex){
+            LOGGER.error("GET WELD PATTERN WIDTH BY GOST6996: wrong thickness "+this.thickness, ex);
+            return ZERO;
+        }
+        if (thicknessD < 4)
+            return "50";
+        if (thicknessD > 4  && thicknessD < 10)
+            return "70";
+        if (thicknessD > 10  && thicknessD < 20)
+            return "100";
+        if (thicknessD > 20  && thicknessD < 50)
+            return "150";
+        if (thicknessD > 50  && thicknessD < 100)
+            return "200";
+        if (thicknessD < 100)
+            return "250";
+        return ZERO;
+    }
 
     public String getMark() {
         return mark;
@@ -219,5 +245,78 @@ public class WeldPatternReportEntity extends GenericReportEntity{
 
     public String getElectrodes() {
         return electrodes;
+    }
+
+    public String getMtWidth() {
+        mtWidth = getWeldPatternWidthByGOST6996();
+        return mtWidth;
+    }
+
+    public void setMark(String mark) {
+        this.mark = mark;
+    }
+
+    public void setWeldMethod(String weldMethod) {
+        this.weldMethod = weldMethod;
+    }
+
+    public void setThickness(String thickness) {
+        this.thickness = thickness;
+    }
+
+    public void setDiameter(String diameter) {
+        this.diameter = diameter;
+    }
+
+    public void setMtWidth(String mtWidth) {
+        this.mtWidth = mtWidth;
+    }
+
+    public void setSize(String size) {
+        this.size = size;
+    }
+
+    public void setWeldType(String weldType) {
+        this.weldType = weldType;
+    }
+
+    public void setWeldPosition(String weldPosition) {
+        this.weldPosition = weldPosition;
+    }
+
+    public void setWeldMaterials(String weldMaterials) {
+        this.weldMaterials = weldMaterials;
+    }
+
+    public void setElectrodes(String electrodes) {
+        this.electrodes = electrodes;
+    }
+
+    public void setVtDefects(String vtDefects) {
+        this.vtDefects = vtDefects;
+    }
+
+    public void setVtEvaluation(String vtEvaluation) {
+        this.vtEvaluation = vtEvaluation;
+    }
+
+    public void setRtDefects(String rtDefects) {
+        this.rtDefects = rtDefects;
+    }
+
+    public void setRtEvaluation(String rtEvaluation) {
+        this.rtEvaluation = rtEvaluation;
+    }
+
+    public void setRtSensitivity(String rtSensitivity) {
+        this.rtSensitivity = rtSensitivity;
+    }
+
+    public void setMtAngle(String mtAngle) {
+        this.mtAngle = mtAngle;
+    }
+
+    public void setMtEvaluation(String mtEvaluation) {
+        this.mtEvaluation = mtEvaluation;
     }
 }

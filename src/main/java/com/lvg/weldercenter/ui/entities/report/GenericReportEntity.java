@@ -1,9 +1,12 @@
 package com.lvg.weldercenter.ui.entities.report;
 
+import org.apache.log4j.Logger;
+
 /**
  * Created by Victor on 09.07.2015.
  */
 public abstract class GenericReportEntity {
+    protected final Logger LOGGER = Logger.getLogger(GenericReportEntity.class);
     protected final String SIZE_SEPARATOR = " x ";
     protected final String NULL_FIELD = "NULL";
     protected final String SPACE_SEPARATOR = " ";
@@ -30,11 +33,12 @@ public abstract class GenericReportEntity {
         }
     }
 
-    protected void deleteFloatZeroSuffix(String string, String zeroSuffix){
+    public String deleteFloatZeroSuffix(String string){
         if (string.isEmpty())
-            return;
-        if (string.endsWith(zeroSuffix)){
-            string.substring(0,string.lastIndexOf(zeroSuffix));
+            return string;
+        if (string.endsWith(FLOAT_DIGIT_SUFFIX)){
+            return string.substring(0,string.lastIndexOf(FLOAT_DIGIT_SUFFIX));
         }
+        return string;
     }
 }

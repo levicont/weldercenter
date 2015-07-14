@@ -234,11 +234,38 @@ public class ReportViewController extends GenericController {
         List<PersonalProtocolReportEntity> result = new ArrayList<PersonalProtocolReportEntity>();
         for (PersonalProtocolReportEntity ppReportEntity : ppList){
             ppReportEntity.deleteWeldPatternsWithoutMechTest();
-            if(!ppReportEntity.getPatterns().isEmpty())
+            if(!ppReportEntity.getPatterns().isEmpty()) {
+                for (WeldPatternReportEntity wp : ppReportEntity.getPatterns())
+                    convertWeldPatternDiameterToWidth(wp);
                 result.add(ppReportEntity);
+            }
         }
         ppList.clear();
         ppList.addAll(result);
+    }
+
+    private void convertWeldPatternDiameterToWidth(WeldPatternReportEntity weldPattern){
+        if (weldPattern==null)
+            return;
+        if (weldPattern.getThickness()== null || weldPattern.getDiameter() == null)
+            return;
+        Double diameterD;
+        try {
+            diameterD = Double.parseDouble(weldPattern.getDiameter());
+        }catch (NumberFormatException ex){
+            LOGGER.error("CONVERT WELD PATTERN DIAMETER TO WIDTH: not correct diameter "+weldPattern.getDiameter(), ex);
+            return;
+        }
+        if (diameterD==0){
+            weldPattern.setDiameter(weldPattern.getMtWidth());
+        }else {
+            weldPattern.setDiameter(formatDiameter(weldPattern.getDiameter()));
+            weldPattern.setDiameter(weldPattern.deleteFloatZeroSuffix(weldPattern.getDiameter()));
+        }
+    }
+
+    private String formatDiameter(String weldPatternDiameter){
+        return  "d"+weldPatternDiameter;
     }
 
     private void initPersonalProtocolReportEntityList(TotalProtocolUI totalProtocolUI){
