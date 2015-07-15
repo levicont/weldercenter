@@ -17,6 +17,8 @@ public abstract class GenericReportEntity {
     protected final String NO_STRING = "нет";
     protected final String DATE_SUFFIX = " г.";
     protected final String FLOAT_DIGIT_SUFFIX = ".0";
+    protected final String MILLIMETERS_SUFFIX = " мм";
+    protected final String DEGREES_SUFFIX = " град.";
 
     //NDT Laboratory properties
     protected final String HEAD_OF_NDT_LABORATORY = "В.Г. Левченко";

@@ -973,9 +973,9 @@
                                                                   <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                                                </GridPane.margin>
                                                             </Label>
-                                                            <TextField fx:id="txfWeldPatternMechAngle" maxWidth="-Infinity" prefWidth="100.0" GridPane.columnSpan="2" GridPane.rowIndex="15">
+                                                            <TextField fx:id="txfWeldPatternMechAngle" maxWidth="-Infinity" prefWidth="100.0" GridPane.rowIndex="15">
                                                                <GridPane.margin>
-                                                                  <Insets bottom="8.0" left="180.0" right="8.0" top="8.0" />
+                                                                  <Insets bottom="8.0" left="120.0" right="8.0" top="8.0" />
                                                                </GridPane.margin>
                                                             </TextField>
                                                             <Label text="Заключение:" GridPane.rowIndex="16">
@@ -1048,6 +1048,16 @@
                                                                   <Insets bottom="8.0" left="180.0" right="8.0" top="8.0" />
                                                                </GridPane.margin>
                                                             </ComboBox>
+                                                            <Label text="Просвет (мм):" GridPane.columnIndex="1" GridPane.rowIndex="15">
+                                                               <GridPane.margin>
+                                                                  <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                                               </GridPane.margin>
+                                                            </Label>
+                                                            <TextField fx:id="txfWeldPatternMechClearance" maxWidth="-Infinity" prefWidth="70.0" GridPane.columnIndex="1" GridPane.rowIndex="15">
+                                                               <GridPane.margin>
+                                                                  <Insets bottom="8.0" left="90.0" right="8.0" top="8.0" />
+                                                               </GridPane.margin>
+                                                            </TextField>
                                                          </children>
                                                       </GridPane>
                                                    </content>

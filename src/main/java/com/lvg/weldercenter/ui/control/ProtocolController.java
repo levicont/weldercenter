@@ -287,6 +287,8 @@ public class ProtocolController extends GenericController {
     @FXML
     TextField txfWeldPatternMechAngle;
     @FXML
+    TextField txfWeldPatternMechClearance;
+    @FXML
     ComboBox<String> cbWeldPatternMechEvaluation;
     @FXML
     Button btWeldPatternSave;
@@ -604,6 +606,7 @@ public class ProtocolController extends GenericController {
        txfWeldPatternMechNumber.setDisable(isDisabled);
        dpWeldPatternMechDate.setDisable(isDisabled);
        txfWeldPatternMechAngle.setDisable(isDisabled);
+       txfWeldPatternMechClearance.setDisable(isDisabled);
        cbWeldPatternMechEvaluation.setDisable(isDisabled);
     }
 
@@ -626,6 +629,7 @@ public class ProtocolController extends GenericController {
         txfWeldPatternMechNumber.clear();
         dpWeldPatternMechDate.setValue(DateUtil.getLocalDate(new Date()));
         txfWeldPatternMechAngle.clear();
+        txfWeldPatternMechClearance.clear();
         cbWeldPatternMechEvaluation.getSelectionModel().clearSelection();
     }
 
@@ -855,7 +859,8 @@ public class ProtocolController extends GenericController {
     private void fillMechanicalTestPane(MechanicalTestUI mechanicalTestUI){
         txfWeldPatternMechNumber.setText(mechanicalTestUI.getNumber());
         dpWeldPatternMechDate.setValue(DateUtil.getLocalDate(mechanicalTestUI.getDate()));
-        txfWeldPatternMechAngle.setText(mechanicalTestUI.getAngle()+"");
+        txfWeldPatternMechAngle.setText(mechanicalTestUI.getAngle() + "");
+        txfWeldPatternMechClearance.setText(mechanicalTestUI.getClearance()+"");
         String evaluation = mechanicalTestUI.getEvaluation().getType();
         for (String e : cbWeldPatternMechEvaluation.getItems()){
             if(e.equals(evaluation)){
@@ -1281,6 +1286,9 @@ public class ProtocolController extends GenericController {
             if(!txfWeldPatternMechAngle.getText().trim().equals(
                     String.valueOf(selectedMechTest.getAngle())))
                 return true;
+            if(!txfWeldPatternMechClearance.getText().trim().equals(
+                    String.valueOf(selectedMechTest.getClearance())))
+                return true;
             if (cbWeldPatternMechEvaluation.getValue()!=null) {
                 if (!cbWeldPatternMechEvaluation.getValue().equals(
                         selectedMechTest.getEvaluation().getType()))
@@ -1480,12 +1488,26 @@ public class ProtocolController extends GenericController {
             mechanicalTestUI.setDate(DateUtil.getDate(dpWeldPatternMechDate.getValue()));
             mechanicalTestUI.setDateFormat(DateUtil.format(mechanicalTestUI.getDate()));
         }
+        Double clearance = 0.0;
         Double angle = 0.0;
         try{
-            angle = Double.valueOf(txfWeldPatternMechAngle.getText().trim());
+            String angleText = txfWeldPatternMechAngle.getText().trim();
+            if (!angleText.isEmpty())
+                angle = Double.valueOf(angleText);
+
         }catch (NumberFormatException ex){
-            LOGGER.warn("GET MECH TEST FROM PANE: not valid angle in text field :"+txfWeldPatternMechAngle.getText());
+            LOGGER.warn("GET MECH TEST FROM PANE: not valid angle in text field :"+txfWeldPatternMechAngle.getText(),ex);
         }
+        try{
+            String clearanceText = txfWeldPatternMechClearance.getText().trim();
+            if (!clearanceText.isEmpty())
+                clearance = Double.valueOf(clearanceText);
+
+        }catch (NumberFormatException ex){
+            LOGGER.warn("GET MECH TEST FROM PANE: not valid clearance in text field :"
+                    +txfWeldPatternMechClearance.getText(),ex);
+        }
+        mechanicalTestUI.setClearance(clearance);
         mechanicalTestUI.setAngle(angle);
         if (cbWeldPatternMechEvaluation.getValue() != null){
             mechanicalTestUI.setEvaluation(getEvaluationFromComboBox(cbWeldPatternMechEvaluation));

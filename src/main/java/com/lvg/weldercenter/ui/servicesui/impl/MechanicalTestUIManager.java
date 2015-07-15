@@ -35,6 +35,7 @@ public class MechanicalTestUIManager implements MechanicalTestServiceUI {
         updMechTest.setNumber(modelMechTestUI.getNumber());
         updMechTest.setProtDate(modelMechTestUI.getDate());
         updMechTest.setAngle(modelMechTestUI.getAngle());
+        updMechTest.setClearance(modelMechTestUI.getClearance());
         updMechTest.setEvaluation(evaluationServiceUI.getEvaluationFromEvaluationUI(modelMechTestUI.getEvaluation()));
     }
 }

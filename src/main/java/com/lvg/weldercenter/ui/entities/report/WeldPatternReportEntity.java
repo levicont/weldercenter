@@ -19,8 +19,10 @@ public class WeldPatternReportEntity extends GenericReportEntity{
     private final String KEY_RT_DEFECTS = "RT_DEFECTS";
     private final String KEY_RT_EVALUATION = "RT_EVALUATION";
     private final String KEY_RT_SENSITIVITY = "RT_SENSITIVITY";
+    private final String KEY_MT_CLEARANCE = "MT_CLEARANCE";
     private final String KEY_MT_ANGLE = "MT_ANGLE";
     private final String KEY_MT_EVALUATION = "MT_EVALUATION";
+    private final String KEY_MT_MAIN_TEST_FEATURE = "MT_MAIN_TEST_FEATURE";
 
     private String mark;
     private String weldMethod;
@@ -37,8 +39,10 @@ public class WeldPatternReportEntity extends GenericReportEntity{
     private String rtEvaluation;
     private String rtSensitivity;
     private String mtAngle;
+    private String mtClearance;
     private String mtEvaluation;
     private String mtWidth;
+    private String mtMainTestFeature;
 
     public WeldPatternReportEntity(WeldPatternUI weldPatternUI){
         this.mark = weldPatternUI.getMark();
@@ -62,6 +66,8 @@ public class WeldPatternReportEntity extends GenericReportEntity{
         this.rtSensitivity = parameters.get(KEY_RT_SENSITIVITY);
         parameters = getWeldPatternMTParameters(weldPatternUI.getMechanicalTest());
         this.mtAngle = parameters.get(KEY_MT_ANGLE);
+        this.mtClearance = parameters.get(KEY_MT_CLEARANCE);
+        this.mtMainTestFeature = parameters.get(KEY_MT_MAIN_TEST_FEATURE);
         this.mtEvaluation = parameters.get(KEY_MT_EVALUATION);
         this.mtWidth = getWeldPatternWidthByGOST6996();
     }
@@ -149,10 +155,20 @@ public class WeldPatternReportEntity extends GenericReportEntity{
         Map<String, String> resultMap = new HashMap<String, String>();
         resultMap.put(KEY_MT_ANGLE, NULL_FIELD);
         resultMap.put(KEY_MT_EVALUATION, NULL_FIELD);
+        resultMap.put(KEY_MT_CLEARANCE, NULL_FIELD);
+        resultMap.put(KEY_MT_MAIN_TEST_FEATURE, NULL_FIELD);
 
         if (mechanicalTest==null)
             return resultMap;
         resultMap.replace(KEY_MT_ANGLE, String.valueOf(mechanicalTest.getAngle()));
+        resultMap.replace(KEY_MT_CLEARANCE, String.valueOf(mechanicalTest.getClearance()));
+        if (mechanicalTest.getAngle()==0)
+            resultMap.replace(KEY_MT_MAIN_TEST_FEATURE,deleteFloatZeroSuffix(resultMap.get(KEY_MT_CLEARANCE))+
+                MILLIMETERS_SUFFIX);
+        else
+            resultMap.replace(KEY_MT_MAIN_TEST_FEATURE,deleteFloatZeroSuffix(resultMap.get(KEY_MT_ANGLE))+
+                DEGREES_SUFFIX);
+
         if (mechanicalTest.getEvaluation()==null)
             return resultMap;
         resultMap.replace(KEY_MT_EVALUATION,mechanicalTest.getEvaluation().getType());
@@ -252,6 +268,14 @@ public class WeldPatternReportEntity extends GenericReportEntity{
         return mtWidth;
     }
 
+    public String getMtClearance() {
+        return mtClearance;
+    }
+
+    public String getMtMainTestFeature() {
+        return mtMainTestFeature;
+    }
+
     public void setMark(String mark) {
         this.mark = mark;
     }
@@ -318,5 +342,13 @@ public class WeldPatternReportEntity extends GenericReportEntity{
 
     public void setMtEvaluation(String mtEvaluation) {
         this.mtEvaluation = mtEvaluation;
+    }
+
+    public void setMtClearance(String mtClearance) {
+        this.mtClearance = mtClearance;
+    }
+
+    public void setMtMainTestFeature(String mtMainTestFeature) {
+        this.mtMainTestFeature = mtMainTestFeature;
     }
 }

@@ -40,6 +40,7 @@ public class MechanicalTestServiceHiberImplTest extends GenericServiceHibernateT
     public void testInsert() {
         MechanicalTest record = new MechanicalTest();
         record.setAngle(120.0);
+        record.setClearance(0.0);
         record.setProtDate(new Date());
         record.setNumber("14-008Mech");
         record.setEvaluation(evaServ.get(1L));

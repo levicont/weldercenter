@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="total-protocol-theory-rep" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="842" leftMargin="0" rightMargin="0" topMargin="56" bottomMargin="42" uuid="85f85a2b-0943-449a-b2a2-d32b9d1f2df2">
 	<property name="ireport.zoom" value="1.4363522962149875"/>
-	<property name="ireport.x" value="176"/>
+	<property name="ireport.x" value="475"/>
 	<property name="ireport.y" value="0"/>
 	<subDataset name="dataset1" uuid="8646df78-ce36-4663-b00e-472cf91e6546">
 		<field name="mark" class="java.lang.String"/>
@@ -14,6 +14,7 @@
 		<field name="diameter" class="java.lang.String"/>
 		<field name="mtAngle" class="java.lang.String"/>
 		<field name="mtEvaluation" class="java.lang.String"/>
+		<field name="mtMainTestFeature" class="java.lang.String"/>
 	</subDataset>
 	<parameter name="NUMBER" class="java.lang.String"/>
 	<parameter name="DATE_CERT_FORMAT" class="java.lang.String"/>
@@ -97,7 +98,7 @@
 				<text><![CDATA[Сварочные материалы]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="602" y="59" width="39" height="111" uuid="85122883-88a7-4267-a4c0-16508c56f70e"/>
+				<reportElement x="590" y="59" width="51" height="111" uuid="85122883-88a7-4267-a4c0-16508c56f70e"/>
 				<box>
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>
@@ -233,7 +234,7 @@
 				<text><![CDATA[Ширина (диаметр)]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="466" y="59" width="52" height="111" uuid="f7b748c0-3b99-4213-bc7b-b4fa7e6961e4"/>
+				<reportElement x="466" y="59" width="40" height="111" uuid="f7b748c0-3b99-4213-bc7b-b4fa7e6961e4"/>
 				<box>
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>
@@ -247,7 +248,7 @@
 				<text><![CDATA[Способ сварки]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="518" y="59" width="28" height="111" uuid="73cf97bb-9106-4807-870f-ab7086206512"/>
+				<reportElement x="506" y="59" width="28" height="111" uuid="73cf97bb-9106-4807-870f-ab7086206512"/>
 				<box>
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>
@@ -261,7 +262,7 @@
 				<text><![CDATA[Разрыв (кгс) или работа (кгм)]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="546" y="59" width="28" height="111" uuid="bb3a3e53-a7a2-4857-b4bc-cebe689030af"/>
+				<reportElement x="534" y="59" width="28" height="111" uuid="bb3a3e53-a7a2-4857-b4bc-cebe689030af"/>
 				<box>
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>
@@ -275,7 +276,7 @@
 				<text><![CDATA[Предел прочности кгс/мм<sup>2</sup>]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="574" y="59" width="28" height="111" uuid="41d64be7-fcdf-4f22-8382-542620df6043"/>
+				<reportElement x="562" y="59" width="28" height="111" uuid="41d64be7-fcdf-4f22-8382-542620df6043"/>
 				<box>
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>
@@ -404,7 +405,7 @@
 							<textFieldExpression><![CDATA[$F{electrodes}]]></textFieldExpression>
 						</textField>
 						<textField>
-							<reportElement stretchType="RelativeToTallestObject" x="433" y="0" width="52" height="20" uuid="0438acc5-394f-4767-a5af-d73cfce0e8eb"/>
+							<reportElement stretchType="RelativeToTallestObject" x="433" y="0" width="40" height="20" uuid="0438acc5-394f-4767-a5af-d73cfce0e8eb"/>
 							<box>
 								<topPen lineWidth="0.0" lineStyle="Dashed"/>
 								<leftPen lineWidth="0.0"/>
@@ -416,20 +417,6 @@
 								<paragraph leftIndent="3" spacingBefore="2" spacingAfter="2"/>
 							</textElement>
 							<textFieldExpression><![CDATA[$F{weldMethod}]]></textFieldExpression>
-						</textField>
-						<textField>
-							<reportElement stretchType="RelativeToTallestObject" x="569" y="0" width="39" height="20" uuid="be64cfad-3853-4d19-bc9f-01b1752c6e9b"/>
-							<box>
-								<topPen lineWidth="0.0" lineStyle="Dashed"/>
-								<leftPen lineWidth="0.0"/>
-								<bottomPen lineWidth="0.0" lineStyle="Dashed"/>
-								<rightPen lineWidth="0.0"/>
-							</box>
-							<textElement verticalAlignment="Middle">
-								<font fontName="Univers"/>
-								<paragraph leftIndent="3" spacingBefore="2" spacingAfter="2"/>
-							</textElement>
-							<textFieldExpression><![CDATA[$F{mtAngle}]]></textFieldExpression>
 						</textField>
 						<textField>
 							<reportElement stretchType="RelativeToTallestObject" x="608" y="0" width="36" height="20" uuid="ea5b9ad8-1d44-4896-a3eb-efa4f1b5f30b"/>
@@ -460,7 +447,7 @@
 							<textFieldExpression><![CDATA[$F{thickness}]]></textFieldExpression>
 						</textField>
 						<staticText>
-							<reportElement stretchType="RelativeToTallestObject" x="485" y="0" width="28" height="20" uuid="a96dc8c8-38b3-4e43-8b2b-d49d047d4532"/>
+							<reportElement stretchType="RelativeToTallestObject" x="473" y="0" width="28" height="20" uuid="a96dc8c8-38b3-4e43-8b2b-d49d047d4532"/>
 							<box>
 								<topPen lineWidth="0.0" lineStyle="Dashed"/>
 								<leftPen lineWidth="0.0"/>
@@ -473,7 +460,7 @@
 							<text><![CDATA[-]]></text>
 						</staticText>
 						<staticText>
-							<reportElement stretchType="RelativeToTallestObject" x="513" y="0" width="28" height="20" uuid="538a2906-b2f4-4533-b6dc-3e0c188ac92b"/>
+							<reportElement stretchType="RelativeToTallestObject" x="501" y="0" width="28" height="20" uuid="538a2906-b2f4-4533-b6dc-3e0c188ac92b"/>
 							<box>
 								<topPen lineWidth="0.0" lineStyle="Dashed"/>
 								<leftPen lineWidth="0.0"/>
@@ -486,7 +473,7 @@
 							<text><![CDATA[-]]></text>
 						</staticText>
 						<staticText>
-							<reportElement stretchType="RelativeToTallestObject" x="541" y="0" width="28" height="20" uuid="d5b20aaf-05e0-45e4-95b4-21e6cccc3a20"/>
+							<reportElement stretchType="RelativeToTallestObject" x="529" y="0" width="28" height="20" uuid="d5b20aaf-05e0-45e4-95b4-21e6cccc3a20"/>
 							<box>
 								<topPen lineWidth="0.0" lineStyle="Dashed"/>
 								<leftPen lineWidth="0.0"/>
@@ -504,6 +491,14 @@
 								<pen lineWidth="0.25" lineStyle="Solid"/>
 							</graphicElement>
 						</line>
+						<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="false">
+							<reportElement stretchType="RelativeToTallestObject" mode="Transparent" x="557" y="1" width="51" height="19" forecolor="#000000" backcolor="#FFFFFF" uuid="bb88a64f-554a-4772-98e2-5a049a2f7d4b"/>
+							<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" markup="none">
+								<font fontName="Univers" size="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+								<paragraph lineSpacing="Single" leftIndent="3" spacingBefore="2" spacingAfter="2"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{mtMainTestFeature}]]></textFieldExpression>
+						</textField>
 					</jr:listContents>
 				</jr:list>
 			</componentElement>
@@ -538,31 +533,31 @@
 				</graphicElement>
 			</rectangle>
 			<rectangle>
-				<reportElement stretchType="RelativeToTallestObject" mode="Transparent" x="466" y="0" width="52" height="20" uuid="debe1018-126c-4179-a5cf-4daf9fb03fbf"/>
+				<reportElement stretchType="RelativeToTallestObject" mode="Transparent" x="466" y="0" width="40" height="20" uuid="debe1018-126c-4179-a5cf-4daf9fb03fbf"/>
 				<graphicElement>
 					<pen lineWidth="0.75"/>
 				</graphicElement>
 			</rectangle>
 			<rectangle>
-				<reportElement stretchType="RelativeToTallestObject" mode="Transparent" x="518" y="0" width="28" height="20" uuid="f2597eb4-5ba8-49cf-8373-064c8aecc70f"/>
+				<reportElement stretchType="RelativeToTallestObject" mode="Transparent" x="506" y="0" width="28" height="20" uuid="f2597eb4-5ba8-49cf-8373-064c8aecc70f"/>
 				<graphicElement>
 					<pen lineWidth="0.75"/>
 				</graphicElement>
 			</rectangle>
 			<rectangle>
-				<reportElement stretchType="RelativeToTallestObject" mode="Transparent" x="546" y="0" width="28" height="20" uuid="bfbd15cc-7a62-43c4-8370-06aa28c3dcff"/>
+				<reportElement stretchType="RelativeToTallestObject" mode="Transparent" x="534" y="0" width="28" height="20" uuid="bfbd15cc-7a62-43c4-8370-06aa28c3dcff"/>
 				<graphicElement>
 					<pen lineWidth="0.75"/>
 				</graphicElement>
 			</rectangle>
 			<rectangle>
-				<reportElement stretchType="RelativeToTallestObject" mode="Transparent" x="574" y="0" width="28" height="20" uuid="4b86d122-e844-4719-8bf4-670139afd15b"/>
+				<reportElement stretchType="RelativeToTallestObject" mode="Transparent" x="562" y="0" width="28" height="20" uuid="4b86d122-e844-4719-8bf4-670139afd15b"/>
 				<graphicElement>
 					<pen lineWidth="0.75"/>
 				</graphicElement>
 			</rectangle>
 			<rectangle>
-				<reportElement stretchType="RelativeToTallestObject" mode="Transparent" x="602" y="0" width="39" height="20" uuid="2bd243f2-33f4-4fbc-994c-1261aa0e8730"/>
+				<reportElement stretchType="RelativeToTallestObject" mode="Transparent" x="590" y="0" width="51" height="20" uuid="2bd243f2-33f4-4fbc-994c-1261aa0e8730"/>
 				<graphicElement>
 					<pen lineWidth="0.75"/>
 				</graphicElement>

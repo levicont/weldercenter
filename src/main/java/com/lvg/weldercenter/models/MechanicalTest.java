@@ -15,6 +15,7 @@ public class MechanicalTest implements Serializable{
     private static final long serialVersionUID = 6108026806480436780L;
     private Long mechanicalTestId;
     private Double angle;
+    private Double clearance;
     private String number;
     private Date protDate;
 
@@ -80,6 +81,14 @@ public class MechanicalTest implements Serializable{
         this.evaluation = evaluation;
     }
 
+    public Double getClearance() {
+        return clearance;
+    }
+
+    public void setClearance(Double clearance) {
+        this.clearance = clearance;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -107,6 +116,7 @@ public class MechanicalTest implements Serializable{
         return "MechanicalTest{" +
                 "mechanicalTestId=" + mechanicalTestId +
                 ", angle=" + angle +
+                ", clearance=" + clearance +
                 ", number='" + number + '\'' +
                 ", protDate=" + protDate +
                 ", evaluation=" + evaluation +

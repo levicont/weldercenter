@@ -15,6 +15,7 @@ import java.util.Date;
 public class MechanicalTestUI extends GenericEntityUI {
     private final SimpleStringProperty number = new SimpleStringProperty();
     private final SimpleDoubleProperty angle = new SimpleDoubleProperty();
+    private final SimpleDoubleProperty clearance = new SimpleDoubleProperty();
     private final SimpleObjectProperty<Date> date = new SimpleObjectProperty<Date>();
     private final SimpleStringProperty dateFormat = new SimpleStringProperty();
 
@@ -25,6 +26,7 @@ public class MechanicalTestUI extends GenericEntityUI {
         this.id.set(0);
         this.number.set("");
         this.angle.set(0);
+        this.clearance.set(0);
         this.date.set(DateUtil.getDate(DateUtil.DEFAULT_DATE));
         this.dateFormat.set(DateUtil.format(this.date.get()));
         this.evaluation.set(new EvaluationUI());
@@ -35,6 +37,7 @@ public class MechanicalTestUI extends GenericEntityUI {
         this.id.set(mechanicalTest.getMechanicalTestId());
         this.number.set(mechanicalTest.getNumber());
         this.angle.set(mechanicalTest.getAngle());
+        this.clearance.set(mechanicalTest.getClearance());
         this.date.set(mechanicalTest.getProtDate());
         this.dateFormat.set(DateUtil.format(this.date.get()));
         if (mechanicalTest.getEvaluation()!=null)
@@ -101,6 +104,18 @@ public class MechanicalTestUI extends GenericEntityUI {
         return evaluation;
     }
 
+    public double getClearance() {
+        return clearance.get();
+    }
+
+    public SimpleDoubleProperty clearanceProperty() {
+        return clearance;
+    }
+
+    public void setClearance(double clearance) {
+        this.clearance.set(clearance);
+    }
+
     public void setEvaluation(EvaluationUI evaluation) {
         this.evaluation.set(evaluation);
     }
@@ -110,6 +125,7 @@ public class MechanicalTestUI extends GenericEntityUI {
         return "MechanicalTestUI{" +
                 "number=" + number +
                 ", angle=" + angle +
+                ", clearance=" + clearance +
                 ", date=" + date +
                 ", dateFormat=" + dateFormat +
                 ", evaluation=" + evaluation +
