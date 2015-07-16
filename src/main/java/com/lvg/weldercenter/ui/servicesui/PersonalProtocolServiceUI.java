@@ -14,4 +14,5 @@ public interface PersonalProtocolServiceUI {
     public PersonalProtocol getPersonalProtocolFromUIModel(PersonalProtocolUI personalProtocolUI);
     public void savePersonalProtocolsFromJournalUI(JournalUI journalUI);
     public void savePersonalProtocolUIinDB(PersonalProtocolUI personalProtocolUI);
+    public void clearDB();
 }

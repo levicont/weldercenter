@@ -1753,14 +1753,10 @@ public class ProtocolController extends GenericController {
 
         ObservableList<NDTDocumentUI> ndtDocumentUIs = getNDTDocumentsUIFromListView(listViewAttestDocs);
         selectedPersProtocol.setNdtDocuments(ndtDocumentUIs);
-
         selectedPersProtocol.setTheoryTest(getTheoryTestUIFromPane());
-
         selectedPersProtocol.setResolutionCertification(getResolutionCertUIFromPane());
-
-
-
     }
+
     private  ResolutionCertificationUI getResolutionCertUIFromPane(){
         ResolutionCertificationUI rsUI = new ResolutionCertificationUI();
         rsUI.setTextResolution(textAreaResolutionCert.getText());
@@ -1950,7 +1946,8 @@ public class ProtocolController extends GenericController {
         showSelectedWeldPattern(selectedWeldPatternUI);
     }
 
-    @FXML void deleteWeldPattern(){
+    @FXML
+    private void deleteWeldPattern(){
         if (selectedPersonalProtocolUI == null)
             return;
         Action response = Dialogs.create().owner(mainProtocolPane.getScene().getWindow())

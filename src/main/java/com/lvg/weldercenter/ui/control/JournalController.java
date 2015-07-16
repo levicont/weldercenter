@@ -53,6 +53,7 @@ public class JournalController extends GenericController{
     private TimeTableUtil timeTableUtil = new TimeTableUtilManager();
     private TableUtil<JournalUI> tableUtil = new TableViewManager();
     private TotalProtocolServiceUI totalProtocolServiceUI = ServiceUIFactory.getTotalProtocolServiceUI();
+    private PersonalProtocolServiceUI personalProtocolServiceUI = ServiceUIFactory.getPersonalProtocolServiceUI();
     private PersonalProtocolServiceUI personalProtocolUI = ServiceUIFactory.getPersonalProtocolServiceUI();
 
     @FXML
@@ -710,6 +711,7 @@ public class JournalController extends GenericController{
                     if(null!=journalDB) {
                         journalService.delete(journalDB);
                         journalTableView.getItems().remove(journalUI);
+                        personalProtocolServiceUI.clearDB();
                     }
                     else
                         LOGGER.warn("REMOVE JOURNALS: Not possible to delete journal: "+journalUI);

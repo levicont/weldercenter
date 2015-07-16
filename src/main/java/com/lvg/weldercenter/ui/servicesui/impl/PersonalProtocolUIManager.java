@@ -147,6 +147,26 @@ public class PersonalProtocolUIManager implements PersonalProtocolServiceUI {
         }
     }
 
+    @Override
+    public void clearDB() {
+        List<PersonalProtocol> allPersonalProtocols = personalProtocolService.getAll();
+        List<ResolutionCertification> allResolutions = resolutionCertificationService.getAll();
+        List<TheoryTest> allTheoryTest = theoryTestService.getAll();
+        List<ResolutionCertification> resolutionForClean = new ArrayList<ResolutionCertification>(allResolutions);
+        List<TheoryTest> theoryTestsForClean = new ArrayList<TheoryTest>(allTheoryTest);
+        for (PersonalProtocol pp : allPersonalProtocols){
+            if (resolutionForClean.contains(pp.getResolutionCertification()))
+                resolutionForClean.remove(pp.getResolutionCertification());
+            if (theoryTestsForClean.contains(pp.getTheoryTest()))
+                theoryTestsForClean.remove(pp.getTheoryTest());
+        }
+        for (TheoryTest tt : theoryTestsForClean)
+            theoryTestService.delete(tt);
+        for (ResolutionCertification rs : resolutionForClean)
+            resolutionCertificationService.delete(rs);
+
+    }
+
     private PersonalProtocol getPersonalProtocolByJournalWelder(Journal journal, Welder welder){
         if(journal == null || welder == null){
             return null;
