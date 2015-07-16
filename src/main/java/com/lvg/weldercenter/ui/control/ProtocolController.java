@@ -13,6 +13,7 @@ import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -295,6 +296,9 @@ public class ProtocolController extends GenericController {
     @FXML
     Button btWeldPatternCancel;
 
+    @FXML
+    ProgressBar prgsBarUpdater;
+
     private boolean isWeldPatternSaved = false;
 
 
@@ -342,6 +346,7 @@ public class ProtocolController extends GenericController {
     }
 
     private void init(){
+        prgsBarUpdater.setVisible(false);
         initProtocolsTreeView();
         initTotalProtocolTab();
         initWeldPatternTab();
@@ -381,7 +386,26 @@ public class ProtocolController extends GenericController {
     }
 
     private void initProtocolsTreeView(){
-        initTotalProtocols();
+         initTotalProtocols();
+
+//        Task updator = createProtocolsUpdater();
+//        Thread t = new Thread(updator);
+//
+//        t.start();
+//        Boolean isStoped = true;
+//        while(isStoped){
+//            try {
+//                Thread.sleep(200);
+//                prgsBarUpdater.setVisible(true);
+//                LOGGER.debug("\n____________WORKING UPDATER_______________ \n");
+//                if (updator.isDone())
+//                    isStoped = false;
+//            }catch (InterruptedException ex){
+//                LOGGER.debug("Thread is interrupted", ex);
+//            }
+//
+//        }
+//        prgsBarUpdater.setVisible(false);
         TreeItem<String> rootItem = new TreeItem<String>(TREE_ROOT_ITEM_NAME);
         rootItem.getChildren().clear();
         rootItem.getChildren().addAll(totalProtocols);
@@ -429,6 +453,17 @@ public class ProtocolController extends GenericController {
         }
 
     }
+
+    private Task createProtocolsUpdater(){
+        return new Task() {
+            @Override
+            protected Object call() throws Exception {
+                initTotalProtocols();
+                return true;
+            }
+        };
+    }
+
     private void initTotalProtocolTab(){
         accordionTotalProtocol.setExpandedPane(titlePaneTotalProtocolWelders);
         initTotalProtocolWeldersTableView();

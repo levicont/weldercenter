@@ -13,6 +13,11 @@
             <children>
                 <Button fx:id="btCloseProtocolPane" mnemonicParsing="false" onAction="#closeProtocolPane" text="Закрыть" />
                 <Button fx:id="btUpdate" mnemonicParsing="false" onAction="#refreshProtocolsTreeView" text="Обновить" />
+            <ProgressBar fx:id="prgsBarUpdater" prefWidth="200.0">
+               <HBox.margin>
+                  <Insets bottom="8.0" left="8.0" right="8.0" />
+               </HBox.margin>
+            </ProgressBar>
             </children>
             <padding>
                 <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
