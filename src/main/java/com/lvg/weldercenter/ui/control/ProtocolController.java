@@ -9,11 +9,13 @@ import com.lvg.weldercenter.ui.servicesui.*;
 import com.lvg.weldercenter.ui.util.DateUtil;
 import com.lvg.weldercenter.ui.util.EventFXUtil;
 import com.lvg.weldercenter.ui.util.Printer;
+import javafx.application.Platform;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
+import javafx.concurrent.Worker;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -44,6 +46,8 @@ public class ProtocolController extends GenericController {
     private static final String PERSONAL_PROTOCOL_DB_SUFFIX_NAME = " (БД)";
     private final String EMPTY_STRING_ITEM = "нет";
     private final Double EMPTY_DOUBLE_ITEM = 0.0;
+    private Integer taskProgress = 0;
+    private final Integer MAX_TASK_PROGRESS = 100;
 
     private JournalService journalService = ServiceFactory.getJournalService();
     private PersonalProtocolService personalProtocolService = ServiceFactory.getPersonalProtocolService();
@@ -346,7 +350,6 @@ public class ProtocolController extends GenericController {
     }
 
     private void init(){
-        prgsBarUpdater.setVisible(false);
         initProtocolsTreeView();
         initTotalProtocolTab();
         initWeldPatternTab();
@@ -386,34 +389,12 @@ public class ProtocolController extends GenericController {
     }
 
     private void initProtocolsTreeView(){
-         initTotalProtocols();
-
-//        Task updator = createProtocolsUpdater();
-//        Thread t = new Thread(updator);
-//
-//        t.start();
-//        Boolean isStoped = true;
-//        while(isStoped){
-//            try {
-//                Thread.sleep(200);
-//                prgsBarUpdater.setVisible(true);
-//                LOGGER.debug("\n____________WORKING UPDATER_______________ \n");
-//                if (updator.isDone())
-//                    isStoped = false;
-//            }catch (InterruptedException ex){
-//                LOGGER.debug("Thread is interrupted", ex);
-//            }
-//
-//        }
-//        prgsBarUpdater.setVisible(false);
-        TreeItem<String> rootItem = new TreeItem<String>(TREE_ROOT_ITEM_NAME);
-        rootItem.getChildren().clear();
-        rootItem.getChildren().addAll(totalProtocols);
-        protocolsTreeView.setRoot(rootItem);
-        protocolsTreeView.getRoot().setExpanded(true);
-        protocolsTreeView.addEventHandler(MouseEvent.MOUSE_CLICKED, new ListViewHandler());
-        protocolsTreeView.addEventHandler(KeyEvent.KEY_RELEASED, new ListViewHandler());
-        txfSearch.textProperty().addListener(new SearchInvalidateHandler());
+        prgsBarUpdater.setVisible(true);
+        prgsBarUpdater.progressProperty().unbind();
+        Task updator = createProtocolsUpdater();
+        prgsBarUpdater.progressProperty().bind(updator.progressProperty());
+        Thread t = new Thread(updator);
+        t.start();
     }
 
     private void initTotalProtocols(){
@@ -430,7 +411,6 @@ public class ProtocolController extends GenericController {
                 journalUIList.add(new JournalUI(pp.getJournal()));
             }
         }
-
         for (TotalProtocol tp : totalProtocolList){
             TotalProtocolUI totalProtocolUI = new TotalProtocolUI(tp);
             JournalUI journalUI = totalProtocolUI.getJournal();
@@ -454,12 +434,71 @@ public class ProtocolController extends GenericController {
 
     }
 
-    private Task createProtocolsUpdater(){
-        return new Task() {
+    private Task<Void> createProtocolsUpdater(){
+        return new Task<Void>() {
             @Override
-            protected Object call() throws Exception {
-                initTotalProtocols();
-                return true;
+            protected Void call() throws Exception {
+                updateProgress(5, MAX_TASK_PROGRESS);
+                totalProtocols.clear();
+                cachedTotalProtocols.clear();
+                List<Journal> journalsDb = journalService.getAll();
+                updateProgress(20, MAX_TASK_PROGRESS);
+                List<PersonalProtocol> personalProtocolsDB = personalProtocolService.getAll();
+                updateProgress(30, MAX_TASK_PROGRESS);
+                List<TotalProtocol> totalProtocolList  = totalProtocolService.getAll();
+                updateProgress(40, MAX_TASK_PROGRESS);
+                List<JournalUI> journalUIList = new ArrayList<JournalUI>();
+                List<PersonalProtocolUI> protocolUIFromDB = new ArrayList<PersonalProtocolUI>();
+
+                for (PersonalProtocol pp : personalProtocolsDB){
+                    if(pp.getJournal()!=null){
+                        journalUIList.add(new JournalUI(pp.getJournal()));
+                    }
+                }
+                updateProgress(70, MAX_TASK_PROGRESS);
+                double currProgress = 70;
+                double stepProgress = 30 / totalProtocolList.size();
+                for (TotalProtocol tp : totalProtocolList){
+                    currProgress+=stepProgress;
+                    TotalProtocolUI totalProtocolUI = new TotalProtocolUI(tp);
+                    JournalUI journalUI = totalProtocolUI.getJournal();
+                    TreeItem<String> treeItem = new TreeItem<String>(totalProtocolUI.toString());
+                    cachedTotalProtocols.add(totalProtocolUI);
+                    for (int i = 0; i<journalUI.getWelders().size();i++){
+                        //TODO load protocols from db
+                        PersonalProtocolUI pp;
+                        if(getWelderProtocolFromDB(journalUI.getWelders().get(i),journalUI)!=null){
+                            pp = getWelderProtocolFromDB(journalUI.getWelders().get(i),journalUI);
+                            treeItem.getChildren().add(new TreeItem<String>(PERSONAL_PROTOCOL_PREFIX_NAME
+                                    + pp.toString()+ PERSONAL_PROTOCOL_DB_SUFFIX_NAME));
+                        }else {
+                            pp = new PersonalProtocolUI(journalUI.getWelders().get(i), journalUI);
+                            treeItem.getChildren().add(new TreeItem<String>(PERSONAL_PROTOCOL_PREFIX_NAME
+                                    +pp.toString()));
+                        }
+                    }
+                    totalProtocols.add(treeItem);
+                    updateProgress(currProgress, MAX_TASK_PROGRESS);
+                }
+                updateProgress(100, MAX_TASK_PROGRESS);
+
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        prgsBarUpdater.setVisible(false);
+                        TreeItem<String> rootItem = new TreeItem<String>(TREE_ROOT_ITEM_NAME);
+                        rootItem.getChildren().clear();
+                        rootItem.getChildren().addAll(totalProtocols);
+                        protocolsTreeView.setRoot(rootItem);
+                        protocolsTreeView.getRoot().setExpanded(true);
+                        protocolsTreeView.addEventHandler(MouseEvent.MOUSE_CLICKED, new ListViewHandler());
+                        protocolsTreeView.addEventHandler(KeyEvent.KEY_RELEASED, new ListViewHandler());
+                        txfSearch.textProperty().addListener(new SearchInvalidateHandler());
+                    }
+                });
+
+
+                return null;
             }
         };
     }
