@@ -50,6 +50,8 @@ public class TotalProtocolUIManager implements TotalProtocolServiceUI {
 
     }
 
+
+
     @Override
     public TotalProtocol getTotalProtocolFromTotalProtocolUI(TotalProtocolUI totalProtocolUI) {
         if (totalProtocolUI == null)

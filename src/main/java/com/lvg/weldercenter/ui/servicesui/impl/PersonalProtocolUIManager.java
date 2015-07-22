@@ -7,11 +7,13 @@ import com.lvg.weldercenter.ui.entities.PersonalProtocolUI;
 import com.lvg.weldercenter.ui.entities.TotalProtocolUI;
 import com.lvg.weldercenter.ui.entities.WelderUI;
 import com.lvg.weldercenter.ui.servicesui.*;
+import javafx.concurrent.Task;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Created by Victor on 11.03.2015.
@@ -61,18 +63,75 @@ public class PersonalProtocolUIManager implements PersonalProtocolServiceUI {
 
     @Override
     public PersonalProtocolUI getPersonalProtocolUIFromDB(TotalProtocolUI totalProtocolUI, String welderFullName) {
-        PersonalProtocolUI result = null;
-        List<PersonalProtocol> ppList = personalProtocolService.getAll();
-        JournalUI journalUI = totalProtocolUI.getJournal();
-        if(journalUI!=null){
-            for (PersonalProtocol pp : ppList){
-                String welderSurnameNameSecname = new WelderUI(pp.getWelder()).getSurnameNameSecname();
-                if(welderFullName.trim().equals(welderSurnameNameSecname) && journalUI.getId()==pp.getJournal().getJournalId()){
-                    return new PersonalProtocolUI(pp);
+        Task<PersonalProtocolUI> searcher = createPersonalProtocolUISearcher(totalProtocolUI, welderFullName);
+        Thread t = new Thread(searcher);
+        t.setName("PersonalProtocolUI Searcher Thread");
+        t.start();
+        Boolean isWorking = true;
+        while (isWorking){
+            if (searcher.isDone()){
+                isWorking = false;
+            }else {
+                try {
+                    Thread.sleep(100);
+                }catch (InterruptedException ex){
+                    LOGGER.warn("Thread is interrupted");
                 }
             }
         }
+        PersonalProtocolUI result = null;
+        try {
+            result = searcher.get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
         return result;
+//        PersonalProtocolUI result = null;
+//        List<PersonalProtocol> ppList = personalProtocolService.getAll();
+//        JournalUI journalUI = totalProtocolUI.getJournal();
+//        if(journalUI!=null){
+//            for (PersonalProtocol pp : ppList){
+//                String welderSurnameNameSecname = new WelderUI(pp.getWelder()).getSurnameNameSecname();
+//                if(welderFullName.trim().equals(welderSurnameNameSecname) && journalUI.getId()==pp.getJournal().getJournalId()){
+//                    return new PersonalProtocolUI(pp);
+//                }
+//            }
+//        }
+//        return result;
+    }
+
+    private Task<PersonalProtocolUI> createPersonalProtocolUISearcher(TotalProtocolUI totalProtocolUI, String welderFullName ){
+        return new PersonalProtocolSearcher(totalProtocolUI, welderFullName);
+    }
+
+    private class PersonalProtocolSearcher extends Task<PersonalProtocolUI>{
+
+        private TotalProtocolUI totalProtocolUI;
+        private String welderFullName;
+
+        public PersonalProtocolSearcher(TotalProtocolUI totalProtocolUI, String welderFullName){
+            this.totalProtocolUI = totalProtocolUI;
+            this.welderFullName = welderFullName;
+        }
+
+        @Override
+        protected PersonalProtocolUI call() throws Exception {
+            PersonalProtocolUI result = null;
+            List<PersonalProtocol> ppList = personalProtocolService.getAll();
+            JournalUI journalUI = totalProtocolUI.getJournal();
+            if(journalUI!=null){
+                for (PersonalProtocol pp : ppList){
+                    String welderSurnameNameSecname = new WelderUI(pp.getWelder()).getSurnameNameSecname();
+                    if(welderFullName.trim().equals(welderSurnameNameSecname) && journalUI.getId()==pp.getJournal().getJournalId()){
+                        return new PersonalProtocolUI(pp);
+                    }
+                }
+            }
+            set(result);
+            return result;
+        }
     }
 
     @Override

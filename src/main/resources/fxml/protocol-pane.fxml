@@ -13,9 +13,9 @@
             <children>
                 <Button fx:id="btCloseProtocolPane" mnemonicParsing="false" onAction="#closeProtocolPane" text="Закрыть" />
                 <Button fx:id="btUpdate" mnemonicParsing="false" onAction="#refreshProtocolsTreeView" text="Обновить" />
-            <ProgressBar fx:id="prgsBarUpdater" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="10.0" prefWidth="200.0">
+            <ProgressBar fx:id="prgsBarUpdater" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="10.0" prefWidth="750.0">
                <HBox.margin>
-                  <Insets bottom="8.0" left="8.0" right="8.0" top="6.0" />
+                  <Insets left="8.0" top="8.0" />
                </HBox.margin>
             </ProgressBar>
             </children>

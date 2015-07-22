@@ -394,44 +394,8 @@ public class ProtocolController extends GenericController {
         Task updator = createProtocolsUpdater();
         prgsBarUpdater.progressProperty().bind(updator.progressProperty());
         Thread t = new Thread(updator);
+        t.setName("INIT ProtocolsTreeView Thread");
         t.start();
-    }
-
-    private void initTotalProtocols(){
-        totalProtocols.clear();
-        cachedTotalProtocols.clear();
-        List<Journal> journalsDb = journalService.getAll();
-        List<PersonalProtocol> personalProtocolsDB = personalProtocolService.getAll();
-        List<TotalProtocol> totalProtocolList  = totalProtocolService.getAll();
-        List<JournalUI> journalUIList = new ArrayList<JournalUI>();
-        List<PersonalProtocolUI> protocolUIFromDB = new ArrayList<PersonalProtocolUI>();
-
-        for (PersonalProtocol pp : personalProtocolsDB){
-            if(pp.getJournal()!=null){
-                journalUIList.add(new JournalUI(pp.getJournal()));
-            }
-        }
-        for (TotalProtocol tp : totalProtocolList){
-            TotalProtocolUI totalProtocolUI = new TotalProtocolUI(tp);
-            JournalUI journalUI = totalProtocolUI.getJournal();
-            TreeItem<String> treeItem = new TreeItem<String>(totalProtocolUI.toString());
-            cachedTotalProtocols.add(totalProtocolUI);
-            for (int i = 0; i<journalUI.getWelders().size();i++){
-                //TODO load protocols from db
-                PersonalProtocolUI pp;
-                if(getWelderProtocolFromDB(journalUI.getWelders().get(i),journalUI)!=null){
-                    pp = getWelderProtocolFromDB(journalUI.getWelders().get(i),journalUI);
-                    treeItem.getChildren().add(new TreeItem<String>(PERSONAL_PROTOCOL_PREFIX_NAME
-                            + pp.toString()+ PERSONAL_PROTOCOL_DB_SUFFIX_NAME));
-                }else {
-                    pp = new PersonalProtocolUI(journalUI.getWelders().get(i), journalUI);
-                    treeItem.getChildren().add(new TreeItem<String>(PERSONAL_PROTOCOL_PREFIX_NAME
-                            +pp.toString()));
-                }
-            }
-            totalProtocols.add(treeItem);
-        }
-
     }
 
     private Task<Void> createProtocolsUpdater(){
@@ -494,6 +458,8 @@ public class ProtocolController extends GenericController {
                         protocolsTreeView.addEventHandler(MouseEvent.MOUSE_CLICKED, new ListViewHandler());
                         protocolsTreeView.addEventHandler(KeyEvent.KEY_RELEASED, new ListViewHandler());
                         txfSearch.textProperty().addListener(new SearchInvalidateHandler());
+                        protocolsTreeView.getSelectionModel().select(protocolsTreeView.getRoot());
+                        protocolsTreeView.fireEvent(EventFXUtil.getMouseClickEvent());
                     }
                 });
 
@@ -1892,7 +1858,7 @@ public class ProtocolController extends GenericController {
         btSaveTotalProtocol.setDisable(true);
         updateSelectedTotalProtocolFromFields(selectedTotalProtocolUI);
         totalProtocolServiceUI.saveTotalProtocolUIinDB(selectedTotalProtocolUI);
-        initTotalProtocols();
+        initProtocolsTreeView();
         Printer.printTotalProtocolUI(selectedTotalProtocolUI);
         LOGGER.debug("SAVE_TOTAL_PROTOCOL: total_protocol is updated");
         btSaveTotalProtocol.setDisable(false);
@@ -1901,12 +1867,37 @@ public class ProtocolController extends GenericController {
     @FXML
     private void savePersonalProtocol(){
         btSavePersonalProtocol.setDisable(true);
-        updateSelectedPersonalProtocolFromFields(selectedPersonalProtocolUI);
-        personalProtocolServiceUI.savePersonalProtocolUIinDB(selectedPersonalProtocolUI);
-        LOGGER.debug("SAVE_PERSONAL_PROTOCOL: updated protocol is:");
-        btSavePersonalProtocol.setDisable(false);
-        Printer.printPersonalProtocolUI(selectedPersonalProtocolUI);
+        tabPaneAllProtocols.setDisable(true);
+        prgsBarUpdater.setVisible(true);
+        prgsBarUpdater.progressProperty().unbind();
+        prgsBarUpdater.setProgress(ProgressIndicator.INDETERMINATE_PROGRESS);
+        Task<Void> saver = createPersonalProtocolSaver();
+        Thread t = new Thread(saver);
+        t.setName("PersonalProtocol SAVER Thread");
+        t.start();
+    }
 
+    private Task<Void> createPersonalProtocolSaver(){
+        return new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+
+                updateSelectedPersonalProtocolFromFields(selectedPersonalProtocolUI);
+                updateProgress(35, MAX_TASK_PROGRESS);
+                personalProtocolServiceUI.savePersonalProtocolUIinDB(selectedPersonalProtocolUI);
+                updateProgress(90, MAX_TASK_PROGRESS);
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        prgsBarUpdater.setVisible(false);
+                        btSavePersonalProtocol.setDisable(false);
+                        tabPaneAllProtocols.setDisable(false);
+                        Printer.printPersonalProtocolUI(selectedPersonalProtocolUI);
+                    }
+                });
+                return null;
+            }
+        };
     }
 
     @FXML
@@ -1934,32 +1925,57 @@ public class ProtocolController extends GenericController {
             LOGGER.warn("SAVE SELECTED WELD PATTERN: SelectedWeldPattern is null");
             return;
         }
-        updateSelectedWeldPatternFromFields(selectedWeldPatternUI);
-        WeldPattern weldPattern = weldPatternServiceUI.getWeldPatternFromWeldPatternUI(selectedWeldPatternUI);
-        weldPattern.setPersonalProtocol(personalProtocolServiceUI.getPersonalProtocolFromUIModel(selectedPersonalProtocolUI));
-        if(selectedWeldPatternUI.getId()==0){
-            selectedWeldPatternUI.setPersonalProtocol(selectedPersonalProtocolUI);
-            Long id = weldPatternService.insert(weldPattern);
-            isWeldPatternSaved = true;
-            LOGGER.debug("SAVE SELECTED WELD PATTERN: selectedWeldPattern is inserted.");
-            selectedWeldPatternUI = new WeldPatternUI(weldPatternService.get(id));
-            selectedWeldPatternUI.setPersonalProtocol(selectedPersonalProtocolUI);
-            protocolsTreeView.requestFocus();
-            doSelectProtocol();
-        }else{
-            weldPatternService.update(weldPattern);
-            isWeldPatternSaved = true;
-            selectedWeldPatternUI = new WeldPatternUI(weldPatternService.get(weldPattern.getWeldPatternId()));
-            selectedWeldPatternUI.setPersonalProtocol(selectedPersonalProtocolUI);
-            LOGGER.debug("SAVE SELECTED WELD PATTERN: selectedWeldPattern is updated.");
-            protocolsTreeView.requestFocus();
-            doSelectProtocol();
+        tabPaneAllProtocols.setDisable(true);
+        prgsBarUpdater.setVisible(true);
+        Task<Void> saver = createWeldPatternSaver();
+        Thread t = new Thread(saver);
+        t.setName("WeldPattern SAVER Thread");
+        prgsBarUpdater.progressProperty().unbind();
+        prgsBarUpdater.progressProperty().bind(saver.progressProperty());
+        t.start();
+    }
 
+    private Task<Void> createWeldPatternSaver(){
+        return new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                updateSelectedWeldPatternFromFields(selectedWeldPatternUI);
+                updateProgress(20, MAX_TASK_PROGRESS);
+                WeldPattern weldPattern = weldPatternServiceUI.getWeldPatternFromWeldPatternUI(selectedWeldPatternUI);
+                weldPattern.setPersonalProtocol(personalProtocolServiceUI.getPersonalProtocolFromUIModel(selectedPersonalProtocolUI));
+                updateProgress(45, MAX_TASK_PROGRESS);
+                if(selectedWeldPatternUI.getId()==0){
+                    selectedWeldPatternUI.setPersonalProtocol(selectedPersonalProtocolUI);
+                    Long id = weldPatternService.insert(weldPattern);
+                    isWeldPatternSaved = true;
+                    LOGGER.debug("SAVE SELECTED WELD PATTERN: selectedWeldPattern is inserted.");
+                    selectedWeldPatternUI = new WeldPatternUI(weldPatternService.get(id));
+                    selectedWeldPatternUI.setPersonalProtocol(selectedPersonalProtocolUI);
 
-        }
-        Printer.printWeldPatternUI(selectedWeldPatternUI);
-        Printer.printWeldPattern(weldPattern);
+                }else{
+                    weldPatternService.update(weldPattern);
+                    isWeldPatternSaved = true;
+                    selectedWeldPatternUI = new WeldPatternUI(weldPatternService.get(weldPattern.getWeldPatternId()));
+                    selectedWeldPatternUI.setPersonalProtocol(selectedPersonalProtocolUI);
+                    LOGGER.debug("SAVE SELECTED WELD PATTERN: selectedWeldPattern is updated.");
 
+                }
+                updateProgress(90, MAX_TASK_PROGRESS);
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        protocolsTreeView.requestFocus();
+                        doSelectProtocol();
+                        tabPaneAllProtocols.setDisable(false);
+                        prgsBarUpdater.setVisible(false);
+                        Printer.printWeldPatternUI(selectedWeldPatternUI);
+                        //Printer.printWeldPattern(weldPattern);
+                    }
+                });
+
+                return null;
+            }
+        };
     }
     private void refreshWeldPatternTableView(TableView<WeldPatternUI> tableView){
         if (tableView.getColumns().get(0)!= null) {
@@ -2318,7 +2334,10 @@ public class ProtocolController extends GenericController {
         }
         if(protocolItem.getValue().equals(TREE_ROOT_ITEM_NAME)){
             selectedTotalProtocolUI = null;
+            tabPaneAllProtocols.getSelectionModel().select(tabTotalProtocol);
             tabTotalProtocol.setDisable(true);
+            tabPersonalProtocol.setDisable(true);
+            tabWeldPattern.setDisable(true);
             LOGGER.debug("TREE LIST VIEW HANDLER: No one protocol is selected");
             return;
         }
@@ -2330,7 +2349,7 @@ public class ProtocolController extends GenericController {
             showSelectedTotalProtocol(selectedTotalProtocolUI);
             showSelectedPersProtocol(selectedPersonalProtocolUI);
 
-            LOGGER.debug("TREE LIST VIEW HANDLER: The personal protocol is selected: "+
+            LOGGER.debug("TREE LIST VIEW HANDLER: The personal protocol is selected: " +
                     selectedPersonalProtocolUI);
             return;
         }
@@ -2340,10 +2359,10 @@ public class ProtocolController extends GenericController {
             LOGGER.debug("TREE LIST VIEW HANDLER: Selected protocol is: \n"+"id = "+selectedTotalProtocolUI.getId()+
                     "; "+selectedTotalProtocolUI+"\n");
             showSelectedTotalProtocol(selectedTotalProtocolUI);
-            //if(!totalProtocolBorderPane.isDisabled())
-            //    totalProtocolBorderPane.setDisable(true);
         }
     }
+
+
 
     private class ListViewHandler implements EventHandler<Event> {
 
