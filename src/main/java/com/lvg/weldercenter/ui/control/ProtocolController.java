@@ -830,6 +830,7 @@ public class ProtocolController extends GenericController {
         initPersProtocolNTDdocs(selectedPersProtocol);
         initPersProtocolResolutionCert(selectedPersProtocol);
         tabPersonalProtocol.setDisable(false);
+        tabWeldPattern.setDisable(true);
         tableViewWeldPatterns.setDisable(false);
 
 
@@ -856,6 +857,12 @@ public class ProtocolController extends GenericController {
         initTextFieldWeldJoinType(selectedWeldPattern);
         initTitlePaneWeldPatternTest(selectedWeldPattern);
         isWeldPatternSaved = false;
+    }
+
+    private void setDisabledAllTabs(){
+        for (Tab t : tabPaneAllProtocols.getTabs()){
+            t.setDisable(true);
+        }
     }
 
     private void initMenuButtonWeldJoinType(WeldPatternUI selectedWeldPatternUI) {
@@ -1856,18 +1863,56 @@ public class ProtocolController extends GenericController {
     @FXML
     private void saveTotalProtocol(){
         btSaveTotalProtocol.setDisable(true);
-        updateSelectedTotalProtocolFromFields(selectedTotalProtocolUI);
-        totalProtocolServiceUI.saveTotalProtocolUIinDB(selectedTotalProtocolUI);
-        initProtocolsTreeView();
-        Printer.printTotalProtocolUI(selectedTotalProtocolUI);
-        LOGGER.debug("SAVE_TOTAL_PROTOCOL: total_protocol is updated");
-        btSaveTotalProtocol.setDisable(false);
+        prgsBarUpdater.setVisible(true);
+        prgsBarUpdater.progressProperty().unbind();
+        prgsBarUpdater.setProgress(ProgressIndicator.INDETERMINATE_PROGRESS);
+        setDisabledAllTabs();
+        Task<Void> saver = createTotalProtocolSaver();
+        Thread t = new Thread(saver);
+        t.setName("TotalProtocol SAVER Thread");
+        t.start();
+
+
+    }
+
+    private Task<Void> createTotalProtocolSaver(){
+        return new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                updateSelectedTotalProtocolFromFields(selectedTotalProtocolUI);
+                totalProtocolServiceUI.saveTotalProtocolUIinDB(selectedTotalProtocolUI);
+                Platform.runLater(new Runnable(){
+                    @Override
+                    public void run() {
+                        //initProtocolsTreeView();
+                        protocolsTreeView.getSelectionModel().select(getTreeItemByStringName(
+                                protocolsTreeView.getRoot(), selectedTotalProtocolUI.toString()));
+
+                        Printer.printTotalProtocolUI(selectedTotalProtocolUI);
+                        LOGGER.debug("SAVE_TOTAL_PROTOCOL: total_protocol is updated");
+                        btSaveTotalProtocol.setDisable(false);
+                        prgsBarUpdater.setVisible(false);
+                        tabTotalProtocol.setDisable(false);
+                    }
+                });
+                return null;
+            }
+        };
+    }
+
+    private TreeItem<String> getTreeItemByStringName(TreeItem<String> rootTreeitem,String nameItem){
+      for (TreeItem<String> ti: rootTreeitem.getChildren()){
+          if (ti.getValue().equals(nameItem))
+              return ti;
+      }
+        return rootTreeitem;
     }
 
     @FXML
     private void savePersonalProtocol(){
         btSavePersonalProtocol.setDisable(true);
-        tabPaneAllProtocols.setDisable(true);
+        //tabPaneAllProtocols.setDisable(true);
+        setDisabledAllTabs();
         prgsBarUpdater.setVisible(true);
         prgsBarUpdater.progressProperty().unbind();
         prgsBarUpdater.setProgress(ProgressIndicator.INDETERMINATE_PROGRESS);
@@ -1891,7 +1936,9 @@ public class ProtocolController extends GenericController {
                     public void run() {
                         prgsBarUpdater.setVisible(false);
                         btSavePersonalProtocol.setDisable(false);
-                        tabPaneAllProtocols.setDisable(false);
+                        //tabPaneAllProtocols.setDisable(false);
+                        tabTotalProtocol.setDisable(false);
+                        tabPersonalProtocol.setDisable(false);
                         Printer.printPersonalProtocolUI(selectedPersonalProtocolUI);
                     }
                 });
@@ -1925,7 +1972,7 @@ public class ProtocolController extends GenericController {
             LOGGER.warn("SAVE SELECTED WELD PATTERN: SelectedWeldPattern is null");
             return;
         }
-        tabPaneAllProtocols.setDisable(true);
+        setDisabledAllTabs();
         prgsBarUpdater.setVisible(true);
         Task<Void> saver = createWeldPatternSaver();
         Thread t = new Thread(saver);
@@ -1965,8 +2012,9 @@ public class ProtocolController extends GenericController {
                     @Override
                     public void run() {
                         protocolsTreeView.requestFocus();
+                        tabPersonalProtocol.setDisable(false);
+                        tabTotalProtocol.setDisable(false);
                         doSelectProtocol();
-                        tabPaneAllProtocols.setDisable(false);
                         prgsBarUpdater.setVisible(false);
                         Printer.printWeldPatternUI(selectedWeldPatternUI);
                         //Printer.printWeldPattern(weldPattern);
@@ -2335,9 +2383,7 @@ public class ProtocolController extends GenericController {
         if(protocolItem.getValue().equals(TREE_ROOT_ITEM_NAME)){
             selectedTotalProtocolUI = null;
             tabPaneAllProtocols.getSelectionModel().select(tabTotalProtocol);
-            tabTotalProtocol.setDisable(true);
-            tabPersonalProtocol.setDisable(true);
-            tabWeldPattern.setDisable(true);
+            setDisabledAllTabs();
             LOGGER.debug("TREE LIST VIEW HANDLER: No one protocol is selected");
             return;
         }

@@ -1,0 +1,438 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane fx:id="mainJournalPane" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+    <bottom>
+        <HBox prefHeight="32.0" prefWidth="600.0" spacing="10.0" BorderPane.alignment="CENTER">
+            <children>
+                <Button fx:id="btCloseJournalPane" mnemonicParsing="false" onAction="#closeJournalPane" text="Закрыть" />
+                <Button fx:id="btUpdate" mnemonicParsing="false" onAction="#refreshJournalTableView" text="Обновить" />
+            </children>
+            <padding>
+                <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
+            </padding>
+            <BorderPane.margin>
+                <Insets />
+            </BorderPane.margin>
+        </HBox>
+    </bottom>
+    <right>
+        <VBox spacing="10.0" BorderPane.alignment="CENTER">
+            <children>
+                <Button fx:id="btAdd" mnemonicParsing="false" onAction="#addNewJournal" text="Добавить" />
+                <Button fx:id="btEdit" mnemonicParsing="false" text="Изменить" />
+                <Button fx:id="btDelete" mnemonicParsing="false" onAction="#removeJournals" text="Удалить" />
+                <Separator>
+                    <VBox.margin>
+                        <Insets top="12.0" />
+                    </VBox.margin>
+                </Separator>
+                <Button fx:id="btSave" contentDisplay="CENTER" mnemonicParsing="false" onAction="#saveJournal" text="Сохранить">
+                    <VBox.margin>
+                        <Insets />
+                    </VBox.margin>
+                </Button>
+            </children>
+            <padding>
+                <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
+            </padding>
+            <BorderPane.margin>
+                <Insets top="40.0" />
+            </BorderPane.margin>
+        </VBox>
+    </right>
+   <center>
+      <TabPane fx:id="tabPaneAllProperties" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+        <tabs>
+          <Tab fx:id="tabOrganizations" text="Организации">
+               <content>
+                  <BorderPane prefHeight="200.0" prefWidth="200.0">
+                     <center>
+                          <SplitPane dividerPositions="0.5" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                              <items>
+                                  <BorderPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #cc7722;">
+                                      <center>
+                                          <TableView fx:id="organizationsTableView" BorderPane.alignment="CENTER">
+                                              <columns>
+                                                  <TableColumn fx:id="id" prefWidth="40.0" text="id" />
+                                                  <TableColumn fx:id="name" text="Название" />
+                                                  <TableColumn fx:id="adress" prefWidth="120.0" text="Адрес" />
+                                                  <TableColumn fx:id="phone" prefWidth="120.0" text="Телефон" />
+                                              </columns>
+                                          </TableView>
+                                      </center>
+                                      <bottom>
+                                          <VBox fx:id="vboxToolBars" BorderPane.alignment="CENTER">
+                                              <children>
+                                                  <ToolBar prefHeight="30.0" prefWidth="200.0">
+                                                      <items>
+                                                          <Button fx:id="btFirst" mnemonicParsing="false" onAction="#selectFirst" text="|&lt;" />
+                                                          <Button fx:id="btPrev" mnemonicParsing="false" onAction="#selectPrev" text="&lt;&lt;" />
+                                                          <Button fx:id="btNew" mnemonicParsing="false" onAction="#addNewJournal" text="&gt;*" />
+                                                          <Button fx:id="btNext" mnemonicParsing="false" onAction="#selectNext" text="&gt;&gt;" />
+                                                          <Button fx:id="btLast" mnemonicParsing="false" onAction="#selectLast" text="&gt;|" />
+                                                          <Button mnemonicParsing="false" onAction="#makeJournalCopy" text="копия" />
+                                                      </items>
+                                                  </ToolBar>
+                                                  <ToolBar fx:id="toolBarSearch" prefHeight="40.0" prefWidth="200.0">
+                                                      <items>
+                                                <Label text="Поиск:" />
+                                                          <TextField fx:id="txfSearch" prefHeight="25.0" prefWidth="230.0" />
+                                                      </items>
+                                                      <VBox.margin>
+                                                          <Insets />
+                                                      </VBox.margin>
+                                                  </ToolBar>
+                                              </children>
+                                          </VBox>
+                                      </bottom>
+                                 <top>
+                                    <Label text="Организации" textFill="#f2f2f2" BorderPane.alignment="CENTER">
+                                       <opaqueInsets>
+                                          <Insets />
+                                       </opaqueInsets>
+                                       <BorderPane.margin>
+                                          <Insets bottom="10.0" top="10.0" />
+                                       </BorderPane.margin>
+                                    </Label>
+                                 </top>
+                                  </BorderPane>
+                                  <BorderPane prefHeight="324.0" prefWidth="161.0" style="-fx-background-color: #bbffaa;">
+                                      <top>
+                                          <Label text="Подробные сведения" BorderPane.alignment="CENTER">
+                                              <BorderPane.margin>
+                                                  <Insets bottom="10.0" top="10.0" />
+                                              </BorderPane.margin>
+                                          </Label>
+                                      </top>
+                                      <center>
+                                          <ScrollPane fitToHeight="true" fitToWidth="true" style="-fx-border-color: white;" BorderPane.alignment="CENTER">
+                                              <content>
+                                                  <GridPane fx:id="journalDetailsPane" minHeight="-Infinity" minWidth="-Infinity">
+                                                      <columnConstraints>
+                                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="120.0" />
+                                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="-Infinity" prefWidth="100.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="90.0" minWidth="10.0" prefWidth="75.0" />
+                                                      </columnConstraints>
+                                                      <rowConstraints>
+                                                          <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="40.0" vgrow="SOMETIMES" />
+                                                          <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="40.0" vgrow="SOMETIMES" />
+                                                          <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="40.0" vgrow="SOMETIMES" />
+                                                          <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="40.0" vgrow="SOMETIMES" />
+                                                      </rowConstraints>
+                                                      <children>
+                                                          <Label text="Название:">
+                                                              <GridPane.margin>
+                                                                  <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                                              </GridPane.margin>
+                                                          </Label>
+                                                          <Label text="Адрес:" GridPane.rowIndex="1">
+                                                              <GridPane.margin>
+                                                                  <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                                              </GridPane.margin>
+                                                          </Label>
+                                                          <TextField fx:id="tfxOrganizationName" maxHeight="-Infinity" minWidth="45.0" GridPane.columnIndex="1" GridPane.columnSpan="2">
+                                                              <GridPane.margin>
+                                                                  <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                                              </GridPane.margin>
+                                                          </TextField>
+                                                          <Label text="Телефон:" GridPane.rowIndex="2">
+                                                              <GridPane.margin>
+                                                                  <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                                              </GridPane.margin>
+                                                          </Label>
+                                                <TextField fx:id="tfxOrganizationAdress" maxHeight="-Infinity" minWidth="45.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="1">
+                                                   <GridPane.margin>
+                                                      <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                                   </GridPane.margin>
+                                                </TextField>
+                                                <TextField fx:id="tfxOrganizationPhone" maxHeight="-Infinity" minWidth="45.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="2">
+                                                   <GridPane.margin>
+                                                      <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                                   </GridPane.margin>
+                                                </TextField>
+                                                      </children>
+                                                  </GridPane>
+                                              </content>
+                                          </ScrollPane>
+                                      </center>
+                                  </BorderPane>
+                              </items>
+                              <BorderPane.margin>
+                                  <Insets left="12.0" top="12.0" />
+                              </BorderPane.margin>
+                          </SplitPane>
+                     </center>
+                  </BorderPane>
+               </content>
+            </Tab>
+          <Tab fx:id="tabWeldPatterns" text="Аттестационные образцы">
+               <content>
+                  <BorderPane prefHeight="200.0" prefWidth="200.0">
+                     <center>
+                        <ScrollPane fitToHeight="true" fitToWidth="true" BorderPane.alignment="CENTER">
+                           <content>
+                              <GridPane>
+                                <columnConstraints>
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                  <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="220.0" vgrow="ALWAYS" />
+                                    <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="ALWAYS" />
+                                    <RowConstraints minHeight="-Infinity" prefHeight="90.0" vgrow="ALWAYS" />
+                                    <RowConstraints minHeight="-Infinity" prefHeight="180.0" vgrow="ALWAYS" />
+                                </rowConstraints>
+                                 <children>
+                                    <TitledPane animated="false" collapsible="false" text="Типы образцов" GridPane.columnSpan="2" GridPane.valignment="TOP">
+                                       <content>
+                                          <GridPane>
+                                            <columnConstraints>
+                                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                            </columnConstraints>
+                                            <rowConstraints>
+                                              <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                              <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                            </rowConstraints>
+                                             <children>
+                                                <ListView prefHeight="200.0" prefWidth="200.0" GridPane.rowSpan="5">
+                                                   <GridPane.margin>
+                                                      <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                                   </GridPane.margin>
+                                                </ListView>
+                                                <Label text="Код:" GridPane.columnIndex="1">
+                                                   <GridPane.margin>
+                                                      <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                                   </GridPane.margin>
+                                                </Label>
+                                                <TextField GridPane.columnIndex="1">
+                                                   <GridPane.margin>
+                                                      <Insets bottom="8.0" left="70.0" right="8.0" top="8.0" />
+                                                   </GridPane.margin>
+                                                </TextField>
+                                                <Label text="Название:" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                                   <GridPane.margin>
+                                                      <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                                   </GridPane.margin>
+                                                </Label>
+                                                <TextField GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                                   <GridPane.margin>
+                                                      <Insets bottom="8.0" left="70.0" right="8.0" top="8.0" />
+                                                   </GridPane.margin>
+                                                </TextField>
+                                                <Button mnemonicParsing="false" text="Добавить" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                <Button mnemonicParsing="false" text="Изменить" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                                <Button mnemonicParsing="false" text="Удалить" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                             </children>
+                                          </GridPane>
+                                       </content>
+                                       <GridPane.margin>
+                                          <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                       </GridPane.margin>
+                                    </TitledPane>
+                                    <TitledPane animated="false" collapsible="false" text="Диаметры образцов" GridPane.columnSpan="2" GridPane.rowIndex="1" GridPane.rowSpan="2" GridPane.valignment="TOP">
+                                       <content>
+                                          <GridPane>
+                                             <children>
+                                                <ListView prefHeight="200.0" prefWidth="200.0" GridPane.rowSpan="4">
+                                                   <GridPane.margin>
+                                                      <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                                   </GridPane.margin>
+                                                </ListView>
+                                                <Label text="Диаметр (мм):" GridPane.columnIndex="1">
+                                                   <GridPane.margin>
+                                                      <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                                   </GridPane.margin>
+                                                </Label>
+                                                <TextField GridPane.columnIndex="1">
+                                                   <GridPane.margin>
+                                                      <Insets bottom="8.0" left="90.0" right="8.0" top="8.0" />
+                                                   </GridPane.margin>
+                                                </TextField>
+                                                <Button mnemonicParsing="false" text="Добавить" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                                <Button mnemonicParsing="false" text="Изменить" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                <Button mnemonicParsing="false" text="Удалить" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                             </children>
+                                             <columnConstraints>
+                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                             </columnConstraints>
+                                             <rowConstraints>
+                                                <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                             </rowConstraints>
+                                          </GridPane>
+                                       </content>
+                                       <GridPane.margin>
+                                          <Insets bottom="8.0" left="8.0" right="8.0" />
+                                       </GridPane.margin>
+                                    </TitledPane>
+                                    <TitledPane animated="false" collapsible="false" text="Толщины образцов" GridPane.columnSpan="2" GridPane.rowIndex="3" GridPane.valignment="TOP">
+                                       <content>
+                                          <GridPane>
+                                             <children>
+                                                <ListView prefHeight="200.0" prefWidth="200.0" GridPane.rowSpan="4">
+                                                   <GridPane.margin>
+                                                      <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                                   </GridPane.margin>
+                                                </ListView>
+                                                <Label text="Толщина (мм):" GridPane.columnIndex="1">
+                                                   <GridPane.margin>
+                                                      <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                                   </GridPane.margin>
+                                                </Label>
+                                                <TextField GridPane.columnIndex="1">
+                                                   <GridPane.margin>
+                                                      <Insets bottom="8.0" left="90.0" right="8.0" top="8.0" />
+                                                   </GridPane.margin>
+                                                </TextField>
+                                                <Button mnemonicParsing="false" text="Добавить" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                                <Button mnemonicParsing="false" text="Изменить" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                <Button mnemonicParsing="false" text="Удалить" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                             </children>
+                                             <columnConstraints>
+                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                             </columnConstraints>
+                                             <rowConstraints>
+                                                <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                             </rowConstraints>
+                                          </GridPane>
+                                       </content>
+                                       <GridPane.margin>
+                                          <Insets bottom="8.0" left="8.0" right="8.0" />
+                                       </GridPane.margin>
+                                    </TitledPane>
+                                    <TitledPane animated="false" collapsible="false" prefHeight="300.0" text="Типы сталей" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowSpan="2" GridPane.valignment="TOP">
+                                       <content>
+                                          <GridPane>
+                                             <children>
+                                                <ListView prefHeight="200.0" prefWidth="200.0" GridPane.rowSpan="5">
+                                                   <GridPane.margin>
+                                                      <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                                   </GridPane.margin>
+                                                </ListView>
+                                                <Label text="Тип:" GridPane.columnIndex="1">
+                                                   <GridPane.margin>
+                                                      <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                                   </GridPane.margin>
+                                                </Label>
+                                                <TextField GridPane.columnIndex="1">
+                                                   <GridPane.margin>
+                                                      <Insets bottom="8.0" left="70.0" right="8.0" top="8.0" />
+                                                   </GridPane.margin>
+                                                </TextField>
+                                                <ComboBox prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                                   <GridPane.margin>
+                                                      <Insets bottom="8.0" left="70.0" right="8.0" top="8.0" />
+                                                   </GridPane.margin>
+                                                </ComboBox>
+                                                <Label text="Группа:" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                                   <GridPane.margin>
+                                                      <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                                   </GridPane.margin>
+                                                </Label>
+                                                <Button mnemonicParsing="false" text="Добавить" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                <Button mnemonicParsing="false" text="Изменить" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                                <Button mnemonicParsing="false" text="Удалить" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                             </children>
+                                             <columnConstraints>
+                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                             </columnConstraints>
+                                             <rowConstraints>
+                                                <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                             </rowConstraints>
+                                          </GridPane>
+                                       </content>
+                                       <GridPane.margin>
+                                          <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                       </GridPane.margin>
+                                    </TitledPane>
+                                    <TitledPane animated="false" collapsible="false" prefHeight="300.0" text="Группы сталей" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="2" GridPane.rowSpan="2" GridPane.valignment="TOP">
+                                       <content>
+                                          <GridPane>
+                                             <children>
+                                                <ListView prefHeight="200.0" prefWidth="200.0" GridPane.rowSpan="7">
+                                                   <GridPane.margin>
+                                                      <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                                   </GridPane.margin>
+                                                </ListView>
+                                                <Label text="Группа:" GridPane.columnIndex="1">
+                                                   <GridPane.margin>
+                                                      <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                                   </GridPane.margin>
+                                                </Label>
+                                                <TextField GridPane.columnIndex="1">
+                                                   <GridPane.margin>
+                                                      <Insets bottom="8.0" left="70.0" right="8.0" top="8.0" />
+                                                   </GridPane.margin>
+                                                </TextField>
+                                                <Label text="Описание" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                                   <GridPane.margin>
+                                                      <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                                   </GridPane.margin>
+                                                </Label>
+                                                <Button mnemonicParsing="false" text="Добавить" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                                <Button mnemonicParsing="false" text="Изменить" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                                                <Button mnemonicParsing="false" text="Удалить" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                                                <TextArea prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2" GridPane.rowSpan="2">
+                                                   <GridPane.margin>
+                                                      <Insets bottom="8.0" left="8.0" right="8.0" />
+                                                   </GridPane.margin>
+                                                </TextArea>
+                                             </children>
+                                             <columnConstraints>
+                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                             </columnConstraints>
+                                             <rowConstraints>
+                                                <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                             </rowConstraints>
+                                          </GridPane>
+                                       </content>
+                                       <GridPane.margin>
+                                          <Insets bottom="8.0" left="8.0" right="8.0" />
+                                       </GridPane.margin>
+                                    </TitledPane>
+                                 </children>
+                              </GridPane>
+                           </content>
+                        </ScrollPane>
+                     </center>
+                  </BorderPane>
+               </content>
+            </Tab>
+            <Tab fx:id="tabWeld" text="Сварка" />
+            <Tab fx:id="tabEducationEtc" text="Образование и прочее" />
+            <Tab fx:id="tabComission" text="Комиссия" />
+            <Tab fx:id="tanNDTDocuments" text="Нормативные документы" />
+        </tabs>
+      </TabPane>
+   </center>
+</BorderPane>
