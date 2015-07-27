@@ -7,9 +7,12 @@ import com.lvg.weldercenter.ui.servicesui.PersonalProtocolServiceUI;
 import com.lvg.weldercenter.ui.util.DateUtil;
 import com.lvg.weldercenter.ui.util.TimeTableUtil;
 import com.lvg.weldercenter.ui.util.managers.TimeTableUtilManager;
+import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.embed.swing.SwingNode;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.layout.BorderPane;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
@@ -50,8 +53,14 @@ public class ReportViewController extends GenericController {
     SwingNode swingNode;
     @FXML
     Button btClose;
+    @FXML
+    ProgressBar prgsBarLoader;
 
     private JPanel reportPanel;
+
+    private JournalUI selectedJournal = null;
+    private TotalProtocolUI selectedTotalProtocol = null;
+    private PersonalProtocolUI selectedPersonalProtocol = null;
 
 
     private Collection<TheoryReportEntity> theoryReportEntityList = new ArrayList<TheoryReportEntity>();
@@ -74,33 +83,93 @@ public class ReportViewController extends GenericController {
     }
 
     public void showTotalProtocolReport(TotalProtocolUI protocolUI){
-        TotalProtocolReportEntity totalProtocolReportEntity = new TotalProtocolReportEntity(protocolUI);
-        try {
-            JasperReport report = JasperCompileManager.compileReport(TOTAL_PROTOCOL_REPORT_URL.getFile());
-            JasperPrint print = JasperFillManager.fillReport(report,
-                    totalProtocolReportEntity.getParameters(),new JREmptyDataSource());
-            addReportPrintToPanel(print);
+        this.selectedTotalProtocol = protocolUI;
+        reportPanel.setVisible(false);
+        prgsBarLoader.setVisible(true);
+        prgsBarLoader.progressProperty().unbind();
+        Task<Void> loader = createTotalProtocolReportLoader();
+        prgsBarLoader.progressProperty().bind(loader.progressProperty());
+        Thread t = new Thread(loader);
+        t.setName("TotalProtocolReport Loader Thread");
+        t.start();
+    }
 
-            reportPanel.setVisible(true);
-        }catch (JRException ex){
-            LOGGER.error("SHOW TOTAL PROTOCOL REPORT VIEW: Could not load report: "+ex.getMessage(),ex);
-        }
+    private Task<Void> createTotalProtocolReportLoader(){
+        return new Task<Void>() {
+            JasperPrint print = null;
+            @Override
+            protected Void call() throws Exception {
+                TotalProtocolReportEntity totalProtocolReportEntity =
+                        new TotalProtocolReportEntity(selectedTotalProtocol);
+                updateProgress(25, MAX_TASK_PROGRESS_VALUE);
+                try {
+                    JasperReport report = JasperCompileManager.compileReport(TOTAL_PROTOCOL_REPORT_URL.getFile());
+                    updateProgress(65, MAX_TASK_PROGRESS_VALUE);
+                    print = JasperFillManager.fillReport(report,
+                            totalProtocolReportEntity.getParameters(),new JREmptyDataSource());
+                    updateProgress(90, MAX_TASK_PROGRESS_VALUE);
+                }catch (JRException ex){
+                    LOGGER.error("SHOW TOTAL PROTOCOL REPORT VIEW: Could not load report: "+ex.getMessage(),ex);
+                }
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        addReportPrintToPanel(print);
+                        showReadyReportPanel();
+                    }
+                });
+
+                return null;
+            }
+        };
+
     }
 
     public void showTheoryProtocolReport(TotalProtocolUI protocolUI){
-        initTheoryReportEntityList(protocolUI);
-        TotalProtocolReportEntity totalProtocolReportEntity = new TotalProtocolReportEntity(protocolUI);
-        totalProtocolReportEntity.getParameters().put("UNIVERS_FONT_PATH",UNIVERS_FONT_URL.getFile());
-        try {
-            JasperReport report = JasperCompileManager.compileReport(THEORY_PROTOCOL_REPORT_URL.getFile());
-            JasperPrint print = JasperFillManager.fillReport(report, totalProtocolReportEntity.getParameters(),
-                    new JRBeanCollectionDataSource(theoryReportEntityList));
-            addReportPrintToPanel(print);
-            LOGGER.debug("THEORY PROTOCOL: "+theoryReportEntityList);
-            reportPanel.setVisible(true);
-        }catch (JRException ex){
-            LOGGER.error("SHOW THEORY REPORT VIEW: Could not load report: "+ex.getMessage(),ex);
-        }
+        this.selectedTotalProtocol = protocolUI;
+        reportPanel.setVisible(false);
+        prgsBarLoader.setVisible(true);
+        prgsBarLoader.progressProperty().unbind();
+        Task<Void> loader = createTheoryTestReportLoader();
+        prgsBarLoader.progressProperty().bind(loader.progressProperty());
+        Thread t = new Thread(loader);
+        t.setName("TheoryTestReport Loader Thread");
+        t.start();
+    }
+
+    private Task<Void> createTheoryTestReportLoader(){
+        return new Task<Void>() {
+            JasperPrint print = null;
+            @Override
+            protected Void call() throws Exception {
+                initTheoryReportEntityList(selectedTotalProtocol);
+                updateProgress(20,MAX_TASK_PROGRESS_VALUE);
+                TotalProtocolReportEntity totalProtocolReportEntity =
+                        new TotalProtocolReportEntity(selectedTotalProtocol);
+                updateProgress(25,MAX_TASK_PROGRESS_VALUE);
+                totalProtocolReportEntity.getParameters().put("UNIVERS_FONT_PATH",UNIVERS_FONT_URL.getFile());
+                updateProgress(35,MAX_TASK_PROGRESS_VALUE);
+                try {
+                    JasperReport report = JasperCompileManager.compileReport(THEORY_PROTOCOL_REPORT_URL.getFile());
+                    updateProgress(65,MAX_TASK_PROGRESS_VALUE);
+                    print = JasperFillManager.fillReport(report, totalProtocolReportEntity.getParameters(),
+                            new JRBeanCollectionDataSource(theoryReportEntityList));
+                    updateProgress(90,MAX_TASK_PROGRESS_VALUE);
+
+                }catch (JRException ex){
+                    LOGGER.error("SHOW THEORY REPORT VIEW: Could not load report: "+ex.getMessage(),ex);
+                }
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                       addReportPrintToPanel(print);
+                       showReadyReportPanel();
+                    }
+                });
+
+                return null;
+            }
+        };
     }
 
 
@@ -138,94 +207,263 @@ public class ReportViewController extends GenericController {
     }
 
     public void showJournalReport(JournalUI journalUI){
-        initJournalReportEntityList(journalUI);
-        initJournalVisitTableReportEntityList(journalUI);
-        initJournalSectionReportEntityList(journalUI);
-        JournalReportEntity journalReportEntity = journalReportEntities.iterator().next();
-        try{
+        this.selectedJournal = journalUI;
+        reportPanel.setVisible(false);
+        prgsBarLoader.setVisible(true);
+        prgsBarLoader.progressProperty().unbind();
+        Task<Void> loader = createJournalReportLoader();
+        prgsBarLoader.progressProperty().bind(loader.progressProperty());
+        Thread t = new Thread(loader);
+        t.setName("JournalReport Loader Thread");
+        t.start();
+    }
 
-            JasperReport subReport = JasperCompileManager.compileReport(JOURNAL_SUBREPORT_WELDERS_DETAIL_URL.getFile());
-            journalReportEntity.getParameters().put("WELDER_DETAIL_SUBREPORT",subReport);
-            journalReportEntity.getParameters().put("WELDER_DETAIL_DATA_SOURCE",new JRBeanCollectionDataSource(journalReportEntities));
+    private Task<Void> createJournalReportLoader() {
+        return new Task<Void>() {
+            JasperPrint print = null;
+            @Override
+            protected Void call() throws Exception {
+                initJournalReportEntityList(selectedJournal);
+                updateProgress(10, MAX_TASK_PROGRESS_VALUE);
+                initJournalVisitTableReportEntityList(selectedJournal);
+                updateProgress(20, MAX_TASK_PROGRESS_VALUE);
+                initJournalSectionReportEntityList(selectedJournal);
+                updateProgress(30, MAX_TASK_PROGRESS_VALUE);
+                JournalReportEntity journalReportEntity = journalReportEntities.iterator().next();
+                try {
 
-            JasperReport subReportVisitTable = JasperCompileManager.compileReport(JOURNAL_SUBREPORT_VISIT_TABLE_URL.getFile());
-            journalReportEntity.getParameters().put("VISIT_TABLE_SUBREPORT",subReportVisitTable);
-            journalReportEntity.getParameters().put("VISIT_TABLE_DATA_SOURCE",
-                    new JRBeanCollectionDataSource(journalVisitTableReportEntities));
+                    JasperReport subReport = JasperCompileManager.compileReport(JOURNAL_SUBREPORT_WELDERS_DETAIL_URL.getFile());
+                    journalReportEntity.getParameters().put("WELDER_DETAIL_SUBREPORT", subReport);
+                    journalReportEntity.getParameters().put("WELDER_DETAIL_DATA_SOURCE", new JRBeanCollectionDataSource(journalReportEntities));
 
-            JasperReport subReportTimeTable = JasperCompileManager.compileReport(JOURNAL_SUBREPORT_TIME_TABLE_URL.getFile());
+                    updateProgress(45, MAX_TASK_PROGRESS_VALUE);
 
-            journalReportEntity.getParameters().put("TIME_TABLE_SUBREPORT", subReportTimeTable);
-            journalReportEntity.getParameters().put("TIME_TABLE_DATA_SOURCE",
-                    new JRBeanCollectionDataSource(journalSectionReportEntities));
-            journalReportEntity.getParameters().put("PARAMETERS_MAP", journalReportEntity.getParameters());
-            JasperReport report = JasperCompileManager.compileReport(JOURNAL_REPORT_URL.getFile());
+                    JasperReport subReportVisitTable = JasperCompileManager.compileReport(JOURNAL_SUBREPORT_VISIT_TABLE_URL.getFile());
+                    journalReportEntity.getParameters().put("VISIT_TABLE_SUBREPORT", subReportVisitTable);
+                    journalReportEntity.getParameters().put("VISIT_TABLE_DATA_SOURCE",
+                            new JRBeanCollectionDataSource(journalVisitTableReportEntities));
 
-            JasperPrint print = JasperFillManager.fillReport(report, journalReportEntity.getParameters(),
-                    new JREmptyDataSource());
-            addReportPrintToPanel(print);
-            reportPanel.setVisible(true);
-        }catch (JRException ex){
-            LOGGER.error("SHOW JOURNAL REPORT VIEW: Could not load report: "+ex.getMessage(),ex);
-        }
+                    updateProgress(55, MAX_TASK_PROGRESS_VALUE);
+
+                    JasperReport subReportTimeTable = JasperCompileManager.compileReport(JOURNAL_SUBREPORT_TIME_TABLE_URL.getFile());
+
+                    journalReportEntity.getParameters().put("TIME_TABLE_SUBREPORT", subReportTimeTable);
+                    journalReportEntity.getParameters().put("TIME_TABLE_DATA_SOURCE",
+                            new JRBeanCollectionDataSource(journalSectionReportEntities));
+                    journalReportEntity.getParameters().put("PARAMETERS_MAP", journalReportEntity.getParameters());
+
+                    updateProgress(70, MAX_TASK_PROGRESS_VALUE);
+
+                    JasperReport report = JasperCompileManager.compileReport(JOURNAL_REPORT_URL.getFile());
+
+                    print = JasperFillManager.fillReport(report, journalReportEntity.getParameters(),
+                            new JREmptyDataSource());
+                    updateProgress(90, MAX_TASK_PROGRESS_VALUE);
+                    Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            addReportPrintToPanel(print);
+                            showReadyReportPanel();
+                        }
+                    });
+
+
+
+                }catch (JRException ex){
+                    LOGGER.error("SHOW JOURNAL REPORT VIEW: Could not load report: "+ex.getMessage(),ex);
+                }
+
+                return null;
+            }
+        };
+    }
+
+    private void showReadyReportPanel(){
+        reportPanel.revalidate();
+        reportPanel.setVisible(true);
+        prgsBarLoader.setVisible(false);
     }
 
     public void showPersonalProtocolReport(PersonalProtocolUI personalProtocolUI, TotalProtocolUI totalProtocolUI){
-        PersonalProtocolReportEntity protocolReportEntity = new PersonalProtocolReportEntity(personalProtocolUI,totalProtocolUI);
-        try {
-            JasperReport report = JasperCompileManager.compileReport(PERSONAL_PROTOCOL_REPORT_URL.getFile());
-            JasperPrint print = JasperFillManager.fillReport(report, protocolReportEntity.getParameters(),
-                    new JREmptyDataSource());
-            addReportPrintToPanel(print);
-            reportPanel.setVisible(true);
-        }catch(JRException ex){
-            LOGGER.error("SHOW PERSONAL PROTOCOL REPORT VIEW: Could not load report: "+ex.getMessage(),ex);
-        }
+        this.selectedTotalProtocol = totalProtocolUI;
+        this.selectedPersonalProtocol = personalProtocolUI;
+
+        reportPanel.setVisible(false);
+        prgsBarLoader.setVisible(true);
+        prgsBarLoader.progressProperty().unbind();
+        Task<Void> loader = createPersonalProtocolReportLoader();
+        prgsBarLoader.progressProperty().bind(loader.progressProperty());
+        Thread t = new Thread(loader);
+        t.setName("PersonalProtocolReport Loader Thread");
+        t.start();
+    }
+
+    private Task<Void> createPersonalProtocolReportLoader(){
+        return new Task<Void>() {
+            JasperPrint print = null;
+            @Override
+            protected Void call() throws Exception {
+                PersonalProtocolReportEntity protocolReportEntity =
+                        new PersonalProtocolReportEntity(selectedPersonalProtocol,selectedTotalProtocol);
+                updateProgress(25, MAX_TASK_PROGRESS_VALUE);
+                try {
+                    JasperReport report = JasperCompileManager.compileReport(PERSONAL_PROTOCOL_REPORT_URL.getFile());
+                    updateProgress(65, MAX_TASK_PROGRESS_VALUE);
+                    print = JasperFillManager.fillReport(report, protocolReportEntity.getParameters(),
+                            new JREmptyDataSource());
+                    updateProgress(90, MAX_TASK_PROGRESS_VALUE);
+                }catch(JRException ex){
+                    LOGGER.error("SHOW PERSONAL PROTOCOL REPORT VIEW: Could not load report: "+ex.getMessage(),ex);
+                }
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        addReportPrintToPanel(print);
+                        showReadyReportPanel();
+                    }
+                });
+                return null;
+            }
+        };
     }
 
     public void showVisualTestProtocolReport(TotalProtocolUI totalProtocolUI){
-        initPersonalProtocolReportEntityList(totalProtocolUI);
-        TotalProtocolReportEntity totalProtocolReportEntity = new TotalProtocolReportEntity(totalProtocolUI);
+        this.selectedTotalProtocol = totalProtocolUI;
 
-        try {
-            JasperReport report = JasperCompileManager.compileReport(VISUAL_TEST_PROTOCOL_REPORT_URL.getFile());
-            JasperPrint print = JasperFillManager.fillReport(report, totalProtocolReportEntity.getParameters(),
-                    new JRBeanCollectionDataSource(personalProtocolReportEntities));
-            addReportPrintToPanel(print);
-            reportPanel.setVisible(true);
-        }catch(JRException ex){
-            LOGGER.error("SHOW VISUAL TEST PROTOCOL REPORT VIEW: Could not load report: "+ex.getMessage(),ex);
-        }
+        reportPanel.setVisible(false);
+        prgsBarLoader.setVisible(true);
+        prgsBarLoader.progressProperty().unbind();
+        Task<Void> loader = createVisualTestReportLoader();
+        prgsBarLoader.progressProperty().bind(loader.progressProperty());
+        Thread t = new Thread(loader);
+        t.setName("VisualTestReport Loader Thread");
+        t.start();
     }
 
+    private Task<Void> createVisualTestReportLoader(){
+        return  new Task<Void>() {
+            JasperPrint print = null;
+            @Override
+            protected Void call() throws Exception {
+                initPersonalProtocolReportEntityList(selectedTotalProtocol);
+                updateProgress(25, MAX_TASK_PROGRESS_VALUE);
+                TotalProtocolReportEntity totalProtocolReportEntity =
+                        new TotalProtocolReportEntity(selectedTotalProtocol);
+                updateProgress(35, MAX_TASK_PROGRESS_VALUE);
+                try {
+                    JasperReport report = JasperCompileManager.compileReport(VISUAL_TEST_PROTOCOL_REPORT_URL.getFile());
+                    updateProgress(65, MAX_TASK_PROGRESS_VALUE);
+                    print = JasperFillManager.fillReport(report, totalProtocolReportEntity.getParameters(),
+                            new JRBeanCollectionDataSource(personalProtocolReportEntities));
+                    updateProgress(90, MAX_TASK_PROGRESS_VALUE);
+
+                }catch(JRException ex){
+                    LOGGER.error("SHOW VISUAL TEST PROTOCOL REPORT VIEW: Could not load report: "+ex.getMessage(),ex);
+                }
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        addReportPrintToPanel(print);
+                        showReadyReportPanel();
+                    }
+                });
+                return null;
+            }
+        };
+    }
+
+
     public void showRadiationTestProtocolReport(TotalProtocolUI totalProtocolUI){
-        initPersonalProtocolReportEntityList(totalProtocolUI);
-        TotalProtocolReportEntity totalProtocolReportEntity = new TotalProtocolReportEntity(totalProtocolUI);
-        try {
-            JasperReport report = JasperCompileManager.compileReport(RADIATION_TEST_PROTOCOL_REPORT_URL.getFile());
-            JasperPrint print = JasperFillManager.fillReport(report, totalProtocolReportEntity.getParameters(),
-                    new JRBeanCollectionDataSource(personalProtocolReportEntities));
-            addReportPrintToPanel(print);
-            reportPanel.setVisible(true);
-        }catch(JRException ex){
-            LOGGER.error("SHOW RADIATION TEST PROTOCOL REPORT VIEW: Could not load report: "+ex.getMessage(),ex);
-        }
+        this.selectedTotalProtocol = totalProtocolUI;
+
+        reportPanel.setVisible(false);
+        prgsBarLoader.setVisible(true);
+        prgsBarLoader.progressProperty().unbind();
+        Task<Void> loader = createRadiationTestReportLoader();
+        prgsBarLoader.progressProperty().bind(loader.progressProperty());
+        Thread t = new Thread(loader);
+        t.setName("RadiationTestReport Loader Thread");
+        t.start();
+    }
+
+    private Task<Void> createRadiationTestReportLoader(){
+        return new Task<Void>() {
+            JasperPrint print =null;
+            @Override
+            protected Void call() throws Exception {
+
+                initPersonalProtocolReportEntityList(selectedTotalProtocol);
+                updateProgress(25, MAX_TASK_PROGRESS_VALUE);
+                TotalProtocolReportEntity totalProtocolReportEntity =
+                        new TotalProtocolReportEntity(selectedTotalProtocol);
+                updateProgress(35, MAX_TASK_PROGRESS_VALUE);
+                try {
+                    JasperReport report = JasperCompileManager.compileReport(RADIATION_TEST_PROTOCOL_REPORT_URL.getFile());
+                    updateProgress(65, MAX_TASK_PROGRESS_VALUE);
+                    print = JasperFillManager.fillReport(report, totalProtocolReportEntity.getParameters(),
+                            new JRBeanCollectionDataSource(personalProtocolReportEntities));
+                    updateProgress(90, MAX_TASK_PROGRESS_VALUE);
+                }catch(JRException ex){
+                    LOGGER.error("SHOW RADIATION TEST PROTOCOL REPORT VIEW: Could not load report: "+ex.getMessage(),ex);
+                }
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        addReportPrintToPanel(print);
+                        showReadyReportPanel();
+                    }
+                });
+                return null;
+            }
+        };
     }
 
     public void showMechanicalTestProtocolReport(TotalProtocolUI totalProtocolUI){
-        initPersonalProtocolReportEntityList(totalProtocolUI);
-        initPersonalProtocolReportEntityListForMT(
-                (List<PersonalProtocolReportEntity>) personalProtocolReportEntities);
-        TotalProtocolReportEntity totalProtocolReportEntity = new TotalProtocolReportEntity(totalProtocolUI);
-        try {
-            JasperReport report = JasperCompileManager.compileReport(MECHANICAL_TEST_PROTOCOL_REPORT_URL.getFile());
-            JasperPrint print = JasperFillManager.fillReport(report, totalProtocolReportEntity.getParameters(),
-                    new JRBeanCollectionDataSource(personalProtocolReportEntities));
-            addReportPrintToPanel(print);
-            reportPanel.setVisible(true);
-        }catch(JRException ex){
-            LOGGER.error("SHOW MECHANICAL TEST PROTOCOL REPORT VIEW: Could not load report: "+ex.getMessage(),ex);
-        }
+        this.selectedTotalProtocol = totalProtocolUI;
+
+        reportPanel.setVisible(false);
+        prgsBarLoader.setVisible(true);
+        prgsBarLoader.progressProperty().unbind();
+        Task<Void> loader = createMechanicalTestReportLoader();
+        prgsBarLoader.progressProperty().bind(loader.progressProperty());
+        Thread t = new Thread(loader);
+        t.setName("MechanicalTestReport Loader Thread");
+        t.start();
+    }
+
+    private Task<Void> createMechanicalTestReportLoader(){
+        return new Task<Void>() {
+            JasperPrint print = null;
+            @Override
+            protected Void call() throws Exception {
+                initPersonalProtocolReportEntityList(selectedTotalProtocol);
+                updateProgress(25,MAX_TASK_PROGRESS_VALUE);
+                initPersonalProtocolReportEntityListForMT(
+                        (List<PersonalProtocolReportEntity>) personalProtocolReportEntities);
+                updateProgress(35, MAX_TASK_PROGRESS_VALUE);
+                TotalProtocolReportEntity totalProtocolReportEntity =
+                        new TotalProtocolReportEntity(selectedTotalProtocol);
+                updateProgress(45, MAX_TASK_PROGRESS_VALUE);
+                try {
+                    JasperReport report = JasperCompileManager.compileReport(MECHANICAL_TEST_PROTOCOL_REPORT_URL.getFile());
+                    updateProgress(65, MAX_TASK_PROGRESS_VALUE);
+                    print = JasperFillManager.fillReport(report, totalProtocolReportEntity.getParameters(),
+                            new JRBeanCollectionDataSource(personalProtocolReportEntities));
+                    updateProgress(90, MAX_TASK_PROGRESS_VALUE);
+
+                }catch(JRException ex){
+                    LOGGER.error("SHOW MECHANICAL TEST PROTOCOL REPORT VIEW: Could not load report: "+ex.getMessage(),ex);
+                }
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        addReportPrintToPanel(print);
+                        showReadyReportPanel();
+                    }
+                });
+                return null;
+            }
+        };
     }
 
     private void initPersonalProtocolReportEntityListForMT(List<PersonalProtocolReportEntity> ppList){

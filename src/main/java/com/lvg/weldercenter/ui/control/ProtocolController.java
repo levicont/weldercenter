@@ -15,7 +15,6 @@ import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
-import javafx.concurrent.Worker;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -47,7 +46,7 @@ public class ProtocolController extends GenericController {
     private final String EMPTY_STRING_ITEM = "нет";
     private final Double EMPTY_DOUBLE_ITEM = 0.0;
     private Integer taskProgress = 0;
-    private final Integer MAX_TASK_PROGRESS = 100;
+
 
     private JournalService journalService = ServiceFactory.getJournalService();
     private PersonalProtocolService personalProtocolService = ServiceFactory.getPersonalProtocolService();
@@ -402,15 +401,15 @@ public class ProtocolController extends GenericController {
         return new Task<Void>() {
             @Override
             protected Void call() throws Exception {
-                updateProgress(5, MAX_TASK_PROGRESS);
+                updateProgress(5, MAX_TASK_PROGRESS_VALUE);
                 totalProtocols.clear();
                 cachedTotalProtocols.clear();
                 List<Journal> journalsDb = journalService.getAll();
-                updateProgress(20, MAX_TASK_PROGRESS);
+                updateProgress(20, MAX_TASK_PROGRESS_VALUE);
                 List<PersonalProtocol> personalProtocolsDB = personalProtocolService.getAll();
-                updateProgress(30, MAX_TASK_PROGRESS);
+                updateProgress(30, MAX_TASK_PROGRESS_VALUE);
                 List<TotalProtocol> totalProtocolList  = totalProtocolService.getAll();
-                updateProgress(40, MAX_TASK_PROGRESS);
+                updateProgress(40, MAX_TASK_PROGRESS_VALUE);
                 List<JournalUI> journalUIList = new ArrayList<JournalUI>();
                 List<PersonalProtocolUI> protocolUIFromDB = new ArrayList<PersonalProtocolUI>();
 
@@ -419,7 +418,7 @@ public class ProtocolController extends GenericController {
                         journalUIList.add(new JournalUI(pp.getJournal()));
                     }
                 }
-                updateProgress(70, MAX_TASK_PROGRESS);
+                updateProgress(70, MAX_TASK_PROGRESS_VALUE);
                 double currProgress = 70;
                 double stepProgress = 30 / totalProtocolList.size();
                 for (TotalProtocol tp : totalProtocolList){
@@ -442,9 +441,9 @@ public class ProtocolController extends GenericController {
                         }
                     }
                     totalProtocols.add(treeItem);
-                    updateProgress(currProgress, MAX_TASK_PROGRESS);
+                    updateProgress(currProgress, MAX_TASK_PROGRESS_VALUE);
                 }
-                updateProgress(100, MAX_TASK_PROGRESS);
+                updateProgress(100, MAX_TASK_PROGRESS_VALUE);
 
                 Platform.runLater(new Runnable() {
                     @Override
@@ -1928,9 +1927,9 @@ public class ProtocolController extends GenericController {
             protected Void call() throws Exception {
 
                 updateSelectedPersonalProtocolFromFields(selectedPersonalProtocolUI);
-                updateProgress(35, MAX_TASK_PROGRESS);
+                updateProgress(35, MAX_TASK_PROGRESS_VALUE);
                 personalProtocolServiceUI.savePersonalProtocolUIinDB(selectedPersonalProtocolUI);
-                updateProgress(90, MAX_TASK_PROGRESS);
+                updateProgress(90, MAX_TASK_PROGRESS_VALUE);
                 Platform.runLater(new Runnable() {
                     @Override
                     public void run() {
@@ -1987,10 +1986,10 @@ public class ProtocolController extends GenericController {
             @Override
             protected Void call() throws Exception {
                 updateSelectedWeldPatternFromFields(selectedWeldPatternUI);
-                updateProgress(20, MAX_TASK_PROGRESS);
+                updateProgress(20, MAX_TASK_PROGRESS_VALUE);
                 WeldPattern weldPattern = weldPatternServiceUI.getWeldPatternFromWeldPatternUI(selectedWeldPatternUI);
                 weldPattern.setPersonalProtocol(personalProtocolServiceUI.getPersonalProtocolFromUIModel(selectedPersonalProtocolUI));
-                updateProgress(45, MAX_TASK_PROGRESS);
+                updateProgress(45, MAX_TASK_PROGRESS_VALUE);
                 if(selectedWeldPatternUI.getId()==0){
                     selectedWeldPatternUI.setPersonalProtocol(selectedPersonalProtocolUI);
                     Long id = weldPatternService.insert(weldPattern);
@@ -2007,7 +2006,7 @@ public class ProtocolController extends GenericController {
                     LOGGER.debug("SAVE SELECTED WELD PATTERN: selectedWeldPattern is updated.");
 
                 }
-                updateProgress(90, MAX_TASK_PROGRESS);
+                updateProgress(90, MAX_TASK_PROGRESS_VALUE);
                 Platform.runLater(new Runnable() {
                     @Override
                     public void run() {

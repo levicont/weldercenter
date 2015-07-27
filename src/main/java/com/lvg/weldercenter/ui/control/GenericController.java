@@ -10,6 +10,7 @@ abstract public class GenericController implements Initializable {
 
     private Stage stage;
     protected ControllerManager controllerManager;
+    protected final Integer MAX_TASK_PROGRESS_VALUE = 100;
 
     public ControllerManager getControllerManager() {
         return controllerManager;

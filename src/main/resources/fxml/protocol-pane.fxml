@@ -30,7 +30,7 @@
     <center>
         <SplitPane dividerPositions="0.45" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
             <items>
-                <BorderPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #cc7722;">
+                <BorderPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: linear-gradient(to right, #cc6b0a, #cc7722);">
                     <bottom>
                         <VBox fx:id="vboxToolBars" BorderPane.alignment="CENTER">
                             <children>
@@ -57,7 +57,7 @@
                   </Label>
                </top>
                 </BorderPane>
-                <BorderPane prefHeight="324.0" prefWidth="161.0" style="-fx-background-color: #bbffaa;">
+                <BorderPane prefHeight="324.0" prefWidth="161.0" style="-fx-background-color: linear-gradient(to left, #bbffaa, #99ff80);">
                     <top>
                         <Label text="Подробные сведения" BorderPane.alignment="CENTER">
                             <BorderPane.margin>
