@@ -66,6 +66,12 @@ public class MainFrameController extends GenericController{
         controllerManager.showProtocolPane();
     }
 
+    @FXML
+    private void showPropertiesPaneWeldPatternsType(){
+        LOGGER.debug("SHOWING PropertiesPane WeldPatternType");
+        controllerManager.showPropertiesPane();
+    }
+
     private void showReportViewPane(){
         LOGGER.debug("SHOWING ReportViewPane");
         controllerManager.showReportViewPane();

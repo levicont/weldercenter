@@ -62,6 +62,12 @@ public class MainFrame extends Application {
         mainFrameController.setControllerManager(controllerManager);
         mainFrameController.setStageAndListeners(controllerManager.getStage());
 
+        splashWindow.getLbLoadingModuleName().setText(" Инициализация настроек приложения");
+        progressBar.setValue(75);
+        PropertiesController propertiesController = controllerManager.getPropertiesController();
+        propertiesController.setControllerManager(controllerManager);
+
+
         splashWindow.getLbLoadingModuleName().setText(" Инициализация модуля сварщиков");
         progressBar.setValue(80);
         WelderController welderController = controllerManager.getWelderController();
@@ -79,9 +85,9 @@ public class MainFrame extends Application {
 
         splashWindow.getLbLoadingModuleName().setText(" Инициализация модуля отчетов");
         progressBar.setValue(95);
-        controllerManager.getReportViewPane();
         ReportViewController reportViewController = controllerManager.getReportViewController();
         reportViewController.setControllerManager(controllerManager);
+
 
     }
 }

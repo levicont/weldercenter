@@ -76,7 +76,6 @@ public class ReportViewController extends GenericController {
 
     private void init(){
         reportPanel = new JPanel();
-
         swingNode.setContent(reportPanel);
         reportPanel.setLayout(new BorderLayout());
 

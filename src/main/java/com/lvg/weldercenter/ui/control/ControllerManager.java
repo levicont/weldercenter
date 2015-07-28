@@ -19,6 +19,7 @@ public class ControllerManager {
     private final FXMLLoader JOURNAL_PANE_LOADER = new FXMLLoader(getClass().getResource("/fxml/journal-pane.fxml"));
     private final FXMLLoader PROTOCOL_PANE_LOADER = new FXMLLoader(getClass().getResource("/fxml/protocol-pane.fxml"));
     private final FXMLLoader REPORT_VIEW_PANE_LOADER = new FXMLLoader(getClass().getResource("/fxml/report-view-pane.fxml"));
+    private final FXMLLoader PROPERTIES_PANE_LOADER = new FXMLLoader(getClass().getResource("/fxml/properties-pane.fxml"));
 
     private Stage stage;
 
@@ -27,12 +28,14 @@ public class ControllerManager {
     private BorderPane journalPane;
     private BorderPane protocolPane;
     private BorderPane reportViewPane;
+    private BorderPane propertiesPane;
 
     private MainFrameController mainFrameController;
     private WelderController welderController;
     private JournalController journalController;
     private ProtocolController protocolController;
     private ReportViewController reportViewController;
+    private PropertiesController propertiesController;
 
     public ControllerManager(Stage stage){
         this.stage = stage;
@@ -105,6 +108,20 @@ public class ControllerManager {
         return reportViewPane;
     }
 
+    public BorderPane getPropertiesPane(){
+        if (propertiesPane == null){
+            try{
+                propertiesPane = (BorderPane)PROPERTIES_PANE_LOADER.load();
+                return propertiesPane;
+            }catch (IOException ex){
+                LOGGER.error("GET PROPERTIES PANE: Could not load ReportViewPane: " + ex.getMessage());
+                LOGGER.error("GET PROPERTIES PANE: exception: ",ex);
+            }
+
+        }
+        return propertiesPane;
+    }
+
     public WelderController getWelderController() {
         if (welderController == null) {
             getWelderPane();
@@ -142,10 +159,20 @@ public class ControllerManager {
 
     public ReportViewController getReportViewController() {
         if (reportViewController == null) {
+            getReportViewPane();
             reportViewController = (ReportViewController)REPORT_VIEW_PANE_LOADER.getController();
             return reportViewController;
         }
         return reportViewController;
+    }
+
+    public PropertiesController getPropertiesController(){
+        if (propertiesController == null){
+            getPropertiesPane();
+            propertiesController = (PropertiesController)PROPERTIES_PANE_LOADER.getController();
+            return propertiesController;
+        }
+        return propertiesController;
     }
 
     public void showWelderPane(){
@@ -171,6 +198,13 @@ public class ControllerManager {
 
     public void showReportViewPane(){
         BorderPane root = getReportViewPane();
+        BorderPane mainPane = (BorderPane)stage.getScene().rootProperty().get();
+        mainPane.setCenter(root);
+        root.setVisible(true);
+    }
+
+    public void showPropertiesPane(){
+        BorderPane root = getPropertiesPane();
         BorderPane mainPane = (BorderPane)stage.getScene().rootProperty().get();
         mainPane.setCenter(root);
         root.setVisible(true);

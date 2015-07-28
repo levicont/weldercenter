@@ -7,7 +7,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane fx:id="mainReportViewPane" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.lvg.weldercenter.ui.control.ReportViewController">
+<BorderPane fx:id="mainReportViewPane" prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: linear-gradient(to bottom, #aaccff, #cceeFF);" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.lvg.weldercenter.ui.control.ReportViewController">
    <center>
       <SwingNode fx:id="swingNode" BorderPane.alignment="CENTER" />
    </center>

@@ -6,12 +6,12 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane fx:id="mainJournalPane" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane fx:id="mainPropertiesPane" prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: linear-gradient(to bottom, #aaccff, #cceeFF);" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.lvg.weldercenter.ui.control.PropertiesController">
     <bottom>
         <HBox prefHeight="32.0" prefWidth="600.0" spacing="10.0" BorderPane.alignment="CENTER">
             <children>
-                <Button fx:id="btCloseJournalPane" mnemonicParsing="false" onAction="#closeJournalPane" text="Закрыть" />
-                <Button fx:id="btUpdate" mnemonicParsing="false" onAction="#refreshJournalTableView" text="Обновить" />
+                <Button fx:id="btCloseJournalPane" mnemonicParsing="false" onAction="#closePropertiesPane" text="Закрыть" />
+                <Button fx:id="btUpdate" mnemonicParsing="false" text="Обновить" />
             </children>
             <padding>
                 <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
@@ -24,15 +24,15 @@
     <right>
         <VBox spacing="10.0" BorderPane.alignment="CENTER">
             <children>
-                <Button fx:id="btAdd" mnemonicParsing="false" onAction="#addNewJournal" text="Добавить" />
+                <Button fx:id="btAdd" mnemonicParsing="false" text="Добавить" />
                 <Button fx:id="btEdit" mnemonicParsing="false" text="Изменить" />
-                <Button fx:id="btDelete" mnemonicParsing="false" onAction="#removeJournals" text="Удалить" />
+                <Button fx:id="btDelete" mnemonicParsing="false" text="Удалить" />
                 <Separator>
                     <VBox.margin>
                         <Insets top="12.0" />
                     </VBox.margin>
                 </Separator>
-                <Button fx:id="btSave" contentDisplay="CENTER" mnemonicParsing="false" onAction="#saveJournal" text="Сохранить">
+                <Button fx:id="btSave" contentDisplay="CENTER" mnemonicParsing="false" text="Сохранить">
                     <VBox.margin>
                         <Insets />
                     </VBox.margin>
@@ -47,7 +47,7 @@
         </VBox>
     </right>
    <center>
-      <TabPane fx:id="tabPaneAllProperties" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+      <TabPane fx:id="tabPaneAllProperties" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: linear-gradient(to bottom, #aaccff, #cceeFF);" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
         <tabs>
           <Tab fx:id="tabOrganizations" text="Организации">
                <content>
@@ -59,10 +59,10 @@
                                       <center>
                                           <TableView fx:id="organizationsTableView" BorderPane.alignment="CENTER">
                                               <columns>
-                                                  <TableColumn fx:id="id" prefWidth="40.0" text="id" />
-                                                  <TableColumn fx:id="name" text="Название" />
-                                                  <TableColumn fx:id="adress" prefWidth="120.0" text="Адрес" />
-                                                  <TableColumn fx:id="phone" prefWidth="120.0" text="Телефон" />
+                                                  <TableColumn fx:id="tblColumnOrgId" prefWidth="40.0" text="id" />
+                                                  <TableColumn fx:id="tblColumnOrgName" text="Название" />
+                                                  <TableColumn fx:id="tblColumnOrgAdress" prefWidth="120.0" text="Адрес" />
+                                                  <TableColumn fx:id="tblColumnOrgPhone" prefWidth="120.0" text="Телефон" />
                                               </columns>
                                           </TableView>
                                       </center>
@@ -71,18 +71,18 @@
                                               <children>
                                                   <ToolBar prefHeight="30.0" prefWidth="200.0">
                                                       <items>
-                                                          <Button fx:id="btFirst" mnemonicParsing="false" onAction="#selectFirst" text="|&lt;" />
-                                                          <Button fx:id="btPrev" mnemonicParsing="false" onAction="#selectPrev" text="&lt;&lt;" />
-                                                          <Button fx:id="btNew" mnemonicParsing="false" onAction="#addNewJournal" text="&gt;*" />
-                                                          <Button fx:id="btNext" mnemonicParsing="false" onAction="#selectNext" text="&gt;&gt;" />
-                                                          <Button fx:id="btLast" mnemonicParsing="false" onAction="#selectLast" text="&gt;|" />
-                                                          <Button mnemonicParsing="false" onAction="#makeJournalCopy" text="копия" />
+                                                          <Button fx:id="btFirstOrg" mnemonicParsing="false" text="|&lt;" />
+                                                          <Button fx:id="btPrevOrg" mnemonicParsing="false" text="&lt;&lt;" />
+                                                          <Button fx:id="btNewOrg" mnemonicParsing="false" text="&gt;*" />
+                                                          <Button fx:id="btNextOrg" mnemonicParsing="false" text="&gt;&gt;" />
+                                                          <Button fx:id="btLastOrg" mnemonicParsing="false" text="&gt;|" />
+                                                          <Button fx:id="btCopyOrg" mnemonicParsing="false" text="копия" />
                                                       </items>
                                                   </ToolBar>
                                                   <ToolBar fx:id="toolBarSearch" prefHeight="40.0" prefWidth="200.0">
                                                       <items>
                                                 <Label text="Поиск:" />
-                                                          <TextField fx:id="txfSearch" prefHeight="25.0" prefWidth="230.0" />
+                                                          <TextField fx:id="txfSearchOrganization" prefHeight="25.0" prefWidth="230.0" />
                                                       </items>
                                                       <VBox.margin>
                                                           <Insets />
@@ -167,7 +167,7 @@
                                   </BorderPane>
                               </items>
                            <BorderPane.margin>
-                              <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                              <Insets />
                            </BorderPane.margin>
                           </SplitPane>
                      </center>
@@ -182,7 +182,7 @@
                            <content>
                               <FlowPane hgap="8.0" prefHeight="200.0" prefWidth="280.0" rowValignment="TOP" vgap="8.0">
                                  <children>
-                                    <TitledPane alignment="TOP_LEFT" animated="false" collapsible="false" maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="380.0" text="Типы образцов">
+                                    <TitledPane alignment="TOP_LEFT" animated="false" collapsible="false" maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="375.0" text="Типы образцов">
                                        <content>
                                           <GridPane style="-fx-background-color: linear-gradient(to top,#9cccee,#bcdbee);">
                                             <columnConstraints>
@@ -229,7 +229,7 @@
                                           </GridPane>
                                        </content>
                                     </TitledPane>
-                                    <TitledPane alignment="TOP_LEFT" animated="false" collapsible="false" maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="380.0" text="Диаметры образцов">
+                                    <TitledPane alignment="TOP_LEFT" animated="false" collapsible="false" maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="375.0" text="Диаметры образцов">
                                        <content>
                                           <GridPane style="-fx-background-color: linear-gradient(to top,#9cccee,#bcdbee);">
                                              <children>
@@ -266,7 +266,7 @@
                                           </GridPane>
                                        </content>
                                     </TitledPane>
-                                    <TitledPane alignment="TOP_LEFT" animated="false" collapsible="false" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="380.0" text="Толщины образцов">
+                                    <TitledPane alignment="TOP_LEFT" animated="false" collapsible="false" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="375.0" text="Толщины образцов">
                                        <content>
                                           <GridPane style="-fx-background-color: linear-gradient(to top,#9cccee,#bcdbee);">
                                              <children>
@@ -303,7 +303,7 @@
                                           </GridPane>
                                        </content>
                                     </TitledPane>
-                                    <TitledPane alignment="TOP_LEFT" animated="false" collapsible="false" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="380.0" text="Типы сталей">
+                                    <TitledPane alignment="TOP_LEFT" animated="false" collapsible="false" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="375.0" text="Типы сталей">
                                        <content>
                                           <GridPane style="-fx-background-color: linear-gradient(to top,#9cccee,#bcdbee);">
                                              <children>
@@ -350,7 +350,7 @@
                                           </GridPane>
                                        </content>
                                     </TitledPane>
-                                    <TitledPane alignment="TOP_LEFT" animated="false" collapsible="false" maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="380.0" text="Группы сталей">
+                                    <TitledPane alignment="TOP_LEFT" animated="false" collapsible="false" maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="280.0" prefWidth="375.0" text="Группы сталей">
                                        <content>
                                           <GridPane style="-fx-background-color: linear-gradient(to top,#9cccee,#bcdbee);">
                                              <children>
@@ -418,7 +418,7 @@
                            <content>
                               <FlowPane hgap="8.0" rowValignment="TOP" vgap="8.0">
                                  <children>
-                                    <TitledPane alignment="TOP_LEFT" animated="false" collapsible="false" maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="380.0" text="Методы сварки">
+                                    <TitledPane alignment="TOP_LEFT" animated="false" collapsible="false" maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="375.0" text="Методы сварки">
                                        <content>
                                           <GridPane style="-fx-background-color: linear-gradient(to top,#9cccee,#bcdbee);">
                                              <children>
@@ -465,7 +465,7 @@
                                           </GridPane>
                                        </content>
                                     </TitledPane>
-                                    <TitledPane alignment="TOP_LEFT" animated="false" collapsible="false" maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="380.0" text="Электроды">
+                                    <TitledPane alignment="TOP_LEFT" animated="false" collapsible="false" maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="375.0" text="Электроды">
                                        <content>
                                           <GridPane style="-fx-background-color: linear-gradient(to top,#9cccee,#bcdbee);">
                                              <children>
@@ -502,7 +502,7 @@
                                           </GridPane>
                                        </content>
                                     </TitledPane>
-                                    <TitledPane alignment="TOP_LEFT" animated="false" collapsible="false" layoutX="10.0" layoutY="210.0" maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="380.0" text="Сварочная проволока">
+                                    <TitledPane alignment="TOP_LEFT" animated="false" collapsible="false" layoutX="10.0" layoutY="210.0" maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="375.0" text="Сварочная проволока">
                                        <content>
                                           <GridPane style="-fx-background-color: linear-gradient(to top,#9cccee,#bcdbee);">
                                              <children>
@@ -539,7 +539,7 @@
                                           </GridPane>
                                        </content>
                                     </TitledPane>
-                                    <TitledPane alignment="TOP_LEFT" animated="false" collapsible="false" layoutX="10.0" layoutY="410.0" maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="380.0" text="Защитный газ">
+                                    <TitledPane alignment="TOP_LEFT" animated="false" collapsible="false" layoutX="10.0" layoutY="410.0" maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="375.0" text="Защитный газ">
                                        <content>
                                           <GridPane style="-fx-background-color: linear-gradient(to top,#9cccee,#bcdbee);">
                                              <children>
@@ -576,7 +576,7 @@
                                           </GridPane>
                                        </content>
                                     </TitledPane>
-                                    <TitledPane alignment="TOP_LEFT" animated="false" collapsible="false" maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="380.0" text="Положения при сварке">
+                                    <TitledPane alignment="TOP_LEFT" animated="false" collapsible="false" maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="375.0" text="Положения при сварке">
                                        <content>
                                           <GridPane style="-fx-background-color: linear-gradient(to top,#9cccee,#bcdbee);">
                                              <children>
@@ -643,7 +643,7 @@
                            <content>
                               <FlowPane hgap="8.0" prefHeight="200.0" prefWidth="200.0" vgap="8.0">
                                  <children>
-                                    <TitledPane alignment="TOP_LEFT" animated="false" collapsible="false" maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="380.0" text="Образования">
+                                    <TitledPane alignment="TOP_LEFT" animated="false" collapsible="false" maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="375.0" text="Образования">
                                        <content>
                                           <GridPane style="-fx-background-color: linear-gradient(to top,#9cccee,#bcdbee);">
                                              <children>
@@ -680,7 +680,7 @@
                                           </GridPane>
                                        </content>
                                     </TitledPane>
-                                    <TitledPane alignment="TOP_LEFT" animated="false" collapsible="false" layoutX="18.0" layoutY="18.0" maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="380.0" text="Квалификации">
+                                    <TitledPane alignment="TOP_LEFT" animated="false" collapsible="false" layoutX="18.0" layoutY="18.0" maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="375.0" text="Квалификации">
                                        <content>
                                           <GridPane style="-fx-background-color: linear-gradient(to top,#9cccee,#bcdbee);">
                                              <children>
@@ -717,7 +717,7 @@
                                           </GridPane>
                                        </content>
                                     </TitledPane>
-                                    <TitledPane alignment="TOP_LEFT" animated="false" collapsible="false" layoutX="366.0" layoutY="18.0" maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="380.0" text="Должности">
+                                    <TitledPane alignment="TOP_LEFT" animated="false" collapsible="false" layoutX="366.0" layoutY="18.0" maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="375.0" text="Должности">
                                        <content>
                                           <GridPane style="-fx-background-color: linear-gradient(to top,#9cccee,#bcdbee);">
                                              <children>
@@ -776,12 +776,12 @@
                                        <children>
                                           <ToolBar prefHeight="30.0" prefWidth="200.0">
                                              <items>
-                                                <Button fx:id="btFirst1" mnemonicParsing="false" onAction="#selectFirst" text="|&lt;" />
-                                                <Button fx:id="btPrev1" mnemonicParsing="false" onAction="#selectPrev" text="&lt;&lt;" />
-                                                <Button fx:id="btNew1" mnemonicParsing="false" onAction="#addNewJournal" text="&gt;*" />
-                                                <Button fx:id="btNext1" mnemonicParsing="false" onAction="#selectNext" text="&gt;&gt;" />
-                                                <Button fx:id="btLast1" mnemonicParsing="false" onAction="#selectLast" text="&gt;|" />
-                                                <Button mnemonicParsing="false" onAction="#makeJournalCopy" text="копия" />
+                                                <Button fx:id="btFirst1" mnemonicParsing="false" text="|&lt;" />
+                                                <Button fx:id="btPrev1" mnemonicParsing="false" text="&lt;&lt;" />
+                                                <Button fx:id="btNew1" mnemonicParsing="false" text="&gt;*" />
+                                                <Button fx:id="btNext1" mnemonicParsing="false" text="&gt;&gt;" />
+                                                <Button fx:id="btLast1" mnemonicParsing="false" text="&gt;|" />
+                                                <Button mnemonicParsing="false" text="копия" />
                                              </items>
                                           </ToolBar>
                                        </children>
@@ -885,7 +885,7 @@
                               </BorderPane>
                            </items>
                            <BorderPane.margin>
-                              <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                              <Insets />
                            </BorderPane.margin>
                         </SplitPane>
                      </center>
@@ -903,12 +903,12 @@
                                        <children>
                                           <ToolBar prefHeight="30.0" prefWidth="200.0">
                                              <items>
-                                                <Button fx:id="btFirst11" mnemonicParsing="false" onAction="#selectFirst" text="|&lt;" />
-                                                <Button fx:id="btPrev11" mnemonicParsing="false" onAction="#selectPrev" text="&lt;&lt;" />
-                                                <Button fx:id="btNew11" mnemonicParsing="false" onAction="#addNewJournal" text="&gt;*" />
-                                                <Button fx:id="btNext11" mnemonicParsing="false" onAction="#selectNext" text="&gt;&gt;" />
-                                                <Button fx:id="btLast11" mnemonicParsing="false" onAction="#selectLast" text="&gt;|" />
-                                                <Button mnemonicParsing="false" onAction="#makeJournalCopy" text="копия" />
+                                                <Button fx:id="btFirst11" mnemonicParsing="false" text="|&lt;" />
+                                                <Button fx:id="btPrev11" mnemonicParsing="false" text="&lt;&lt;" />
+                                                <Button fx:id="btNew11" mnemonicParsing="false" text="&gt;*" />
+                                                <Button fx:id="btNext11" mnemonicParsing="false" text="&gt;&gt;" />
+                                                <Button fx:id="btLast11" mnemonicParsing="false" text="&gt;|" />
+                                                <Button mnemonicParsing="false" text="копия" />
                                              </items>
                                           </ToolBar>
                                        </children>
@@ -1001,7 +1001,7 @@
                               </BorderPane>
                            </items>
                            <BorderPane.margin>
-                              <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                              <Insets />
                            </BorderPane.margin>
                         </SplitPane>
                      </center>
@@ -1020,12 +1020,12 @@
                                        <children>
                                           <ToolBar prefHeight="30.0" prefWidth="200.0">
                                              <items>
-                                                <Button fx:id="btFirst12" mnemonicParsing="false" onAction="#selectFirst" text="|&lt;" />
-                                                <Button fx:id="btPrev12" mnemonicParsing="false" onAction="#selectPrev" text="&lt;&lt;" />
-                                                <Button fx:id="btNew12" mnemonicParsing="false" onAction="#addNewJournal" text="&gt;*" />
-                                                <Button fx:id="btNext12" mnemonicParsing="false" onAction="#selectNext" text="&gt;&gt;" />
-                                                <Button fx:id="btLast12" mnemonicParsing="false" onAction="#selectLast" text="&gt;|" />
-                                                <Button mnemonicParsing="false" onAction="#makeJournalCopy" text="копия" />
+                                                <Button fx:id="btFirst12" mnemonicParsing="false" text="|&lt;" />
+                                                <Button fx:id="btPrev12" mnemonicParsing="false" text="&lt;&lt;" />
+                                                <Button fx:id="btNew12" mnemonicParsing="false" text="&gt;*" />
+                                                <Button fx:id="btNext12" mnemonicParsing="false" text="&gt;&gt;" />
+                                                <Button fx:id="btLast12" mnemonicParsing="false" text="&gt;|" />
+                                                <Button mnemonicParsing="false" text="копия" />
                                              </items>
                                           </ToolBar>
                                        </children>
@@ -1107,7 +1107,7 @@
                               </BorderPane>
                            </items>
                            <BorderPane.margin>
-                              <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                              <Insets />
                            </BorderPane.margin>
                         </SplitPane>
                      </center>
@@ -1122,20 +1122,7 @@
                            <items>
                               <BorderPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: linear-gradient(to right, #cc6b0a, #cc7722);">
                                  <bottom>
-                                    <VBox fx:id="vboxToolBars121" BorderPane.alignment="CENTER">
-                                       <children>
-                                          <ToolBar prefHeight="30.0" prefWidth="200.0">
-                                             <items>
-                                                <Button fx:id="btFirst121" mnemonicParsing="false" onAction="#selectFirst" text="|&lt;" />
-                                                <Button fx:id="btPrev121" mnemonicParsing="false" onAction="#selectPrev" text="&lt;&lt;" />
-                                                <Button fx:id="btNew121" mnemonicParsing="false" onAction="#addNewJournal" text="&gt;*" />
-                                                <Button fx:id="btNext121" mnemonicParsing="false" onAction="#selectNext" text="&gt;&gt;" />
-                                                <Button fx:id="btLast121" mnemonicParsing="false" onAction="#selectLast" text="&gt;|" />
-                                                <Button mnemonicParsing="false" onAction="#makeJournalCopy" text="копия" />
-                                             </items>
-                                          </ToolBar>
-                                       </children>
-                                    </VBox>
+                                    <VBox fx:id="vboxToolBars121" BorderPane.alignment="CENTER" />
                                  </bottom>
                                  <top>
                                     <Label text="Перечень программ подготовки сварщиков" textFill="#f2f2f2" BorderPane.alignment="CENTER">
@@ -1311,7 +1298,7 @@
                               </BorderPane>
                            </items>
                            <BorderPane.margin>
-                              <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                              <Insets />
                            </BorderPane.margin>
                         </SplitPane>
                      </center>
@@ -1321,4 +1308,7 @@
         </tabs>
       </TabPane>
    </center>
+   <padding>
+      <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+   </padding>
 </BorderPane>
