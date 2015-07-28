@@ -182,7 +182,7 @@
                            <content>
                               <FlowPane hgap="8.0" prefHeight="200.0" prefWidth="280.0" rowValignment="TOP" vgap="8.0">
                                  <children>
-                                    <TitledPane alignment="TOP_LEFT" animated="false" collapsible="false" maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="375.0" text="Типы образцов">
+                                    <TitledPane fx:id="titlePaneWeldPatternsTypes" alignment="TOP_LEFT" animated="false" collapsible="false" maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="375.0" text="Типы образцов">
                                        <content>
                                           <GridPane style="-fx-background-color: linear-gradient(to top,#9cccee,#bcdbee);">
                                             <columnConstraints>
@@ -197,7 +197,7 @@
                                                 <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                             </rowConstraints>
                                              <children>
-                                                <ListView prefHeight="200.0" prefWidth="200.0" GridPane.rowSpan="5">
+                                                <ListView fx:id="listViewWeldPatternsTypes" prefHeight="200.0" prefWidth="200.0" GridPane.rowSpan="5">
                                                    <GridPane.margin>
                                                       <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                                    </GridPane.margin>
@@ -207,7 +207,7 @@
                                                       <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                                    </GridPane.margin>
                                                 </Label>
-                                                <TextField GridPane.columnIndex="1">
+                                                <TextField fx:id="txfWeldPatternTypeCode" GridPane.columnIndex="1">
                                                    <GridPane.margin>
                                                       <Insets bottom="8.0" left="90.0" right="8.0" top="8.0" />
                                                    </GridPane.margin>
@@ -217,23 +217,23 @@
                                                       <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                                    </GridPane.margin>
                                                 </Label>
-                                                <TextField GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                                <TextField fx:id="txfWeldPatternTypeName" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                                    <GridPane.margin>
                                                       <Insets bottom="8.0" left="90.0" right="8.0" top="8.0" />
                                                    </GridPane.margin>
                                                 </TextField>
-                                                <Button mnemonicParsing="false" text="Добавить" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                                <Button mnemonicParsing="false" text="Изменить" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                                                <Button mnemonicParsing="false" text="Удалить" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                                <Button fx:id="btAddWeldPatternType" mnemonicParsing="false" text="Добавить" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                <Button fx:id="btEditWeldPatternType" mnemonicParsing="false" text="Изменить" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                                <Button fx:id="btDeleteWeldPatternType" mnemonicParsing="false" text="Удалить" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                                              </children>
                                           </GridPane>
                                        </content>
                                     </TitledPane>
-                                    <TitledPane alignment="TOP_LEFT" animated="false" collapsible="false" maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="375.0" text="Диаметры образцов">
+                                    <TitledPane fx:id="titlePaneDiameters" alignment="TOP_LEFT" animated="false" collapsible="false" maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="375.0" text="Диаметры образцов">
                                        <content>
                                           <GridPane style="-fx-background-color: linear-gradient(to top,#9cccee,#bcdbee);">
                                              <children>
-                                                <ListView prefHeight="200.0" prefWidth="200.0" GridPane.rowSpan="5">
+                                                <ListView fx:id="listViewDiameters" prefHeight="200.0" prefWidth="200.0" GridPane.rowSpan="5">
                                                    <GridPane.margin>
                                                       <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                                    </GridPane.margin>
@@ -243,14 +243,14 @@
                                                       <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                                    </GridPane.margin>
                                                 </Label>
-                                                <TextField GridPane.columnIndex="1">
+                                                <TextField fx:id="txfDiameter" GridPane.columnIndex="1">
                                                    <GridPane.margin>
                                                       <Insets bottom="8.0" left="110.0" right="8.0" top="8.0" />
                                                    </GridPane.margin>
                                                 </TextField>
-                                                <Button mnemonicParsing="false" text="Добавить" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                                <Button mnemonicParsing="false" text="Изменить" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                                <Button mnemonicParsing="false" text="Удалить" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                                <Button fx:id="btAddDiameter" mnemonicParsing="false" text="Добавить" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                                <Button fx:id="btEditDiameter" mnemonicParsing="false" text="Изменить" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                <Button fx:id="btDeleteDiameter" mnemonicParsing="false" text="Удалить" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                                              </children>
                                              <columnConstraints>
                                                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="140.0" />
@@ -266,11 +266,11 @@
                                           </GridPane>
                                        </content>
                                     </TitledPane>
-                                    <TitledPane alignment="TOP_LEFT" animated="false" collapsible="false" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="375.0" text="Толщины образцов">
+                                    <TitledPane fx:id="titlePaneThickness" alignment="TOP_LEFT" animated="false" collapsible="false" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="375.0" text="Толщины образцов">
                                        <content>
                                           <GridPane style="-fx-background-color: linear-gradient(to top,#9cccee,#bcdbee);">
                                              <children>
-                                                <ListView prefHeight="200.0" prefWidth="200.0" GridPane.rowSpan="5">
+                                                <ListView fx:id="listViewThickness" prefHeight="200.0" prefWidth="200.0" GridPane.rowSpan="5">
                                                    <GridPane.margin>
                                                       <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                                    </GridPane.margin>
@@ -280,7 +280,7 @@
                                                       <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                                    </GridPane.margin>
                                                 </Label>
-                                                <TextField GridPane.columnIndex="1">
+                                                <TextField fx:id="txfThickness" GridPane.columnIndex="1">
                                                    <GridPane.margin>
                                                       <Insets bottom="8.0" left="110.0" right="8.0" top="8.0" />
                                                    </GridPane.margin>
@@ -303,11 +303,11 @@
                                           </GridPane>
                                        </content>
                                     </TitledPane>
-                                    <TitledPane alignment="TOP_LEFT" animated="false" collapsible="false" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="375.0" text="Типы сталей">
+                                    <TitledPane fx:id="titlePaneSteelTypes" alignment="TOP_LEFT" animated="false" collapsible="false" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="375.0" text="Типы сталей">
                                        <content>
                                           <GridPane style="-fx-background-color: linear-gradient(to top,#9cccee,#bcdbee);">
                                              <children>
-                                                <ListView prefHeight="200.0" prefWidth="200.0" GridPane.rowSpan="5">
+                                                <ListView fx:id="listViewSteelTypes" prefHeight="200.0" prefWidth="200.0" GridPane.rowSpan="5">
                                                    <GridPane.margin>
                                                       <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                                    </GridPane.margin>
@@ -317,12 +317,12 @@
                                                       <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                                    </GridPane.margin>
                                                 </Label>
-                                                <TextField GridPane.columnIndex="1">
+                                                <TextField fx:id="txfSteelType" GridPane.columnIndex="1">
                                                    <GridPane.margin>
                                                       <Insets bottom="8.0" left="90.0" right="8.0" top="8.0" />
                                                    </GridPane.margin>
                                                 </TextField>
-                                                <ComboBox prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                                <ComboBox fx:id="cbSteelTypeGroup" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                                    <GridPane.margin>
                                                       <Insets left="90.0" />
                                                    </GridPane.margin>
@@ -350,11 +350,11 @@
                                           </GridPane>
                                        </content>
                                     </TitledPane>
-                                    <TitledPane alignment="TOP_LEFT" animated="false" collapsible="false" maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="280.0" prefWidth="375.0" text="Группы сталей">
+                                    <TitledPane fx:id="titlePaneSteelGroups" alignment="TOP_LEFT" animated="false" collapsible="false" maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="280.0" prefWidth="375.0" text="Группы сталей">
                                        <content>
                                           <GridPane style="-fx-background-color: linear-gradient(to top,#9cccee,#bcdbee);">
                                              <children>
-                                                <ListView prefHeight="200.0" prefWidth="200.0" GridPane.rowSpan="7">
+                                                <ListView fx:id="listViewSteelGroups" prefHeight="200.0" prefWidth="200.0" GridPane.rowSpan="7">
                                                    <GridPane.margin>
                                                       <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                                    </GridPane.margin>
@@ -364,7 +364,7 @@
                                                       <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                                    </GridPane.margin>
                                                 </Label>
-                                                <TextField GridPane.columnIndex="1">
+                                                <TextField fx:id="txfSteelGroup" GridPane.columnIndex="1">
                                                    <GridPane.margin>
                                                       <Insets bottom="8.0" left="90.0" right="8.0" top="8.0" />
                                                    </GridPane.margin>
@@ -377,7 +377,7 @@
                                                 <Button mnemonicParsing="false" text="Добавить" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                                                 <Button mnemonicParsing="false" text="Изменить" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                                                 <Button mnemonicParsing="false" text="Удалить" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-                                                <TextArea prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2" GridPane.rowSpan="2">
+                                                <TextArea fx:id="txtAreaSteelGroupDecription" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2" GridPane.rowSpan="2">
                                                    <GridPane.margin>
                                                       <Insets bottom="8.0" left="8.0" right="8.0" />
                                                    </GridPane.margin>
@@ -815,7 +815,7 @@
                                        <content>
                                           <GridPane fx:id="journalDetailsPane1" minHeight="-Infinity" minWidth="-Infinity">
                                              <children>
-                                                <Label text="Глава комиссии:">
+                                                <Label text="Глава комиссии:" GridPane.columnSpan="2">
                                                    <GridPane.margin>
                                                       <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                                    </GridPane.margin>

@@ -20,6 +20,15 @@ public class PropertiesController extends GenericController {
 
     @FXML
     TabPane tabPaneAllProperties;
+    @FXML
+    Button btAdd;
+    @FXML
+    Button btEdit;
+    @FXML
+    Button btDelete;
+    @FXML
+    Button btSave;
+
 
     //Organization tab
     @FXML
@@ -42,6 +51,69 @@ public class PropertiesController extends GenericController {
     TextField tfxOrganizationPhone;
     @FXML
     TextField txfSearchOrganization;
+
+    //WeldPatterns tab
+    @FXML
+    Tab tabWeldPatterns;
+
+    @FXML
+    TitledPane titlePaneWeldPatternsTypes;
+    @FXML
+    ListView<String> listViewWeldPatternsTypes;
+    @FXML
+    TextField txfWeldPatternTypeCode;
+    @FXML
+    TextField txfWeldPatternTypeName;
+    @FXML
+    Button btAddWeldPatternType;
+    @FXML
+    Button btEditWeldPatternType;
+    @FXML
+    Button btDeleteWeldPatternType;
+
+    @FXML
+    TitledPane titlePaneDiameters;
+    @FXML
+    ListView<String> listViewDiameters;
+    @FXML
+    TextField txfDiameter;
+    @FXML
+    Button btAddDiameter;
+    @FXML
+    Button btEditDiameter;
+    @FXML
+    Button btDeleteDiameter;
+
+    @FXML
+    TitledPane titlePaneThickness;
+    @FXML
+    ListView<String> listViewThickness;
+    @FXML
+    TextField txfThickness;
+
+    @FXML
+    TitledPane titlePaneSteelTypes;
+    @FXML
+    ListView<String> listViewSteelTypes;
+    @FXML
+    TextField txfSteelType;
+    @FXML
+    ComboBox<String> cbSteelTypeGroup;
+
+    @FXML
+    TitledPane titlePaneSteelGroups;
+    @FXML
+    ListView<String> listViewSteelGroups;
+    @FXML
+    TextField txfSteelGroup;
+    @FXML
+    TextArea txtAreaSteelGroupDecription;
+
+
+
+
+
+
 
 
 
