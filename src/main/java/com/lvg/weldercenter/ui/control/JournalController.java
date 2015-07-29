@@ -21,11 +21,14 @@ import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -234,7 +237,7 @@ public class JournalController extends GenericController{
 
         setJournalTableItem(journalTableView, getJournals());
         journalTableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-        journalTableView.addEventHandler(MouseEvent.MOUSE_CLICKED,new TableViewHandler());
+        journalTableView.addEventHandler(Event.ANY,new TableViewHandler());
         hideSearchBar();
     }
 
@@ -815,23 +818,43 @@ public class JournalController extends GenericController{
         getTopics().addAll(topics);
     }
 
-    private class TableViewHandler implements EventHandler<MouseEvent>{
+    private class TableViewHandler implements EventHandler<Event>{
         @Override
-        public void handle(MouseEvent event) {
-            LOGGER.debug("TABLE VIEW HANDLER: Mouse clicked on journal table");
-            JournalUI selectedJournal = journalTableView.getSelectionModel().getSelectedItem();
-            if(selectedJournal != null){
-                LOGGER.debug("TABLE VIEW HANDLER: Selected journal is: \n"+selectedJournal+"\n");
-                if(!journalDetailsPane.isDisabled())
-                    journalDetailsPane.setDisable(true);
-                btEdit.setDisable(false);
-                btSave.setDisable(true);
-                fillJournalDetailsPane(selectedJournal);
-            }else{
-                btEdit.setDisable(true);
-                clearJournalDetailsPane();
+        public void handle(Event event) {
+
+            if (event.getClass().equals(KeyEvent.class)){
+                if (((KeyEvent)event).getCode().equals(KeyCode.UP) ||
+                        ((KeyEvent)event).getCode().equals(KeyCode.DOWN) ||
+                        ((KeyEvent)event).getCode().equals(KeyCode.PAGE_DOWN) ||
+                        ((KeyEvent)event).getCode().equals(KeyCode.PAGE_UP)){
+                    doSelectJournal();
+                    return;
+                }
+            }
+            if (event.getClass().equals(MouseEvent.class)){
+                if (((MouseEvent)event).getEventType().equals(MouseEvent.MOUSE_CLICKED)){
+                    LOGGER.debug("TABLE VIEW HANDLER: Mouse clicked on journal table");
+                    doSelectJournal();
+                    return;
+                }
             }
 
+
+        }
+
+        private void doSelectJournal(){
+            JournalUI selectedJournal = journalTableView.getSelectionModel().getSelectedItem();
+            if (selectedJournal == null){
+                btEdit.setDisable(true);
+                clearJournalDetailsPane();
+                return;
+            }
+            LOGGER.debug("TABLE VIEW HANDLER: Selected journal is: \n"+selectedJournal+"\n");
+            if(!journalDetailsPane.isDisabled())
+                journalDetailsPane.setDisable(true);
+            btEdit.setDisable(false);
+            btSave.setDisable(true);
+            fillJournalDetailsPane(selectedJournal);
         }
     }
     private class TeacherCheckMenuItemHandler implements EventHandler<ActionEvent>{

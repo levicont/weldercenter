@@ -117,6 +117,7 @@
     <bean id="weldPatternServiceUI" class="com.lvg.weldercenter.ui.servicesui.impl.WeldPatternUIManager"/>
     <bean id="commissionCertificationServiceUI" class="com.lvg.weldercenter.ui.servicesui.impl.CommissionCertificationUIManager"/>
     <bean id="weldJoinTypeServiceUI" class="com.lvg.weldercenter.ui.servicesui.impl.WeldJoinTypeUIManager"/>
+    <bean id="organizationServiceUI" class="com.lvg.weldercenter.ui.servicesui.impl.OrganizatioUIManager"/>
 
 
 </beans>

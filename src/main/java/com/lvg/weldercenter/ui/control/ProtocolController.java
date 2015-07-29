@@ -2416,18 +2416,22 @@ public class ProtocolController extends GenericController {
         public void handle(Event event) {
             if (event.getClass().equals(KeyEvent.class)){
                 KeyEvent keyEvent = (KeyEvent)event;
-                if(keyEvent.getCode().equals(KeyCode.DOWN) || keyEvent.getCode().equals(KeyCode.UP)){
+                if(keyEvent.getCode().equals(KeyCode.DOWN) || keyEvent.getCode().equals(KeyCode.UP)||
+                        ((KeyEvent) event).getCode().equals(KeyCode.PAGE_UP) ||
+                        ((KeyEvent) event).getCode().equals(KeyCode.PAGE_DOWN)){
                     LOGGER.debug("TREE LIST VIEW HANDLER: Key typed on protocols list");
                     doSelectProtocol();
                     return;
                 }
                 return;
             }
-            LOGGER.debug("TREE LIST VIEW HANDLER: Mouse clicked on protocols list");
-            doSelectProtocol();
-
-
-
+            if (event.getClass().equals(MouseEvent.class)){
+                if (((MouseEvent)event).getEventType().equals(MouseEvent.MOUSE_CLICKED)){
+                    LOGGER.debug("TREE LIST VIEW HANDLER: Mouse clicked on protocols list");
+                    doSelectProtocol();
+                    return;
+                }
+            }
         }
     }
 

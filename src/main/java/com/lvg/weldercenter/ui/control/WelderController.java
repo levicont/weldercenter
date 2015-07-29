@@ -17,6 +17,7 @@ import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -255,7 +256,7 @@ public class WelderController extends GenericController {
         weldMethods.setCellValueFactory(new PropertyValueFactory<WelderUI, ObservableList<String>>("weldMethods"));
         setWelderTableItem(welderTableView, getWelders());
         welderTableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-        welderTableView.addEventHandler(MouseEvent.MOUSE_CLICKED,new TableViewHandler());
+        welderTableView.addEventHandler(Event.ANY,new TableViewHandler());
         hideSearchBar();
     }
 
@@ -782,9 +783,29 @@ public class WelderController extends GenericController {
         }
     }
 
-    private class TableViewHandler implements EventHandler<MouseEvent>{
+    private class TableViewHandler implements EventHandler<Event>{
         @Override
-        public void handle(MouseEvent event) {
+        public void handle(Event event) {
+
+            if(event.getClass().equals(KeyEvent.class)){
+                if (((KeyEvent)event).getCode().equals(KeyCode.UP) ||
+                        ((KeyEvent)event).getCode().equals(KeyCode.DOWN) ||
+                        ((KeyEvent)event).getCode().equals(KeyCode.PAGE_DOWN) ||
+                        ((KeyEvent)event).getCode().equals(KeyCode.PAGE_UP)){
+                    doSelectWelder();
+                    return;
+                }
+            }
+            if (event.getClass().equals(MouseEvent.class)){
+                if (((MouseEvent)event).getEventType().equals(MouseEvent.MOUSE_CLICKED)){
+                    doSelectWelder();
+                    return;
+                }
+            }
+
+        }
+
+        private void doSelectWelder(){
             WelderUI selectedWelder = welderTableView.getSelectionModel().getSelectedItem();
             if (selectedWelder == null) {
                 LOGGER.debug("there is no any welder is selected");
@@ -795,6 +816,7 @@ public class WelderController extends GenericController {
             btSave.setDisable(true);
             welderDetailsPane.setDisable(true);
             fillWelderDetailPane(selectedWelder);
+
         }
     }
 

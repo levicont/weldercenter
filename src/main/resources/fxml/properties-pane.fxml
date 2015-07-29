@@ -24,15 +24,15 @@
     <right>
         <VBox spacing="10.0" BorderPane.alignment="CENTER">
             <children>
-                <Button fx:id="btAdd" mnemonicParsing="false" text="Добавить" />
-                <Button fx:id="btEdit" mnemonicParsing="false" text="Изменить" />
+                <Button fx:id="btAdd" mnemonicParsing="false" onAction="#addRecord" text="Добавить" />
+                <Button fx:id="btEdit" mnemonicParsing="false" onAction="#editRecord" text="Изменить" />
                 <Button fx:id="btDelete" mnemonicParsing="false" text="Удалить" />
                 <Separator>
                     <VBox.margin>
                         <Insets top="12.0" />
                     </VBox.margin>
                 </Separator>
-                <Button fx:id="btSave" contentDisplay="CENTER" mnemonicParsing="false" text="Сохранить">
+                <Button fx:id="btSave" contentDisplay="CENTER" mnemonicParsing="false" onAction="#saveRecord" text="Сохранить">
                     <VBox.margin>
                         <Insets />
                     </VBox.margin>
@@ -57,7 +57,7 @@
                               <items>
                                   <BorderPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: linear-gradient(to right, #cc6b0a, #cc7722);">
                                       <center>
-                                          <TableView fx:id="organizationsTableView" BorderPane.alignment="CENTER">
+                                          <TableView fx:id="tableViewOrganizations" BorderPane.alignment="CENTER">
                                               <columns>
                                                   <TableColumn fx:id="tblColumnOrgId" prefWidth="40.0" text="id" />
                                                   <TableColumn fx:id="tblColumnOrgName" text="Название" />
@@ -139,7 +139,7 @@
                                                                   <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                                               </GridPane.margin>
                                                           </Label>
-                                                          <TextField fx:id="tfxOrganizationName" maxHeight="-Infinity" minWidth="45.0" GridPane.columnSpan="2" GridPane.rowIndex="1">
+                                                          <TextField fx:id="txfOrganizationName" maxHeight="-Infinity" minWidth="45.0" GridPane.columnSpan="2" GridPane.rowIndex="1">
                                                               <GridPane.margin>
                                                                   <Insets bottom="8.0" left="8.0" right="8.0" />
                                                               </GridPane.margin>
@@ -149,12 +149,12 @@
                                                                   <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                                               </GridPane.margin>
                                                           </Label>
-                                                <TextField fx:id="tfxOrganizationAdress" maxHeight="-Infinity" minWidth="45.0" GridPane.columnSpan="2" GridPane.rowIndex="3">
+                                                <TextField fx:id="txfOrganizationAdress" maxHeight="-Infinity" minWidth="45.0" GridPane.columnSpan="2" GridPane.rowIndex="3">
                                                    <GridPane.margin>
                                                       <Insets bottom="8.0" left="8.0" right="8.0" />
                                                    </GridPane.margin>
                                                 </TextField>
-                                                <TextField fx:id="tfxOrganizationPhone" maxHeight="-Infinity" minWidth="45.0" GridPane.columnSpan="2" GridPane.rowIndex="5">
+                                                <TextField fx:id="txfOrganizationPhone" maxHeight="-Infinity" minWidth="45.0" GridPane.columnSpan="2" GridPane.rowIndex="5">
                                                    <GridPane.margin>
                                                       <Insets bottom="8.0" left="8.0" right="8.0" />
                                                    </GridPane.margin>
@@ -418,11 +418,11 @@
                            <content>
                               <FlowPane hgap="8.0" rowValignment="TOP" vgap="8.0">
                                  <children>
-                                    <TitledPane alignment="TOP_LEFT" animated="false" collapsible="false" maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="375.0" text="Методы сварки">
+                                    <TitledPane fx:id="titlePaneWeldMethod" alignment="TOP_LEFT" animated="false" collapsible="false" maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="375.0" text="Методы сварки">
                                        <content>
                                           <GridPane style="-fx-background-color: linear-gradient(to top,#9cccee,#bcdbee);">
                                              <children>
-                                                <ListView prefHeight="200.0" prefWidth="200.0" GridPane.rowSpan="5">
+                                                <ListView fx:id="listViewWeldMethod" prefHeight="200.0" prefWidth="200.0" GridPane.rowSpan="5">
                                                    <GridPane.margin>
                                                       <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                                    </GridPane.margin>
@@ -432,7 +432,7 @@
                                                       <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                                    </GridPane.margin>
                                                 </Label>
-                                                <TextField GridPane.columnIndex="1">
+                                                <TextField fx:id="txfWeldMethodCode" GridPane.columnIndex="1">
                                                    <GridPane.margin>
                                                       <Insets bottom="8.0" left="90.0" right="8.0" top="8.0" />
                                                    </GridPane.margin>
@@ -442,7 +442,7 @@
                                                       <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                                    </GridPane.margin>
                                                 </Label>
-                                                <TextField GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                                <TextField fx:id="txfWeldMethodName" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                                    <GridPane.margin>
                                                       <Insets bottom="8.0" left="90.0" right="8.0" top="8.0" />
                                                    </GridPane.margin>
@@ -465,11 +465,11 @@
                                           </GridPane>
                                        </content>
                                     </TitledPane>
-                                    <TitledPane alignment="TOP_LEFT" animated="false" collapsible="false" maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="375.0" text="Электроды">
+                                    <TitledPane fx:id="titlePaneElectrode" alignment="TOP_LEFT" animated="false" collapsible="false" maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="375.0" text="Электроды">
                                        <content>
                                           <GridPane style="-fx-background-color: linear-gradient(to top,#9cccee,#bcdbee);">
                                              <children>
-                                                <ListView prefHeight="200.0" prefWidth="200.0" GridPane.rowSpan="5">
+                                                <ListView fx:id="listViewElectrode" prefHeight="200.0" prefWidth="200.0" GridPane.rowSpan="5">
                                                    <GridPane.margin>
                                                       <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                                    </GridPane.margin>
@@ -479,7 +479,7 @@
                                                       <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                                    </GridPane.margin>
                                                 </Label>
-                                                <TextField GridPane.columnIndex="1">
+                                                <TextField fx:id="txfElectrodeType" GridPane.columnIndex="1">
                                                    <GridPane.margin>
                                                       <Insets bottom="8.0" left="90.0" right="8.0" top="8.0" />
                                                    </GridPane.margin>
@@ -502,11 +502,11 @@
                                           </GridPane>
                                        </content>
                                     </TitledPane>
-                                    <TitledPane alignment="TOP_LEFT" animated="false" collapsible="false" layoutX="10.0" layoutY="210.0" maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="375.0" text="Сварочная проволока">
+                                    <TitledPane fx:id="titlePaneWeldWire" alignment="TOP_LEFT" animated="false" collapsible="false" layoutX="10.0" layoutY="210.0" maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="375.0" text="Сварочная проволока">
                                        <content>
                                           <GridPane style="-fx-background-color: linear-gradient(to top,#9cccee,#bcdbee);">
                                              <children>
-                                                <ListView prefHeight="200.0" prefWidth="200.0" GridPane.rowSpan="5">
+                                                <ListView fx:id="listViewWeldWire" prefHeight="200.0" prefWidth="200.0" GridPane.rowSpan="5">
                                                    <GridPane.margin>
                                                       <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                                    </GridPane.margin>
@@ -516,7 +516,7 @@
                                                       <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                                    </GridPane.margin>
                                                 </Label>
-                                                <TextField GridPane.columnIndex="1">
+                                                <TextField fx:id="txfWeldWireType" GridPane.columnIndex="1">
                                                    <GridPane.margin>
                                                       <Insets bottom="8.0" left="90.0" right="8.0" top="8.0" />
                                                    </GridPane.margin>
@@ -539,11 +539,11 @@
                                           </GridPane>
                                        </content>
                                     </TitledPane>
-                                    <TitledPane alignment="TOP_LEFT" animated="false" collapsible="false" layoutX="10.0" layoutY="410.0" maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="375.0" text="Защитный газ">
+                                    <TitledPane fx:id="titlePaneWeldGas" alignment="TOP_LEFT" animated="false" collapsible="false" layoutX="10.0" layoutY="410.0" maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="375.0" text="Защитный газ">
                                        <content>
                                           <GridPane style="-fx-background-color: linear-gradient(to top,#9cccee,#bcdbee);">
                                              <children>
-                                                <ListView prefHeight="200.0" prefWidth="200.0" GridPane.rowSpan="5">
+                                                <ListView fx:id="listViewWeldGas" prefHeight="200.0" prefWidth="200.0" GridPane.rowSpan="5">
                                                    <GridPane.margin>
                                                       <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                                    </GridPane.margin>
@@ -553,7 +553,7 @@
                                                       <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                                    </GridPane.margin>
                                                 </Label>
-                                                <TextField GridPane.columnIndex="1">
+                                                <TextField fx:id="txfWeldGasType" GridPane.columnIndex="1">
                                                    <GridPane.margin>
                                                       <Insets bottom="8.0" left="90.0" right="8.0" top="8.0" />
                                                    </GridPane.margin>
@@ -576,11 +576,11 @@
                                           </GridPane>
                                        </content>
                                     </TitledPane>
-                                    <TitledPane alignment="TOP_LEFT" animated="false" collapsible="false" maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="375.0" text="Положения при сварке">
+                                    <TitledPane fx:id="titlePaneWeldPosition" alignment="TOP_LEFT" animated="false" collapsible="false" maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="375.0" text="Положения при сварке">
                                        <content>
                                           <GridPane style="-fx-background-color: linear-gradient(to top,#9cccee,#bcdbee);">
                                              <children>
-                                                <ListView prefHeight="200.0" prefWidth="200.0" GridPane.rowSpan="7">
+                                                <ListView fx:id="listViewWeldPosition" prefHeight="200.0" prefWidth="200.0" GridPane.rowSpan="7">
                                                    <GridPane.margin>
                                                       <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                                    </GridPane.margin>
@@ -590,7 +590,7 @@
                                                       <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                                    </GridPane.margin>
                                                 </Label>
-                                                <TextField GridPane.columnIndex="1">
+                                                <TextField fx:id="txfWeldPositionCode" GridPane.columnIndex="1">
                                                    <GridPane.margin>
                                                       <Insets bottom="8.0" left="90.0" right="8.0" top="8.0" />
                                                    </GridPane.margin>
@@ -603,7 +603,7 @@
                                                 <Button mnemonicParsing="false" text="Добавить" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                                                 <Button mnemonicParsing="false" text="Изменить" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                                                 <Button mnemonicParsing="false" text="Удалить" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-                                                <TextArea prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2" GridPane.rowSpan="2">
+                                                <TextArea fx:id="txtAreaWeldPositionDescription" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2" GridPane.rowSpan="2">
                                                    <GridPane.margin>
                                                       <Insets bottom="8.0" left="8.0" right="8.0" />
                                                    </GridPane.margin>
@@ -643,11 +643,11 @@
                            <content>
                               <FlowPane hgap="8.0" prefHeight="200.0" prefWidth="200.0" vgap="8.0">
                                  <children>
-                                    <TitledPane alignment="TOP_LEFT" animated="false" collapsible="false" maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="375.0" text="Образования">
+                                    <TitledPane fx:id="titlePaneEducation" alignment="TOP_LEFT" animated="false" collapsible="false" maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="375.0" text="Образования">
                                        <content>
                                           <GridPane style="-fx-background-color: linear-gradient(to top,#9cccee,#bcdbee);">
                                              <children>
-                                                <ListView prefHeight="200.0" prefWidth="200.0" GridPane.rowSpan="5">
+                                                <ListView fx:id="listViewEducation" prefHeight="200.0" prefWidth="200.0" GridPane.rowSpan="5">
                                                    <GridPane.margin>
                                                       <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                                    </GridPane.margin>
@@ -657,7 +657,7 @@
                                                       <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                                    </GridPane.margin>
                                                 </Label>
-                                                <TextField GridPane.columnIndex="1">
+                                                <TextField fx:id="txfEducationType" GridPane.columnIndex="1">
                                                    <GridPane.margin>
                                                       <Insets bottom="8.0" left="70.0" right="8.0" top="8.0" />
                                                    </GridPane.margin>
@@ -680,11 +680,11 @@
                                           </GridPane>
                                        </content>
                                     </TitledPane>
-                                    <TitledPane alignment="TOP_LEFT" animated="false" collapsible="false" layoutX="18.0" layoutY="18.0" maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="375.0" text="Квалификации">
+                                    <TitledPane fx:id="titlePaneQualification" alignment="TOP_LEFT" animated="false" collapsible="false" layoutX="18.0" layoutY="18.0" maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="375.0" text="Квалификации">
                                        <content>
                                           <GridPane style="-fx-background-color: linear-gradient(to top,#9cccee,#bcdbee);">
                                              <children>
-                                                <ListView prefHeight="200.0" prefWidth="200.0" GridPane.rowSpan="5">
+                                                <ListView fx:id="listViewQualification" prefHeight="200.0" prefWidth="200.0" GridPane.rowSpan="5">
                                                    <GridPane.margin>
                                                       <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                                    </GridPane.margin>
@@ -694,7 +694,7 @@
                                                       <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                                    </GridPane.margin>
                                                 </Label>
-                                                <TextField GridPane.columnIndex="1">
+                                                <TextField fx:id="txfQualificationType" GridPane.columnIndex="1">
                                                    <GridPane.margin>
                                                       <Insets bottom="8.0" left="70.0" right="8.0" top="8.0" />
                                                    </GridPane.margin>
@@ -717,11 +717,11 @@
                                           </GridPane>
                                        </content>
                                     </TitledPane>
-                                    <TitledPane alignment="TOP_LEFT" animated="false" collapsible="false" layoutX="366.0" layoutY="18.0" maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="375.0" text="Должности">
+                                    <TitledPane fx:id="titlePaneJob" alignment="TOP_LEFT" animated="false" collapsible="false" layoutX="366.0" layoutY="18.0" maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="375.0" text="Должности">
                                        <content>
                                           <GridPane style="-fx-background-color: linear-gradient(to top,#9cccee,#bcdbee);">
                                              <children>
-                                                <ListView prefHeight="200.0" prefWidth="200.0" GridPane.rowSpan="5">
+                                                <ListView fx:id="listViewJob" prefHeight="200.0" prefWidth="200.0" GridPane.rowSpan="5">
                                                    <GridPane.margin>
                                                       <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                                    </GridPane.margin>
@@ -731,7 +731,7 @@
                                                       <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                                    </GridPane.margin>
                                                 </Label>
-                                                <TextField GridPane.columnIndex="1">
+                                                <TextField fx:id="txfJobType" GridPane.columnIndex="1">
                                                    <GridPane.margin>
                                                       <Insets bottom="8.0" left="70.0" right="8.0" top="8.0" />
                                                    </GridPane.margin>
@@ -764,7 +764,7 @@
                      </center>
                   </BorderPane>
                </content></Tab>
-            <Tab fx:id="tabComission" text="Комиссия">
+            <Tab fx:id="tabCommission" text="Комиссия">
                <content>
                   <BorderPane prefHeight="200.0" prefWidth="200.0">
                      <center>
@@ -776,11 +776,11 @@
                                        <children>
                                           <ToolBar prefHeight="30.0" prefWidth="200.0">
                                              <items>
-                                                <Button fx:id="btFirst1" mnemonicParsing="false" text="|&lt;" />
-                                                <Button fx:id="btPrev1" mnemonicParsing="false" text="&lt;&lt;" />
-                                                <Button fx:id="btNew1" mnemonicParsing="false" text="&gt;*" />
-                                                <Button fx:id="btNext1" mnemonicParsing="false" text="&gt;&gt;" />
-                                                <Button fx:id="btLast1" mnemonicParsing="false" text="&gt;|" />
+                                                <Button mnemonicParsing="false" text="|&lt;" />
+                                                <Button mnemonicParsing="false" text="&lt;&lt;" />
+                                                <Button mnemonicParsing="false" text="&gt;*" />
+                                                <Button mnemonicParsing="false" text="&gt;&gt;" />
+                                                <Button mnemonicParsing="false" text="&gt;|" />
                                                 <Button mnemonicParsing="false" text="копия" />
                                              </items>
                                           </ToolBar>
@@ -788,13 +788,13 @@
                                     </VBox>
                                  </bottom>
                                  <center>
-                                    <TableView fx:id="organizationsTableView1" BorderPane.alignment="CENTER">
+                                    <TableView fx:id="tableViewCommissions" BorderPane.alignment="CENTER">
                                        <columns>
-                                          <TableColumn fx:id="id1" prefWidth="40.0" text="id" />
-                                          <TableColumn fx:id="name1" prefWidth="160.0" text="Глава" />
-                                          <TableColumn fx:id="adress1" prefWidth="160.0" text="Специалист по сварке" />
-                                          <TableColumn fx:id="phone1" prefWidth="160.0" text="Специалист по качеству" />
-                                          <TableColumn prefWidth="160.0" text="Специалист по охране труда" />
+                                          <TableColumn fx:id="tblColumnCommissionId" prefWidth="40.0" text="id" />
+                                          <TableColumn fx:id="tblColumnHead" prefWidth="160.0" text="Глава" />
+                                          <TableColumn fx:id="tblColumnWeldSpec" prefWidth="160.0" text="Специалист по сварке" />
+                                          <TableColumn fx:id="tblColumnNDTSpec" prefWidth="160.0" text="Специалист по качеству" />
+                                          <TableColumn fx:id="tblColumnSafetySpec" prefWidth="160.0" text="Специалист по охране труда" />
                                        </columns>
                                     </TableView>
                                  </center>
@@ -835,22 +835,22 @@
                                                       <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                                    </GridPane.margin>
                                                 </Label>
-                                                <ComboBox prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="1">
+                                                <ComboBox fx:id="cbCommissionHead" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="1">
                                                    <GridPane.margin>
                                                       <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                                    </GridPane.margin>
                                                 </ComboBox>
-                                                <ComboBox layoutX="18.0" layoutY="58.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="3">
+                                                <ComboBox fx:id="cbCommissionWeldSpec" layoutX="18.0" layoutY="58.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="3">
                                                    <GridPane.margin>
                                                       <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                                    </GridPane.margin>
                                                 </ComboBox>
-                                                <ComboBox layoutX="18.0" layoutY="138.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="5">
+                                                <ComboBox fx:id="cbCommissionNDTSpec" layoutX="18.0" layoutY="138.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="5">
                                                    <GridPane.margin>
                                                       <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                                    </GridPane.margin>
                                                 </ComboBox>
-                                                <ComboBox layoutX="18.0" layoutY="218.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="7">
+                                                <ComboBox fx:id="cbCommissionSafetySpec" layoutX="18.0" layoutY="218.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="7">
                                                    <GridPane.margin>
                                                       <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                                    </GridPane.margin>
@@ -891,7 +891,7 @@
                      </center>
                   </BorderPane>
                </content></Tab>
-            <Tab fx:id="tabComission1" text="Преподаватели">
+            <Tab fx:id="tabTeachers" text="Преподаватели">
                <content>
                   <BorderPane prefHeight="200.0" prefWidth="200.0">
                      <center>
@@ -915,12 +915,12 @@
                                     </VBox>
                                  </bottom>
                                  <center>
-                                    <TableView fx:id="organizationsTableView11" BorderPane.alignment="CENTER">
+                                    <TableView fx:id="tableViewTeachers" BorderPane.alignment="CENTER">
                                        <columns>
-                                          <TableColumn fx:id="id11" prefWidth="40.0" text="id" />
-                                          <TableColumn fx:id="name11" prefWidth="130.0" text="Фамилия" />
-                                          <TableColumn fx:id="adress11" prefWidth="130.0" text="Имя" />
-                                          <TableColumn fx:id="phone11" prefWidth="130.0" text="Отчество" />
+                                          <TableColumn fx:id="tblColumnTeacherId" prefWidth="40.0" text="id" />
+                                          <TableColumn fx:id="tblColumnTeacherSurname" prefWidth="130.0" text="Фамилия" />
+                                          <TableColumn fx:id="tblColumnTeacherName" prefWidth="130.0" text="Имя" />
+                                          <TableColumn fx:id="tblColumnTeacherSecname" prefWidth="130.0" text="Отчество" />
                                        </columns>
                                     </TableView>
                                  </center>
@@ -956,17 +956,17 @@
                                                       <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                                    </GridPane.margin>
                                                 </Label>
-                                                <TextField maxWidth="-Infinity" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="1">
+                                                <TextField fx:id="txfTeacherSurname" maxWidth="-Infinity" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="1">
                                                    <GridPane.margin>
                                                       <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                                    </GridPane.margin>
                                                 </TextField>
-                                                <TextField layoutX="18.0" layoutY="58.0" maxWidth="-Infinity" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="3">
+                                                <TextField fx:id="txfTeacherName" layoutX="18.0" layoutY="58.0" maxWidth="-Infinity" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="3">
                                                    <GridPane.margin>
                                                       <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                                    </GridPane.margin>
                                                 </TextField>
-                                                <TextField layoutX="18.0" layoutY="138.0" maxWidth="-Infinity" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="5">
+                                                <TextField fx:id="txfTeacherSecname" layoutX="18.0" layoutY="138.0" maxWidth="-Infinity" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="5">
                                                    <GridPane.margin>
                                                       <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                                    </GridPane.margin>
@@ -1008,7 +1008,7 @@
                   </BorderPane>
                </content>
             </Tab>
-            <Tab fx:id="tabComission2" text="Нормативные документы">
+            <Tab fx:id="tabNDTDocuments" text="Нормативные документы">
                <content>
                   <BorderPane prefHeight="200.0" prefWidth="200.0">
                      <center>
@@ -1032,11 +1032,11 @@
                                     </VBox>
                                  </bottom>
                                  <center>
-                                    <TableView fx:id="organizationsTableView12" BorderPane.alignment="CENTER">
+                                    <TableView fx:id="tableViewNDTDocuments" BorderPane.alignment="CENTER">
                                        <columns>
-                                          <TableColumn fx:id="id12" prefWidth="40.0" text="id" />
-                                          <TableColumn fx:id="name12" prefWidth="180.0" text="Название" />
-                                          <TableColumn fx:id="adress12" prefWidth="260.0" text="Полное описание" />
+                                          <TableColumn fx:id="tblColumnNDTDocId" prefWidth="40.0" text="id" />
+                                          <TableColumn fx:id="tblColumnNDTDocName" prefWidth="180.0" text="Название" />
+                                          <TableColumn fx:id="tblColumnNDTDocFullName" prefWidth="260.0" text="Полное описание" />
                                        </columns>
                                     </TableView>
                                  </center>
@@ -1067,12 +1067,12 @@
                                                       <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                                    </GridPane.margin>
                                                 </Label>
-                                                <TextField GridPane.columnSpan="2" GridPane.rowIndex="1">
+                                                <TextField fx:id="txfNDTDocumentName" GridPane.columnSpan="2" GridPane.rowIndex="1">
                                                    <GridPane.margin>
                                                       <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                                    </GridPane.margin>
                                                 </TextField>
-                                                <TextArea prefHeight="200.0" prefWidth="200.0" wrapText="true" GridPane.columnSpan="2" GridPane.rowIndex="3" GridPane.rowSpan="3">
+                                                <TextArea fx:id="txtAreaNDTDocumentFullName" prefHeight="200.0" prefWidth="200.0" wrapText="true" GridPane.columnSpan="2" GridPane.rowIndex="3" GridPane.rowSpan="3">
                                                    <GridPane.margin>
                                                       <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                                    </GridPane.margin>
@@ -1114,7 +1114,7 @@
                   </BorderPane>
                </content>
             </Tab>
-            <Tab fx:id="tabComission21" text="Программы подготовки">
+            <Tab fx:id="tabCurriculum" text="Программы подготовки">
                <content>
                   <BorderPane prefHeight="200.0" prefWidth="200.0">
                      <center>
@@ -1135,16 +1135,16 @@
                                     </Label>
                                  </top>
                                  <center>
-                                    <TreeView prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+                                    <TreeView fx:id="treeViewCurriculum" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
                                  </center>
                               </BorderPane>
                               <BorderPane prefHeight="324.0" prefWidth="161.0" style="-fx-background-color: linear-gradient(to left, #bbffaa, #99ff80);">
                                  <center>
                                     <ScrollPane fitToHeight="true" fitToWidth="true" style="-fx-border-color: white;" BorderPane.alignment="CENTER">
                                        <content>
-                                          <Accordion>
+                                          <Accordion fx:id="accordPaneCurriculum">
                                             <panes>
-                                              <TitledPane animated="false" text="Программа">
+                                              <TitledPane fx:id="titledPaneCurriculum" animated="false" text="Программа">
                                                    <content>
                                                       <GridPane fx:id="journalDetailsPane121" minHeight="-Infinity" minWidth="-Infinity">
                                                          <children>
@@ -1158,12 +1158,12 @@
                                                                   <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                                                </GridPane.margin>
                                                             </Label>
-                                                            <TextField GridPane.columnSpan="2" GridPane.rowIndex="1">
+                                                            <TextField fx:id="txfCurriculumName" GridPane.columnSpan="2" GridPane.rowIndex="1">
                                                                <GridPane.margin>
                                                                   <Insets bottom="8.0" left="8.0" right="8.0" />
                                                                </GridPane.margin>
                                                             </TextField>
-                                                            <TextArea prefHeight="200.0" prefWidth="200.0" wrapText="true" GridPane.columnSpan="2" GridPane.rowIndex="3" GridPane.rowSpan="3">
+                                                            <TextArea fx:id="txtAreaCurriculumDescription" prefHeight="200.0" prefWidth="200.0" wrapText="true" GridPane.columnSpan="2" GridPane.rowIndex="3" GridPane.rowSpan="3">
                                                                <GridPane.margin>
                                                                   <Insets bottom="8.0" left="8.0" right="8.0" />
                                                                </GridPane.margin>
@@ -1187,7 +1187,7 @@
                                                       </GridPane>
                                                    </content>
                                                 </TitledPane>
-                                                <TitledPane animated="false" layoutX="10.0" layoutY="10.0" text="Раздел программы">
+                                                <TitledPane fx:id="titledPaneSection" animated="false" layoutX="10.0" layoutY="10.0" text="Раздел программы">
                                                    <content>
                                                       <GridPane fx:id="journalDetailsPane1211" minHeight="-Infinity" minWidth="-Infinity">
                                                          <children>
@@ -1201,12 +1201,12 @@
                                                                   <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                                                </GridPane.margin>
                                                             </Label>
-                                                            <TextField GridPane.columnSpan="2" GridPane.rowIndex="1">
+                                                            <TextField fx:id="txfSectionName" GridPane.columnSpan="2" GridPane.rowIndex="1">
                                                                <GridPane.margin>
                                                                   <Insets bottom="8.0" left="8.0" right="8.0" />
                                                                </GridPane.margin>
                                                             </TextField>
-                                                            <TextArea prefHeight="200.0" prefWidth="200.0" wrapText="true" GridPane.columnSpan="2" GridPane.rowIndex="3" GridPane.rowSpan="3">
+                                                            <TextArea fx:id="txtAreaSectionDescription" prefHeight="200.0" prefWidth="200.0" wrapText="true" GridPane.columnSpan="2" GridPane.rowIndex="3" GridPane.rowSpan="3">
                                                                <GridPane.margin>
                                                                   <Insets bottom="8.0" left="8.0" right="8.0" />
                                                                </GridPane.margin>
@@ -1230,7 +1230,7 @@
                                                       </GridPane>
                                                    </content>
                                                 </TitledPane>
-                                                <TitledPane animated="false" layoutX="10.0" layoutY="35.0" text="Тема занятий">
+                                                <TitledPane fx:id="titledPaneTopic" animated="false" layoutX="10.0" layoutY="35.0" text="Тема занятий">
                                                    <content>
                                                       <GridPane fx:id="journalDetailsPane12111" minHeight="-Infinity" minWidth="-Infinity">
                                                          <children>
@@ -1244,12 +1244,12 @@
                                                                   <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                                                </GridPane.margin>
                                                             </Label>
-                                                            <TextField GridPane.columnSpan="2" GridPane.rowIndex="1">
+                                                            <TextField fx:id="txfTopicName" GridPane.columnSpan="2" GridPane.rowIndex="1">
                                                                <GridPane.margin>
                                                                   <Insets bottom="8.0" left="8.0" right="8.0" />
                                                                </GridPane.margin>
                                                             </TextField>
-                                                            <TextArea prefHeight="200.0" prefWidth="200.0" wrapText="true" GridPane.columnSpan="2" GridPane.rowIndex="3" GridPane.rowSpan="3">
+                                                            <TextArea fx:id="txtAreaTopicDescription" prefHeight="200.0" prefWidth="200.0" wrapText="true" GridPane.columnSpan="2" GridPane.rowIndex="3" GridPane.rowSpan="3">
                                                                <GridPane.margin>
                                                                   <Insets bottom="8.0" left="8.0" right="8.0" />
                                                                </GridPane.margin>
@@ -1259,7 +1259,7 @@
                                                                   <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                                                </GridPane.margin>
                                                             </Label>
-                                                            <TextField layoutX="28.0" layoutY="68.0" GridPane.rowIndex="7">
+                                                            <TextField fx:id="txfTopicHours" layoutX="28.0" layoutY="68.0" GridPane.rowIndex="7">
                                                                <GridPane.margin>
                                                                   <Insets bottom="8.0" left="8.0" right="8.0" />
                                                                </GridPane.margin>
