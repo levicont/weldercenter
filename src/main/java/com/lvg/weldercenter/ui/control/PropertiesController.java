@@ -2,13 +2,12 @@ package com.lvg.weldercenter.ui.control;
 
 import com.lvg.weldercenter.models.NDTDocument;
 import com.lvg.weldercenter.models.Organization;
+import com.lvg.weldercenter.models.WeldDetail;
 import com.lvg.weldercenter.services.OrganizationService;
+import com.lvg.weldercenter.services.WeldDetailService;
 import com.lvg.weldercenter.spring.factories.ServiceFactory;
 import com.lvg.weldercenter.spring.factories.ServiceUIFactory;
-import com.lvg.weldercenter.ui.entities.CommissionCertificationUI;
-import com.lvg.weldercenter.ui.entities.NDTDocumentUI;
-import com.lvg.weldercenter.ui.entities.OrganizationUI;
-import com.lvg.weldercenter.ui.entities.TeacherUI;
+import com.lvg.weldercenter.ui.entities.*;
 import com.lvg.weldercenter.ui.servicesui.OrganizationServiceUI;
 import com.lvg.weldercenter.ui.util.EventFXUtil;
 import javafx.beans.InvalidationListener;
@@ -19,12 +18,15 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.control.Dialog;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import org.apache.log4j.Logger;
+import org.controlsfx.control.action.Action;
+import org.controlsfx.dialog.*;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -37,6 +39,7 @@ public class PropertiesController extends GenericController {
     private final String STYLE_NOT_EDITABLE_BACKGROUND = "-fx-background-color: #deefff";
 
     private OrganizationService organizationService = ServiceFactory.getOrganizationService();
+    private WeldDetailService weldDetailService = ServiceFactory.getWeldDetailService();
 
     private OrganizationServiceUI organizationServiceUI = ServiceUIFactory.getOrganizationServiceUI();
 
@@ -85,7 +88,7 @@ public class PropertiesController extends GenericController {
     @FXML
     private TitledPane titlePaneWeldPatternsTypes;
     @FXML
-    private ListView<String> listViewWeldPatternsTypes;
+    private ListView<WeldDetailUI> listViewWeldPatternsTypes;
     @FXML
     private TextField txfWeldPatternTypeCode;
     @FXML
@@ -295,6 +298,8 @@ public class PropertiesController extends GenericController {
 
 
     private ObservableList<OrganizationUI> allOrganization = FXCollections.observableArrayList();
+    private ObservableList<WeldDetailUI> allWeldPatternTypes = FXCollections.observableArrayList();
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         LOGGER.debug("INITIALIZING Properties Pane");
@@ -303,16 +308,62 @@ public class PropertiesController extends GenericController {
 
     private void init(){
         initOrganizationTab();
+        initWeldPatternTab();
         btSave.setDisable(true);
+    }
+
+    private void initWeldPatternTab(){
+        initTitlePaneWeldPatternTypes();
+    }
+
+    private void initTitlePaneWeldPatternTypes(){
+        initListViewWeldPatternTypes();
+        setDisabledWeldPatternTypesFields(true);
+    }
+
+    private void initListViewWeldPatternTypes(){
+        initAllWeldPatternTypes();
+        listViewWeldPatternsTypes.setItems(allWeldPatternTypes);
+        listViewWeldPatternsTypes.setEditable(false);
+        ListViewEventHandler eventHandler = new ListViewEventHandler();
+        listViewWeldPatternsTypes.addEventHandler(Event.ANY, eventHandler);
+        listViewWeldPatternsTypes.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+        listViewWeldPatternsTypes.getSelectionModel().selectFirst();
+    }
+
+    private void initAllWeldPatternTypes(){
+        allWeldPatternTypes.clear();
+
+        for (WeldDetail wd : weldDetailService.getAll()){
+            WeldDetailUI wdUI = new WeldDetailUI(wd);
+            allWeldPatternTypes.add(wdUI);
+        }
+    }
+
+    private void setDisabledWeldPatternTypesFields(boolean disabled){
+        if (disabled) {
+            txfWeldPatternTypeCode.setEditable(false);
+            txfWeldPatternTypeCode.setStyle(STYLE_NOT_EDITABLE_BACKGROUND);
+            txfWeldPatternTypeName.setEditable(false);
+            txfWeldPatternTypeName.setStyle(STYLE_NOT_EDITABLE_BACKGROUND);
+        }else {
+            txfWeldPatternTypeCode.setEditable(true);
+            txfWeldPatternTypeCode.setStyle("");
+            txfWeldPatternTypeName.setEditable(true);
+            txfWeldPatternTypeName.setStyle("");
+        }
     }
 
     private void initOrganizationTab(){
         initTableViewOrganizations();
         setDisabledOrganizationFields(true);
         TextFieldValidateListener validateListener = new TextFieldValidateListener();
+        SearchTextFieldValidateListener searchValidateListener = new SearchTextFieldValidateListener();
+
         txfOrganizationName.textProperty().addListener(validateListener);
         txfOrganizationAdress.textProperty().addListener(validateListener);
         txfOrganizationPhone.textProperty().addListener(validateListener);
+        txfSearchOrganization.textProperty().addListener(searchValidateListener);
     }
 
     private void setDisabledOrganizationFields(boolean disabled){
@@ -339,6 +390,7 @@ public class PropertiesController extends GenericController {
         tblColumnOrgName.setCellValueFactory(new PropertyValueFactory<OrganizationUI, String>("name"));
         tblColumnOrgAdress.setCellValueFactory(new PropertyValueFactory<OrganizationUI, String>("adress"));
         tblColumnOrgPhone.setCellValueFactory(new PropertyValueFactory<OrganizationUI, String>("phone"));
+        tableViewOrganizations.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         tableViewOrganizations.addEventHandler(Event.ANY, new TableViewEventHandler());
         tableViewOrganizations.setItems(allOrganization);
 
@@ -353,6 +405,8 @@ public class PropertiesController extends GenericController {
     }
 
     private void editOrganizationActive(){
+        if (tableViewOrganizations.getSelectionModel().getSelectedItem()==null)
+            return;
         setDisabledOrganizationFields(false);
         txfOrganizationName.requestFocus();
     }
@@ -368,6 +422,10 @@ public class PropertiesController extends GenericController {
         if (org.getOrganizationId()!=null && org.getOrganizationId() != 0){
             organizationService.update(org);
             LOGGER.debug("SAVE ORGANIZATION: organization updated in DB");
+        }else{
+            Long id = organizationService.insert(org);
+            updOrganization.setId(id);
+            LOGGER.debug("SAVE ORGANIZATION: organization inserted in DB");
         }
 
     }
@@ -375,10 +433,41 @@ public class PropertiesController extends GenericController {
     private void addOrganization(){
         OrganizationUI newOrg = new OrganizationUI();
         allOrganization.add(newOrg);
+        tableViewOrganizations.getSelectionModel().clearSelection();
         tableViewOrganizations.getSelectionModel().select(newOrg);
         tableViewOrganizations.fireEvent(EventFXUtil.getMouseClickEvent());
         editRecord();
 
+    }
+
+    private void deleteOrganization(){
+        LOGGER.debug("DELETE button is pressed");
+        ObservableList<OrganizationUI> delOrgList = tableViewOrganizations.getSelectionModel().getSelectedItems();
+
+        if(!delOrgList.isEmpty()){
+            LOGGER.debug("start DELETE dialog...");
+            Action response = Dialogs.create().owner(mainPropertiesPane.getScene().getWindow())
+                    .title("Удаление записей")
+                    .masthead("Сделан выбор записей для удаления")
+                    .message("Удалить выбранные записи? ("+delOrgList.size()+"шт.)")
+                    .actions(org.controlsfx.dialog.Dialog.Actions.OK, org.controlsfx.dialog.Dialog.Actions.CANCEL)
+                    .showConfirm();
+            if(response == org.controlsfx.dialog.Dialog.Actions.OK){
+                for(OrganizationUI orgUI : delOrgList){
+                    if (orgUI.getId()!=0){
+                        organizationService.delete(organizationServiceUI.getOrganizationFromOrganizationUI(orgUI));
+                    }
+                    else
+                        LOGGER.warn("DELETE ORGANIZATION: Not possible to delete organization from DB: "+orgUI);
+                }
+                allOrganization.removeAll(delOrgList);
+                tableViewOrganizations.getSelectionModel().clearSelection();
+                tableViewOrganizations.getSelectionModel().selectFirst();
+                tableViewOrganizations.fireEvent(EventFXUtil.getMouseClickEvent());
+                LOGGER.debug("DELETE ORGANIZATIONS: Selected organizations has been deleted");
+            }
+
+        }
     }
 
     private void updateOrganizationFromFields(OrganizationUI organizationUI){
@@ -426,6 +515,133 @@ public class PropertiesController extends GenericController {
         if (activeTab.equals(tabOrganizations)){
             addOrganization();
         }
+    }
+
+    @FXML
+    private void deleteRecord(){
+        Tab activeTab = tabPaneAllProperties.getSelectionModel().getSelectedItem();
+        if (activeTab == null)
+            return;
+        if (activeTab.equals(tabOrganizations)){
+            deleteOrganization();
+        }
+    }
+
+    @FXML
+    private void selectFirstRecord(){
+        Tab activeTab = tabPaneAllProperties.getSelectionModel().getSelectedItem();
+        if (activeTab == null)
+            return;
+        if (activeTab.equals(tabOrganizations)){
+            tableViewOrganizations.getSelectionModel().clearSelection();
+            tableViewOrganizations.getSelectionModel().selectFirst();
+            tableViewOrganizations.fireEvent(EventFXUtil.getMouseClickEvent());
+            tableViewOrganizations.requestFocus();
+        }
+    }
+
+    @FXML
+    private void selectLastRecord(){
+        Tab activeTab = tabPaneAllProperties.getSelectionModel().getSelectedItem();
+        if (activeTab == null)
+            return;
+        if (activeTab.equals(tabOrganizations)){
+            tableViewOrganizations.getSelectionModel().clearSelection();
+            tableViewOrganizations.getSelectionModel().selectLast();
+            tableViewOrganizations.fireEvent(EventFXUtil.getMouseClickEvent());
+            tableViewOrganizations.requestFocus();
+        }
+    }
+
+    @FXML
+    private void selectPrevRecord(){
+        Tab activeTab = tabPaneAllProperties.getSelectionModel().getSelectedItem();
+        if (activeTab == null)
+            return;
+        if (activeTab.equals(tabOrganizations)){
+            tableViewOrganizations.getSelectionModel().selectPrevious();
+            OrganizationUI selectedOrg = tableViewOrganizations.getSelectionModel().getSelectedItem();
+            tableViewOrganizations.getSelectionModel().clearSelection();
+            tableViewOrganizations.getSelectionModel().select(selectedOrg);
+            tableViewOrganizations.fireEvent(EventFXUtil.getMouseClickEvent());
+            tableViewOrganizations.requestFocus();
+        }
+    }
+
+    @FXML
+    private void selectNextRecord(){
+        Tab activeTab = tabPaneAllProperties.getSelectionModel().getSelectedItem();
+        if (activeTab == null)
+            return;
+        if (activeTab.equals(tabOrganizations)){
+            tableViewOrganizations.getSelectionModel().selectNext();
+            OrganizationUI selectedOrg = tableViewOrganizations.getSelectionModel().getSelectedItem();
+            tableViewOrganizations.getSelectionModel().clearSelection();
+            tableViewOrganizations.getSelectionModel().select(selectedOrg);
+            tableViewOrganizations.fireEvent(EventFXUtil.getMouseClickEvent());
+            tableViewOrganizations.requestFocus();
+        }
+    }
+
+    @FXML
+    private void refreshTableView(){
+        Tab activeTab = tabPaneAllProperties.getSelectionModel().getSelectedItem();
+        if (activeTab == null)
+            return;
+        if (activeTab.equals(tabOrganizations)){
+            initAllOrganizationsList();
+            selectFirstRecord();
+        }
+    }
+
+    private boolean isEventIsSelectedKey(Event event){
+        if (event.getClass().equals(KeyEvent.class)) {
+            if (((KeyEvent) event).getCode().equals(KeyCode.UP) ||
+                    ((KeyEvent) event).getCode().equals(KeyCode.DOWN) ||
+                    ((KeyEvent) event).getCode().equals(KeyCode.PAGE_UP) ||
+                    ((KeyEvent) event).getCode().equals(KeyCode.PAGE_DOWN)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean isEventIsSelectedMouse(Event event){
+        if (event.getClass().equals(MouseEvent.class)) {
+            if (((MouseEvent)event).getEventType().equals(MouseEvent.MOUSE_CLICKED)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+
+    private class ListViewEventHandler implements EventHandler<Event>{
+
+        @Override
+        public void handle(Event event) {
+            ListView source = (ListView)event.getSource();
+            //Key event UP or DOWN or PAGE_UP or PAGE_DOWN
+            if(isEventIsSelectedKey(event) || isEventIsSelectedMouse(event)){
+                if (source.equals(listViewWeldPatternsTypes)){
+                    doSelectWeldPatternType();
+                    return;
+                }
+            }
+
+        }
+
+        private void doSelectWeldPatternType(){
+            WeldDetailUI selectedWeldDetail = listViewWeldPatternsTypes.getSelectionModel().getSelectedItem();
+            if (selectedWeldDetail==null)
+                return;
+            setDisabledWeldPatternTypesFields(true);
+            txfWeldPatternTypeName.setText(selectedWeldDetail.getType());
+            txfWeldPatternTypeCode.setText(selectedWeldDetail.getCode());
+        }
+
+
     }
 
     private class TableViewEventHandler implements EventHandler<javafx.event.Event>{
@@ -481,6 +697,46 @@ public class PropertiesController extends GenericController {
         private void readyToSave(){
             if (txfOrganizationName.isEditable())
                 btSave.setDisable(false);
+        }
+    }
+
+    private class SearchTextFieldValidateListener implements InvalidationListener{
+        @Override
+        public void invalidated(Observable observable) {
+            Tab selectedTab = tabPaneAllProperties.getSelectionModel().getSelectedItem();
+            if (selectedTab==null)
+                return;
+            if (selectedTab.equals(tabOrganizations)){
+                searchOrganization();
+            }
+        }
+
+        private void searchOrganization(){
+            if (txfSearchOrganization.textProperty().get().isEmpty()){
+                initAllOrganizationsList();
+                tableViewOrganizations.setItems(allOrganization);
+                return;
+            }
+
+            ObservableList<OrganizationUI> filteredList = FXCollections.observableArrayList();
+            ObservableList<TableColumn<OrganizationUI,?>> columns = tableViewOrganizations.getColumns();
+
+            for (int i = 0; i<allOrganization.size(); i++){
+
+                for (int j = 0; j<columns.size(); j++){
+                    TableColumn<OrganizationUI,?> column = columns.get(j);
+                    String cellValue = column.getCellData(allOrganization.get(i)).toString();
+                    cellValue = cellValue.toLowerCase();
+                    if (cellValue.contains(txfSearchOrganization.textProperty().get().toLowerCase())){
+                        filteredList.add(allOrganization.get(i));
+                        break;
+                    }
+                }
+            }
+            tableViewOrganizations.setItems(filteredList);
+            if (!filteredList.isEmpty()){
+                tableViewOrganizations.getSelectionModel().selectFirst();
+            }
         }
     }
 }

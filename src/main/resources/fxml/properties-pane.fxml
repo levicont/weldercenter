@@ -11,7 +11,7 @@
         <HBox prefHeight="32.0" prefWidth="600.0" spacing="10.0" BorderPane.alignment="CENTER">
             <children>
                 <Button fx:id="btCloseJournalPane" mnemonicParsing="false" onAction="#closePropertiesPane" text="Закрыть" />
-                <Button fx:id="btUpdate" mnemonicParsing="false" text="Обновить" />
+                <Button fx:id="btUpdate" mnemonicParsing="false" onAction="#refreshTableView" text="Обновить" />
             </children>
             <padding>
                 <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
@@ -26,7 +26,7 @@
             <children>
                 <Button fx:id="btAdd" mnemonicParsing="false" onAction="#addRecord" text="Добавить" />
                 <Button fx:id="btEdit" mnemonicParsing="false" onAction="#editRecord" text="Изменить" />
-                <Button fx:id="btDelete" mnemonicParsing="false" text="Удалить" />
+                <Button fx:id="btDelete" mnemonicParsing="false" onAction="#deleteRecord" text="Удалить" />
                 <Separator>
                     <VBox.margin>
                         <Insets top="12.0" />
@@ -71,12 +71,11 @@
                                               <children>
                                                   <ToolBar prefHeight="30.0" prefWidth="200.0">
                                                       <items>
-                                                          <Button fx:id="btFirstOrg" mnemonicParsing="false" text="|&lt;" />
-                                                          <Button fx:id="btPrevOrg" mnemonicParsing="false" text="&lt;&lt;" />
-                                                          <Button fx:id="btNewOrg" mnemonicParsing="false" text="&gt;*" />
-                                                          <Button fx:id="btNextOrg" mnemonicParsing="false" text="&gt;&gt;" />
-                                                          <Button fx:id="btLastOrg" mnemonicParsing="false" text="&gt;|" />
-                                                          <Button fx:id="btCopyOrg" mnemonicParsing="false" text="копия" />
+                                                          <Button fx:id="btFirstOrg" mnemonicParsing="false" onAction="#selectFirstRecord" text="|&lt;" />
+                                                          <Button fx:id="btPrevOrg" mnemonicParsing="false" onAction="#selectPrevRecord" text="&lt;&lt;" />
+                                                          <Button fx:id="btNewOrg" mnemonicParsing="false" onAction="#addRecord" text="&gt;*" />
+                                                          <Button fx:id="btNextOrg" mnemonicParsing="false" onAction="#selectNextRecord" text="&gt;&gt;" />
+                                                          <Button fx:id="btLastOrg" mnemonicParsing="false" onAction="#selectLastRecord" text="&gt;|" />
                                                       </items>
                                                   </ToolBar>
                                                   <ToolBar fx:id="toolBarSearch" prefHeight="40.0" prefWidth="200.0">

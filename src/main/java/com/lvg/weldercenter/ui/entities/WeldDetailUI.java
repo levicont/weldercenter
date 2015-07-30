@@ -53,9 +53,6 @@ public class WeldDetailUI extends GenericEntityUI {
 
     @Override
     public String toString() {
-        return "WeldDetailUI{" +
-                "type=" + type +
-                ", code=" + code +
-                '}';
+        return getDetailTypeCode();
     }
 }
