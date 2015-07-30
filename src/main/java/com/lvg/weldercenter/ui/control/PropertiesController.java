@@ -1,6 +1,5 @@
 package com.lvg.weldercenter.ui.control;
 
-import com.lvg.weldercenter.models.NDTDocument;
 import com.lvg.weldercenter.models.Organization;
 import com.lvg.weldercenter.models.WeldDetail;
 import com.lvg.weldercenter.services.OrganizationService;
@@ -9,6 +8,7 @@ import com.lvg.weldercenter.spring.factories.ServiceFactory;
 import com.lvg.weldercenter.spring.factories.ServiceUIFactory;
 import com.lvg.weldercenter.ui.entities.*;
 import com.lvg.weldercenter.ui.servicesui.OrganizationServiceUI;
+import com.lvg.weldercenter.ui.servicesui.WeldDetailServiceUI;
 import com.lvg.weldercenter.ui.util.EventFXUtil;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
@@ -18,7 +18,6 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.control.Dialog;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -26,7 +25,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import org.apache.log4j.Logger;
 import org.controlsfx.control.action.Action;
-import org.controlsfx.dialog.*;
+import org.controlsfx.dialog.Dialogs;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -42,7 +41,7 @@ public class PropertiesController extends GenericController {
     private WeldDetailService weldDetailService = ServiceFactory.getWeldDetailService();
 
     private OrganizationServiceUI organizationServiceUI = ServiceUIFactory.getOrganizationServiceUI();
-
+    private WeldDetailServiceUI weldDetailServiceUI = ServiceUIFactory.getWeldDetailServiceUI();
 
     @FXML
     private BorderPane mainPropertiesPane;
@@ -99,6 +98,8 @@ public class PropertiesController extends GenericController {
     private Button btEditWeldPatternType;
     @FXML
     private Button btDeleteWeldPatternType;
+    @FXML
+    private Button btSaveWeldPatternType;
 
     @FXML
     private TitledPane titlePaneDiameters;
@@ -319,6 +320,9 @@ public class PropertiesController extends GenericController {
     private void initTitlePaneWeldPatternTypes(){
         initListViewWeldPatternTypes();
         setDisabledWeldPatternTypesFields(true);
+        TextFieldValidateListener validateListener = new TextFieldValidateListener();
+        txfWeldPatternTypeCode.textProperty().addListener(validateListener);
+        txfWeldPatternTypeName.textProperty().addListener(validateListener);
     }
 
     private void initListViewWeldPatternTypes(){
@@ -352,6 +356,35 @@ public class PropertiesController extends GenericController {
             txfWeldPatternTypeName.setEditable(true);
             txfWeldPatternTypeName.setStyle("");
         }
+    }
+
+    @FXML
+    private void saveWeldPatternType(){
+        setDisabledWeldPatternTypesFields(true);
+        btSaveWeldPatternType.setDisable(true);
+        WeldDetailUI selectedWeldDetail = listViewWeldPatternsTypes.getSelectionModel().getSelectedItem();
+        if (selectedWeldDetail == null)
+            return;
+        updateWeldPatternTypeFromFields(selectedWeldDetail);
+        WeldDetail weldDetail = weldDetailServiceUI.getWeldDetailFromUIModel(selectedWeldDetail);
+
+        if (weldDetail.getWeldDetailId()==null || weldDetail.getWeldDetailId()==0){
+            Long id = weldDetailService.insert(weldDetail);
+            selectedWeldDetail.setId(id);
+            LOGGER.debug("SAVE WELD PATTERN TYPE: weld detail has been added to DB");
+            allWeldPatternTypes.remove(selectedWeldDetail);
+            allWeldPatternTypes.add(selectedWeldDetail);
+            listViewWeldPatternsTypes.getSelectionModel().select(selectedWeldDetail);
+        }else {
+            weldDetailService.update(weldDetail);
+            LOGGER.debug("SAVE WELD PATTERN TYPE: weld detail has been updated in DB");
+        }
+    }
+
+    private void updateWeldPatternTypeFromFields(WeldDetailUI weldDetailUI){
+        weldDetailUI.setType(txfWeldPatternTypeName.getText().trim());
+        weldDetailUI.setCode(txfWeldPatternTypeCode.getText().trim());
+
     }
 
     private void initOrganizationTab(){
@@ -594,6 +627,19 @@ public class PropertiesController extends GenericController {
         }
     }
 
+    @FXML
+    private void addWeldPatternType(){
+        txfWeldPatternTypeCode.clear();
+        txfWeldPatternTypeName.clear();
+        listViewWeldPatternsTypes.getSelectionModel().clearSelection();
+        WeldDetailUI newWD = new WeldDetailUI();
+        allWeldPatternTypes.add(newWD);
+        listViewWeldPatternsTypes.getSelectionModel().select(newWD);
+
+        setDisabledWeldPatternTypesFields(false);
+        txfWeldPatternTypeCode.requestFocus();
+    }
+
     private boolean isEventIsSelectedKey(Event event){
         if (event.getClass().equals(KeyEvent.class)) {
             if (((KeyEvent) event).getCode().equals(KeyCode.UP) ||
@@ -695,8 +741,22 @@ public class PropertiesController extends GenericController {
         }
 
         private void readyToSave(){
-            if (txfOrganizationName.isEditable())
-                btSave.setDisable(false);
+            Tab selectedTab = tabPaneAllProperties.getSelectionModel().getSelectedItem();
+            if (selectedTab == null)
+                return;
+
+            if (selectedTab.equals(tabOrganizations)) {
+                if (txfOrganizationName.isEditable()) {
+                    btSave.setDisable(false);
+                    return;
+                }
+            }
+            if (selectedTab.equals(tabWeldPatterns)) {
+                if (txfWeldPatternTypeCode.isEditable()) {
+                    btSaveWeldPatternType.setDisable(false);
+                    return;
+                }
+            }
         }
     }
 
