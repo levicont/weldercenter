@@ -33,6 +33,8 @@ public class ServiceUIFactory {
     private static CommissionCertificationServiceUI commissionCertificationServiceUI;
     private static WeldJoinTypeServiceUI weldJoinTypeServiceUI;
     private static OrganizationServiceUI organizationServiceUI;
+    private static PatternThicknessServiceUI patternThicknessServiceUI;
+    private static PatternDiameterServiceUI patternDiameterServiceUI;
 
 
     private ServiceUIFactory(){
@@ -256,6 +258,24 @@ public class ServiceUIFactory {
         }else {
             organizationServiceUI = (OrganizationServiceUI)context.getBean("organizationServiceUI");
             return organizationServiceUI;
+        }
+    }
+
+    public static PatternThicknessServiceUI getPatternThicknessServiceUI() {
+        if (patternThicknessServiceUI != null) {
+            return patternThicknessServiceUI;
+        }else {
+            patternThicknessServiceUI = (PatternThicknessServiceUI)context.getBean("patternThicknessServiceUI");
+            return patternThicknessServiceUI;
+        }
+    }
+
+    public static PatternDiameterServiceUI getPatternDiameterServiceUI() {
+        if (patternDiameterServiceUI != null) {
+            return patternDiameterServiceUI;
+        }else {
+            patternDiameterServiceUI = (PatternDiameterServiceUI)context.getBean("patternDiameterServiceUI");
+            return patternDiameterServiceUI;
         }
     }
 }

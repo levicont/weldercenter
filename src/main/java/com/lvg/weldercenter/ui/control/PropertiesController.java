@@ -1,13 +1,16 @@
 package com.lvg.weldercenter.ui.control;
 
 import com.lvg.weldercenter.models.Organization;
+import com.lvg.weldercenter.models.PatternDiameter;
 import com.lvg.weldercenter.models.WeldDetail;
 import com.lvg.weldercenter.services.OrganizationService;
+import com.lvg.weldercenter.services.PatternDiameterService;
 import com.lvg.weldercenter.services.WeldDetailService;
 import com.lvg.weldercenter.spring.factories.ServiceFactory;
 import com.lvg.weldercenter.spring.factories.ServiceUIFactory;
 import com.lvg.weldercenter.ui.entities.*;
 import com.lvg.weldercenter.ui.servicesui.OrganizationServiceUI;
+import com.lvg.weldercenter.ui.servicesui.PatternDiameterServiceUI;
 import com.lvg.weldercenter.ui.servicesui.WeldDetailServiceUI;
 import com.lvg.weldercenter.ui.util.EventFXUtil;
 import javafx.beans.InvalidationListener;
@@ -25,7 +28,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import org.apache.log4j.Logger;
 import org.controlsfx.control.action.Action;
-import org.controlsfx.dialog.Dialogs;
+import org.controlsfx.dialog.*;
+import org.controlsfx.dialog.Dialog;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -39,9 +43,11 @@ public class PropertiesController extends GenericController {
 
     private OrganizationService organizationService = ServiceFactory.getOrganizationService();
     private WeldDetailService weldDetailService = ServiceFactory.getWeldDetailService();
+    private PatternDiameterService patternDiameterService = ServiceFactory.getPatternDiameterService();
 
     private OrganizationServiceUI organizationServiceUI = ServiceUIFactory.getOrganizationServiceUI();
     private WeldDetailServiceUI weldDetailServiceUI = ServiceUIFactory.getWeldDetailServiceUI();
+    private PatternDiameterServiceUI patternDiameterServiceUI = ServiceUIFactory.getPatternDiameterServiceUI();
 
     @FXML
     private BorderPane mainPropertiesPane;
@@ -104,7 +110,7 @@ public class PropertiesController extends GenericController {
     @FXML
     private TitledPane titlePaneDiameters;
     @FXML
-    private ListView<String> listViewDiameters;
+    private ListView<PatternDiameterUI> listViewDiameters;
     @FXML
     private TextField txfDiameter;
     @FXML
@@ -113,6 +119,8 @@ public class PropertiesController extends GenericController {
     private Button btEditDiameter;
     @FXML
     private Button btDeleteDiameter;
+    @FXML
+    private Button btSaveDiameter;
 
     @FXML
     private TitledPane titlePaneThickness;
@@ -300,6 +308,7 @@ public class PropertiesController extends GenericController {
 
     private ObservableList<OrganizationUI> allOrganization = FXCollections.observableArrayList();
     private ObservableList<WeldDetailUI> allWeldPatternTypes = FXCollections.observableArrayList();
+    private ObservableList<PatternDiameterUI> allDiameters = FXCollections.observableArrayList();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -315,6 +324,68 @@ public class PropertiesController extends GenericController {
 
     private void initWeldPatternTab(){
         initTitlePaneWeldPatternTypes();
+        initTitlePaneDiameters();
+    }
+
+    private void initTitlePaneDiameters(){
+        initListViewDiameters();
+        setDisabledTextFields(true,txfDiameter);
+        InvalidationListener invalidationListener = new TextFieldValidateListener();
+        txfDiameter.textProperty().addListener(invalidationListener);
+    }
+
+
+
+    private  void initListViewDiameters(){
+        initAllDiameters();
+        listViewDiameters.setItems(allDiameters);
+        listViewDiameters.setEditable(false);
+        ListViewEventHandler eventHandler = new ListViewEventHandler();
+        listViewDiameters.addEventHandler(Event.ANY, eventHandler);
+        listViewDiameters.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+        listViewDiameters.getSelectionModel().selectFirst();
+    }
+
+    private void initAllDiameters(){
+        allDiameters.clear();
+        for (PatternDiameter pd : patternDiameterService.getAll()){
+            PatternDiameterUI pdUI = new PatternDiameterUI(pd);
+            allDiameters.add(pdUI);
+        }
+    }
+
+    @FXML
+    private void saveDiameter(){
+        setDisabledTextFields(true,txfDiameter);
+        btSaveDiameter.setDisable(true);
+        PatternDiameterUI selectedDiameterUI = listViewDiameters.getSelectionModel().getSelectedItem();
+        if (selectedDiameterUI == null)
+            return;
+        updateDiameterFromFialds(selectedDiameterUI);
+        PatternDiameter patternDiameter = patternDiameterServiceUI.getPatternDiameterFromUIModel(selectedDiameterUI);
+        if (patternDiameter.getPatternDiameterId()==null || patternDiameter.getPatternDiameterId()==0){
+            patternDiameterService.insert(patternDiameter);
+            LOGGER.debug("SAVE PATTERN DIAMETER: pattern diameter has been inserted in DB");
+        }else {
+            patternDiameterService.update(patternDiameter);
+            LOGGER.debug("SAVE PATTERN DIAMETER: pattern diameter has been updated in DB");
+        }
+        allDiameters.remove(selectedDiameterUI);
+        allDiameters.add(selectedDiameterUI);
+        listViewDiameters.getSelectionModel().select(selectedDiameterUI);
+
+    }
+
+    private void updateDiameterFromFialds(PatternDiameterUI diameterUI){
+        Double diameter = 0.0;
+        try{
+            diameter = Double.parseDouble(txfDiameter.getText().trim());
+
+        }catch (NumberFormatException ex){
+            LOGGER.warn("UPDATE DIAMETER FROM FIELD: not correct diameter");
+            diameter = 0.0;
+        }
+        diameterUI.setDiameter(diameter);
     }
 
     private void initTitlePaneWeldPatternTypes(){
@@ -345,17 +416,7 @@ public class PropertiesController extends GenericController {
     }
 
     private void setDisabledWeldPatternTypesFields(boolean disabled){
-        if (disabled) {
-            txfWeldPatternTypeCode.setEditable(false);
-            txfWeldPatternTypeCode.setStyle(STYLE_NOT_EDITABLE_BACKGROUND);
-            txfWeldPatternTypeName.setEditable(false);
-            txfWeldPatternTypeName.setStyle(STYLE_NOT_EDITABLE_BACKGROUND);
-        }else {
-            txfWeldPatternTypeCode.setEditable(true);
-            txfWeldPatternTypeCode.setStyle("");
-            txfWeldPatternTypeName.setEditable(true);
-            txfWeldPatternTypeName.setStyle("");
-        }
+       setDisabledTextFields(disabled, txfWeldPatternTypeName, txfWeldPatternTypeCode);
     }
 
     @FXML
@@ -372,13 +433,13 @@ public class PropertiesController extends GenericController {
             Long id = weldDetailService.insert(weldDetail);
             selectedWeldDetail.setId(id);
             LOGGER.debug("SAVE WELD PATTERN TYPE: weld detail has been added to DB");
-            allWeldPatternTypes.remove(selectedWeldDetail);
-            allWeldPatternTypes.add(selectedWeldDetail);
-            listViewWeldPatternsTypes.getSelectionModel().select(selectedWeldDetail);
         }else {
             weldDetailService.update(weldDetail);
             LOGGER.debug("SAVE WELD PATTERN TYPE: weld detail has been updated in DB");
         }
+        allWeldPatternTypes.remove(selectedWeldDetail);
+        allWeldPatternTypes.add(selectedWeldDetail);
+        listViewWeldPatternsTypes.getSelectionModel().select(selectedWeldDetail);
     }
 
     private void updateWeldPatternTypeFromFields(WeldDetailUI weldDetailUI){
@@ -400,21 +461,7 @@ public class PropertiesController extends GenericController {
     }
 
     private void setDisabledOrganizationFields(boolean disabled){
-        if (disabled) {
-            txfOrganizationName.setEditable(false);
-            txfOrganizationName.setStyle(STYLE_NOT_EDITABLE_BACKGROUND);
-            txfOrganizationAdress.setEditable(false);
-            txfOrganizationAdress.setStyle(STYLE_NOT_EDITABLE_BACKGROUND);
-            txfOrganizationPhone.setEditable(false);
-            txfOrganizationPhone.setStyle(STYLE_NOT_EDITABLE_BACKGROUND);
-        }else {
-            txfOrganizationName.setEditable(true);
-            txfOrganizationName.setStyle("");
-            txfOrganizationAdress.setEditable(true);
-            txfOrganizationAdress.setStyle("");
-            txfOrganizationPhone.setEditable(true);
-            txfOrganizationPhone.setStyle("");
-        }
+       setDisabledTextFields(disabled, txfOrganizationName, txfOrganizationAdress, txfOrganizationPhone);
     }
 
     private void initTableViewOrganizations(){
@@ -640,12 +687,77 @@ public class PropertiesController extends GenericController {
         txfWeldPatternTypeCode.requestFocus();
     }
 
+    @FXML
+    private void editWeldPatternType(){
+        setDisabledWeldPatternTypesFields(false);
+        txfWeldPatternTypeCode.requestFocus();
+    }
+
+    @FXML
+    private void addDiameter(){
+        txfDiameter.clear();
+        listViewDiameters.getSelectionModel().clearSelection();
+        PatternDiameterUI patternDiameterUI = new PatternDiameterUI();
+        allDiameters.add(patternDiameterUI);
+        listViewDiameters.getSelectionModel().select(patternDiameterUI);
+
+        setDisabledTextFields(false, txfDiameter);
+        txfDiameter.requestFocus();
+
+    }
+
+    @FXML
+    private void deleteWeldPatternType(){
+        WeldDetailUI delWeldDetailUI = listViewWeldPatternsTypes.getSelectionModel().getSelectedItem();
+        if (delWeldDetailUI == null)
+            return;
+        if (getResponseDeleteDialog(1)== Dialog.Actions.OK){
+            if (delWeldDetailUI.getId()!=0){
+                weldDetailService.delete(weldDetailServiceUI.getWeldDetailFromUIModel(delWeldDetailUI));
+                LOGGER.debug("DELETE WELD PATTERN TYPE: weld detail has been removed from DB");
+            }
+            allWeldPatternTypes.remove(delWeldDetailUI);
+            listViewWeldPatternsTypes.getSelectionModel().selectFirst();
+            listViewWeldPatternsTypes.fireEvent(EventFXUtil.getMouseClickEvent());
+            listViewWeldPatternsTypes.requestFocus();
+        }
+
+    }
+
+    //Utilities -------------------------------------------------------------------
+
+    private Action getResponseDeleteDialog(int countOfDeletingRecords){
+        Action response = Dialogs.create().owner(mainPropertiesPane.getScene().getWindow())
+                .title("Удаление записей")
+                .masthead("Сделан выбор записей для удаления")
+                .message("Удалить выбранные записи? ("+countOfDeletingRecords+"шт.)")
+                .actions(org.controlsfx.dialog.Dialog.Actions.OK, org.controlsfx.dialog.Dialog.Actions.CANCEL)
+                .showConfirm();
+        return response;
+    }
+
+    private void setDisabledTextFields(boolean disabled, TextField ... textFields){
+        if (disabled){
+            for (TextField tf : textFields){
+                tf.setEditable(false);
+                tf.setStyle(STYLE_NOT_EDITABLE_BACKGROUND);
+            }
+        }else {
+            for (TextField tf : textFields){
+                tf.setEditable(true);
+                tf.setStyle("");
+            }
+        }
+    }
+
     private boolean isEventIsSelectedKey(Event event){
         if (event.getClass().equals(KeyEvent.class)) {
             if (((KeyEvent) event).getCode().equals(KeyCode.UP) ||
                     ((KeyEvent) event).getCode().equals(KeyCode.DOWN) ||
                     ((KeyEvent) event).getCode().equals(KeyCode.PAGE_UP) ||
-                    ((KeyEvent) event).getCode().equals(KeyCode.PAGE_DOWN)) {
+                    ((KeyEvent) event).getCode().equals(KeyCode.PAGE_DOWN) ||
+                    ((KeyEvent) event).getCode().equals(KeyCode.HOME) ||
+                    ((KeyEvent) event).getCode().equals(KeyCode.END)){
                 return true;
             }
         }
@@ -674,8 +786,20 @@ public class PropertiesController extends GenericController {
                     doSelectWeldPatternType();
                     return;
                 }
+                if (source.equals(listViewDiameters)){
+                    doSelectDiameter();
+                    return;
+                }
+
             }
 
+        }
+        private void doSelectDiameter(){
+            PatternDiameterUI selectedDiameter = listViewDiameters.getSelectionModel().getSelectedItem();
+            if (selectedDiameter == null)
+                return;
+            setDisabledTextFields(true);
+            txfDiameter.setText(selectedDiameter.getDiameter()+"");
         }
 
         private void doSelectWeldPatternType(){
@@ -695,30 +819,13 @@ public class PropertiesController extends GenericController {
         @Override
         public void handle(javafx.event.Event event) {
             TableView source = (TableView) event.getSource();
-            //Key events UP or DOWN
-            if (event.getClass().equals(KeyEvent.class)) {
-                if (((KeyEvent) event).getCode().equals(KeyCode.UP) ||
-                        ((KeyEvent) event).getCode().equals(KeyCode.DOWN) ||
-                        ((KeyEvent) event).getCode().equals(KeyCode.PAGE_UP) ||
-                        ((KeyEvent) event).getCode().equals(KeyCode.PAGE_DOWN)) {
 
-                    if (source.equals(tableViewOrganizations)) {
+            if (isEventIsSelectedMouse(event) || isEventIsSelectedKey(event)) {
+                if (source.equals(tableViewOrganizations)) {
                         doSelectOrganization();
                         return;
-                    }
                 }
             }
-            //Mouse events
-            if (event.getClass().equals(MouseEvent.class)) {
-                if (((MouseEvent)event).getEventType().equals(MouseEvent.MOUSE_CLICKED)) {
-                    if (source.equals(tableViewOrganizations)) {
-                        doSelectOrganization();
-                        return;
-                    }
-                }
-            }
-
-
         }
 
         private void doSelectOrganization(){
@@ -756,7 +863,12 @@ public class PropertiesController extends GenericController {
                     btSaveWeldPatternType.setDisable(false);
                     return;
                 }
+
+                if (txfDiameter.isEditable()){
+                    btSaveDiameter.setDisable(false);
+                }
             }
+
         }
     }
 

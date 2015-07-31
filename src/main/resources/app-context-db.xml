@@ -121,5 +121,7 @@
     <bean id="commissionCertificationServiceUI" class="com.lvg.weldercenter.ui.servicesui.impl.CommissionCertificationUIManager"/>
     <bean id="weldJoinTypeServiceUI" class="com.lvg.weldercenter.ui.servicesui.impl.WeldJoinTypeUIManager"/>
     <bean id="organizationServiceUI" class="com.lvg.weldercenter.ui.servicesui.impl.OrganizatioUIManager"/>
+    <bean id="patternDiameterServiceUI" class="com.lvg.weldercenter.ui.servicesui.impl.PatternDiameterUIManager"/>
+    <bean id="patternThicknessServiceUI" class="com.lvg.weldercenter.ui.servicesui.impl.PatternThicknessUIManager"/>
 
 </beans>

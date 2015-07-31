@@ -8,7 +8,7 @@ import javafx.beans.property.SimpleDoubleProperty;
  */
 public class PatternDiameterUI extends GenericEntityUI {
     private final SimpleDoubleProperty diameter = new SimpleDoubleProperty();
-
+    private final String UNIT_SUFFIX = " мм";
     public PatternDiameterUI() {
         this.id.set(0);
         this.diameter.set(0);
@@ -35,8 +35,6 @@ public class PatternDiameterUI extends GenericEntityUI {
 
     @Override
     public String toString() {
-        return "PatternDiameterUI{" +
-                "diameter=" + diameter +
-                '}';
+        return getDiameter()+UNIT_SUFFIX;
     }
 }
