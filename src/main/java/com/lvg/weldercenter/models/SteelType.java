@@ -42,7 +42,7 @@ public class SteelType implements Serializable{
         this.type = type;
     }
 
-    @ManyToOne(targetEntity = SteelGroup.class)
+    @ManyToOne(targetEntity = SteelGroup.class,cascade = CascadeType.ALL)
     @JoinColumn(name = "id_steel_group")
     public SteelGroup getStGroup() {
         return stGroup;

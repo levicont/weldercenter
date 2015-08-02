@@ -1,17 +1,11 @@
 package com.lvg.weldercenter.ui.control;
 
-import com.lvg.weldercenter.models.Organization;
-import com.lvg.weldercenter.models.PatternDiameter;
-import com.lvg.weldercenter.models.WeldDetail;
-import com.lvg.weldercenter.services.OrganizationService;
-import com.lvg.weldercenter.services.PatternDiameterService;
-import com.lvg.weldercenter.services.WeldDetailService;
+import com.lvg.weldercenter.models.*;
+import com.lvg.weldercenter.services.*;
 import com.lvg.weldercenter.spring.factories.ServiceFactory;
 import com.lvg.weldercenter.spring.factories.ServiceUIFactory;
 import com.lvg.weldercenter.ui.entities.*;
-import com.lvg.weldercenter.ui.servicesui.OrganizationServiceUI;
-import com.lvg.weldercenter.ui.servicesui.PatternDiameterServiceUI;
-import com.lvg.weldercenter.ui.servicesui.WeldDetailServiceUI;
+import com.lvg.weldercenter.ui.servicesui.*;
 import com.lvg.weldercenter.ui.util.EventFXUtil;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
@@ -32,6 +26,7 @@ import org.controlsfx.dialog.*;
 import org.controlsfx.dialog.Dialog;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 /**
@@ -40,15 +35,21 @@ import java.util.ResourceBundle;
 public class PropertiesController extends GenericController {
     private final Logger LOGGER = Logger.getLogger(PropertiesController.class);
     private final String STYLE_NOT_EDITABLE_BACKGROUND = "-fx-background-color: #deefff";
+    private final String STYLE_NOT_EDIT_COMBOBOX = "-fx-opacity: 1; -fx-background-color: #deefff";
 
     private OrganizationService organizationService = ServiceFactory.getOrganizationService();
     private WeldDetailService weldDetailService = ServiceFactory.getWeldDetailService();
     private PatternDiameterService patternDiameterService = ServiceFactory.getPatternDiameterService();
+    private PatternThicknessService patternThicknessService = ServiceFactory.getPatternThicknessService();
+    private SteelTypeService steelTypeService = ServiceFactory.getSteelTypeService();
+    private SteelGroupService steelGroupService = ServiceFactory.getSteelGroupService();
 
     private OrganizationServiceUI organizationServiceUI = ServiceUIFactory.getOrganizationServiceUI();
     private WeldDetailServiceUI weldDetailServiceUI = ServiceUIFactory.getWeldDetailServiceUI();
     private PatternDiameterServiceUI patternDiameterServiceUI = ServiceUIFactory.getPatternDiameterServiceUI();
-
+    private PatternThicknessServiceUI patternThicknessServiceUI = ServiceUIFactory.getPatternThicknessServiceUI();
+    private SteelTypeServiceUI steelTypeServiceUI = ServiceUIFactory.getSteelTypeServiceUI();
+    private SteelGroupServiceUI steelGroupServiceUI = ServiceUIFactory.getSteelGroupServiceUI();
     @FXML
     private BorderPane mainPropertiesPane;
 
@@ -99,12 +100,6 @@ public class PropertiesController extends GenericController {
     @FXML
     private TextField txfWeldPatternTypeName;
     @FXML
-    private Button btAddWeldPatternType;
-    @FXML
-    private Button btEditWeldPatternType;
-    @FXML
-    private Button btDeleteWeldPatternType;
-    @FXML
     private Button btSaveWeldPatternType;
 
     @FXML
@@ -114,38 +109,38 @@ public class PropertiesController extends GenericController {
     @FXML
     private TextField txfDiameter;
     @FXML
-    private Button btAddDiameter;
-    @FXML
-    private Button btEditDiameter;
-    @FXML
-    private Button btDeleteDiameter;
-    @FXML
     private Button btSaveDiameter;
 
     @FXML
     private TitledPane titlePaneThickness;
     @FXML
-    private ListView<String> listViewThickness;
+    private ListView<PatternThicknessUI> listViewThickness;
     @FXML
     private TextField txfThickness;
+    @FXML
+    private Button btSaveThickness;
 
     @FXML
     private TitledPane titlePaneSteelTypes;
     @FXML
-    private ListView<String> listViewSteelTypes;
+    private ListView<SteelTypeUI> listViewSteelTypes;
     @FXML
     private TextField txfSteelType;
     @FXML
-    private ComboBox<String> cbSteelTypeGroup;
+    private ComboBox<SteelGroupUI> cbSteelTypeGroup;
+    @FXML
+    private Button btSaveSteelType;
 
     @FXML
     private TitledPane titlePaneSteelGroups;
     @FXML
-    private ListView<String> listViewSteelGroups;
+    private ListView<SteelGroupUI> listViewSteelGroups;
     @FXML
     private TextField txfSteelGroup;
     @FXML
     private TextArea txtAreaSteelGroupDecription;
+    @FXML
+    private Button btSaveSteelGroup;
 
     //Weld tab
     @FXML
@@ -309,11 +304,22 @@ public class PropertiesController extends GenericController {
     private ObservableList<OrganizationUI> allOrganization = FXCollections.observableArrayList();
     private ObservableList<WeldDetailUI> allWeldPatternTypes = FXCollections.observableArrayList();
     private ObservableList<PatternDiameterUI> allDiameters = FXCollections.observableArrayList();
+    private ObservableList<PatternThicknessUI> allThickness = FXCollections.observableArrayList();
+    private ObservableList<SteelTypeUI> allSteelTypes = FXCollections.observableArrayList();
+    private ObservableList<SteelGroupUI> allSteelGroups = FXCollections.observableArrayList();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         LOGGER.debug("INITIALIZING Properties Pane");
         init();
+    }
+
+    public void showOrganizationTab(){
+        tabPaneAllProperties.getSelectionModel().select(tabOrganizations);
+    }
+
+    public void showWeldPatternTab(){
+        tabPaneAllProperties.getSelectionModel().select(tabWeldPatterns);
     }
 
     private void init(){
@@ -325,6 +331,139 @@ public class PropertiesController extends GenericController {
     private void initWeldPatternTab(){
         initTitlePaneWeldPatternTypes();
         initTitlePaneDiameters();
+        initTitlePaneThickness();
+        initTitlePaneSteelTypes();
+        initTitlePaneSteelGroups();
+
+    }
+
+    private void initTitlePaneSteelGroups(){
+        initListViewSteelGroups();
+        setDisabledSteelGroupField(true);
+        InvalidationListener invalidationListener = new TextFieldValidateListener();
+        txfSteelGroup.textProperty().addListener(invalidationListener);
+        txtAreaSteelGroupDecription.textProperty().addListener(invalidationListener);
+
+    }
+
+    private void initListViewSteelGroups(){
+        initAllSteelGroups();
+        listViewSteelGroups.setItems(allSteelGroups);
+        ListViewEventHandler eventHandler = new ListViewEventHandler();
+        listViewSteelGroups.addEventHandler(Event.ANY, eventHandler);
+        listViewSteelGroups.setEditable(false);
+        listViewSteelGroups.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+        listViewSteelGroups.getSelectionModel().selectFirst();
+    }
+
+    private void setDisabledSteelGroupField(boolean disabled){
+        setDisabledTextFields(disabled, txfSteelGroup);
+        setDisabledTextAreas(disabled,txtAreaSteelGroupDecription);
+    }
+
+    private void updateSteelGroupFromFields(SteelGroupUI steelGroupUI){
+        if (steelGroupUI == null)
+            return;
+        steelGroupUI.setGroup(txfSteelGroup.getText().trim());
+        steelGroupUI.setDescription(txtAreaSteelGroupDecription.getText().trim());
+    }
+
+    private void initTitlePaneSteelTypes(){
+        initListViewSteelTypes();
+        initComboBoxSteelGroup();
+        setDisabledSteelTypesFields(true);
+        InvalidationListener invalidationListener = new TextFieldValidateListener();
+        txfSteelType.textProperty().addListener(invalidationListener);
+        cbSteelTypeGroup.valueProperty().addListener(invalidationListener);
+        listViewSteelTypes.fireEvent(EventFXUtil.getMouseClickEvent());
+    }
+
+    private void initListViewSteelTypes(){
+        initAllSteelTypes();
+        listViewSteelTypes.setItems(allSteelTypes);
+        ListViewEventHandler eventHandler = new ListViewEventHandler();
+        listViewSteelTypes.addEventHandler(Event.ANY, eventHandler);
+        listViewSteelTypes.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+        listViewSteelTypes.setEditable(false);
+        listViewSteelTypes.getSelectionModel().selectFirst();
+
+    }
+
+    private void initComboBoxSteelGroup(){
+        initAllSteelGroups();
+        cbSteelTypeGroup.setItems(allSteelGroups);
+        cbSteelTypeGroup.setEditable(false);
+
+    }
+
+    private void initAllSteelGroups(){
+        allSteelGroups.clear();
+        for (SteelGroup sg: steelGroupService.getAll()){
+            SteelGroupUI sgUI = new SteelGroupUI(sg);
+            allSteelGroups.add(sgUI);
+        }
+    }
+
+    private void initAllSteelTypes(){
+        allSteelTypes.clear();
+        for (SteelType st : steelTypeService.getAll()){
+            SteelTypeUI stUI = new SteelTypeUI(st);
+            allSteelTypes.add(stUI);
+        }
+
+    }
+
+    private void setDisabledSteelTypesFields(boolean disabled){
+        setDisabledTextFields(disabled, txfSteelType);
+        setDisabledComboBoxes(disabled,cbSteelTypeGroup);
+    }
+
+    private void updateSteelTypesFromFields(SteelTypeUI steelTypeUI){
+        if (steelTypeUI == null)
+            return;
+        steelTypeUI.setType(txfSteelType.getText().trim());
+        SteelGroupUI steelGroupUI = cbSteelTypeGroup.getValue();
+
+        steelTypeUI.setSteelGroupUI(steelGroupUI);
+        steelTypeUI.setSteelGroup(steelGroupServiceUI.getSteelGroupFromUIModel(steelGroupUI));
+    }
+
+    private void initTitlePaneThickness(){
+        initListViewThickness();
+        setDisabledTextFields(true, txfThickness);
+        InvalidationListener invalidationListener = new TextFieldValidateListener();
+        txfThickness.textProperty().addListener(invalidationListener);
+
+    }
+
+    private void initListViewThickness(){
+        initAllThickness();
+        listViewThickness.setItems(allThickness);
+        ListViewEventHandler eventHandler = new ListViewEventHandler();
+        listViewThickness.addEventHandler(Event.ANY, eventHandler);
+        listViewThickness.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+        listViewThickness.setEditable(false);
+        listViewThickness.getSelectionModel().selectFirst();
+    }
+
+    private void initAllThickness(){
+        allThickness.clear();
+        for (PatternThickness pth : patternThicknessService.getAll()){
+            PatternThicknessUI pthUI = new PatternThicknessUI(pth);
+            allThickness.add(pthUI);
+        }
+    }
+
+    private void updateThicknessFromFields(PatternThicknessUI thicknessUI ){
+        Double thickness = 0.0;
+        try{
+            thickness = Double.parseDouble(txfThickness.getText().trim());
+
+        }catch (NumberFormatException ex){
+            LOGGER.warn("UPDATE THICKNESS FROM FIELD: not correct thickness");
+            thickness = 0.0;
+        }
+        thicknessUI.setThickness(thickness);
     }
 
     private void initTitlePaneDiameters(){
@@ -333,8 +472,6 @@ public class PropertiesController extends GenericController {
         InvalidationListener invalidationListener = new TextFieldValidateListener();
         txfDiameter.textProperty().addListener(invalidationListener);
     }
-
-
 
     private  void initListViewDiameters(){
         initAllDiameters();
@@ -356,16 +493,17 @@ public class PropertiesController extends GenericController {
 
     @FXML
     private void saveDiameter(){
-        setDisabledTextFields(true,txfDiameter);
+        setDisabledTextFields(true, txfDiameter);
         btSaveDiameter.setDisable(true);
         PatternDiameterUI selectedDiameterUI = listViewDiameters.getSelectionModel().getSelectedItem();
         if (selectedDiameterUI == null)
             return;
-        updateDiameterFromFialds(selectedDiameterUI);
+        updateDiameterFromFields(selectedDiameterUI);
         PatternDiameter patternDiameter = patternDiameterServiceUI.getPatternDiameterFromUIModel(selectedDiameterUI);
         if (patternDiameter.getPatternDiameterId()==null || patternDiameter.getPatternDiameterId()==0){
-            patternDiameterService.insert(patternDiameter);
-            LOGGER.debug("SAVE PATTERN DIAMETER: pattern diameter has been inserted in DB");
+            Long id = patternDiameterService.insert(patternDiameter);
+            LOGGER.debug("SAVE PATTERN DIAMETER: pattern diameter has been inserted in DB id="+id);
+            selectedDiameterUI.setId(id);
         }else {
             patternDiameterService.update(patternDiameter);
             LOGGER.debug("SAVE PATTERN DIAMETER: pattern diameter has been updated in DB");
@@ -376,7 +514,7 @@ public class PropertiesController extends GenericController {
 
     }
 
-    private void updateDiameterFromFialds(PatternDiameterUI diameterUI){
+    private void updateDiameterFromFields(PatternDiameterUI diameterUI){
         Double diameter = 0.0;
         try{
             diameter = Double.parseDouble(txfDiameter.getText().trim());
@@ -724,6 +862,227 @@ public class PropertiesController extends GenericController {
 
     }
 
+    @FXML
+    private void editDiameter(){
+        if(listViewDiameters.getSelectionModel().getSelectedItems()==null)
+            return;
+        setDisabledTextFields(false,txfDiameter);
+        txfDiameter.requestFocus();
+
+    }
+
+    @FXML
+    private void deleteDiameter(){
+        PatternDiameterUI delDiameter = listViewDiameters.getSelectionModel().getSelectedItem();
+        if (delDiameter == null)
+            return;
+        if (getResponseDeleteDialog(1)==Dialog.Actions.OK){
+            if (delDiameter.getId() != 0){
+                patternDiameterService.delete(patternDiameterServiceUI.getPatternDiameterFromUIModel(delDiameter));
+                LOGGER.debug("DELETE DIAMETER: pattern diameter has been deleted from DB");
+            }
+            allDiameters.remove(delDiameter);
+            listViewDiameters.getSelectionModel().selectFirst();
+            listViewDiameters.fireEvent(EventFXUtil.getMouseClickEvent());
+            listViewDiameters.requestFocus();
+        }
+    }
+
+    @FXML
+    private void addThickness(){
+        txfThickness.clear();
+        listViewThickness.getSelectionModel().clearSelection();
+        PatternThicknessUI patternThicknessUI = new PatternThicknessUI();
+        allThickness.add(patternThicknessUI);
+        listViewThickness.getSelectionModel().select(patternThicknessUI);
+
+        setDisabledTextFields(false, txfThickness);
+        txfThickness.requestFocus();
+
+    }
+
+    @FXML
+    private void editThickness(){
+        PatternThicknessUI selectedThickness = listViewThickness.getSelectionModel().getSelectedItem();
+        if (selectedThickness == null)
+            return;
+        listViewThickness.getSelectionModel().clearSelection();
+        listViewThickness.getSelectionModel().select(selectedThickness);
+        setDisabledTextFields(false, txfThickness);
+        txfThickness.requestFocus();
+    }
+
+    @FXML
+    private void deleteThickness(){
+        PatternThicknessUI delThickness = listViewThickness.getSelectionModel().getSelectedItem();
+        if (delThickness == null)
+            return;
+        if (getResponseDeleteDialog(1)==Dialog.Actions.OK){
+            if (delThickness.getId() != 0){
+                patternThicknessService.delete(patternThicknessServiceUI.getPatternThicknessFromUIModel(delThickness));
+                LOGGER.debug("DELETE THICKNESS: pattern thickness has been deleted from DB");
+            }else {
+                LOGGER.debug("DELETE THICKNESS: pattern thickness has been deleted from list");
+            }
+
+            allThickness.remove(delThickness);
+            listViewThickness.getSelectionModel().selectFirst();
+            listViewThickness.fireEvent(EventFXUtil.getMouseClickEvent());
+            listViewThickness.requestFocus();
+        }
+    }
+
+    @FXML
+    private void saveThickness(){
+        setDisabledTextFields(true,txfThickness);
+        btSaveThickness.setDisable(true);
+        PatternThicknessUI selectedThicknessUI = listViewThickness.getSelectionModel().getSelectedItem();
+        if (selectedThicknessUI == null)
+            return;
+        updateThicknessFromFields(selectedThicknessUI);
+        PatternThickness patternThickness = patternThicknessServiceUI.getPatternThicknessFromUIModel(selectedThicknessUI);
+        if (patternThickness.getPatternThicknessId()==null || patternThickness.getPatternThicknessId()==0){
+            Long id = patternThicknessService.insert(patternThickness);
+            LOGGER.debug("SAVE PATTERN THICKNESS: pattern thickness has been inserted in DB");
+            selectedThicknessUI.setId(id);
+        }else {
+            patternThicknessService.update(patternThickness);
+            LOGGER.debug("SAVE PATTERN THICKNESS: pattern thickness has been updated in DB");
+        }
+        allThickness.remove(selectedThicknessUI);
+        allThickness.add(selectedThicknessUI);
+        listViewThickness.getSelectionModel().select(selectedThicknessUI);
+
+    }
+
+    @FXML
+    private void addSteelType(){
+        txfSteelType.clear();
+        cbSteelTypeGroup.getSelectionModel().select(null);
+        listViewSteelTypes.getSelectionModel().clearSelection();
+        SteelTypeUI steelTypeUI = new SteelTypeUI();
+        allSteelTypes.add(steelTypeUI);
+        listViewSteelTypes.getSelectionModel().select(steelTypeUI);
+
+        setDisabledSteelTypesFields(false);
+        txfSteelType.requestFocus();
+    }
+
+    @FXML
+    private void editSteelType(){
+        SteelTypeUI selectedSteelType = listViewSteelTypes.getSelectionModel().getSelectedItem();
+        if (selectedSteelType == null)
+            return;
+        listViewSteelTypes.getSelectionModel().clearSelection();
+        listViewSteelTypes.getSelectionModel().select(selectedSteelType);
+        setDisabledSteelTypesFields(false);
+        txfSteelType.requestFocus();
+    }
+
+    @FXML
+    private void deleteSteelType(){
+        SteelTypeUI delSteelType = listViewSteelTypes.getSelectionModel().getSelectedItem();
+        if (delSteelType == null)
+            return;
+        if (getResponseDeleteDialog(1)==Dialog.Actions.OK){
+            if (delSteelType.getId() != 0){
+                steelTypeService.delete(steelTypeServiceUI.getSteelTypeFromUIModel(delSteelType));
+                LOGGER.debug("DELETE STEEL TYPE: steel type has been deleted from DB");
+            }
+            allSteelTypes.remove(delSteelType);
+            listViewSteelTypes.getSelectionModel().selectFirst();
+            listViewSteelTypes.fireEvent(EventFXUtil.getMouseClickEvent());
+            listViewSteelTypes.requestFocus();
+        }
+    }
+
+    @FXML
+    private void saveSteelType(){
+        setDisabledSteelTypesFields(true);
+        btSaveSteelType.setDisable(true);
+        SteelTypeUI selectedSteelType = listViewSteelTypes.getSelectionModel().getSelectedItem();
+        if (selectedSteelType == null)
+            return;
+        updateSteelTypesFromFields(selectedSteelType);
+        SteelType steelType = steelTypeServiceUI.getSteelTypeFromUIModel(selectedSteelType);
+        if (steelType.getSteelTypeId()==null || steelType.getSteelTypeId()==0){
+            Long id = steelTypeService.insert(steelType);
+            LOGGER.debug("SAVE STEEL TYPE: steel types has been inserted in DB");
+            selectedSteelType.setId(id);
+        }else {
+            steelTypeService.update(steelType);
+            LOGGER.debug("SAVE STEEL TYPE: steel type has been updated in DB");
+        }
+        allSteelTypes.remove(selectedSteelType);
+        allSteelTypes.add(selectedSteelType);
+        listViewSteelTypes.getSelectionModel().select(selectedSteelType);
+
+    }
+
+    @FXML
+    private void addSteelGroup(){
+        txfSteelGroup.clear();
+        txtAreaSteelGroupDecription.clear();
+        listViewSteelGroups.getSelectionModel().clearSelection();
+        SteelGroupUI steelGroupUI = new SteelGroupUI();
+        allSteelGroups.add(steelGroupUI);
+        listViewSteelGroups.getSelectionModel().select(steelGroupUI);
+
+        setDisabledSteelGroupField(false);
+        txfSteelGroup.requestFocus();
+    }
+
+    @FXML
+    private void editSteelGroup(){
+        SteelGroupUI selectedSteelGroup = listViewSteelGroups.getSelectionModel().getSelectedItem();
+        if (selectedSteelGroup == null)
+            return;
+        listViewSteelGroups.getSelectionModel().clearSelection();
+        listViewSteelGroups.getSelectionModel().select(selectedSteelGroup);
+        setDisabledSteelGroupField(false);
+        txfSteelGroup.requestFocus();
+    }
+
+    @FXML
+    private void saveSteelGroup(){
+        setDisabledSteelGroupField(true);
+        btSaveSteelGroup.setDisable(true);
+        SteelGroupUI selectedSteelGroup = listViewSteelGroups.getSelectionModel().getSelectedItem();
+        if (selectedSteelGroup == null)
+            return;
+        updateSteelGroupFromFields(selectedSteelGroup);
+        SteelGroup steelGroup = steelGroupServiceUI.getSteelGroupFromUIModel(selectedSteelGroup);
+        if (steelGroup.getSteelGroupId()==null || steelGroup.getSteelGroupId()==0){
+            Long id = steelGroupService.insert(steelGroup);
+            LOGGER.debug("SAVE STEEL GROUP: steel group has been inserted in DB");
+            selectedSteelGroup.setId(id);
+        }else {
+            steelGroupService.update(steelGroup);
+            LOGGER.debug("SAVE STEEL GROUP: steel group has been updated in DB");
+        }
+        allSteelGroups.remove(selectedSteelGroup);
+        allSteelGroups.add(selectedSteelGroup);
+        listViewSteelGroups.getSelectionModel().select(selectedSteelGroup);
+
+    }
+
+    @FXML
+    private void deleteSteelGroup(){
+        SteelGroupUI delSteelGroup = listViewSteelGroups.getSelectionModel().getSelectedItem();
+        if (delSteelGroup == null)
+            return;
+        if (getResponseDeleteDialog(1)==Dialog.Actions.OK){
+            if (delSteelGroup.getId() != 0){
+                steelGroupService.delete(steelGroupServiceUI.getSteelGroupFromUIModel(delSteelGroup));
+                LOGGER.debug("DELETE STEEL GROUP: steel type has been deleted from DB");
+            }
+            allSteelGroups.remove(delSteelGroup);
+            listViewSteelGroups.getSelectionModel().selectFirst();
+            listViewSteelGroups.fireEvent(EventFXUtil.getMouseClickEvent());
+            listViewSteelGroups.requestFocus();
+        }
+    }
+
     //Utilities -------------------------------------------------------------------
 
     private Action getResponseDeleteDialog(int countOfDeletingRecords){
@@ -746,6 +1105,34 @@ public class PropertiesController extends GenericController {
             for (TextField tf : textFields){
                 tf.setEditable(true);
                 tf.setStyle("");
+            }
+        }
+    }
+    private void setDisabledComboBoxes(boolean disabled, ComboBox ... comboBoxes){
+        if (disabled){
+            for (ComboBox cb : comboBoxes) {
+                cb.setDisable(true);
+                cb.setStyle(STYLE_NOT_EDIT_COMBOBOX);
+            }
+        }else
+            for (ComboBox cb : comboBoxes) {
+                cb.setDisable(false);
+                cb.setStyle("");
+            }
+    }
+
+    private void setDisabledTextAreas(boolean disable, TextArea ... textAreas){
+        if (disable){
+            for (TextArea ta : textAreas){
+                ta.setEditable(false);
+                ta.setStyle(STYLE_NOT_EDITABLE_BACKGROUND);
+                ta.setOpacity(0.7);
+            }
+        }else {
+            for (TextArea ta : textAreas){
+                ta.setEditable(true);
+                ta.setStyle("");
+                ta.setOpacity(1.0);
             }
         }
     }
@@ -790,6 +1177,18 @@ public class PropertiesController extends GenericController {
                     doSelectDiameter();
                     return;
                 }
+                if (source.equals(listViewThickness)){
+                    doSelectThickness();
+                    return;
+                }
+                if (source.equals(listViewSteelTypes)){
+                    doSelectSteelType();
+                    return;
+                }
+                if (source.equals(listViewSteelGroups)){
+                    doSelectSteelGroup();
+                    return;
+                }
 
             }
 
@@ -798,8 +1197,9 @@ public class PropertiesController extends GenericController {
             PatternDiameterUI selectedDiameter = listViewDiameters.getSelectionModel().getSelectedItem();
             if (selectedDiameter == null)
                 return;
-            setDisabledTextFields(true);
+            setDisabledTextFields(true,txfDiameter);
             txfDiameter.setText(selectedDiameter.getDiameter()+"");
+            btSaveDiameter.setDisable(true);
         }
 
         private void doSelectWeldPatternType(){
@@ -809,6 +1209,36 @@ public class PropertiesController extends GenericController {
             setDisabledWeldPatternTypesFields(true);
             txfWeldPatternTypeName.setText(selectedWeldDetail.getType());
             txfWeldPatternTypeCode.setText(selectedWeldDetail.getCode());
+            btSaveWeldPatternType.setDisable(true);
+        }
+
+        private void doSelectThickness(){
+            PatternThicknessUI selectedThickness = listViewThickness.getSelectionModel().getSelectedItem();
+            if (selectedThickness == null)
+                return;
+            setDisabledTextFields(true,txfThickness);
+            txfThickness.setText(selectedThickness.getThickness()+"");
+            btSaveThickness.setDisable(true);
+        }
+
+        private void doSelectSteelType(){
+            SteelTypeUI selectedSteelType = listViewSteelTypes.getSelectionModel().getSelectedItem();
+            if (selectedSteelType == null)
+                return;
+            setDisabledSteelTypesFields(true);
+            txfSteelType.setText(selectedSteelType.getType());
+            cbSteelTypeGroup.getSelectionModel().select(selectedSteelType.getSteelGroupUI());
+            btSaveSteelType.setDisable(true);
+        }
+
+        private void doSelectSteelGroup(){
+            SteelGroupUI steelGroup = listViewSteelGroups.getSelectionModel().getSelectedItem();
+            if (steelGroup == null)
+                return;
+            setDisabledSteelGroupField(true);
+            txfSteelGroup.setText(steelGroup.getGroup());
+            txtAreaSteelGroupDecription.setText(steelGroup.getDescription());
+            btSaveSteelGroup.setDisable(true);
         }
 
 
@@ -866,6 +1296,19 @@ public class PropertiesController extends GenericController {
 
                 if (txfDiameter.isEditable()){
                     btSaveDiameter.setDisable(false);
+                    return;
+                }
+
+                if (txfThickness.isEditable()){
+                    btSaveThickness.setDisable(false);
+                    return;
+                }
+
+                if (txfSteelType.isEditable()){
+                    btSaveSteelType.setDisable(false);
+                }
+                if (txfSteelGroup.isEditable()){
+                    btSaveSteelGroup.setDisable(false);
                 }
             }
 

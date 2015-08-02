@@ -73,9 +73,26 @@ public class SteelTypeUI extends  GenericEntityUI {
 
     @Override
     public String toString() {
-        return "SteelTypeUI{" +
-                "type=" + type +
-                ", steelGroup=" + steelGroup +
-                '}';
+        return getType();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        SteelTypeUI that = (SteelTypeUI) o;
+
+        if (type != null ? !type.equals(that.type) : that.type != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + (type != null ? type.hashCode() : 0);
+        return result;
     }
 }
