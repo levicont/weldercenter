@@ -346,6 +346,11 @@ public class PropertiesController extends GenericController {
 
     private void initTitlePaneWeldMethods(){
         initListViewWeldMethods();
+        setDisabledTextFields(true, txfWeldMethodCode, txfWeldMethodName);
+        InvalidationListener invalidationListener = new TextFieldValidateListener();
+        txfWeldMethodCode.textProperty().addListener(invalidationListener);
+        txfWeldMethodName.textProperty().addListener(invalidationListener);
+
     }
 
     private void initListViewWeldMethods(){
@@ -356,6 +361,13 @@ public class PropertiesController extends GenericController {
         ListViewEventHandler eventHandler = new ListViewEventHandler();
         listViewWeldMethod.addEventHandler(Event.ANY, eventHandler);
         listViewWeldMethod.getSelectionModel().selectFirst();
+    }
+
+    private void updateWeldMethodFromFields(WeldMethodUI weldMethodUI){
+        if (weldMethodUI == null)
+            return;
+        weldMethodUI.setCode(txfWeldMethodCode.getText().trim());
+        weldMethodUI.setName(txfWeldMethodName.getText().trim());
     }
 
     private void initAllWeldMethods(){
@@ -1123,22 +1135,64 @@ public class PropertiesController extends GenericController {
 
     @FXML
     private void addWeldMethod(){
+        clearTextFields(txfWeldMethodName, txfWeldMethodCode);
+        listViewWeldMethod.getSelectionModel().clearSelection();
+        WeldMethodUI weldMethodUI = new WeldMethodUI();
+        allWeldMethods.add(weldMethodUI);
+        listViewWeldMethod.getSelectionModel().select(weldMethodUI);
 
+        setDisabledTextFields(false, txfWeldMethodCode, txfWeldMethodName);
+        txfWeldMethodCode.requestFocus();
     }
 
     @FXML
     private void editWeldMethod(){
-
+        WeldMethodUI selectedWeldMethod = listViewWeldMethod.getSelectionModel().getSelectedItem();
+        if (selectedWeldMethod == null)
+            return;
+        listViewWeldMethod.getSelectionModel().clearSelection();
+        listViewWeldMethod.getSelectionModel().select(selectedWeldMethod);
+        setDisabledTextFields(false, txfWeldMethodCode, txfWeldMethodName);
+        txfWeldMethodCode.requestFocus();
     }
 
     @FXML
     private void deleteWeldMethod(){
-
+        WeldMethodUI delWeldMethod = listViewWeldMethod.getSelectionModel().getSelectedItem();
+        if (delWeldMethod == null)
+            return;
+        if (getResponseDeleteDialog(1)==Dialog.Actions.OK){
+            if (delWeldMethod.getId() != 0){
+                weldMethodService.delete(weldMethodServiceUI.getWeldMethodFromUI(delWeldMethod));
+                LOGGER.debug("DELETE WELD METHOD: weld method has been deleted from DB");
+            }
+            allWeldMethods.remove(delWeldMethod);
+            listViewWeldMethod.getSelectionModel().selectFirst();
+            listViewWeldMethod.fireEvent(EventFXUtil.getMouseClickEvent());
+            listViewWeldMethod.requestFocus();
+        }
     }
 
     @FXML
     private void saveWeldMethod(){
-
+        setDisabledTextFields(true,txfWeldMethodName, txfWeldMethodCode);
+        btSaveWeldMethod.setDisable(true);
+        WeldMethodUI selWeldMethod = listViewWeldMethod.getSelectionModel().getSelectedItem();
+        if (selWeldMethod == null)
+            return;
+        updateWeldMethodFromFields(selWeldMethod);
+        WeldMethod weldMethod = weldMethodServiceUI.getWeldMethodFromUI(selWeldMethod);
+        if (weldMethod.getWeldMethodId()==null || weldMethod.getWeldMethodId()==0){
+            Long id = weldMethodService.insert(weldMethod);
+            LOGGER.debug("SAVE WELD METHOD: weld method has been inserted in DB");
+            selWeldMethod.setId(id);
+        }else {
+            weldMethodService.update(weldMethod);
+            LOGGER.debug("SAVE WELD METHOD: weld method has been updated in DB");
+        }
+        allWeldMethods.remove(selWeldMethod);
+        allWeldMethods.add(selWeldMethod);
+        listViewWeldMethod.getSelectionModel().select(selWeldMethod);
     }
 
 
@@ -1152,6 +1206,11 @@ public class PropertiesController extends GenericController {
                 .actions(org.controlsfx.dialog.Dialog.Actions.OK, org.controlsfx.dialog.Dialog.Actions.CANCEL)
                 .showConfirm();
         return response;
+    }
+
+    private void clearTextFields(TextField ... textFields){
+        for (TextField tf : textFields)
+            tf.clear();
     }
 
     private void setDisabledTextFields(boolean disabled, TextField ... textFields){

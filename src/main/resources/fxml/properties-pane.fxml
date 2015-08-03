@@ -471,9 +471,9 @@
                                                       <Insets bottom="8.0" left="90.0" right="8.0" top="8.0" />
                                                    </GridPane.margin>
                                                 </TextField>
-                                                <Button mnemonicParsing="false" text="Добавить" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                                <Button mnemonicParsing="false" text="Изменить" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                                                <Button mnemonicParsing="false" text="Удалить" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                                <Button mnemonicParsing="false" onAction="#addWeldMethod" text="Добавить" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                <Button mnemonicParsing="false" onAction="#editWeldMethod" text="Изменить" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                                <Button mnemonicParsing="false" onAction="#deleteWeldMethod" text="Удалить" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                                                 <Button fx:id="btSaveWeldMethod" disable="true" layoutX="160.0" layoutY="83.0" mnemonicParsing="false" onAction="#saveWeldMethod" text="Сохранить" GridPane.columnIndex="1" GridPane.rowIndex="2">
                                                    <GridPane.margin>
                                                       <Insets left="90.0" />

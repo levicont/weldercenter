@@ -40,7 +40,7 @@
                   </Menu>
                   <Menu id="menuWeld" mnemonicParsing="false" text="Сварка">
                     <items>
-                      <MenuItem id="miWeldMethod" mnemonicParsing="false" text="Медоты сварки" />
+                      <MenuItem id="miWeldMethod" mnemonicParsing="false" onAction="#showPropertiesPaneWeldTab" text="Медоты сварки" />
                         <MenuItem id="miElectrode" mnemonicParsing="false" text="Электроды" />
                         <MenuItem id="miWeldWire" mnemonicParsing="false" text="Сварочная проволока" />
                         <MenuItem id="miWeldGas" mnemonicParsing="false" text="Сварочный газ" />

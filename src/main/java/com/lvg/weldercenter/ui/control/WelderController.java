@@ -309,7 +309,7 @@ public class WelderController extends GenericController {
     }
 
     private void fillMenuButton(MenuButton mbt, List<String> list){
-
+        mbt.getItems().clear();
         for (String title : list){
             CheckMenuItem checkMenuItem = new CheckMenuItem(title);
             mbt.getItems().add(checkMenuItem);
@@ -591,10 +591,13 @@ public class WelderController extends GenericController {
         initControlButtons();
     }
 
+    //TODO correct update method must be update weld methods
+
     @FXML
     private void refreshWelderTable(){
         initWeldersList();
         fillComboBoxes();
+        fillMenuButton(mbtWeldMethod, getWeldMethods(weldMethodService.getAll()));
         initWelderTable();
         initWelderDetailsPane();
         initControlButtons();
