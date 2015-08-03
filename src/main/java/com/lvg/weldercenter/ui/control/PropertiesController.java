@@ -25,6 +25,7 @@ import org.controlsfx.control.action.Action;
 import org.controlsfx.dialog.*;
 import org.controlsfx.dialog.Dialog;
 
+import javax.xml.ws.Service;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -43,6 +44,7 @@ public class PropertiesController extends GenericController {
     private PatternThicknessService patternThicknessService = ServiceFactory.getPatternThicknessService();
     private SteelTypeService steelTypeService = ServiceFactory.getSteelTypeService();
     private SteelGroupService steelGroupService = ServiceFactory.getSteelGroupService();
+    private WeldMethodService weldMethodService = ServiceFactory.getWeldMethodService();
 
     private OrganizationServiceUI organizationServiceUI = ServiceUIFactory.getOrganizationServiceUI();
     private WeldDetailServiceUI weldDetailServiceUI = ServiceUIFactory.getWeldDetailServiceUI();
@@ -50,6 +52,8 @@ public class PropertiesController extends GenericController {
     private PatternThicknessServiceUI patternThicknessServiceUI = ServiceUIFactory.getPatternThicknessServiceUI();
     private SteelTypeServiceUI steelTypeServiceUI = ServiceUIFactory.getSteelTypeServiceUI();
     private SteelGroupServiceUI steelGroupServiceUI = ServiceUIFactory.getSteelGroupServiceUI();
+    private WeldMethodServiceUI weldMethodServiceUI = ServiceUIFactory.getWeldMethodServiceUI();
+
     @FXML
     private BorderPane mainPropertiesPane;
 
@@ -149,11 +153,13 @@ public class PropertiesController extends GenericController {
     @FXML
     private TitledPane titlePaneWeldMethod;
     @FXML
-    private ListView<String> listViewWeldMethod;
+    private ListView<WeldMethodUI> listViewWeldMethod;
     @FXML
     private TextField txfWeldMethodCode;
     @FXML
     private TextField txfWeldMethodName;
+    @FXML
+    private Button btSaveWeldMethod;
 
     @FXML
     private TitledPane titlePaneElectrode;
@@ -307,6 +313,7 @@ public class PropertiesController extends GenericController {
     private ObservableList<PatternThicknessUI> allThickness = FXCollections.observableArrayList();
     private ObservableList<SteelTypeUI> allSteelTypes = FXCollections.observableArrayList();
     private ObservableList<SteelGroupUI> allSteelGroups = FXCollections.observableArrayList();
+    private ObservableList<WeldMethodUI> allWeldMethods = FXCollections.observableArrayList();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -322,10 +329,41 @@ public class PropertiesController extends GenericController {
         tabPaneAllProperties.getSelectionModel().select(tabWeldPatterns);
     }
 
+    public void showWeldTab(){
+        tabPaneAllProperties.getSelectionModel().select(tabWeld);
+    }
+
     private void init(){
         initOrganizationTab();
         initWeldPatternTab();
+        initWeldTab();
         btSave.setDisable(true);
+    }
+
+    private void initWeldTab(){
+        initTitlePaneWeldMethods();
+    }
+
+    private void initTitlePaneWeldMethods(){
+        initListViewWeldMethods();
+    }
+
+    private void initListViewWeldMethods(){
+        initAllWeldMethods();
+        listViewWeldMethod.setItems(allWeldMethods);
+        listViewWeldMethod.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+        listViewWeldMethod.setEditable(false);
+        ListViewEventHandler eventHandler = new ListViewEventHandler();
+        listViewWeldMethod.addEventHandler(Event.ANY, eventHandler);
+        listViewWeldMethod.getSelectionModel().selectFirst();
+    }
+
+    private void initAllWeldMethods(){
+        allWeldMethods.clear();
+        for (WeldMethod wm : weldMethodService.getAll()){
+            WeldMethodUI wmUI = new WeldMethodUI(wm);
+            allWeldMethods.add(wmUI);
+        }
     }
 
     private void initWeldPatternTab(){
@@ -1083,6 +1121,27 @@ public class PropertiesController extends GenericController {
         }
     }
 
+    @FXML
+    private void addWeldMethod(){
+
+    }
+
+    @FXML
+    private void editWeldMethod(){
+
+    }
+
+    @FXML
+    private void deleteWeldMethod(){
+
+    }
+
+    @FXML
+    private void saveWeldMethod(){
+
+    }
+
+
     //Utilities -------------------------------------------------------------------
 
     private Action getResponseDeleteDialog(int countOfDeletingRecords){
@@ -1189,6 +1248,9 @@ public class PropertiesController extends GenericController {
                     doSelectSteelGroup();
                     return;
                 }
+                if (source.equals(listViewWeldMethod)){
+                    doSelectWeldMethod();
+                }
 
             }
 
@@ -1239,6 +1301,16 @@ public class PropertiesController extends GenericController {
             txfSteelGroup.setText(steelGroup.getGroup());
             txtAreaSteelGroupDecription.setText(steelGroup.getDescription());
             btSaveSteelGroup.setDisable(true);
+        }
+
+        private void doSelectWeldMethod(){
+            WeldMethodUI weldMethodUI = listViewWeldMethod.getSelectionModel().getSelectedItem();
+            if (weldMethodUI == null)
+                return;
+            setDisabledTextFields(true, txfWeldMethodName, txfWeldMethodCode);
+            txfWeldMethodName.setText(weldMethodUI.getName());
+            txfWeldMethodCode.setText(weldMethodUI.getCode());
+            btSaveWeldMethod.setDisable(true);
         }
 
 
@@ -1306,9 +1378,17 @@ public class PropertiesController extends GenericController {
 
                 if (txfSteelType.isEditable()){
                     btSaveSteelType.setDisable(false);
+                    return;
                 }
                 if (txfSteelGroup.isEditable()){
                     btSaveSteelGroup.setDisable(false);
+                    return;
+                }
+            }
+            if (selectedTab.equals(tabWeld)){
+                if (txfWeldMethodCode.isEditable()){
+                    btSaveWeldMethod.setDisable(false);
+                    return;
                 }
             }
 
