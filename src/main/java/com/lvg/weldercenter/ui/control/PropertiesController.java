@@ -45,6 +45,11 @@ public class PropertiesController extends GenericController {
     private SteelTypeService steelTypeService = ServiceFactory.getSteelTypeService();
     private SteelGroupService steelGroupService = ServiceFactory.getSteelGroupService();
     private WeldMethodService weldMethodService = ServiceFactory.getWeldMethodService();
+    private ElectrodeService electrodeService = ServiceFactory.getElectrodeService();
+    private WeldWireService weldWireService = ServiceFactory.getWeldWireService();
+    private WeldGasService weldGasService = ServiceFactory.getWeldGasService();
+    private WeldPositionService weldPositionService = ServiceFactory.getWeldPositionService();
+    private EducationService educationService = ServiceFactory.getEducationService();
 
     private OrganizationServiceUI organizationServiceUI = ServiceUIFactory.getOrganizationServiceUI();
     private WeldDetailServiceUI weldDetailServiceUI = ServiceUIFactory.getWeldDetailServiceUI();
@@ -53,6 +58,11 @@ public class PropertiesController extends GenericController {
     private SteelTypeServiceUI steelTypeServiceUI = ServiceUIFactory.getSteelTypeServiceUI();
     private SteelGroupServiceUI steelGroupServiceUI = ServiceUIFactory.getSteelGroupServiceUI();
     private WeldMethodServiceUI weldMethodServiceUI = ServiceUIFactory.getWeldMethodServiceUI();
+    private ElectrodeServiceUI electrodeServiceUI = ServiceUIFactory.getElectrodeServiceUI();
+    private WeldWireServiceUI weldWireServiceUI = ServiceUIFactory.getWeldWireServiceUI();
+    private WeldGasServiceUI weldGasServiceUI = ServiceUIFactory.getWeldGasServiceUI();
+    private WeldPositionServiceUI weldPositionServiceUI = ServiceUIFactory.getWeldPositionServiceUI();
+    private EducationServiceUI educationServiceUI = ServiceUIFactory.getEducationServiceUI();
 
     @FXML
     private BorderPane mainPropertiesPane;
@@ -164,32 +174,40 @@ public class PropertiesController extends GenericController {
     @FXML
     private TitledPane titlePaneElectrode;
     @FXML
-    private ListView<String> listViewElectrode;
+    private ListView<ElectrodeUI> listViewElectrode;
     @FXML
     private TextField txfElectrodeType;
+    @FXML
+    private Button btSaveElectrode;
 
     @FXML
     private TitledPane titlePaneWeldWire;
     @FXML
-    private ListView<String> listViewWeldWire;
+    private ListView<WeldWireUI> listViewWeldWire;
     @FXML
     private TextField txfWeldWireType;
+    @FXML
+    private Button btSaveWeldWire;
 
     @FXML
     private TitledPane titlePaneWeldGas;
     @FXML
-    private ListView<String> listViewWeldGas;
+    private ListView<WeldGasUI> listViewWeldGas;
     @FXML
     private TextField txfWeldGasType;
+    @FXML
+    private Button btSaveWeldGas;
 
     @FXML
     private TitledPane titlePaneWeldPosition;
     @FXML
-    private ListView<String> listViewWeldPosition;
+    private ListView<WeldPositionUI> listViewWeldPosition;
     @FXML
     private TextField txfWeldPositionCode;
     @FXML
     private TextArea txtAreaWeldPositionDescription;
+    @FXML
+    private Button btSaveWeldPosition;
 
     //Education and etc tab
     @FXML
@@ -198,9 +216,11 @@ public class PropertiesController extends GenericController {
     @FXML
     private TitledPane titlePaneEducation;
     @FXML
-    private ListView<String> listViewEducation;
+    private ListView<EducationUI> listViewEducation;
     @FXML
     private TextField txfEducationType;
+    @FXML
+    private Button btSaveEducation;
 
     @FXML
     private TitledPane titlePaneQualification;
@@ -314,6 +334,11 @@ public class PropertiesController extends GenericController {
     private ObservableList<SteelTypeUI> allSteelTypes = FXCollections.observableArrayList();
     private ObservableList<SteelGroupUI> allSteelGroups = FXCollections.observableArrayList();
     private ObservableList<WeldMethodUI> allWeldMethods = FXCollections.observableArrayList();
+    private ObservableList<ElectrodeUI> allElectrodes = FXCollections.observableArrayList();
+    private ObservableList<WeldWireUI> allWeldWires = FXCollections.observableArrayList();
+    private ObservableList<WeldGasUI> allWeldGases = FXCollections.observableArrayList();
+    private ObservableList<WeldPositionUI> allWeldPositions = FXCollections.observableArrayList();
+    private ObservableList<EducationUI> allEducations = FXCollections.observableArrayList();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -337,11 +362,163 @@ public class PropertiesController extends GenericController {
         initOrganizationTab();
         initWeldPatternTab();
         initWeldTab();
+        initEducationEtcTab();
         btSave.setDisable(true);
+    }
+
+    private void initEducationEtcTab(){
+        initTitlePaneEducations();
+    }
+
+    private void initTitlePaneEducations(){
+        initListViewEducations();
+        setDisabledTextFields(true, txfEducationType);
+        InvalidationListener invalidationListener = new TextFieldValidateListener();
+        txfEducationType.textProperty().addListener(invalidationListener);
+
+    }
+
+    private void initListViewEducations(){
+        initAllEducations();
+        initListView(listViewEducation, allEducations);
+    }
+
+    private void initAllEducations(){
+        allEducations.clear();
+        for (Education edu : educationService.getAll()){
+            EducationUI eduUI = new EducationUI(edu);
+            allEducations.add(eduUI);
+        }
+    }
+
+    private void updateEducationFromFields(EducationUI educationUI){
+        if (educationUI == null)
+            return;
+        educationUI.setType(txfEducationType.getText().trim());
     }
 
     private void initWeldTab(){
         initTitlePaneWeldMethods();
+        initTitlePaneElectrodes();
+        initTitlePaneWeldWires();
+        initTitlePaneWeldGas();
+        initTitlePaneWeldPositions();
+    }
+
+    private void initTitlePaneWeldPositions(){
+        initListViewWeldPositions();
+        setDisabledWeldPositionsFields(true);
+        InvalidationListener invalidationListener = new TextFieldValidateListener();
+        txfWeldPositionCode.textProperty().addListener(invalidationListener);
+        txtAreaWeldPositionDescription.textProperty().addListener(invalidationListener);
+    }
+
+    private void setDisabledWeldPositionsFields(boolean disabled){
+        setDisabledTextFields(disabled, txfWeldPositionCode);
+        setDisabledTextAreas(disabled,txtAreaWeldPositionDescription);
+    }
+
+    private void initListViewWeldPositions(){
+        initAllWeldPositions();
+        initListView(listViewWeldPosition, allWeldPositions);
+    }
+
+    private void initAllWeldPositions(){
+        allWeldPositions.clear();
+        for (WeldPosition wp : weldPositionService.getAll()){
+            WeldPositionUI wpUI = new WeldPositionUI(wp);
+            allWeldPositions.add(wpUI);
+        }
+    }
+
+    private void updateWeldPositionFromFields(WeldPositionUI weldPositionUI){
+        if (weldPositionUI == null)
+            return;
+        weldPositionUI.setType(txtAreaWeldPositionDescription.getText().trim());
+        weldPositionUI.setCode(txfWeldPositionCode.getText().trim());
+    }
+
+    private void initTitlePaneWeldGas(){
+        initListViewWeldGas();
+        setDisabledTextFields(true, txfWeldGasType);
+        InvalidationListener invalidationListener = new TextFieldValidateListener();
+        txfWeldGasType.textProperty().addListener(invalidationListener);
+    }
+
+    private void initListViewWeldGas(){
+        initAllWeldGases();
+        initListView(listViewWeldGas, allWeldGases);
+    }
+
+    private void initAllWeldGases(){
+        allWeldGases.clear();
+        for (WeldGas wg : weldGasService.getAll()){
+            WeldGasUI wgUI = new WeldGasUI(wg);
+            allWeldGases.add(wgUI);
+        }
+    }
+
+    private void updateWeldGasFromFields(WeldGasUI weldGasUI){
+        if (weldGasUI == null)
+            return;
+        weldGasUI.setType(txfWeldGasType.getText().trim());
+    }
+
+    private void initTitlePaneWeldWires(){
+        initListViewWeldWires();
+        setDisabledTextFields(true, txfWeldWireType);
+        InvalidationListener invalidationListener = new TextFieldValidateListener();
+        txfWeldWireType.textProperty().addListener(invalidationListener);
+    }
+
+    private void initListViewWeldWires(){
+        initAllWeldWires();
+        initListView(listViewWeldWire, allWeldWires);
+    }
+
+    private void initAllWeldWires(){
+        allWeldWires.clear();
+        for (WeldWire ww : weldWireService.getAll()){
+            WeldWireUI wwUI = new WeldWireUI(ww);
+            allWeldWires.add(wwUI);
+        }
+    }
+
+    private void updateWeldWireFromFields(WeldWireUI weldWireUI){
+        if (weldWireUI == null)
+            return;
+        weldWireUI.setType(txfWeldWireType.getText().trim());
+    }
+
+    private void initTitlePaneElectrodes(){
+        initListViewElectrodes();
+        setDisabledTextFields(true, txfElectrodeType);
+        InvalidationListener invalidationListener = new TextFieldValidateListener();
+        txfElectrodeType.textProperty().addListener(invalidationListener);
+    }
+
+    private void initListViewElectrodes(){
+        initAllElectrodes();
+        listViewElectrode.setItems(allElectrodes);
+        listViewElectrode.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+        listViewElectrode.setEditable(false);
+        ListViewEventHandler eventHandler = new ListViewEventHandler();
+        listViewElectrode.addEventHandler(Event.ANY, eventHandler);
+        listViewElectrode.getSelectionModel().selectFirst();
+    }
+
+    private void initAllElectrodes(){
+        allElectrodes.clear();
+        for (Electrode el : electrodeService.getAll()){
+            ElectrodeUI elUI  = new ElectrodeUI(el);
+            allElectrodes.add(elUI);
+        }
+    }
+
+    private void updateElectrodesFromFields(ElectrodeUI electrodeUI){
+        if (electrodeUI == null)
+            return;
+        electrodeUI.setType(txfElectrodeType.getText().trim());
     }
 
     private void initTitlePaneWeldMethods(){
@@ -1195,8 +1372,327 @@ public class PropertiesController extends GenericController {
         listViewWeldMethod.getSelectionModel().select(selWeldMethod);
     }
 
+    @FXML
+    private void addElectrode(){
+        clearTextFields(txfElectrodeType);
+        listViewElectrode.getSelectionModel().clearSelection();
+        ElectrodeUI electrodeUI = new ElectrodeUI();
+        allElectrodes.add(electrodeUI);
+        listViewElectrode.getSelectionModel().select(electrodeUI);
+
+        setDisabledTextFields(false, txfElectrodeType);
+        txfElectrodeType.requestFocus();
+    }
+
+    @FXML
+    private void deleteElectrode(){
+        ElectrodeUI delElectrode = listViewElectrode.getSelectionModel().getSelectedItem();
+        if (delElectrode == null)
+            return;
+        if (getResponseDeleteDialog(1)==Dialog.Actions.OK){
+            if (delElectrode.getId() != 0){
+                electrodeService.delete(electrodeServiceUI.getElectrodeFromUIModel(delElectrode));
+                LOGGER.debug("DELETE ELECTRODE: elctrode has been deleted from DB");
+            }
+            allElectrodes.remove(delElectrode);
+            listViewElectrode.getSelectionModel().selectFirst();
+            listViewElectrode.fireEvent(EventFXUtil.getMouseClickEvent());
+            listViewElectrode.requestFocus();
+        }
+    }
+
+    @FXML
+    private void editElectrode(){
+        ElectrodeUI selectedElectrode = listViewElectrode.getSelectionModel().getSelectedItem();
+        if (selectedElectrode == null)
+            return;
+        listViewElectrode.getSelectionModel().clearSelection();
+        listViewElectrode.getSelectionModel().select(selectedElectrode);
+        setDisabledTextFields(false, txfElectrodeType);
+        txfElectrodeType.requestFocus();
+    }
+    @FXML
+    private void saveElectrode(){
+        setDisabledTextFields(true,txfElectrodeType);
+        btSaveElectrode.setDisable(true);
+        ElectrodeUI selectedElectrode = listViewElectrode.getSelectionModel().getSelectedItem();
+        if (selectedElectrode == null)
+            return;
+        updateElectrodesFromFields(selectedElectrode);
+        Electrode electrode = electrodeServiceUI.getElectrodeFromUIModel(selectedElectrode);
+        if (electrode.getElectrodeId() == null || electrode.getElectrodeId() == 0){
+            Long id = electrodeService.insert(electrode);
+            LOGGER.debug("SAVE ELECTRODE: electrode has been inserted in DB");
+            selectedElectrode.setId(id);
+        }else {
+            electrodeService.update(electrode);
+            LOGGER.debug("SAVE ELECTRODE: electrode has been updated in DB");
+        }
+        allElectrodes.remove(selectedElectrode);
+        allElectrodes.add(selectedElectrode);
+        listViewElectrode.getSelectionModel().select(selectedElectrode);
+    }
+
+    @FXML
+    private void addWeldWire(){
+        clearTextFields(txfWeldWireType);
+        listViewWeldWire.getSelectionModel().clearSelection();
+        WeldWireUI weldWireUI = new WeldWireUI();
+        allWeldWires.add(weldWireUI);
+        listViewWeldWire.getSelectionModel().select(weldWireUI);
+
+        setDisabledTextFields(false, txfWeldWireType);
+        txfWeldWireType.requestFocus();
+    }
+
+    @FXML
+    private void editWeldWire(){
+        WeldWireUI selWeldWire = listViewWeldWire.getSelectionModel().getSelectedItem();
+        if (selWeldWire == null)
+            return;
+        listViewWeldWire.getSelectionModel().clearSelection();
+        listViewWeldWire.getSelectionModel().select(selWeldWire);
+        setDisabledTextFields(false, txfWeldWireType);
+        txfWeldWireType.requestFocus();
+    }
+
+    @FXML
+    private void deleteWeldWire() {
+        WeldWireUI delWeldWire = listViewWeldWire.getSelectionModel().getSelectedItem();
+        if (delWeldWire == null)
+            return;
+        if (getResponseDeleteDialog(1) == Dialog.Actions.OK) {
+            if (delWeldWire.getId() != 0) {
+                weldWireService.delete(weldWireServiceUI.getWeldWireFromUIModel(delWeldWire));
+                LOGGER.debug("DELETE WELD WIRE: weld wire has been deleted from DB");
+            }
+            allWeldWires.remove(delWeldWire);
+            listViewWeldWire.getSelectionModel().selectFirst();
+            listViewWeldWire.fireEvent(EventFXUtil.getMouseClickEvent());
+            listViewWeldWire.requestFocus();
+        }
+    }
+
+    @FXML
+    private void saveWeldWire(){
+        setDisabledTextFields(true,txfWeldWireType);
+        btSaveWeldWire.setDisable(true);
+        WeldWireUI selectedWeldWire = listViewWeldWire.getSelectionModel().getSelectedItem();
+        if (selectedWeldWire == null)
+            return;
+        updateWeldWireFromFields(selectedWeldWire);
+        WeldWire weldWire = weldWireServiceUI.getWeldWireFromUIModel(selectedWeldWire);
+        if (weldWire.getWeldWireId() == null || weldWire.getWeldWireId() == 0){
+            Long id = weldWireService.insert(weldWire);
+            LOGGER.debug("SAVE WELD WIRE: weld wire has been inserted in DB");
+            selectedWeldWire.setId(id);
+        }else {
+            weldWireService.update(weldWire);
+            LOGGER.debug("SAVE WELD WIRE: weld wire has been updated in DB");
+        }
+        allWeldWires.remove(selectedWeldWire);
+        allWeldWires.add(selectedWeldWire);
+        listViewWeldWire.getSelectionModel().select(selectedWeldWire);
+    }
+
+    @FXML
+    private void addWeldGas(){
+        clearTextFields(txfWeldGasType);
+        listViewWeldGas.getSelectionModel().clearSelection();
+        WeldGasUI weldGasUI = new WeldGasUI();
+        allWeldGases.add(weldGasUI);
+        listViewWeldGas.getSelectionModel().select(weldGasUI);
+
+        setDisabledTextFields(false, txfWeldGasType);
+        txfWeldGasType.requestFocus();
+    }
+
+    @FXML
+    private void editWeldGas(){
+        WeldGasUI selWeldGas = listViewWeldGas.getSelectionModel().getSelectedItem();
+        if (selWeldGas == null)
+            return;
+        listViewWeldGas.getSelectionModel().clearSelection();
+        listViewWeldGas.getSelectionModel().select(selWeldGas);
+        setDisabledTextFields(false, txfWeldGasType);
+        txfWeldGasType.requestFocus();
+    }
+
+    @FXML
+    private void deleteWeldGas(){
+        WeldGasUI delWeldGas = listViewWeldGas.getSelectionModel().getSelectedItem();
+        if (delWeldGas == null)
+            return;
+        if (getResponseDeleteDialog(1) == Dialog.Actions.OK) {
+            if (delWeldGas.getId() != 0) {
+                weldGasService.delete(weldGasServiceUI.getWeldGasFromUIModel(delWeldGas));
+                LOGGER.debug("DELETE WELD GAS: weld gas has been deleted from DB");
+            }
+            allWeldGases.remove(delWeldGas);
+            listViewWeldGas.getSelectionModel().selectFirst();
+            listViewWeldGas.fireEvent(EventFXUtil.getMouseClickEvent());
+            listViewWeldGas.requestFocus();
+        }
+    }
+
+    @FXML
+    private void saveWeldGas(){
+        setDisabledTextFields(true,txfWeldGasType);
+        btSaveWeldGas.setDisable(true);
+        WeldGasUI selectedWeldGas = listViewWeldGas.getSelectionModel().getSelectedItem();
+        if (selectedWeldGas == null)
+            return;
+        updateWeldGasFromFields(selectedWeldGas);
+        WeldGas weldGas = weldGasServiceUI.getWeldGasFromUIModel(selectedWeldGas);
+        if (weldGas.getWeldGasId() == null || weldGas.getWeldGasId() == 0){
+            Long id = weldGasService.insert(weldGas);
+            LOGGER.debug("SAVE WELD GAS: weld gas has been inserted in DB");
+            selectedWeldGas.setId(id);
+        }else {
+            weldGasService.update(weldGas);
+            LOGGER.debug("SAVE WELD GAS: weld gas has been updated in DB");
+        }
+        allWeldGases.remove(selectedWeldGas);
+        allWeldGases.add(selectedWeldGas);
+        listViewWeldGas.getSelectionModel().select(selectedWeldGas);
+    }
+
+    @FXML
+    private void addWeldPosition(){
+        clearTextFields(txfWeldPositionCode);
+        clearTextAreas(txtAreaWeldPositionDescription);
+        listViewWeldPosition.getSelectionModel().clearSelection();
+        WeldPositionUI weldPositionUI = new WeldPositionUI();
+        allWeldPositions.add(weldPositionUI);
+        listViewWeldPosition.getSelectionModel().select(weldPositionUI);
+
+        setDisabledWeldPositionsFields(false);
+        txfWeldPositionCode.requestFocus();
+    }
+
+    @FXML
+    private void editWeldPosition(){
+        WeldPositionUI selWeldPosition = listViewWeldPosition.getSelectionModel().getSelectedItem();
+        if (selWeldPosition == null)
+            return;
+        listViewWeldPosition.getSelectionModel().clearSelection();
+        listViewWeldPosition.getSelectionModel().select(selWeldPosition);
+        setDisabledWeldPositionsFields(false);
+        txfWeldPositionCode.requestFocus();
+    }
+
+    @FXML
+    private void deleteWeldPosition(){
+        WeldPositionUI delWeldPosition = listViewWeldPosition.getSelectionModel().getSelectedItem();
+        if (delWeldPosition == null)
+            return;
+        if (getResponseDeleteDialog(1) == Dialog.Actions.OK) {
+            if (delWeldPosition.getId() != 0) {
+                weldPositionService.delete(weldPositionServiceUI.getWeldPositionFromUIModel(delWeldPosition));
+                LOGGER.debug("DELETE WELD POSITION: weld position has been deleted from DB");
+            }
+            allWeldPositions.remove(delWeldPosition);
+            listViewWeldPosition.getSelectionModel().selectFirst();
+            listViewWeldPosition.fireEvent(EventFXUtil.getMouseClickEvent());
+            listViewWeldPosition.requestFocus();
+        }
+    }
+
+    @FXML
+    private void saveWeldPosition(){
+        setDisabledWeldPositionsFields(true);
+        btSaveWeldPosition.setDisable(true);
+        WeldPositionUI selectedWeldPosition = listViewWeldPosition.getSelectionModel().getSelectedItem();
+        if (selectedWeldPosition == null)
+            return;
+        updateWeldPositionFromFields(selectedWeldPosition);
+        WeldPosition weldPosition = weldPositionServiceUI.getWeldPositionFromUIModel(selectedWeldPosition);
+        if (weldPosition.getWeldPositionId() == null || weldPosition.getWeldPositionId() == 0){
+            Long id = weldPositionService.insert(weldPosition);
+            LOGGER.debug("SAVE WELD POSITION: weld position has been inserted in DB");
+            selectedWeldPosition.setId(id);
+        }else {
+            weldPositionService.update(weldPosition);
+            LOGGER.debug("SAVE WELD POSITION: weld position has been updated in DB");
+        }
+        allWeldPositions.remove(selectedWeldPosition);
+        allWeldPositions.add(selectedWeldPosition);
+        listViewWeldPosition.getSelectionModel().select(selectedWeldPosition);
+    }
+
+    @FXML
+    private void addEducation(){
+        clearTextFields(txfEducationType);
+        listViewEducation.getSelectionModel().clearSelection();
+        EducationUI educationUI = new EducationUI();
+        allEducations.add(educationUI);
+        listViewEducation.getSelectionModel().select(educationUI);
+
+        setDisabledTextFields(false, txfEducationType);
+        txfEducationType.requestFocus();
+    }
+
+    @FXML
+    private void editEducation(){
+        EducationUI selEducation = listViewEducation.getSelectionModel().getSelectedItem();
+        if (selEducation == null)
+            return;
+        listViewEducation.getSelectionModel().clearSelection();
+        listViewEducation.getSelectionModel().select(selEducation);
+        setDisabledTextFields(false, txfEducationType);
+        txfEducationType.requestFocus();
+    }
+
+    @FXML
+    private void deleteEducation(){
+        EducationUI delEducation = listViewEducation.getSelectionModel().getSelectedItem();
+        if (delEducation == null)
+            return;
+        if (getResponseDeleteDialog(1) == Dialog.Actions.OK) {
+            if (delEducation.getId() != 0) {
+                educationService.delete(educationServiceUI.getEducationFromUIModel(delEducation));
+                LOGGER.debug("DELETE EDUCATION: education has been deleted from DB");
+            }
+            allEducations.remove(delEducation);
+            listViewEducation.getSelectionModel().selectFirst();
+            listViewEducation.fireEvent(EventFXUtil.getMouseClickEvent());
+            listViewEducation.requestFocus();
+        }
+    }
+
+    @FXML
+    private void saveEducation(){
+        setDisabledTextFields(true,txfEducationType);
+        btSaveEducation.setDisable(true);
+        EducationUI selectedEducation = listViewEducation.getSelectionModel().getSelectedItem();
+        if (selectedEducation == null)
+            return;
+        updateEducationFromFields(selectedEducation);
+        Education education = educationServiceUI.getEducationFromUIModel(selectedEducation);
+        if (education.getEducationId() == null || education.getEducationId() == 0){
+            Long id = educationService.insert(education);
+            LOGGER.debug("SAVE EDUCATION: education has been inserted in DB");
+            selectedEducation.setId(id);
+        }else {
+            educationService.update(education);
+            LOGGER.debug("SAVE EDUCATION: education has been updated in DB");
+        }
+        allEducations.remove(selectedEducation);
+        allEducations.add(selectedEducation);
+        listViewEducation.getSelectionModel().select(selectedEducation);
+    }
+
 
     //Utilities -------------------------------------------------------------------
+
+    private void  initListView(ListView listView, ObservableList items){
+        listView.setItems(items);
+        listView.setEditable(false);
+        listView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+        ListViewEventHandler eventHandler = new ListViewEventHandler();
+        listView.addEventHandler(Event.ANY, eventHandler);
+        listView.getSelectionModel().selectFirst();
+    }
 
     private Action getResponseDeleteDialog(int countOfDeletingRecords){
         Action response = Dialogs.create().owner(mainPropertiesPane.getScene().getWindow())
@@ -1211,6 +1707,11 @@ public class PropertiesController extends GenericController {
     private void clearTextFields(TextField ... textFields){
         for (TextField tf : textFields)
             tf.clear();
+    }
+
+    private void clearTextAreas(TextArea ... textAreas){
+        for (TextArea ta : textAreas)
+            ta.clear();
     }
 
     private void setDisabledTextFields(boolean disabled, TextField ... textFields){
@@ -1309,8 +1810,28 @@ public class PropertiesController extends GenericController {
                 }
                 if (source.equals(listViewWeldMethod)){
                     doSelectWeldMethod();
+                    return;
                 }
-
+                if (source.equals(listViewElectrode)){
+                    doSelectElectrode();
+                    return;
+                }
+                if (source.equals(listViewWeldWire)){
+                    doSelectWeldWire();
+                    return;
+                }
+                if (source.equals(listViewWeldGas)){
+                    doSelectWeldGas();
+                    return;
+                }
+                if (source.equals(listViewWeldPosition)){
+                    doSelectWeldPosition();
+                    return;
+                }
+                if (source.equals(listViewEducation)){
+                    doSelectEducation();
+                    return;
+                }
             }
 
         }
@@ -1370,6 +1891,52 @@ public class PropertiesController extends GenericController {
             txfWeldMethodName.setText(weldMethodUI.getName());
             txfWeldMethodCode.setText(weldMethodUI.getCode());
             btSaveWeldMethod.setDisable(true);
+        }
+
+        private void doSelectElectrode(){
+            ElectrodeUI electrodeUI = listViewElectrode.getSelectionModel().getSelectedItem();
+            if (electrodeUI == null)
+                return;
+            setDisabledTextFields(true, txfElectrodeType);
+            txfElectrodeType.setText(electrodeUI.getType());
+            btSaveElectrode.setDisable(true);
+        }
+
+        private void doSelectWeldWire(){
+            WeldWireUI selectedWeldWire = listViewWeldWire.getSelectionModel().getSelectedItem();
+            if (selectedWeldWire == null)
+                return;
+            setDisabledTextFields(true, txfWeldWireType);
+            txfWeldWireType.setText(selectedWeldWire.getType());
+            btSaveWeldWire.setDisable(true);
+        }
+
+        private void doSelectWeldGas(){
+            WeldGasUI selectedWeldGas = listViewWeldGas.getSelectionModel().getSelectedItem();
+            if (selectedWeldGas == null)
+                return;
+            setDisabledTextFields(true, txfWeldGasType);
+            txfWeldGasType.setText(selectedWeldGas.getType());
+            btSaveWeldGas.setDisable(true);
+        }
+
+        private void doSelectWeldPosition(){
+            WeldPositionUI selectedWeldPosition = listViewWeldPosition.getSelectionModel().getSelectedItem();
+            if (selectedWeldPosition == null)
+                return;
+            setDisabledWeldPositionsFields(true);
+            txfWeldPositionCode.setText(selectedWeldPosition.getCode());
+            txtAreaWeldPositionDescription.setText(selectedWeldPosition.getType());
+            btSaveWeldPosition.setDisable(true);
+        }
+
+        private void doSelectEducation(){
+            EducationUI selectedEducation = listViewEducation.getSelectionModel().getSelectedItem();
+            if (selectedEducation == null)
+                return;
+            setDisabledTextFields(true, txfEducationType);
+            txfEducationType.setText(selectedEducation.getType());
+            btSaveEducation.setDisable(true);
         }
 
 
@@ -1447,6 +2014,28 @@ public class PropertiesController extends GenericController {
             if (selectedTab.equals(tabWeld)){
                 if (txfWeldMethodCode.isEditable()){
                     btSaveWeldMethod.setDisable(false);
+                    return;
+                }
+                if (txfElectrodeType.isEditable()){
+                    btSaveElectrode.setDisable(false);
+                    return;
+                }
+                if (txfWeldWireType.isEditable()){
+                    btSaveWeldWire.setDisable(false);
+                    return;
+                }
+                if (txfWeldGasType.isEditable()){
+                    btSaveWeldGas.setDisable(false);
+                    return;
+                }
+                if (txfWeldPositionCode.isEditable()){
+                    btSaveWeldPosition.setDisable(false);
+                    return;
+                }
+            }
+            if (selectedTab.equals(tabEducationEtc)){
+                if (txfEducationType.isEditable()){
+                    btSaveEducation.setDisable(false);
                     return;
                 }
             }

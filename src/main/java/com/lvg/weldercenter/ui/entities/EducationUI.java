@@ -1,22 +1,23 @@
 package com.lvg.weldercenter.ui.entities;
 
-import com.lvg.weldercenter.models.Electrode;
+import com.lvg.weldercenter.models.Education;
 import javafx.beans.property.SimpleStringProperty;
 
 /**
- * Created by Victor Levchenko LVG Corp. on 23.01.15.
+ * Created by Victor on 04.08.2015.
  */
-public class ElectrodeUI extends GenericEntityUI {
+public class EducationUI extends GenericEntityUI {
+
     private final SimpleStringProperty type = new SimpleStringProperty();
 
-    public ElectrodeUI(){
-        this.id.set(0);
-        this.type.set("");
+    public EducationUI(){
+        id.set(0);
+        type.set("");
     }
 
-    public ElectrodeUI(Electrode electrode){
-        this.id.set(electrode.getElectrodeId());
-        this.type.set(electrode.getType());
+    public EducationUI(Education edu){
+        id.set(edu.getEducationId());
+        type.set(edu.getType());
     }
 
     //Getters and Setters
@@ -29,22 +30,13 @@ public class ElectrodeUI extends GenericEntityUI {
         return type;
     }
 
-    public void setType(String type) {
-        this.type.set(type);
-    }
-
-    @Override
-    public String toString() {
-        return getType();
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
 
-        ElectrodeUI that = (ElectrodeUI) o;
+        EducationUI that = (EducationUI) o;
 
         if (type != null ? !type.equals(that.type) : that.type != null) return false;
 
@@ -56,5 +48,14 @@ public class ElectrodeUI extends GenericEntityUI {
         int result = super.hashCode();
         result = 31 * result + (type != null ? type.hashCode() : 0);
         return result;
+    }
+
+    public void setType(String type) {
+        this.type.set(type);
+    }
+
+    @Override
+    public String toString() {
+        return getType();
     }
 }

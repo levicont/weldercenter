@@ -36,8 +36,26 @@ public class WeldGasUI extends GenericEntityUI {
 
     @Override
     public String toString() {
-        return "WeldGasUI{" +
-                "type=" + type +
-                '}';
+        return getType();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        WeldGasUI weldGasUI = (WeldGasUI) o;
+
+        if (type != null ? !type.equals(weldGasUI.type) : weldGasUI.type != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + (type != null ? type.hashCode() : 0);
+        return result;
     }
 }
