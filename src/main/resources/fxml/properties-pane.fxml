@@ -714,9 +714,9 @@
                                                 <Button mnemonicParsing="false" onAction="#addEducation" text="Добавить" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                                 <Button mnemonicParsing="false" onAction="#editEducation" text="Изменить" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                                                 <Button mnemonicParsing="false" onAction="#deleteEducation" text="Удалить" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                                                <Button fx:id="btSaveEducation" disable="true" layoutX="160.0" layoutY="53.0" mnemonicParsing="false" onAction="#saveEducation" text="Сохранить" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                                <Button fx:id="btSaveEducation" disable="true" layoutX="160.0" layoutY="53.0" mnemonicParsing="false" onAction="#saveEducation" text="Сохранить" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
                                                    <GridPane.margin>
-                                                      <Insets left="130.0" />
+                                                      <Insets right="8.0" />
                                                    </GridPane.margin>
                                                 </Button>
                                              </children>
@@ -756,9 +756,9 @@
                                                 <Button mnemonicParsing="false" text="Добавить" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                                 <Button mnemonicParsing="false" text="Изменить" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                                                 <Button mnemonicParsing="false" text="Удалить" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                                                <Button fx:id="btSaveQualification" disable="true" layoutX="160.0" layoutY="53.0" mnemonicParsing="false" text="Сохранить" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                                <Button fx:id="btSaveQualification" disable="true" layoutX="160.0" layoutY="53.0" mnemonicParsing="false" text="Сохранить" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
                                                    <GridPane.margin>
-                                                      <Insets left="130.0" />
+                                                      <Insets right="8.0" />
                                                    </GridPane.margin>
                                                 </Button>
                                              </children>
@@ -798,9 +798,9 @@
                                                 <Button mnemonicParsing="false" text="Добавить" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                                 <Button mnemonicParsing="false" text="Изменить" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                                                 <Button mnemonicParsing="false" text="Удалить" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                                                <Button fx:id="btSaveJob" disable="true" layoutX="160.0" layoutY="53.0" mnemonicParsing="false" text="Сохранить" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                                <Button fx:id="btSaveJob" disable="true" layoutX="160.0" layoutY="53.0" mnemonicParsing="false" text="Сохранить" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
                                                    <GridPane.margin>
-                                                      <Insets left="130.0" />
+                                                      <Insets right="8.0" />
                                                    </GridPane.margin>
                                                 </Button>
                                              </children>
