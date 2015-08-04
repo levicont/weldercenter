@@ -36,6 +36,7 @@ public class ServiceUIFactory {
     private static PatternThicknessServiceUI patternThicknessServiceUI;
     private static PatternDiameterServiceUI patternDiameterServiceUI;
     private static EducationServiceUI educationServiceUI;
+    private static QualificationServiceUI qualificationServiceUI;
 
 
     private ServiceUIFactory(){
@@ -286,6 +287,15 @@ public class ServiceUIFactory {
         }else {
             educationServiceUI = (EducationServiceUI)context.getBean("educationServiceUI");
             return educationServiceUI;
+        }
+    }
+
+    public static QualificationServiceUI getQualificationServiceUI() {
+        if (qualificationServiceUI != null) {
+            return qualificationServiceUI;
+        }else {
+            qualificationServiceUI = (QualificationServiceUI)context.getBean("qualificationServiceUI");
+            return qualificationServiceUI;
         }
     }
 }

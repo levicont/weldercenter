@@ -124,5 +124,6 @@
     <bean id="patternDiameterServiceUI" class="com.lvg.weldercenter.ui.servicesui.impl.PatternDiameterUIManager"/>
     <bean id="patternThicknessServiceUI" class="com.lvg.weldercenter.ui.servicesui.impl.PatternThicknessUIManager"/>
     <bean id="educationServiceUI" class="com.lvg.weldercenter.ui.servicesui.impl.EducationUIManager"/>
+    <bean id="qualificationServiceUI" class="com.lvg.weldercenter.ui.servicesui.impl.QualificationUIManager"/>
 
 </beans>

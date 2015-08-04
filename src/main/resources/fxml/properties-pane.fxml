@@ -753,10 +753,10 @@
                                                       <Insets bottom="8.0" left="70.0" right="8.0" top="8.0" />
                                                    </GridPane.margin>
                                                 </TextField>
-                                                <Button mnemonicParsing="false" text="Добавить" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                                <Button mnemonicParsing="false" text="Изменить" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                                <Button mnemonicParsing="false" text="Удалить" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                                                <Button fx:id="btSaveQualification" disable="true" layoutX="160.0" layoutY="53.0" mnemonicParsing="false" text="Сохранить" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
+                                                <Button mnemonicParsing="false" onAction="#addQualification" text="Добавить" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                                <Button mnemonicParsing="false" onAction="#editQualification" text="Изменить" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                <Button mnemonicParsing="false" onAction="#deleteQualification" text="Удалить" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                                <Button fx:id="btSaveQualification" disable="true" layoutX="160.0" layoutY="53.0" mnemonicParsing="false" onAction="#saveQualification" text="Сохранить" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
                                                    <GridPane.margin>
                                                       <Insets right="8.0" />
                                                    </GridPane.margin>
@@ -894,7 +894,7 @@
                                                       <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                                    </GridPane.margin>
                                                 </Label>
-                                                <Label text="Специалист по охране труда:" GridPane.columnSpan="2" GridPane.rowIndex="6">
+                                                <Label text="Специалист по охране труда:" GridPane.columnSpan="3" GridPane.rowIndex="6">
                                                    <GridPane.margin>
                                                       <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                                    </GridPane.margin>
@@ -1318,7 +1318,7 @@
                                                                   <Insets bottom="8.0" left="8.0" right="8.0" />
                                                                </GridPane.margin>
                                                             </TextArea>
-                                                            <Label layoutX="28.0" layoutY="32.0" text="Количество часов:" GridPane.rowIndex="6">
+                                                            <Label layoutX="28.0" layoutY="32.0" text="Количество часов:" GridPane.columnSpan="2" GridPane.rowIndex="6">
                                                                <GridPane.margin>
                                                                   <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                                                </GridPane.margin>

@@ -50,6 +50,7 @@ public class PropertiesController extends GenericController {
     private WeldGasService weldGasService = ServiceFactory.getWeldGasService();
     private WeldPositionService weldPositionService = ServiceFactory.getWeldPositionService();
     private EducationService educationService = ServiceFactory.getEducationService();
+    private QualificationService qualificationService = ServiceFactory.getQualificationService();
 
     private OrganizationServiceUI organizationServiceUI = ServiceUIFactory.getOrganizationServiceUI();
     private WeldDetailServiceUI weldDetailServiceUI = ServiceUIFactory.getWeldDetailServiceUI();
@@ -63,6 +64,7 @@ public class PropertiesController extends GenericController {
     private WeldGasServiceUI weldGasServiceUI = ServiceUIFactory.getWeldGasServiceUI();
     private WeldPositionServiceUI weldPositionServiceUI = ServiceUIFactory.getWeldPositionServiceUI();
     private EducationServiceUI educationServiceUI = ServiceUIFactory.getEducationServiceUI();
+    private QualificationServiceUI qualificationServiceUI = ServiceUIFactory.getQualificationServiceUI();
 
     @FXML
     private BorderPane mainPropertiesPane;
@@ -225,9 +227,11 @@ public class PropertiesController extends GenericController {
     @FXML
     private TitledPane titlePaneQualification;
     @FXML
-    private ListView<String> listViewQualification;
+    private ListView<QualificationUI> listViewQualification;
     @FXML
     private TextField txfQualificationType;
+    @FXML
+    private Button btSaveQualification;
 
     @FXML
     private TitledPane titlePaneJob;
@@ -339,6 +343,7 @@ public class PropertiesController extends GenericController {
     private ObservableList<WeldGasUI> allWeldGases = FXCollections.observableArrayList();
     private ObservableList<WeldPositionUI> allWeldPositions = FXCollections.observableArrayList();
     private ObservableList<EducationUI> allEducations = FXCollections.observableArrayList();
+    private ObservableList<QualificationUI> allQualifications = FXCollections.observableArrayList();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -368,6 +373,33 @@ public class PropertiesController extends GenericController {
 
     private void initEducationEtcTab(){
         initTitlePaneEducations();
+        initTitlePaneQualifications();
+    }
+
+    private void initTitlePaneQualifications(){
+        initListViewQualifications();
+        setDisabledTextFields(true, txfQualificationType);
+        InvalidationListener invalidationListener = new TextFieldValidateListener();
+        txfQualificationType.textProperty().addListener(invalidationListener);
+    }
+
+    private void initListViewQualifications(){
+        initAllQualifications();
+        initListView(listViewQualification, allQualifications);
+    }
+
+    private void initAllQualifications(){
+        allQualifications.clear();
+        for (Qualification q : qualificationService.getAll()){
+            QualificationUI qUI = new QualificationUI(q);
+            allQualifications.add(qUI);
+        }
+    }
+
+    private void updateQualificationFromFields(QualificationUI qualificationUI){
+        if (qualificationUI == null)
+            return;
+        qualificationUI.setType(txfQualificationType.getText().trim());
     }
 
     private void initTitlePaneEducations(){
@@ -1682,6 +1714,68 @@ public class PropertiesController extends GenericController {
         listViewEducation.getSelectionModel().select(selectedEducation);
     }
 
+    @FXML
+    private void addQualification(){
+        clearTextFields(txfQualificationType);
+        listViewQualification.getSelectionModel().clearSelection();
+        QualificationUI qualificationUI = new QualificationUI();
+        allQualifications.add(qualificationUI);
+        listViewQualification.getSelectionModel().select(qualificationUI);
+
+        setDisabledTextFields(false, txfQualificationType);
+        txfQualificationType.requestFocus();
+    }
+
+    @FXML
+    private void editQualification(){
+        QualificationUI selQualification = listViewQualification.getSelectionModel().getSelectedItem();
+        if (selQualification == null)
+            return;
+        listViewQualification.getSelectionModel().clearSelection();
+        listViewQualification.getSelectionModel().select(selQualification);
+        setDisabledTextFields(false, txfQualificationType);
+        txfQualificationType.requestFocus();
+    }
+
+    @FXML
+    private void deleteQualification(){
+        QualificationUI delQualification = listViewQualification.getSelectionModel().getSelectedItem();
+        if (delQualification == null)
+            return;
+        if (getResponseDeleteDialog(1) == Dialog.Actions.OK) {
+            if (delQualification.getId() != 0) {
+                qualificationService.delete(qualificationServiceUI.getQualificationFromUIModel(delQualification));
+                LOGGER.debug("DELETE QUALIFICATION: education has been deleted from DB");
+            }
+            allQualifications.remove(delQualification);
+            listViewQualification.getSelectionModel().selectFirst();
+            listViewQualification.fireEvent(EventFXUtil.getMouseClickEvent());
+            listViewQualification.requestFocus();
+        }
+    }
+
+    @FXML
+    private void saveQualification(){
+        setDisabledTextFields(true,txfQualificationType);
+        btSaveQualification.setDisable(true);
+        QualificationUI selectedQualification = listViewQualification.getSelectionModel().getSelectedItem();
+        if (selectedQualification == null)
+            return;
+        updateQualificationFromFields(selectedQualification);
+        Qualification qualification = qualificationServiceUI.getQualificationFromUIModel(selectedQualification);
+        if (qualification.getQualificationId() == null || qualification.getQualificationId() == 0){
+            Long id = qualificationService.insert(qualification);
+            LOGGER.debug("SAVE QUALIFICATION: qualification has been inserted in DB");
+            selectedQualification.setId(id);
+        }else {
+            qualificationService.update(qualification);
+            LOGGER.debug("SAVE QUALIFICATION: qualification has been updated in DB");
+        }
+        allQualifications.remove(selectedQualification);
+        allQualifications.add(selectedQualification);
+        listViewQualification.getSelectionModel().select(selectedQualification);
+    }
+
 
     //Utilities -------------------------------------------------------------------
 
@@ -1832,6 +1926,10 @@ public class PropertiesController extends GenericController {
                     doSelectEducation();
                     return;
                 }
+                if (source.equals(listViewQualification)){
+                    doSelectQualification();
+                    return;
+                }
             }
 
         }
@@ -1939,6 +2037,15 @@ public class PropertiesController extends GenericController {
             btSaveEducation.setDisable(true);
         }
 
+        private void doSelectQualification(){
+            QualificationUI selectedQualification = listViewQualification.getSelectionModel().getSelectedItem();
+            if (selectedQualification == null)
+                return;
+            setDisabledTextFields(true, txfQualificationType);
+            txfQualificationType.setText(selectedQualification.getType());
+            btSaveQualification.setDisable(true);
+        }
+
 
     }
 
@@ -2036,6 +2143,10 @@ public class PropertiesController extends GenericController {
             if (selectedTab.equals(tabEducationEtc)){
                 if (txfEducationType.isEditable()){
                     btSaveEducation.setDisable(false);
+                    return;
+                }
+                if (txfQualificationType.isEditable()){
+                    btSaveQualification.setDisable(false);
                     return;
                 }
             }
