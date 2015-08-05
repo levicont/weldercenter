@@ -2,6 +2,7 @@ package com.lvg.weldercenter.ui.entities;
 
 import com.lvg.weldercenter.models.CommissionCertification;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
 
 /**
  * Created by Victor Levchenko LVG Corp. on 23.01.15.
@@ -12,6 +13,12 @@ public class CommissionCertificationUI extends GenericEntityUI {
     private final SimpleObjectProperty<TeacherUI> weldSpecialist = new SimpleObjectProperty<TeacherUI>();
     private final SimpleObjectProperty<TeacherUI> ndtSpecialist = new SimpleObjectProperty<TeacherUI>();
     private final SimpleObjectProperty<TeacherUI> safetySpecialist = new SimpleObjectProperty<TeacherUI>();
+
+//    private final SimpleStringProperty headName = new SimpleStringProperty();
+//    private final SimpleStringProperty weldSpecName = new SimpleStringProperty();
+//    private final SimpleStringProperty ndtSpecName = new SimpleStringProperty();
+//    private final SimpleStringProperty safetySpecName = new SimpleStringProperty();
+
 
     public CommissionCertificationUI(){
         this.id.set(0);

@@ -18,16 +18,23 @@ public class TeacherUIManager implements TeacherServiceUI {
 
     @Override
     public Teacher getTeacherFromTeacherUI(TeacherUI teacherUI) {
-        Teacher result;
-        if(teacherUI.getId()==0){
-            result = new Teacher();
-        }else {
-            result = teacherService.get(teacherUI.getId());
-        }
-        result.setName(teacherUI.getName());
-        result.setSurname(teacherUI.getSurname());
-        result.setSecname(teacherUI.getSecname());
+        if (teacherUI == null)
+            return null;
 
+        Teacher result = teacherService.get(teacherUI.getId());
+        if(result != null){
+            updateTeacherFromUIModel(result, teacherUI);
+
+        }else {
+            result = new Teacher();
+            updateTeacherFromUIModel(result, teacherUI);
+        }
         return result;
+    }
+
+    private void updateTeacherFromUIModel(Teacher updTeacher, TeacherUI uiModel){
+        updTeacher.setName(uiModel.getName());
+        updTeacher.setSurname(uiModel.getSurname());
+        updTeacher.setSecname(uiModel.getSecname());
     }
 }

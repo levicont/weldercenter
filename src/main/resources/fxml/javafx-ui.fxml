@@ -25,26 +25,26 @@
             <items>
                   <Menu id="menuWeldPattern" mnemonicParsing="false" text="Аттестационные образцы">
                     <items>
-                        <MenuItem id="miWeldDetail" mnemonicParsing="false" onAction="#showPropertiesPaneWeldPatternsType" text="Типы образцов" />
-                        <MenuItem id="miPatternDiameter" mnemonicParsing="false" text="Диаметры" />
-                        <MenuItem id="miPatternThickness" mnemonicParsing="false" text="Толщины" />
-                      <MenuItem id="miSteelType" mnemonicParsing="false" text="Типы сталей" />
+                        <MenuItem id="miWeldDetail" fx:id="miWeldDetails" mnemonicParsing="false" onAction="#showPropertiesPaneWeldPatternsTab" text="Типы образцов" />
+                        <MenuItem id="miPatternDiameter" fx:id="miDiameters" mnemonicParsing="false" onAction="#showPropertiesPaneWeldPatternsTab" text="Диаметры" />
+                        <MenuItem id="miPatternThickness" fx:id="miThicknesses" mnemonicParsing="false" onAction="#showPropertiesPaneWeldPatternsTab" text="Толщины" />
+                      <MenuItem id="miSteelType" fx:id="miSteelTypes" mnemonicParsing="false" onAction="#showPropertiesPaneWeldPatternsTab" text="Типы сталей" />
                     </items>
                   </Menu>
                   <Menu id="menuEducationAndEtc" mnemonicParsing="false" text="Образование и пр.">
                     <items>
-                        <MenuItem id="miEducation" mnemonicParsing="false" text="Образования" />
-                      <MenuItem id="miQualification" mnemonicParsing="false" text="Квалификации" />
-                        <MenuItem id="miJob" mnemonicParsing="false" text="Должности" />
+                        <MenuItem id="miEducation" fx:id="miEducations" mnemonicParsing="false" onAction="#showPropertiesEducationEtcTab" text="Образования" />
+                      <MenuItem id="miQualification" fx:id="miQualifications" mnemonicParsing="false" onAction="#showPropertiesEducationEtcTab" text="Квалификации" />
+                        <MenuItem id="miJob" fx:id="miJobs" mnemonicParsing="false" onAction="#showPropertiesEducationEtcTab" text="Должности" />
                     </items>
                   </Menu>
                   <Menu id="menuWeld" mnemonicParsing="false" text="Сварка">
                     <items>
-                      <MenuItem id="miWeldMethod" mnemonicParsing="false" onAction="#showPropertiesPaneWeldTab" text="Медоты сварки" />
-                        <MenuItem id="miElectrode" mnemonicParsing="false" text="Электроды" />
-                        <MenuItem id="miWeldWire" mnemonicParsing="false" text="Сварочная проволока" />
-                        <MenuItem id="miWeldGas" mnemonicParsing="false" text="Сварочный газ" />
-                        <MenuItem id="miWeldPosition" mnemonicParsing="false" text="Положения при сварке" />
+                      <MenuItem id="miWeldMethod" fx:id="miWeldMethods" mnemonicParsing="false" onAction="#showPropertiesPaneWeldTab" text="Медоты сварки" />
+                        <MenuItem id="miElectrode" fx:id="miElectrodes" mnemonicParsing="false" onAction="#showPropertiesPaneWeldTab" text="Электроды" />
+                        <MenuItem id="miWeldWire" fx:id="miWeldWires" mnemonicParsing="false" onAction="#showPropertiesPaneWeldTab" text="Сварочная проволока" />
+                        <MenuItem id="miWeldGas" fx:id="miWeldGases" mnemonicParsing="false" onAction="#showPropertiesPaneWeldTab" text="Сварочный газ" />
+                        <MenuItem id="miWeldPosition" fx:id="miWeldPositions" mnemonicParsing="false" onAction="#showPropertiesPaneWeldTab" text="Положения при сварке" />
                     </items>
                   </Menu>
                   <SeparatorMenuItem mnemonicParsing="false" />

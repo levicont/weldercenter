@@ -179,7 +179,7 @@
                      <center>
                         <ScrollPane fitToHeight="true" fitToWidth="true" BorderPane.alignment="CENTER">
                            <content>
-                              <FlowPane hgap="8.0" prefHeight="200.0" prefWidth="280.0" rowValignment="TOP" vgap="8.0">
+                              <FlowPane fx:id="flowPaneWeldPatterns" hgap="8.0" prefHeight="200.0" prefWidth="280.0" rowValignment="TOP" vgap="8.0">
                                  <children>
                                     <TitledPane fx:id="titlePaneWeldPatternsTypes" alignment="TOP_LEFT" animated="false" collapsible="false" maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="375.0" text="Типы образцов">
                                        <content>
@@ -440,7 +440,7 @@
                      <center>
                         <ScrollPane fitToHeight="true" fitToWidth="true" BorderPane.alignment="CENTER">
                            <content>
-                              <FlowPane hgap="8.0" rowValignment="TOP" vgap="8.0">
+                              <FlowPane fx:id="flowPaneWeld" hgap="8.0" rowValignment="TOP" vgap="8.0">
                                  <children>
                                     <TitledPane fx:id="titlePaneWeldMethod" alignment="TOP_LEFT" animated="false" collapsible="false" maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="375.0" text="Методы сварки">
                                        <content>
@@ -690,9 +690,9 @@
                      <center>
                         <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                            <content>
-                              <FlowPane hgap="8.0" prefHeight="200.0" prefWidth="200.0" vgap="8.0">
+                              <FlowPane fx:id="flowPaneEducationEtc" hgap="8.0" prefHeight="200.0" prefWidth="200.0" vgap="8.0">
                                  <children>
-                                    <TitledPane fx:id="titlePaneEducation" alignment="TOP_LEFT" animated="false" collapsible="false" maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="375.0" text="Образования">
+                                    <TitledPane fx:id="titlePaneEducation" alignment="TOP_LEFT" animated="false" collapsible="false" maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="380.0" text="Образования">
                                        <content>
                                           <GridPane style="-fx-background-color: linear-gradient(to top,#9cccee,#bcdbee);">
                                              <children>
@@ -708,7 +708,7 @@
                                                 </Label>
                                                 <TextField fx:id="txfEducationType" GridPane.columnIndex="1">
                                                    <GridPane.margin>
-                                                      <Insets bottom="8.0" left="70.0" right="8.0" top="8.0" />
+                                                      <Insets bottom="8.0" left="50.0" right="8.0" top="8.0" />
                                                    </GridPane.margin>
                                                 </TextField>
                                                 <Button mnemonicParsing="false" onAction="#addEducation" text="Добавить" GridPane.columnIndex="1" GridPane.rowIndex="1" />
@@ -734,7 +734,7 @@
                                           </GridPane>
                                        </content>
                                     </TitledPane>
-                                    <TitledPane fx:id="titlePaneQualification" alignment="TOP_LEFT" animated="false" collapsible="false" layoutX="18.0" layoutY="18.0" maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="375.0" text="Квалификации">
+                                    <TitledPane fx:id="titlePaneQualification" alignment="TOP_LEFT" animated="false" collapsible="false" layoutX="18.0" layoutY="18.0" maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="380.0" text="Квалификации">
                                        <content>
                                           <GridPane style="-fx-background-color: linear-gradient(to top,#9cccee,#bcdbee);">
                                              <children>
@@ -750,7 +750,7 @@
                                                 </Label>
                                                 <TextField fx:id="txfQualificationType" GridPane.columnIndex="1">
                                                    <GridPane.margin>
-                                                      <Insets bottom="8.0" left="70.0" right="8.0" top="8.0" />
+                                                      <Insets bottom="8.0" left="50.0" right="8.0" top="8.0" />
                                                    </GridPane.margin>
                                                 </TextField>
                                                 <Button mnemonicParsing="false" onAction="#addQualification" text="Добавить" GridPane.columnIndex="1" GridPane.rowIndex="1" />
@@ -776,7 +776,7 @@
                                           </GridPane>
                                        </content>
                                     </TitledPane>
-                                    <TitledPane fx:id="titlePaneJob" alignment="TOP_LEFT" animated="false" collapsible="false" layoutX="366.0" layoutY="18.0" maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="375.0" text="Должности">
+                                    <TitledPane fx:id="titlePaneJob" alignment="TOP_LEFT" animated="false" collapsible="false" layoutX="366.0" layoutY="18.0" maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="380.0" text="Должности">
                                        <content>
                                           <GridPane style="-fx-background-color: linear-gradient(to top,#9cccee,#bcdbee);">
                                              <children>
@@ -792,13 +792,13 @@
                                                 </Label>
                                                 <TextField fx:id="txfJobType" GridPane.columnIndex="1">
                                                    <GridPane.margin>
-                                                      <Insets bottom="8.0" left="70.0" right="8.0" top="8.0" />
+                                                      <Insets bottom="8.0" left="50.0" right="8.0" top="8.0" />
                                                    </GridPane.margin>
                                                 </TextField>
-                                                <Button mnemonicParsing="false" text="Добавить" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                                <Button mnemonicParsing="false" text="Изменить" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                                <Button mnemonicParsing="false" text="Удалить" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                                                <Button fx:id="btSaveJob" disable="true" layoutX="160.0" layoutY="53.0" mnemonicParsing="false" text="Сохранить" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
+                                                <Button mnemonicParsing="false" onAction="#addJob" text="Добавить" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                                <Button mnemonicParsing="false" onAction="#editJob" text="Изменить" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                <Button mnemonicParsing="false" onAction="#deleteJob" text="Удалить" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                                <Button fx:id="btSaveJob" disable="true" layoutX="160.0" layoutY="53.0" mnemonicParsing="false" onAction="#saveJob" text="Сохранить" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
                                                    <GridPane.margin>
                                                       <Insets right="8.0" />
                                                    </GridPane.margin>
@@ -840,12 +840,11 @@
                                        <children>
                                           <ToolBar prefHeight="30.0" prefWidth="200.0">
                                              <items>
-                                                <Button mnemonicParsing="false" text="|&lt;" />
-                                                <Button mnemonicParsing="false" text="&lt;&lt;" />
-                                                <Button mnemonicParsing="false" text="&gt;*" />
-                                                <Button mnemonicParsing="false" text="&gt;&gt;" />
-                                                <Button mnemonicParsing="false" text="&gt;|" />
-                                                <Button mnemonicParsing="false" text="копия" />
+                                                <Button mnemonicParsing="false" onAction="#selectFirstRecord" text="|&lt;" />
+                                                <Button mnemonicParsing="false" onAction="#selectPrevRecord" text="&lt;&lt;" />
+                                                <Button mnemonicParsing="false" onAction="#addRecord" text="&gt;*" />
+                                                <Button mnemonicParsing="false" onAction="#selectNextRecord" text="&gt;&gt;" />
+                                                <Button mnemonicParsing="false" onAction="#selectLastRecord" text="&gt;|" />
                                              </items>
                                           </ToolBar>
                                        </children>

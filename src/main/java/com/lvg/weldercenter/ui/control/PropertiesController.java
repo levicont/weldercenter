@@ -20,23 +20,37 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.Pane;
 import org.apache.log4j.Logger;
 import org.controlsfx.control.action.Action;
 import org.controlsfx.dialog.*;
 import org.controlsfx.dialog.Dialog;
 
-import javax.xml.ws.Service;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 /**
  * Created by Victor on 28.07.2015.
  */
 public class PropertiesController extends GenericController {
+    public final String TITLE_PANE_WELD_DETAIL = "TITLE_PANE_WELD_DETAIL";
+    public final String TITLE_PANE_DIAMETER = "TITLE_PANE_DIAMETER";
+    public final String TITLE_PANE_THICKNESS = "TITLE_PANE_THICKNESS";
+    public final String TITLE_PANE_STEEL_TYPE = "TITLE_PANE_STEEL_TYPE";
+    public final String TITLE_PANE_WELD_METHOD = "TITLE_PANE_WELD_METHOD";
+    public final String TITLE_PANE_ELECTRODE = "TITLE_PANE_ELECTRODE";
+    public final String TITLE_PANE_WELD_WIRE = "TITLE_PANE_WELD_WIRE";
+    public final String TITLE_PANE_WELD_GAS = "TITLE_PANE_WELD_GAS";
+    public final String TITLE_PANE_WELD_POSITION = "TITLE_PANE_WELD_POSITION";
+    public final String TITLE_PANE_EDUCATION = "TITLE_PANE_EDUCATION";
+    public final String TITLE_PANE_QUALIFICATION = "TITLE_PANE_QUALIFICATION";
+    public final String TITLE_PANE_JOB = "TITLE_PANE_JOB";
+
     private final Logger LOGGER = Logger.getLogger(PropertiesController.class);
     private final String STYLE_NOT_EDITABLE_BACKGROUND = "-fx-background-color: #deefff";
     private final String STYLE_NOT_EDIT_COMBOBOX = "-fx-opacity: 1; -fx-background-color: #deefff";
+    private final String STYLE_TAB_BACKGROUND = "-fx-background-color: linear-gradient(to TOP, #f9eee0, #f9e5cc)";
 
     private OrganizationService organizationService = ServiceFactory.getOrganizationService();
     private WeldDetailService weldDetailService = ServiceFactory.getWeldDetailService();
@@ -51,6 +65,10 @@ public class PropertiesController extends GenericController {
     private WeldPositionService weldPositionService = ServiceFactory.getWeldPositionService();
     private EducationService educationService = ServiceFactory.getEducationService();
     private QualificationService qualificationService = ServiceFactory.getQualificationService();
+    private JobService jobService = ServiceFactory.getJobService();
+    private CommissionCertificationService commissionCertificationService
+            = ServiceFactory.getCommissionCertificationService();
+    private TeacherService teacherService = ServiceFactory.getTeacherService();
 
     private OrganizationServiceUI organizationServiceUI = ServiceUIFactory.getOrganizationServiceUI();
     private WeldDetailServiceUI weldDetailServiceUI = ServiceUIFactory.getWeldDetailServiceUI();
@@ -65,6 +83,10 @@ public class PropertiesController extends GenericController {
     private WeldPositionServiceUI weldPositionServiceUI = ServiceUIFactory.getWeldPositionServiceUI();
     private EducationServiceUI educationServiceUI = ServiceUIFactory.getEducationServiceUI();
     private QualificationServiceUI qualificationServiceUI = ServiceUIFactory.getQualificationServiceUI();
+    private JobServiceUI jobServiceUI = ServiceUIFactory.getJobServiceUI();
+    private CommissionCertificationServiceUI commissionCertificationServiceUI =
+            ServiceUIFactory.getCommissionCertificationServiceUI();
+    private TeacherServiceUI teacherServiceUI = ServiceUIFactory.getTeacherServiceUI();
 
     @FXML
     private BorderPane mainPropertiesPane;
@@ -106,6 +128,8 @@ public class PropertiesController extends GenericController {
     //WeldPatterns tab
     @FXML
     private Tab tabWeldPatterns;
+    @FXML
+    private FlowPane flowPaneWeldPatterns;
 
     @FXML
     private TitledPane titlePaneWeldPatternsTypes;
@@ -161,6 +185,8 @@ public class PropertiesController extends GenericController {
     //Weld tab
     @FXML
     private Tab tabWeld;
+    @FXML
+    private FlowPane flowPaneWeld;
 
     @FXML
     private TitledPane titlePaneWeldMethod;
@@ -214,6 +240,8 @@ public class PropertiesController extends GenericController {
     //Education and etc tab
     @FXML
     private Tab tabEducationEtc;
+    @FXML
+    private FlowPane flowPaneEducationEtc;
 
     @FXML
     private TitledPane titlePaneEducation;
@@ -236,9 +264,11 @@ public class PropertiesController extends GenericController {
     @FXML
     private TitledPane titlePaneJob;
     @FXML
-    private ListView<String> listViewJob;
+    private ListView<JobUI> listViewJob;
     @FXML
     private TextField txfJobType;
+    @FXML
+    private Button btSaveJob;
 
     //Commission Certification tab
     @FXML
@@ -248,21 +278,21 @@ public class PropertiesController extends GenericController {
     @FXML
     private TableColumn<CommissionCertificationUI, Long> tblColumnCommissionId;
     @FXML
-    private TableColumn<CommissionCertificationUI, String> tblColumnHead;
+    private TableColumn<CommissionCertificationUI, TeacherUI> tblColumnHead;
     @FXML
-    private TableColumn<CommissionCertificationUI, String> tblColumnWeldSpec;
+    private TableColumn<CommissionCertificationUI, TeacherUI> tblColumnWeldSpec;
     @FXML
-    private TableColumn<CommissionCertificationUI, String> tblColumnNDTSpec;
+    private TableColumn<CommissionCertificationUI, TeacherUI> tblColumnNDTSpec;
     @FXML
-    private TableColumn<CommissionCertificationUI, String> tblColumnSafetySpec;
+    private TableColumn<CommissionCertificationUI, TeacherUI> tblColumnSafetySpec;
     @FXML
-    private ComboBox<String> cbCommissionHead;
+    private ComboBox<TeacherUI> cbCommissionHead;
     @FXML
-    private ComboBox<String> cbCommissionWeldSpec;
+    private ComboBox<TeacherUI> cbCommissionWeldSpec;
     @FXML
-    private ComboBox<String> cbCommissionNDTSpec;
+    private ComboBox<TeacherUI> cbCommissionNDTSpec;
     @FXML
-    private ComboBox<String> cbCommissionSafetySpec;
+    private ComboBox<TeacherUI> cbCommissionSafetySpec;
 
     //Teachers tab
     @FXML
@@ -344,6 +374,10 @@ public class PropertiesController extends GenericController {
     private ObservableList<WeldPositionUI> allWeldPositions = FXCollections.observableArrayList();
     private ObservableList<EducationUI> allEducations = FXCollections.observableArrayList();
     private ObservableList<QualificationUI> allQualifications = FXCollections.observableArrayList();
+    private ObservableList<JobUI> allJobs = FXCollections.observableArrayList();
+    private ObservableList<CommissionCertificationUI> allCommissions = FXCollections.observableArrayList();
+    private ObservableList<TeacherUI> allTeachers = FXCollections.observableArrayList();
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -355,25 +389,110 @@ public class PropertiesController extends GenericController {
         tabPaneAllProperties.getSelectionModel().select(tabOrganizations);
     }
 
-    public void showWeldPatternTab(){
+    public void showWeldPatternTab(String titlePaneParameter){
         tabPaneAllProperties.getSelectionModel().select(tabWeldPatterns);
+        if (titlePaneParameter.equals(TITLE_PANE_WELD_DETAIL)){
+            setActiveListView(listViewWeldPatternsTypes);
+            return;
+        }
+        if (titlePaneParameter.equals(TITLE_PANE_DIAMETER)){
+            setActiveListView(listViewDiameters);
+            return;
+        }
+        if (titlePaneParameter.equals(TITLE_PANE_THICKNESS)){
+            setActiveListView(listViewThickness);
+            return;
+        }
+        if (titlePaneParameter.equals(TITLE_PANE_STEEL_TYPE)){
+            setActiveListView(listViewSteelTypes);
+            return;
+        }
+
+
     }
 
-    public void showWeldTab(){
+    public void showWeldTab(String titlePaneParameter){
         tabPaneAllProperties.getSelectionModel().select(tabWeld);
+        if (titlePaneParameter.equals(TITLE_PANE_WELD_METHOD)){
+            setActiveListView(listViewWeldMethod);
+            return;
+        }
+        if (titlePaneParameter.equals(TITLE_PANE_ELECTRODE)){
+            setActiveListView(listViewElectrode);
+            return;
+        }
+        if (titlePaneParameter.equals(TITLE_PANE_WELD_WIRE)){
+            setActiveListView(listViewWeldWire);
+            return;
+        }
+        if (titlePaneParameter.equals(TITLE_PANE_WELD_GAS)){
+            setActiveListView(listViewWeldGas);
+            return;
+        }
+        if (titlePaneParameter.equals(TITLE_PANE_WELD_POSITION)){
+            setActiveListView(listViewWeldPosition);
+            return;
+        }
+    }
+
+    public void showEducationEtcTab(String titlePaneParameter){
+        tabPaneAllProperties.getSelectionModel().select(tabEducationEtc);
+        if (titlePaneParameter.equals(TITLE_PANE_EDUCATION)){
+            setActiveListView(listViewEducation);
+            return;
+        }
+        if (titlePaneParameter.equals(TITLE_PANE_QUALIFICATION)){
+            setActiveListView(listViewQualification);
+            return;
+        }
+        if (titlePaneParameter.equals(TITLE_PANE_JOB)){
+            setActiveListView(listViewJob);
+            return;
+        }
     }
 
     private void init(){
+
         initOrganizationTab();
         initWeldPatternTab();
         initWeldTab();
         initEducationEtcTab();
+        initCommissionTab();
+        initTabPanes(flowPaneEducationEtc,flowPaneWeldPatterns, flowPaneWeld);
         btSave.setDisable(true);
     }
 
     private void initEducationEtcTab(){
         initTitlePaneEducations();
         initTitlePaneQualifications();
+        initTitlePaneJobs();
+    }
+
+    private void initTitlePaneJobs(){
+        initListViewJobs();
+        setDisabledTextFields(true, txfJobType);
+        InvalidationListener invalidationListener = new TextFieldValidateListener();
+        txfJobType.textProperty().addListener(invalidationListener);
+    }
+
+    private void initListViewJobs(){
+        initAllJobs();
+        initListView(listViewJob, allJobs);
+    }
+
+    private void initAllJobs(){
+        allJobs.clear();
+        for (Job j : jobService.getAll()){
+            JobUI jobUI = new JobUI(j);
+            allJobs.add(jobUI);
+        }
+    }
+
+    private void updateJobFromFields(JobUI jobUI){
+        if(jobUI == null)
+            return;
+        jobUI.setName(txfJobType.getText().trim());
+
     }
 
     private void initTitlePaneQualifications(){
@@ -845,6 +964,127 @@ public class PropertiesController extends GenericController {
 
     }
 
+    private void initCommissionTab(){
+        initTableViewCommissions();
+        initComboBoxesCommissions();
+        setDisabledComboBoxes(true, cbCommissionHead, cbCommissionNDTSpec,
+                cbCommissionSafetySpec, cbCommissionWeldSpec);
+
+    }
+
+    private void initComboBoxesCommissions(){
+        initAllTeachers();
+        cbCommissionHead.setItems(allTeachers);
+        cbCommissionWeldSpec.setItems(allTeachers);
+        cbCommissionNDTSpec.setItems(allTeachers);
+        cbCommissionSafetySpec.setItems(allTeachers);
+
+        InvalidationListener invalidationListener = new TextFieldValidateListener();
+
+        cbCommissionHead.valueProperty().addListener(invalidationListener);
+        cbCommissionNDTSpec.valueProperty().addListener(invalidationListener);
+        cbCommissionSafetySpec.valueProperty().addListener(invalidationListener);
+        cbCommissionWeldSpec.valueProperty().addListener(invalidationListener);
+    }
+
+    private void initTableViewCommissions(){
+        initAllCommissions();
+        tblColumnCommissionId.setCellValueFactory(new PropertyValueFactory<CommissionCertificationUI, Long>("id"));
+        tblColumnHead.setCellValueFactory(new PropertyValueFactory<CommissionCertificationUI, TeacherUI>("head"));
+        tblColumnNDTSpec.setCellValueFactory(
+                new PropertyValueFactory<CommissionCertificationUI, TeacherUI>("ndtSpecialist"));
+        tblColumnSafetySpec.setCellValueFactory(
+                new PropertyValueFactory<CommissionCertificationUI, TeacherUI>("safetySpecialist"));
+        tblColumnWeldSpec.setCellValueFactory(
+                new PropertyValueFactory<CommissionCertificationUI, TeacherUI>("weldSpecialist"));
+        tableViewCommissions.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+        tableViewCommissions.addEventHandler(Event.ANY, new TableViewEventHandler());
+        tableViewCommissions.setItems(allCommissions);
+
+    }
+
+    private void initAllCommissions(){
+        allCommissions.clear();
+        for (CommissionCertification cc : commissionCertificationService.getAll()){
+            CommissionCertificationUI ccUI = new CommissionCertificationUI(cc);
+            allCommissions.add(ccUI);
+        }
+    }
+
+    private void updateCommissionFromFields(CommissionCertificationUI commissionUI){
+        if (commissionUI == null)
+            return;
+        commissionUI.setHead(cbCommissionHead.getValue());
+        commissionUI.setWeldSpecialist(cbCommissionWeldSpec.getValue());
+        commissionUI.setNdtSpecialist(cbCommissionNDTSpec.getValue());
+        commissionUI.setSafetySpecialist(cbCommissionSafetySpec.getValue());
+    }
+
+    private void addCommission(){
+        CommissionCertificationUI newCommiss = new CommissionCertificationUI();
+        allCommissions.add(newCommiss);
+        tableViewCommissions.getSelectionModel().clearSelection();
+        tableViewCommissions.getSelectionModel().select(newCommiss);
+        tableViewCommissions.fireEvent(EventFXUtil.getMouseClickEvent());
+        editRecord();
+    }
+
+    private void editCommission(){
+        if (tableViewCommissions.getSelectionModel().getSelectedItem() == null)
+            return;
+        setDisabledComboBoxes(false, cbCommissionHead, cbCommissionWeldSpec,
+                cbCommissionNDTSpec, cbCommissionSafetySpec);
+        cbCommissionHead.requestFocus();
+    }
+
+    private void deleteCommission(){
+        CommissionCertificationUI delComm = tableViewCommissions.getSelectionModel().getSelectedItem();
+        if (delComm == null)
+            return;
+        if (getResponseDeleteDialog(1)==Dialog.Actions.OK){
+            if (delComm.getId() != 0){
+                commissionCertificationService.delete(
+                        commissionCertificationServiceUI.getCommissionCertificationFromUIModel(delComm));
+                LOGGER.debug("DELETE COMMISSION: commission has been deleted from DB");
+            }
+            allCommissions.remove(delComm);
+            tableViewCommissions.getSelectionModel().selectFirst();
+            tableViewCommissions.fireEvent(EventFXUtil.getMouseClickEvent());
+            tableViewCommissions.requestFocus();
+        }
+
+    }
+
+    private void saveCommission(){
+        setDisabledComboBoxes(true, cbCommissionHead, cbCommissionWeldSpec,
+                cbCommissionNDTSpec, cbCommissionSafetySpec);
+        btSave.setDisable(true);
+        CommissionCertificationUI updCommission = tableViewCommissions.getSelectionModel().getSelectedItem();
+        updateCommissionFromFields(updCommission);
+        CommissionCertification commission =
+                commissionCertificationServiceUI.getCommissionCertificationFromUIModel(updCommission);
+        if (commission == null)
+            return;
+        if (commission.getCommissionCertificationId() !=null
+                && commission.getCommissionCertificationId() != 0){
+            commissionCertificationService.update(commission);
+            LOGGER.debug("SAVE COMMISSION: commission updated in DB");
+        }else{
+            Long id = commissionCertificationService.insert(commission);
+            updCommission.setId(id);
+            LOGGER.debug("SAVE COMMISSION: commission inserted in DB");
+        }
+    }
+
+    private void initAllTeachers(){
+        allTeachers.clear();
+        for (Teacher t : teacherService.getAll()){
+            TeacherUI tUI = new TeacherUI(t);
+            allTeachers.add(tUI);
+        }
+    }
+
+
     private void initOrganizationTab(){
         initTableViewOrganizations();
         setDisabledOrganizationFields(true);
@@ -971,6 +1211,11 @@ public class PropertiesController extends GenericController {
             return;
         if (activeTab.equals(tabOrganizations)){
             editOrganizationActive();
+            return;
+        }
+        if (activeTab.equals(tabCommission)){
+            editCommission();
+            return;
         }
     }
 
@@ -981,6 +1226,11 @@ public class PropertiesController extends GenericController {
             return;
         if (activeTab.equals(tabOrganizations)){
             saveOrganization();
+            return;
+        }
+        if (activeTab.equals(tabCommission)){
+            saveCommission();
+            return;
         }
     }
 
@@ -991,7 +1241,13 @@ public class PropertiesController extends GenericController {
             return;
         if (activeTab.equals(tabOrganizations)){
             addOrganization();
+            return;
         }
+        if (activeTab.equals(tabCommission)){
+            addCommission();
+            return;
+        }
+
     }
 
     @FXML
@@ -1001,6 +1257,11 @@ public class PropertiesController extends GenericController {
             return;
         if (activeTab.equals(tabOrganizations)){
             deleteOrganization();
+            return;
+        }
+        if (activeTab.equals(tabCommission)){
+            deleteCommission();
+            return;
         }
     }
 
@@ -1014,6 +1275,11 @@ public class PropertiesController extends GenericController {
             tableViewOrganizations.getSelectionModel().selectFirst();
             tableViewOrganizations.fireEvent(EventFXUtil.getMouseClickEvent());
             tableViewOrganizations.requestFocus();
+            return;
+        }
+        if (activeTab.equals(tabCommission)){
+            selectFirstTableRecord(tableViewCommissions);
+            return;
         }
     }
 
@@ -1027,6 +1293,10 @@ public class PropertiesController extends GenericController {
             tableViewOrganizations.getSelectionModel().selectLast();
             tableViewOrganizations.fireEvent(EventFXUtil.getMouseClickEvent());
             tableViewOrganizations.requestFocus();
+        }
+        if (activeTab.equals(tabCommission)){
+            selectLastTableRecord(tableViewCommissions);
+            return;
         }
     }
 
@@ -1043,6 +1313,10 @@ public class PropertiesController extends GenericController {
             tableViewOrganizations.fireEvent(EventFXUtil.getMouseClickEvent());
             tableViewOrganizations.requestFocus();
         }
+        if (activeTab.equals(tabCommission)){
+            selectPrevTableRecord(tableViewCommissions);
+            return;
+        }
     }
 
     @FXML
@@ -1058,6 +1332,10 @@ public class PropertiesController extends GenericController {
             tableViewOrganizations.fireEvent(EventFXUtil.getMouseClickEvent());
             tableViewOrganizations.requestFocus();
         }
+        if (activeTab.equals(tabCommission)){
+            selectNextTableRecord(tableViewCommissions);
+            return;
+        }
     }
 
     @FXML
@@ -1068,9 +1346,18 @@ public class PropertiesController extends GenericController {
         if (activeTab.equals(tabOrganizations)){
             initAllOrganizationsList();
             selectFirstRecord();
+            return;
         }
+        if (activeTab.equals(tabCommission)){
+            initAllTeachers();
+            initAllCommissions();
+            selectFirstTableRecord(tableViewCommissions);
+            return;
+        }
+
     }
 
+    // --- Weld Pattern Type (WeldDetail) --
     @FXML
     private void addWeldPatternType(){
         txfWeldPatternTypeCode.clear();
@@ -1090,6 +1377,7 @@ public class PropertiesController extends GenericController {
         txfWeldPatternTypeCode.requestFocus();
     }
 
+    // --- Diameter --
     @FXML
     private void addDiameter(){
         txfDiameter.clear();
@@ -1147,6 +1435,7 @@ public class PropertiesController extends GenericController {
         }
     }
 
+    // --- Thickness --
     @FXML
     private void addThickness(){
         txfThickness.clear();
@@ -1214,6 +1503,7 @@ public class PropertiesController extends GenericController {
 
     }
 
+    // --- Steel Type --
     @FXML
     private void addSteelType(){
         txfSteelType.clear();
@@ -1278,6 +1568,7 @@ public class PropertiesController extends GenericController {
 
     }
 
+    // --- Steel Group --
     @FXML
     private void addSteelGroup(){
         txfSteelGroup.clear();
@@ -1342,6 +1633,7 @@ public class PropertiesController extends GenericController {
         }
     }
 
+    // --- Weld Method --
     @FXML
     private void addWeldMethod(){
         clearTextFields(txfWeldMethodName, txfWeldMethodCode);
@@ -1404,6 +1696,7 @@ public class PropertiesController extends GenericController {
         listViewWeldMethod.getSelectionModel().select(selWeldMethod);
     }
 
+    // --- Electrode --
     @FXML
     private void addElectrode(){
         clearTextFields(txfElectrodeType);
@@ -1465,6 +1758,7 @@ public class PropertiesController extends GenericController {
         listViewElectrode.getSelectionModel().select(selectedElectrode);
     }
 
+    // --- Weld Wire --
     @FXML
     private void addWeldWire(){
         clearTextFields(txfWeldWireType);
@@ -1527,6 +1821,7 @@ public class PropertiesController extends GenericController {
         listViewWeldWire.getSelectionModel().select(selectedWeldWire);
     }
 
+    // --- Weld Gas --
     @FXML
     private void addWeldGas(){
         clearTextFields(txfWeldGasType);
@@ -1589,6 +1884,7 @@ public class PropertiesController extends GenericController {
         listViewWeldGas.getSelectionModel().select(selectedWeldGas);
     }
 
+    // --- Weld Position --
     @FXML
     private void addWeldPosition(){
         clearTextFields(txfWeldPositionCode);
@@ -1652,6 +1948,7 @@ public class PropertiesController extends GenericController {
         listViewWeldPosition.getSelectionModel().select(selectedWeldPosition);
     }
 
+    // --- Education --
     @FXML
     private void addEducation(){
         clearTextFields(txfEducationType);
@@ -1714,6 +2011,7 @@ public class PropertiesController extends GenericController {
         listViewEducation.getSelectionModel().select(selectedEducation);
     }
 
+    // --- Qualification --
     @FXML
     private void addQualification(){
         clearTextFields(txfQualificationType);
@@ -1745,7 +2043,7 @@ public class PropertiesController extends GenericController {
         if (getResponseDeleteDialog(1) == Dialog.Actions.OK) {
             if (delQualification.getId() != 0) {
                 qualificationService.delete(qualificationServiceUI.getQualificationFromUIModel(delQualification));
-                LOGGER.debug("DELETE QUALIFICATION: education has been deleted from DB");
+                LOGGER.debug("DELETE QUALIFICATION: qualification has been deleted from DB");
             }
             allQualifications.remove(delQualification);
             listViewQualification.getSelectionModel().selectFirst();
@@ -1776,8 +2074,107 @@ public class PropertiesController extends GenericController {
         listViewQualification.getSelectionModel().select(selectedQualification);
     }
 
+    // --- Job --
+    @FXML
+    private void addJob(){
+        clearTextFields(txfJobType);
+        listViewJob.getSelectionModel().clearSelection();
+        JobUI jobUI = new JobUI();
+        allJobs.add(jobUI);
+        listViewJob.getSelectionModel().select(jobUI);
+
+        setDisabledTextFields(false, txfJobType);
+        txfJobType.requestFocus();
+    }
+
+    @FXML
+    private void editJob(){
+        JobUI selJob = listViewJob.getSelectionModel().getSelectedItem();
+        if (selJob == null)
+            return;
+        listViewJob.getSelectionModel().clearSelection();
+        listViewJob.getSelectionModel().select(selJob);
+        setDisabledTextFields(false, txfJobType);
+        txfJobType.requestFocus();
+    }
+
+    @FXML
+    private void deleteJob(){
+        JobUI delJob = listViewJob.getSelectionModel().getSelectedItem();
+        if (delJob == null)
+            return;
+        if (getResponseDeleteDialog(1) == Dialog.Actions.OK) {
+            if (delJob.getId() != 0) {
+                jobService.delete(jobServiceUI.getJobFromUIModel(delJob));
+                LOGGER.debug("DELETE JOB: job has been deleted from DB");
+            }
+            allJobs.remove(delJob);
+            listViewJob.getSelectionModel().selectFirst();
+            listViewJob.fireEvent(EventFXUtil.getMouseClickEvent());
+            listViewJob.requestFocus();
+        }
+    }
+
+    @FXML
+    private void saveJob(){
+        setDisabledTextFields(true,txfJobType);
+        btSaveJob.setDisable(true);
+        JobUI selectedJob = listViewJob.getSelectionModel().getSelectedItem();
+        if (selectedJob == null)
+            return;
+        updateJobFromFields(selectedJob);
+        Job job = jobServiceUI.getJobFromUIModel(selectedJob);
+        if (job.getJobId() == null || job.getJobId() == 0){
+            Long id = jobService.insert(job);
+            LOGGER.debug("SAVE JOB: job has been inserted in DB");
+            selectedJob.setId(id);
+        }else {
+            jobService.update(job);
+            LOGGER.debug("SAVE JOB: job has been updated in DB");
+        }
+        allJobs.remove(selectedJob);
+        allJobs.add(selectedJob);
+        listViewJob.getSelectionModel().select(selectedJob);
+    }
+
 
     //Utilities -------------------------------------------------------------------
+
+    private void selectFirstTableRecord(TableView tableView){
+        tableView.getSelectionModel().clearSelection();
+        tableView.getSelectionModel().selectFirst();
+        tableView.fireEvent(EventFXUtil.getMouseClickEvent());
+        tableView.requestFocus();
+    }
+    private void selectLastTableRecord(TableView tableView){
+        tableView.getSelectionModel().clearSelection();
+        tableView.getSelectionModel().selectLast();
+        tableView.fireEvent(EventFXUtil.getMouseClickEvent());
+        tableView.requestFocus();
+    }
+    private void selectNextTableRecord(TableView tableView){
+        tableView.getSelectionModel().selectNext();
+        Object selectedItem = tableView.getSelectionModel().getSelectedItem();
+        tableView.getSelectionModel().clearSelection();
+        tableView.getSelectionModel().select(selectedItem);
+        tableView.fireEvent(EventFXUtil.getMouseClickEvent());
+        tableView.requestFocus();
+    }
+
+    private void selectPrevTableRecord(TableView tableView){
+        tableView.getSelectionModel().selectPrevious();
+        Object selectedItem = tableView.getSelectionModel().getSelectedItem();
+        tableView.getSelectionModel().clearSelection();
+        tableView.getSelectionModel().select(selectedItem);
+        tableView.fireEvent(EventFXUtil.getMouseClickEvent());
+        tableView.requestFocus();
+    }
+
+    private void setActiveListView(ListView listView){
+        listView.getSelectionModel().selectFirst();
+        listView.fireEvent(EventFXUtil.getMouseClickEvent());
+        listView.requestFocus();
+    }
 
     private void  initListView(ListView listView, ObservableList items){
         listView.setItems(items);
@@ -1786,6 +2183,11 @@ public class PropertiesController extends GenericController {
         ListViewEventHandler eventHandler = new ListViewEventHandler();
         listView.addEventHandler(Event.ANY, eventHandler);
         listView.getSelectionModel().selectFirst();
+    }
+
+    private void initTabPanes(Pane... panes){
+        for (Pane p : panes)
+            p.setStyle(STYLE_TAB_BACKGROUND);
     }
 
     private Action getResponseDeleteDialog(int countOfDeletingRecords){
@@ -1930,6 +2332,10 @@ public class PropertiesController extends GenericController {
                     doSelectQualification();
                     return;
                 }
+                if (source.equals(listViewJob)){
+                    doSelectJob();
+                    return;
+                }
             }
 
         }
@@ -2046,6 +2452,15 @@ public class PropertiesController extends GenericController {
             btSaveQualification.setDisable(true);
         }
 
+        private void doSelectJob(){
+            JobUI selectedJob = listViewJob.getSelectionModel().getSelectedItem();
+            if (selectedJob == null)
+                return;
+            setDisabledTextFields(true, txfJobType);
+            txfJobType.setText(selectedJob.getName());
+            btSaveJob.setDisable(true);
+        }
+
 
     }
 
@@ -2060,6 +2475,10 @@ public class PropertiesController extends GenericController {
                         doSelectOrganization();
                         return;
                 }
+                if (source.equals(tableViewCommissions)){
+                    doSelectCommission();
+                    return;
+                }
             }
         }
 
@@ -2071,6 +2490,20 @@ public class PropertiesController extends GenericController {
             txfOrganizationName.setText(selectedOrganization.getName());
             txfOrganizationAdress.setText(selectedOrganization.getAdress());
             txfOrganizationPhone.setText(selectedOrganization.getPhone());
+            btSave.setDisable(true);
+        }
+
+        private void doSelectCommission(){
+            CommissionCertificationUI selectedCommiss = tableViewCommissions.getSelectionModel().getSelectedItem();
+            if (selectedCommiss == null)
+                return;
+            setDisabledComboBoxes(true, cbCommissionHead, cbCommissionWeldSpec,
+                    cbCommissionNDTSpec, cbCommissionSafetySpec);
+            cbCommissionHead.getSelectionModel().select(selectedCommiss.getHead());
+            cbCommissionWeldSpec.getSelectionModel().select(selectedCommiss.getWeldSpecialist());
+            cbCommissionNDTSpec.getSelectionModel().select(selectedCommiss.getNdtSpecialist());
+            cbCommissionSafetySpec.getSelectionModel().select(selectedCommiss.getSafetySpecialist());
+            btSave.setDisable(true);
         }
     }
 
@@ -2089,6 +2522,12 @@ public class PropertiesController extends GenericController {
 
             if (selectedTab.equals(tabOrganizations)) {
                 if (txfOrganizationName.isEditable()) {
+                    btSave.setDisable(false);
+                    return;
+                }
+            }
+            if (selectedTab.equals(tabCommission)){
+                if (!cbCommissionHead.isDisabled()){
                     btSave.setDisable(false);
                     return;
                 }
@@ -2147,6 +2586,10 @@ public class PropertiesController extends GenericController {
                 }
                 if (txfQualificationType.isEditable()){
                     btSaveQualification.setDisable(false);
+                    return;
+                }
+                if (txfJobType.isEditable()){
+                    btSaveJob.setDisable(false);
                     return;
                 }
             }

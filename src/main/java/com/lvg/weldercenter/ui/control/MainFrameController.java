@@ -1,8 +1,10 @@
 package com.lvg.weldercenter.ui.control;
 
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.control.MenuItem;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.stage.Window;
@@ -25,6 +27,31 @@ public class MainFrameController extends GenericController{
     BorderPane mainPane;
     @FXML
     BorderPane logoPane;
+
+    @FXML
+    private MenuItem miWeldDetails;
+    @FXML
+    private MenuItem miDiameters;
+    @FXML
+    private MenuItem miThicknesses;
+    @FXML
+    private MenuItem miSteelTypes;
+    @FXML
+    private MenuItem miWeldMethods;
+    @FXML
+    private MenuItem miElectrodes;
+    @FXML
+    private MenuItem miWeldWires;
+    @FXML
+    private MenuItem miWeldGases;
+    @FXML
+    private MenuItem miWeldPositions;
+    @FXML
+    private MenuItem miEducations;
+    @FXML
+    private MenuItem miQualifications;
+    @FXML
+    private MenuItem miJobs;
 
 
     private Stage stage;
@@ -67,17 +94,102 @@ public class MainFrameController extends GenericController{
     }
 
     @FXML
-    private void showPropertiesPaneWeldPatternsType(){
+    private void showPropertiesPaneWeldPatternsTab(ActionEvent event){
+        PropertiesController propertiesController = controllerManager.getPropertiesController();
         LOGGER.debug("SHOWING PropertiesPane WeldPatternType");
+
+        if (!event.getSource().getClass().equals(MenuItem.class))
+            return;
+        MenuItem source = (MenuItem)event.getSource();
+
+        if (source.equals(miWeldDetails)){
+            selectWeldPatternTitlePane(propertiesController.TITLE_PANE_WELD_DETAIL);
+            return;
+        }
+        if (source.equals(miDiameters)){
+            selectWeldPatternTitlePane(propertiesController.TITLE_PANE_DIAMETER);
+            return;
+        }
+        if (source.equals(miThicknesses)){
+            selectWeldPatternTitlePane(propertiesController.TITLE_PANE_THICKNESS);
+        }
+        if (source.equals(miSteelTypes)){
+            selectWeldPatternTitlePane(propertiesController.TITLE_PANE_STEEL_TYPE);
+        }
+
+    }
+
+    private void selectWeldPatternTitlePane(String parameter){
         controllerManager.showPropertiesPane();
-        controllerManager.getPropertiesController().showWeldPatternTab();
+        controllerManager.getPropertiesController().showWeldPatternTab(parameter);
     }
 
     @FXML
-    private void showPropertiesPaneWeldTab(){
+    private void showPropertiesPaneWeldTab(ActionEvent event){
+
         LOGGER.debug("SHOWING PropertiesPane WeldMethod");
+        PropertiesController propertiesController = controllerManager.getPropertiesController();
+
+        if (!event.getSource().getClass().equals(MenuItem.class))
+            return;
+        MenuItem source = (MenuItem)event.getSource();
+
+        if (source.equals(miWeldMethods)){
+            selectWeldTabTitlePanes(propertiesController.TITLE_PANE_WELD_METHOD);
+            return;
+        }
+        if (source.equals(miElectrodes)){
+            selectWeldTabTitlePanes(propertiesController.TITLE_PANE_ELECTRODE);
+            return;
+        }
+        if (source.equals(miWeldWires)){
+            selectWeldTabTitlePanes(propertiesController.TITLE_PANE_WELD_WIRE);
+            return;
+        }
+        if (source.equals(miWeldGases)){
+            selectWeldTabTitlePanes(propertiesController.TITLE_PANE_WELD_GAS);
+            return;
+        }
+        if (source.equals(miWeldPositions)){
+            selectWeldTabTitlePanes(propertiesController.TITLE_PANE_WELD_POSITION);
+            return;
+        }
+
+
+    }
+
+    private void selectWeldTabTitlePanes(String parameter){
+
         controllerManager.showPropertiesPane();
-        controllerManager.getPropertiesController().showWeldTab();
+        controllerManager.getPropertiesController().showWeldTab(parameter);
+    }
+
+    @FXML
+    private void showPropertiesEducationEtcTab(ActionEvent event){
+        PropertiesController propertiesController = controllerManager.getPropertiesController();
+
+        if (!event.getSource().getClass().equals(MenuItem.class))
+            return;
+        MenuItem source = (MenuItem)event.getSource();
+
+        if (source.equals(miEducations)){
+            selectEducationEtcTabTitlePanes(propertiesController.TITLE_PANE_EDUCATION);
+            return;
+        }
+        if (source.equals(miQualifications)){
+            selectEducationEtcTabTitlePanes(propertiesController.TITLE_PANE_QUALIFICATION);
+            return;
+        }
+        if (source.equals(miJobs)){
+            selectEducationEtcTabTitlePanes(propertiesController.TITLE_PANE_JOB);
+            return;
+        }
+    }
+
+    private void selectEducationEtcTabTitlePanes(String parameter){
+        LOGGER.debug("SHOWING PropertiesPane EducationEtc");
+        controllerManager.showPropertiesPane();
+        controllerManager.getPropertiesController().showEducationEtcTab(parameter);
     }
 
     private void showReportViewPane(){

@@ -443,11 +443,13 @@ public class ProtocolController extends GenericController {
                     totalProtocols.add(treeItem);
                     updateProgress(currProgress, MAX_TASK_PROGRESS_VALUE);
                 }
+
                 updateProgress(100, MAX_TASK_PROGRESS_VALUE);
 
                 Platform.runLater(new Runnable() {
                     @Override
                     public void run() {
+                        initCommissionCertificationUIList();
                         prgsBarUpdater.setVisible(false);
                         TreeItem<String> rootItem = new TreeItem<String>(TREE_ROOT_ITEM_NAME);
                         rootItem.getChildren().clear();
@@ -498,8 +500,11 @@ public class ProtocolController extends GenericController {
 
     private void initCommissionTitlePane(TotalProtocolUI selectedTotalProtocolUI){
         CommissionCertificationUI currentCommission = selectedTotalProtocolUI.getCommissionCertification();
-
-        if(currentCommission.getId() != 0){
+        if (currentCommission == null){
+            clearCommissionTitlePane();
+            return;
+        }
+        if(currentCommission.getId() != 0 ){
             cbIDCommissionCert.getSelectionModel().select(currentCommission.getId());
             txfCommissionHead.setText(currentCommission.getHead().getFullTeacherName());
             txfCommissionNDTSpecialist.setText(currentCommission.getNdtSpecialist().getFullTeacherName());
@@ -508,9 +513,7 @@ public class ProtocolController extends GenericController {
         }else{
             clearCommissionTitlePane();
         }
-        if (currentCommission == null){
-            clearCommissionTitlePane();
-        }
+
     }
 
     private void initJournalTitledPane(TotalProtocolUI selectedTotalProtocolUI){
@@ -530,6 +533,7 @@ public class ProtocolController extends GenericController {
 
     private void initCommissionCertificationUIList(){
         commissionCertificationUIList.clear();
+        commissionIDList.clear();
         for (CommissionCertification cc : commissionCertificationService.getAll()){
             commissionCertificationUIList.add(new CommissionCertificationUI(cc));
             commissionIDList.add(cc.getCommissionCertificationId());

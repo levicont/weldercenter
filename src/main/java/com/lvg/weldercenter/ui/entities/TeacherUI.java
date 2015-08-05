@@ -129,11 +129,30 @@ public class TeacherUI extends GenericEntityUI {
 
     @Override
     public String toString() {
-        return "TeacherUI{\n" +
-                "id = " + id.get()+
-                ",\n surname=" + surname.get() +
-                ",\n name=" + name.get() +" ("+nameShort.get()+")"+
-                ",\n secname=" + secname.get() +" ("+secnameShort.get()+")"+
-                '}';
+        return getFullTeacherName();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        TeacherUI teacherUI = (TeacherUI) o;
+
+        if (name != null ? !name.equals(teacherUI.name) : teacherUI.name != null) return false;
+        if (secname != null ? !secname.equals(teacherUI.secname) : teacherUI.secname != null) return false;
+        if (surname != null ? !surname.equals(teacherUI.surname) : teacherUI.surname != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + (surname != null ? surname.hashCode() : 0);
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (secname != null ? secname.hashCode() : 0);
+        return result;
     }
 }
