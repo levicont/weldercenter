@@ -192,6 +192,19 @@ public class MainFrameController extends GenericController{
         controllerManager.getPropertiesController().showEducationEtcTab(parameter);
     }
 
+    @FXML
+    private void showPropertiesCommissionTab(){
+        LOGGER.debug("SHOWING Properties commission ");
+        controllerManager.showPropertiesPane();
+        controllerManager.getPropertiesController().showCommissionTab();
+    }
+
+    @FXML
+    private void showPropertiesNDTDocumentsTab(){
+        controllerManager.showPropertiesPane();
+        controllerManager.getPropertiesController().showNDTDocumentsTab();
+    }
+
     private void showReportViewPane(){
         LOGGER.debug("SHOWING ReportViewPane");
         controllerManager.showReportViewPane();

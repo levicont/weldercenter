@@ -126,5 +126,8 @@
     <bean id="educationServiceUI" class="com.lvg.weldercenter.ui.servicesui.impl.EducationUIManager"/>
     <bean id="qualificationServiceUI" class="com.lvg.weldercenter.ui.servicesui.impl.QualificationUIManager"/>
     <bean id="jobServiceUI" class="com.lvg.weldercenter.ui.servicesui.impl.JobUIManager"/>
+    <bean id="topicServiceUI" class="com.lvg.weldercenter.ui.servicesui.impl.TopicUIManager"/>
+    <bean id="sectionServiceUI" class="com.lvg.weldercenter.ui.servicesui.impl.SectionUIManager"/>
+    <bean id="curriculumServiceUI" class="com.lvg.weldercenter.ui.servicesui.impl.CurriculumUIManager"/>
 
 </beans>

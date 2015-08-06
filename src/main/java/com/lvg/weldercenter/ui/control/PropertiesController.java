@@ -51,6 +51,7 @@ public class PropertiesController extends GenericController {
     private final String STYLE_NOT_EDITABLE_BACKGROUND = "-fx-background-color: #deefff";
     private final String STYLE_NOT_EDIT_COMBOBOX = "-fx-opacity: 1; -fx-background-color: #deefff";
     private final String STYLE_TAB_BACKGROUND = "-fx-background-color: linear-gradient(to TOP, #f9eee0, #f9e5cc)";
+    private final String ROOT_CURRICULUM_TITLE = "Программы подготовки";
 
     private OrganizationService organizationService = ServiceFactory.getOrganizationService();
     private WeldDetailService weldDetailService = ServiceFactory.getWeldDetailService();
@@ -69,6 +70,10 @@ public class PropertiesController extends GenericController {
     private CommissionCertificationService commissionCertificationService
             = ServiceFactory.getCommissionCertificationService();
     private TeacherService teacherService = ServiceFactory.getTeacherService();
+    private NDTDocumentService ndtDocumentService = ServiceFactory.getNdtDocumentService();
+    private CurriculumService curriculumService = ServiceFactory.getCurriculumService();
+    private SectionService sectionService = ServiceFactory.getSectionService();
+    private TopicService topicService = ServiceFactory.getTopicService();
 
     private OrganizationServiceUI organizationServiceUI = ServiceUIFactory.getOrganizationServiceUI();
     private WeldDetailServiceUI weldDetailServiceUI = ServiceUIFactory.getWeldDetailServiceUI();
@@ -87,6 +92,10 @@ public class PropertiesController extends GenericController {
     private CommissionCertificationServiceUI commissionCertificationServiceUI =
             ServiceUIFactory.getCommissionCertificationServiceUI();
     private TeacherServiceUI teacherServiceUI = ServiceUIFactory.getTeacherServiceUI();
+    private NDTDocumentServiceUI ndtDocumentServiceUI = ServiceUIFactory.getNdtDocumentServiceUI();
+    private CurriculumServiceUI curriculumServiceUI = ServiceUIFactory.getCurriculumServiceUI();
+    private SectionServiceUI sectionServiceUI = ServiceUIFactory.getSectionServiceUI();
+    private TopicServiceUI topicServiceUI = ServiceUIFactory.getTopicServiceUI();
 
     @FXML
     private BorderPane mainPropertiesPane;
@@ -377,6 +386,9 @@ public class PropertiesController extends GenericController {
     private ObservableList<JobUI> allJobs = FXCollections.observableArrayList();
     private ObservableList<CommissionCertificationUI> allCommissions = FXCollections.observableArrayList();
     private ObservableList<TeacherUI> allTeachers = FXCollections.observableArrayList();
+    private ObservableList<NDTDocumentUI> allNDTDocuments = FXCollections.observableArrayList();
+    private ObservableList<CurriculumUI> allCurriculums = FXCollections.observableArrayList();
+    private ObservableList<TreeItem<String>> allCurriculumsTreeItems = FXCollections.observableArrayList();
 
 
     @Override
@@ -451,6 +463,14 @@ public class PropertiesController extends GenericController {
         }
     }
 
+    public void showCommissionTab(){
+        tabPaneAllProperties.getSelectionModel().select(tabCommission);
+    }
+
+    public void showNDTDocumentsTab(){
+        tabPaneAllProperties.getSelectionModel().select(tabNDTDocuments);
+    }
+
     private void init(){
 
         initOrganizationTab();
@@ -458,6 +478,9 @@ public class PropertiesController extends GenericController {
         initWeldTab();
         initEducationEtcTab();
         initCommissionTab();
+        initTeachersTab();
+        initNDTDocumentsTab();
+        initCurriculumsTab();
         initTabPanes(flowPaneEducationEtc,flowPaneWeldPatterns, flowPaneWeld);
         btSave.setDisable(true);
     }
@@ -963,7 +986,254 @@ public class PropertiesController extends GenericController {
         weldDetailUI.setCode(txfWeldPatternTypeCode.getText().trim());
 
     }
+    // #init:Curriculums
 
+    private void initCurriculumsTab(){
+        initTreeViewCurriculums();
+        setDisabledCurriculumTitlePane(true);
+        setDisabledSectionTitlePane(true);
+        setDisabledTopicTitlePane(true);
+    }
+
+    private void setDisabledTopicTitlePane(boolean disabled){
+        setDisabledTextFields(disabled, txfTopicName, txfTopicHours);
+        setDisabledTextAreas(disabled, txtAreaTopicDescription);
+        titledPaneTopic.setExpanded(!disabled);
+        titledPaneTopic.setDisable(disabled);
+    }
+    private void setDisabledSectionTitlePane(boolean disabled){
+        setDisabledTextFields(disabled, txfSectionName);
+        setDisabledTextAreas(disabled, txtAreaSectionDescription);
+        titledPaneSection.setExpanded(!disabled);
+        titledPaneSection.setDisable(disabled);
+    }
+    private void setDisabledCurriculumTitlePane(boolean disabled){
+        setDisabledTextFields(disabled, txfCurriculumName);
+        setDisabledTextAreas(disabled, txtAreaCurriculumDescription);
+        titledPaneCurriculum.setExpanded(!disabled);
+        titledPaneCurriculum.setDisable(disabled);
+    }
+
+
+    private void initTreeViewCurriculums(){
+        TreeItem<String> root = new TreeItem<>(ROOT_CURRICULUM_TITLE);
+        treeViewCurriculum.setRoot(root);
+        root.getChildren().clear();
+        root.getChildren().addAll(getTreeItems());
+        root.setExpanded(true);
+
+
+    }
+
+    private void initAllCurriculums(){
+        allCurriculums.clear();
+        for(Curriculum curriculum : curriculumService.getAll()){
+            CurriculumUI curriculumUI = new CurriculumUI(curriculum);
+            allCurriculums.add(curriculumUI);
+        }
+
+    }
+
+    private ObservableList<TreeItem<String>> getTreeItems(){
+        initAllCurriculums();
+        allCurriculumsTreeItems.clear();
+        for (CurriculumUI curUI : allCurriculums){
+            TreeItem<String> curriculumTreeItem = new TreeItem<>(curUI.toString());
+            for (SectionUI sectionUI : curUI.getSections()){
+                TreeItem<String> sectionTreeItem = new TreeItem<>(sectionUI.toString());
+                for (TopicUI topicUI : sectionUI.getTopics()){
+                    TreeItem<String> topicTreeItem = new TreeItem<>(topicUI.toString());
+                    sectionTreeItem.getChildren().add(topicTreeItem);
+                }
+                curriculumTreeItem.getChildren().add(sectionTreeItem);
+            }
+            allCurriculumsTreeItems.add(curriculumTreeItem);
+        }
+        return allCurriculumsTreeItems;
+    }
+
+    // #init:NDTDocuments
+    private void initNDTDocumentsTab(){
+        initTableViewNDTDocuments();
+        setDisabledNDTDocumentsFields(true);
+        InvalidationListener invalidationListener = new TextFieldValidateListener();
+        txfNDTDocumentName.textProperty().addListener(invalidationListener);
+        txtAreaNDTDocumentFullName.textProperty().addListener(invalidationListener);
+    }
+
+    private void initTableViewNDTDocuments(){
+        initAllNDTDocuments();
+        tblColumnNDTDocId.setCellValueFactory(new PropertyValueFactory<NDTDocumentUI, Long>("id"));
+        tblColumnNDTDocName.setCellValueFactory(new PropertyValueFactory<NDTDocumentUI, String>("name"));
+        tblColumnNDTDocFullName.setCellValueFactory(new PropertyValueFactory<NDTDocumentUI, String>("fullName"));
+
+        tableViewNDTDocuments.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+        tableViewNDTDocuments.addEventHandler(Event.ANY, new TableViewEventHandler());
+        tableViewNDTDocuments.setItems(allNDTDocuments);
+    }
+
+    private void initAllNDTDocuments(){
+        allNDTDocuments.clear();
+        for (NDTDocument d : ndtDocumentService.getAll()){
+            NDTDocumentUI dUI = new NDTDocumentUI(d);
+            allNDTDocuments.add(dUI);
+        }
+    }
+
+    private void updateNDTDocumentFromFields(NDTDocumentUI documentUI){
+        if(documentUI == null)
+            return;
+        documentUI.setName(txfNDTDocumentName.getText().trim());
+        documentUI.setFullName(txtAreaNDTDocumentFullName.getText().trim());
+    }
+
+    private void setDisabledNDTDocumentsFields(boolean disabled){
+        setDisabledTextAreas(disabled, txtAreaNDTDocumentFullName);
+        setDisabledTextFields(disabled, txfNDTDocumentName);
+    }
+
+    private void addNDTDocument(){
+        NDTDocumentUI newNDTDocument = new NDTDocumentUI();
+        allNDTDocuments.add(newNDTDocument);
+        tableViewNDTDocuments.getSelectionModel().clearSelection();
+        tableViewNDTDocuments.getSelectionModel().select(newNDTDocument);
+        tableViewNDTDocuments.fireEvent(EventFXUtil.getMouseClickEvent());
+        editRecord();
+    }
+
+    private void editNDTDocument(){
+        if (tableViewNDTDocuments.getSelectionModel().getSelectedItem() == null)
+            return;
+        setDisabledNDTDocumentsFields(false);
+        txfNDTDocumentName.requestFocus();
+    }
+
+    private void deleteNDTDocument(){
+        NDTDocumentUI delNDTDocument = tableViewNDTDocuments.getSelectionModel().getSelectedItem();
+        if (delNDTDocument == null)
+            return;
+        if (getResponseDeleteDialog(1)==Dialog.Actions.OK){
+            if (delNDTDocument.getId() != 0){
+                ndtDocumentService.delete(
+                        ndtDocumentServiceUI.getNDTDocumentFromUIModel(delNDTDocument));
+                LOGGER.debug("DELETE NDT DOCUMENT: NDT Document has been deleted from DB");
+            }
+            allNDTDocuments.remove(delNDTDocument);
+            tableViewNDTDocuments.getSelectionModel().selectFirst();
+            tableViewNDTDocuments.fireEvent(EventFXUtil.getMouseClickEvent());
+            tableViewNDTDocuments.requestFocus();
+        }
+    }
+
+    private void saveNDTDocument(){
+        setDisabledNDTDocumentsFields(true);
+        btSave.setDisable(true);
+        NDTDocumentUI updNDTDocument = tableViewNDTDocuments.getSelectionModel().getSelectedItem();
+        updateNDTDocumentFromFields(updNDTDocument);
+        NDTDocument ndtDocument = ndtDocumentServiceUI.getNDTDocumentFromUIModel(updNDTDocument);
+        if (ndtDocument == null)
+            return;
+        if (ndtDocument.getNdtDocumentId() !=null && ndtDocument.getNdtDocumentId() != 0){
+            ndtDocumentService.update(ndtDocument);
+            LOGGER.debug("SAVE NDT DOCUMENT: NDT Document updated in DB");
+        }else{
+            Long id = ndtDocumentService.insert(ndtDocument);
+            updNDTDocument.setId(id);
+            LOGGER.debug("SAVE NDT DOCUMENT: NDT Document inserted in DB");
+        }
+    }
+
+    // #init:Teachers
+    private void initTeachersTab(){
+        initTableViewTeachers();
+        setDisabledTextFields(true, txfTeacherSurname, txfTeacherName, txfTeacherSecname);
+        InvalidationListener invalidationListener = new TextFieldValidateListener();
+        txfTeacherName.textProperty().addListener(invalidationListener);
+        txfTeacherSurname.textProperty().addListener(invalidationListener);
+        txfTeacherSecname.textProperty().addListener(invalidationListener);
+    }
+
+    private void initTableViewTeachers(){
+        initAllTeachers();
+        tblColumnTeacherId.setCellValueFactory(new PropertyValueFactory<TeacherUI, Long>("id"));
+        tblColumnTeacherName.setCellValueFactory(new PropertyValueFactory<TeacherUI, String>("name"));
+        tblColumnTeacherSurname.setCellValueFactory(new PropertyValueFactory<TeacherUI, String>("surname"));
+        tblColumnTeacherSecname.setCellValueFactory(new PropertyValueFactory<TeacherUI, String>("secname"));
+
+        tableViewTeachers.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+        tableViewTeachers.addEventHandler(Event.ANY, new TableViewEventHandler());
+        tableViewTeachers.setItems(allTeachers);
+    }
+
+    private void initAllTeachers(){
+        allTeachers.clear();
+        for (Teacher t : teacherService.getAll()){
+            TeacherUI tUI = new TeacherUI(t);
+            allTeachers.add(tUI);
+        }
+    }
+
+    private void updateTeacherFromFields(TeacherUI teacherUI){
+        if (teacherUI == null)
+            return;
+        teacherUI.setSurname(txfTeacherSurname.getText().trim());
+        teacherUI.setName(txfTeacherName.getText().trim());
+        teacherUI.setSecname(txfTeacherSecname.getText().trim());
+    }
+
+    private void addTeacher(){
+        TeacherUI newTeacher = new TeacherUI();
+        allTeachers.add(newTeacher);
+        tableViewTeachers.getSelectionModel().clearSelection();
+        tableViewTeachers.getSelectionModel().select(newTeacher);
+        tableViewTeachers.fireEvent(EventFXUtil.getMouseClickEvent());
+        editRecord();
+    }
+
+    private void editTeacher(){
+        if (tableViewTeachers.getSelectionModel().getSelectedItem() == null)
+            return;
+       setDisabledTextFields(false, txfTeacherSecname, txfTeacherSurname, txfTeacherName);
+       txfTeacherSurname.requestFocus();
+    }
+
+    private void deleteTeacher(){
+        TeacherUI delTeacher = tableViewTeachers.getSelectionModel().getSelectedItem();
+        if (delTeacher == null)
+            return;
+        if (getResponseDeleteDialog(1)==Dialog.Actions.OK){
+            if (delTeacher.getId() != 0){
+                teacherService.delete(
+                        teacherServiceUI.getTeacherFromTeacherUI(delTeacher));
+                LOGGER.debug("DELETE TEACHER: teacher has been deleted from DB");
+            }
+            allTeachers.remove(delTeacher);
+            tableViewTeachers.getSelectionModel().selectFirst();
+            tableViewTeachers.fireEvent(EventFXUtil.getMouseClickEvent());
+            tableViewTeachers.requestFocus();
+        }
+    }
+
+    private void saveTeacher(){
+        setDisabledTextFields(true, txfTeacherName, txfTeacherSurname, txfTeacherSecname);
+        btSave.setDisable(true);
+        TeacherUI updTeacher = tableViewTeachers.getSelectionModel().getSelectedItem();
+        updateTeacherFromFields(updTeacher);
+        Teacher teacher = teacherServiceUI.getTeacherFromTeacherUI(updTeacher);
+        if (teacher == null)
+            return;
+        if (teacher.getTeacherId() !=null && teacher.getTeacherId() != 0){
+            teacherService.update(teacher);
+            LOGGER.debug("SAVE TEACHER: teacher updated in DB");
+        }else{
+            Long id = teacherService.insert(teacher);
+            updTeacher.setId(id);
+            LOGGER.debug("SAVE TEACHER: teacher inserted in DB");
+        }
+    }
+
+
+    // #init:Commission
     private void initCommissionTab(){
         initTableViewCommissions();
         initComboBoxesCommissions();
@@ -1076,15 +1346,8 @@ public class PropertiesController extends GenericController {
         }
     }
 
-    private void initAllTeachers(){
-        allTeachers.clear();
-        for (Teacher t : teacherService.getAll()){
-            TeacherUI tUI = new TeacherUI(t);
-            allTeachers.add(tUI);
-        }
-    }
 
-
+    // #init:Organization
     private void initOrganizationTab(){
         initTableViewOrganizations();
         setDisabledOrganizationFields(true);
@@ -1217,6 +1480,14 @@ public class PropertiesController extends GenericController {
             editCommission();
             return;
         }
+        if (activeTab.equals(tabTeachers)){
+            editTeacher();
+            return;
+        }
+        if (activeTab.equals(tabNDTDocuments)){
+            editNDTDocument();
+            return;
+        }
     }
 
     @FXML
@@ -1230,6 +1501,14 @@ public class PropertiesController extends GenericController {
         }
         if (activeTab.equals(tabCommission)){
             saveCommission();
+            return;
+        }
+        if (activeTab.equals(tabTeachers)){
+            saveTeacher();
+            return;
+        }
+        if (activeTab.equals(tabNDTDocuments)){
+            saveNDTDocument();
             return;
         }
     }
@@ -1247,6 +1526,14 @@ public class PropertiesController extends GenericController {
             addCommission();
             return;
         }
+        if (activeTab.equals(tabTeachers)){
+            addTeacher();
+            return;
+        }
+        if (activeTab.equals(tabNDTDocuments)){
+            addNDTDocument();
+            return;
+        }
 
     }
 
@@ -1261,6 +1548,14 @@ public class PropertiesController extends GenericController {
         }
         if (activeTab.equals(tabCommission)){
             deleteCommission();
+            return;
+        }
+        if (activeTab.equals(tabTeachers)){
+            deleteTeacher();
+            return;
+        }
+        if (activeTab.equals(tabNDTDocuments)){
+            deleteNDTDocument();
             return;
         }
     }
@@ -1281,6 +1576,14 @@ public class PropertiesController extends GenericController {
             selectFirstTableRecord(tableViewCommissions);
             return;
         }
+        if (activeTab.equals(tabTeachers)){
+            selectFirstTableRecord(tableViewTeachers);
+            return;
+        }
+        if (activeTab.equals(tabNDTDocuments)){
+            selectFirstTableRecord(tableViewNDTDocuments);
+            return;
+        }
     }
 
     @FXML
@@ -1296,6 +1599,14 @@ public class PropertiesController extends GenericController {
         }
         if (activeTab.equals(tabCommission)){
             selectLastTableRecord(tableViewCommissions);
+            return;
+        }
+        if (activeTab.equals(tabTeachers)){
+            selectLastTableRecord(tableViewTeachers);
+            return;
+        }
+        if (activeTab.equals(tabNDTDocuments)){
+            selectLastTableRecord(tableViewNDTDocuments);
             return;
         }
     }
@@ -1317,6 +1628,14 @@ public class PropertiesController extends GenericController {
             selectPrevTableRecord(tableViewCommissions);
             return;
         }
+        if (activeTab.equals(tabTeachers)){
+            selectPrevTableRecord(tableViewTeachers);
+            return;
+        }
+        if (activeTab.equals(tabNDTDocuments)){
+            selectPrevTableRecord(tableViewNDTDocuments);
+            return;
+        }
     }
 
     @FXML
@@ -1336,6 +1655,14 @@ public class PropertiesController extends GenericController {
             selectNextTableRecord(tableViewCommissions);
             return;
         }
+        if (activeTab.equals(tabTeachers)){
+            selectNextTableRecord(tableViewTeachers);
+            return;
+        }
+        if (activeTab.equals(tabNDTDocuments)){
+            selectNextTableRecord(tableViewNDTDocuments);
+            return;
+        }
     }
 
     @FXML
@@ -1352,6 +1679,17 @@ public class PropertiesController extends GenericController {
             initAllTeachers();
             initAllCommissions();
             selectFirstTableRecord(tableViewCommissions);
+            return;
+        }
+        if (activeTab.equals(tabTeachers)){
+            initAllTeachers();
+            initAllCommissions();
+            selectFirstTableRecord(tableViewTeachers);
+            return;
+        }
+        if (activeTab.equals(tabNDTDocuments)){
+            initAllNDTDocuments();
+            selectFirstTableRecord(tableViewNDTDocuments);
             return;
         }
 
@@ -2160,7 +2498,6 @@ public class PropertiesController extends GenericController {
         tableView.fireEvent(EventFXUtil.getMouseClickEvent());
         tableView.requestFocus();
     }
-
     private void selectPrevTableRecord(TableView tableView){
         tableView.getSelectionModel().selectPrevious();
         Object selectedItem = tableView.getSelectionModel().getSelectedItem();
@@ -2479,6 +2816,14 @@ public class PropertiesController extends GenericController {
                     doSelectCommission();
                     return;
                 }
+                if (source.equals(tableViewTeachers)){
+                    doSelectTeacher();
+                    return;
+                }
+                if (source.equals(tableViewNDTDocuments)){
+                    doSelectNDTDocument();
+                    return;
+                }
             }
         }
 
@@ -2505,6 +2850,27 @@ public class PropertiesController extends GenericController {
             cbCommissionSafetySpec.getSelectionModel().select(selectedCommiss.getSafetySpecialist());
             btSave.setDisable(true);
         }
+
+        private void doSelectTeacher(){
+            TeacherUI selectedTeacher = tableViewTeachers.getSelectionModel().getSelectedItem();
+            if (selectedTeacher == null)
+                return;
+            setDisabledTextFields(true, txfTeacherName, txfTeacherSurname, txfTeacherSecname);
+            txfTeacherSurname.setText(selectedTeacher.getSurname());
+            txfTeacherName.setText(selectedTeacher.getName());
+            txfTeacherSecname.setText(selectedTeacher.getSecname());
+            btSave.setDisable(true);
+        }
+
+        private void doSelectNDTDocument(){
+            NDTDocumentUI selectedNDTDocument = tableViewNDTDocuments.getSelectionModel().getSelectedItem();
+            if (selectedNDTDocument == null)
+                return;
+            setDisabledNDTDocumentsFields(true);
+            txfNDTDocumentName.setText(selectedNDTDocument.getName());
+            txtAreaNDTDocumentFullName.setText(selectedNDTDocument.getFullName());
+            btSave.setDisable(true);
+        }
     }
 
     private class TextFieldValidateListener implements InvalidationListener{
@@ -2528,6 +2894,18 @@ public class PropertiesController extends GenericController {
             }
             if (selectedTab.equals(tabCommission)){
                 if (!cbCommissionHead.isDisabled()){
+                    btSave.setDisable(false);
+                    return;
+                }
+            }
+            if (selectedTab.equals(tabTeachers)){
+                if (txfTeacherSurname.isEditable()){
+                    btSave.setDisable(false);
+                    return;
+                }
+            }
+            if (selectedTab.equals(tabNDTDocuments)){
+                if (txfNDTDocumentName.isEditable()){
                     btSave.setDisable(false);
                     return;
                 }

@@ -49,8 +49,8 @@
                   </Menu>
                   <SeparatorMenuItem mnemonicParsing="false" />
                   <MenuItem mnemonicParsing="false" onAction="#showPropertiesOrganizations" text="Организации" />
-              <MenuItem id="miCommission" mnemonicParsing="false" text="Комиссия" />
-                  <MenuItem id="miNDTDocument" mnemonicParsing="false" text="Нормативные документы" />
+              <MenuItem id="miCommission" mnemonicParsing="false" onAction="#showPropertiesCommissionTab" text="Комиссия" />
+                  <MenuItem id="miNDTDocument" mnemonicParsing="false" onAction="#showPropertiesNDTDocumentsTab" text="Нормативные документы" />
             </items>
           </Menu>
           <Menu id="mmHelp" mnemonicParsing="false" text="Помощь">

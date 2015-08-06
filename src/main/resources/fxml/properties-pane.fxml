@@ -966,12 +966,11 @@
                                        <children>
                                           <ToolBar prefHeight="30.0" prefWidth="200.0">
                                              <items>
-                                                <Button fx:id="btFirst11" mnemonicParsing="false" text="|&lt;" />
-                                                <Button fx:id="btPrev11" mnemonicParsing="false" text="&lt;&lt;" />
-                                                <Button fx:id="btNew11" mnemonicParsing="false" text="&gt;*" />
-                                                <Button fx:id="btNext11" mnemonicParsing="false" text="&gt;&gt;" />
-                                                <Button fx:id="btLast11" mnemonicParsing="false" text="&gt;|" />
-                                                <Button mnemonicParsing="false" text="копия" />
+                                                <Button mnemonicParsing="false" onAction="#selectFirstRecord" text="|&lt;" />
+                                                <Button mnemonicParsing="false" onAction="#selectPrevRecord" text="&lt;&lt;" />
+                                                <Button mnemonicParsing="false" onAction="#addRecord" text="&gt;*" />
+                                                <Button mnemonicParsing="false" onAction="#selectNextRecord" text="&gt;&gt;" />
+                                                <Button mnemonicParsing="false" onAction="#selectLastRecord" text="&gt;|" />
                                              </items>
                                           </ToolBar>
                                        </children>
@@ -1083,12 +1082,11 @@
                                        <children>
                                           <ToolBar prefHeight="30.0" prefWidth="200.0">
                                              <items>
-                                                <Button fx:id="btFirst12" mnemonicParsing="false" text="|&lt;" />
-                                                <Button fx:id="btPrev12" mnemonicParsing="false" text="&lt;&lt;" />
-                                                <Button fx:id="btNew12" mnemonicParsing="false" text="&gt;*" />
-                                                <Button fx:id="btNext12" mnemonicParsing="false" text="&gt;&gt;" />
-                                                <Button fx:id="btLast12" mnemonicParsing="false" text="&gt;|" />
-                                                <Button mnemonicParsing="false" text="копия" />
+                                                <Button mnemonicParsing="false" onAction="#selectFirstRecord" text="|&lt;" />
+                                                <Button mnemonicParsing="false" onAction="#selectPrevRecord" text="&lt;&lt;" />
+                                                <Button mnemonicParsing="false" onAction="#addRecord" text="&gt;*" />
+                                                <Button mnemonicParsing="false" onAction="#selectNextRecord" text="&gt;&gt;" />
+                                                <Button mnemonicParsing="false" onAction="#selectLastRecord" text="&gt;|" />
                                              </items>
                                           </ToolBar>
                                        </children>

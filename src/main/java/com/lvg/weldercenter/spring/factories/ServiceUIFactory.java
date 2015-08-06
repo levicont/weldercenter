@@ -38,6 +38,9 @@ public class ServiceUIFactory {
     private static EducationServiceUI educationServiceUI;
     private static QualificationServiceUI qualificationServiceUI;
     private static JobServiceUI jobServiceUI;
+    private static TopicServiceUI topicServiceUI;
+    private static SectionServiceUI sectionServiceUI;
+    private static CurriculumServiceUI curriculumServiceUI;
 
 
     private ServiceUIFactory(){
@@ -306,6 +309,34 @@ public class ServiceUIFactory {
         }else {
             jobServiceUI = (JobServiceUI)context.getBean("jobServiceUI");
             return jobServiceUI;
+        }
+    }
+
+    public static TopicServiceUI getTopicServiceUI() {
+        if (topicServiceUI != null) {
+            return topicServiceUI;
+        }else{
+            topicServiceUI = (TopicServiceUI)context.getBean("topicServiceUI");
+            return topicServiceUI;
+        }
+
+    }
+
+    public static SectionServiceUI getSectionServiceUI() {
+        if (sectionServiceUI != null) {
+            return sectionServiceUI;
+        }else {
+            sectionServiceUI = (SectionServiceUI)context.getBean("sectionServiceUI");
+            return sectionServiceUI;
+        }
+    }
+
+    public static CurriculumServiceUI getCurriculumServiceUI() {
+        if (curriculumServiceUI != null) {
+            return curriculumServiceUI;
+        }else {
+            curriculumServiceUI = (CurriculumServiceUI)context.getBean("curriculumServiceUI");
+            return curriculumServiceUI;
         }
     }
 }
