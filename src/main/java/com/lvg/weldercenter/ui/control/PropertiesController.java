@@ -1,5 +1,6 @@
 package com.lvg.weldercenter.ui.control;
 
+import com.lvg.weldercenter.exceptions.WelderException;
 import com.lvg.weldercenter.models.*;
 import com.lvg.weldercenter.services.*;
 import com.lvg.weldercenter.spring.factories.ServiceFactory;
@@ -469,6 +470,10 @@ public class PropertiesController extends GenericController {
 
     public void showNDTDocumentsTab(){
         tabPaneAllProperties.getSelectionModel().select(tabNDTDocuments);
+    }
+
+    public void showCurriculumsTab(){
+        tabPaneAllProperties.getSelectionModel().select(tabCurriculum);
     }
 
     private void init(){
@@ -990,6 +995,17 @@ public class PropertiesController extends GenericController {
 
     private void initCurriculumsTab(){
         initTreeViewCurriculums();
+        InvalidationListener invalidationListener = new TextFieldValidateListener();
+        txfCurriculumName.textProperty().addListener(invalidationListener);
+        txtAreaCurriculumDescription.textProperty().addListener(invalidationListener);
+
+        txfSectionName.textProperty().addListener(invalidationListener);
+        txtAreaSectionDescription.textProperty().addListener(invalidationListener);
+
+        txfTopicName.textProperty().addListener(invalidationListener);
+        txtAreaTopicDescription.textProperty().addListener(invalidationListener);
+        txfTopicHours.textProperty().addListener(invalidationListener);
+
         setDisabledCurriculumTitlePane(true);
         setDisabledSectionTitlePane(true);
         setDisabledTopicTitlePane(true);
@@ -1018,8 +1034,9 @@ public class PropertiesController extends GenericController {
     private void initTreeViewCurriculums(){
         TreeItem<String> root = new TreeItem<>(ROOT_CURRICULUM_TITLE);
         treeViewCurriculum.setRoot(root);
+        treeViewCurriculum.addEventHandler(Event.ANY, new TableViewEventHandler());
         root.getChildren().clear();
-        root.getChildren().addAll(getTreeItems());
+        root.getChildren().setAll(getTreeItems());
         root.setExpanded(true);
 
 
@@ -1051,6 +1068,164 @@ public class PropertiesController extends GenericController {
         }
         return allCurriculumsTreeItems;
     }
+
+    private CurriculumUI getCurriculumUIFromTreeItem(TreeItem<String> treeItem){
+        if (treeItem == null)
+            return null;
+        for (CurriculumUI curriculum : allCurriculums){
+            if(treeItem.getValue().equals(curriculum.toString())){
+                return curriculum;
+            }
+        }
+        return null;
+    }
+
+    private SectionUI getSectionUIFromTreeItem(CurriculumUI parentCurriculum, TreeItem<String> treeItem){
+        if (parentCurriculum == null || treeItem == null)
+            return  null;
+        for (SectionUI sectionUI : parentCurriculum.getSections()){
+            if (treeItem.getValue().equals(sectionUI.toString())){
+                return sectionUI;
+            }
+        }
+        return null;
+    }
+
+    private TopicUI getTopicUIFromTreeItem(SectionUI parentSection, TreeItem<String> treeItem){
+        if(parentSection == null || treeItem == null)
+            return null;
+        for (TopicUI topicUI : parentSection.getTopics()){
+            if(treeItem.getValue().equals(topicUI.toString())){
+                return topicUI;
+            }
+
+        }
+        return null;
+    }
+
+    private boolean isSelectedTreeItemIsCurriculum(TreeItem<String> selectedTreeItem){
+        if (selectedTreeItem == null)
+            return false;
+        if (selectedTreeItem.equals(treeViewCurriculum.getRoot()))
+            return false;
+        if (selectedTreeItem.getParent().equals(treeViewCurriculum.getRoot()))
+            return true;
+        return false;
+    }
+
+    private boolean isSelectedTreeItemIsSection(TreeItem<String> selectedTreeItem){
+        if (selectedTreeItem == null)
+            return false;
+        if (isSelectedTreeItemIsCurriculum(selectedTreeItem.getParent()))
+            return true;
+        return false;
+    }
+
+    private boolean isSelectedTreeItemIsTopic(TreeItem<String> selectedTreeItem){
+        if (selectedTreeItem == null)
+            return false;
+        if (isSelectedTreeItemIsSection(selectedTreeItem.getParent()))
+            return true;
+        return false;
+    }
+
+    private void updateCurriculumFromFields(CurriculumUI curriculumUI){
+        if(curriculumUI == null)
+            return;
+        curriculumUI.setTitle(txfCurriculumName.getText().trim());
+        curriculumUI.setDescription(txtAreaCurriculumDescription.getText().trim());
+
+    }
+
+    private void addCurriculum(CurriculumUI curriculumUI){
+        if (curriculumUI == null)
+            return;
+        btSave.setDisable(true);
+        TreeItem<String> newItem = new TreeItem<>(curriculumUI.toString());
+        allCurriculums.add(curriculumUI);
+        allCurriculumsTreeItems.add(newItem);
+        treeViewCurriculum.getRoot().getChildren().add(newItem);
+        treeViewCurriculum.getSelectionModel().select(newItem);
+        txfCurriculumName.clear();
+        txtAreaCurriculumDescription.clear();
+        setDisabledCurriculumTitlePane(false);
+
+    }
+
+    private void editCurriculum(){
+      if (treeViewCurriculum.getSelectionModel().getSelectedItem() == null)
+          return;
+        setDisabledCurriculumTitlePane(false);
+        txfCurriculumName.requestFocus();
+    }
+
+    private void deleteCurriculum(){
+        TreeItem<String> selectedItem = treeViewCurriculum.getSelectionModel().getSelectedItem();
+        CurriculumUI curriculumUI = getCurriculumUIFromTreeItem(selectedItem);
+        if (curriculumUI == null)
+            return;
+        if (getResponseDeleteDialog(1)==Dialog.Actions.OK){
+            if (curriculumUI.getId() != 0){
+                curriculumService.delete(
+                        curriculumServiceUI.getCurriculumFromUIModel(curriculumUI));
+                LOGGER.debug("DELETE CURRICULUM: curriculum has been deleted from DB");
+            }
+            allCurriculums.remove(curriculumUI);
+            allCurriculumsTreeItems.remove(selectedItem);
+            initTreeViewCurriculums();
+            selectRootTreeItem(treeViewCurriculum);
+
+        }
+    }
+
+    private void saveCurriculum(){
+        btSave.setDisable(true);
+        setDisabledCurriculumTitlePane(true);
+        TreeItem<String> selectedItem = treeViewCurriculum.getSelectionModel().getSelectedItem();
+        if (selectedItem == null)
+            return;
+        CurriculumUI curriculumUI = getCurriculumUIFromTreeItem(selectedItem);
+        if (curriculumUI == null)
+            return;
+        updateCurriculumFromFields(curriculumUI);
+        try {
+            checkCurriculumUI(curriculumUI);
+            Curriculum curriculum = curriculumServiceUI.getCurriculumFromUIModel(curriculumUI);
+            if (curriculum == null)
+                return;
+
+            if (curriculum.getCurriculumId() != null && curriculum.getCurriculumId()!= 0){
+                curriculumService.update(curriculum);
+                LOGGER.debug("SAVE CURRICULUM: curriculum has been updated in DB");
+            }else{
+                Long id = curriculumService.insert(curriculum);
+                curriculumUI.setId(id);
+                LOGGER.debug("SAVE CURRICULUM: curriculum has been inserted in DB");
+            }
+
+            selectedItem.setValue(curriculumUI.toString());
+            treeViewCurriculum.getSelectionModel().clearSelection();
+            treeViewCurriculum.getSelectionModel().select(selectedItem);
+            treeViewCurriculum.fireEvent(EventFXUtil.getMouseClickEvent());
+
+        }catch(WelderException ex){
+            LOGGER.warn("SAVE CURRICULUM: the title of curriculum must be unique.", ex);
+
+        }
+
+
+    }
+
+    private void checkCurriculumUI(CurriculumUI curriculumUI) throws WelderException{
+        if (curriculumUI == null)
+            return;
+        for(CurriculumUI curr : allCurriculums){
+            if (curriculumUI.getTitle().equals(curr.getTitle()) && !curriculumUI.equals(curr))
+                throw new WelderException();
+        }
+
+    }
+
 
     // #init:NDTDocuments
     private void initNDTDocumentsTab(){
@@ -1488,6 +1663,12 @@ public class PropertiesController extends GenericController {
             editNDTDocument();
             return;
         }
+        if (activeTab.equals(tabCurriculum)){
+            if (titledPaneCurriculum.isExpanded() && !titledPaneCurriculum.isDisabled()){
+                editCurriculum();
+                return;
+            }
+        }
     }
 
     @FXML
@@ -1510,6 +1691,12 @@ public class PropertiesController extends GenericController {
         if (activeTab.equals(tabNDTDocuments)){
             saveNDTDocument();
             return;
+        }
+        if (activeTab.equals(tabCurriculum)){
+            if (txfCurriculumName.isEditable()){
+                saveCurriculum();
+                return;
+            }
         }
     }
 
@@ -1534,6 +1721,12 @@ public class PropertiesController extends GenericController {
             addNDTDocument();
             return;
         }
+        if (activeTab.equals(tabCurriculum)){
+            if (titledPaneCurriculum.isExpanded() && !titledPaneCurriculum.isDisabled()){
+                addCurriculum(new CurriculumUI());
+                return;
+            }
+        }
 
     }
 
@@ -1557,6 +1750,12 @@ public class PropertiesController extends GenericController {
         if (activeTab.equals(tabNDTDocuments)){
             deleteNDTDocument();
             return;
+        }
+        if (activeTab.equals(tabCurriculum)){
+            if (titledPaneCurriculum.isExpanded() && !titledPaneCurriculum.isDisabled()){
+                deleteCurriculum();
+                return;
+            }
         }
     }
 
@@ -1690,6 +1889,11 @@ public class PropertiesController extends GenericController {
         if (activeTab.equals(tabNDTDocuments)){
             initAllNDTDocuments();
             selectFirstTableRecord(tableViewNDTDocuments);
+            return;
+        }
+        if (activeTab.equals(tabCurriculum)){
+            initTreeViewCurriculums();
+            selectRootTreeItem(treeViewCurriculum);
             return;
         }
 
@@ -2484,6 +2688,14 @@ public class PropertiesController extends GenericController {
         tableView.fireEvent(EventFXUtil.getMouseClickEvent());
         tableView.requestFocus();
     }
+
+    private void selectRootTreeItem(TreeView treeView){
+        treeView.getSelectionModel().clearSelection();
+        treeView.getSelectionModel().select(treeView.getRoot());
+        treeView.fireEvent(EventFXUtil.getMouseClickEvent());
+        treeView.requestFocus();
+    }
+
     private void selectLastTableRecord(TableView tableView){
         tableView.getSelectionModel().clearSelection();
         tableView.getSelectionModel().selectLast();
@@ -2505,6 +2717,13 @@ public class PropertiesController extends GenericController {
         tableView.getSelectionModel().select(selectedItem);
         tableView.fireEvent(EventFXUtil.getMouseClickEvent());
         tableView.requestFocus();
+    }
+
+    private void setDisabledTitlePane(boolean disabled, TitledPane titledPane){
+        if (titledPane == null)
+            return;
+        titledPane.setExpanded(!disabled);
+        titledPane.setDisable(disabled);
     }
 
     private void setActiveListView(ListView listView){
@@ -2805,24 +3024,34 @@ public class PropertiesController extends GenericController {
 
         @Override
         public void handle(javafx.event.Event event) {
-            TableView source = (TableView) event.getSource();
-
             if (isEventIsSelectedMouse(event) || isEventIsSelectedKey(event)) {
-                if (source.equals(tableViewOrganizations)) {
+
+                if (event.getSource().getClass().equals(TableView.class)) {
+                    TableView source = (TableView) event.getSource();
+                    if (source.equals(tableViewOrganizations)) {
                         doSelectOrganization();
                         return;
+                    }
+                    if (source.equals(tableViewCommissions)) {
+                        doSelectCommission();
+                        return;
+                    }
+                    if (source.equals(tableViewTeachers)) {
+                        doSelectTeacher();
+                        return;
+                    }
+                    if (source.equals(tableViewNDTDocuments)) {
+                        doSelectNDTDocument();
+                        return;
+                    }
+
                 }
-                if (source.equals(tableViewCommissions)){
-                    doSelectCommission();
-                    return;
-                }
-                if (source.equals(tableViewTeachers)){
-                    doSelectTeacher();
-                    return;
-                }
-                if (source.equals(tableViewNDTDocuments)){
-                    doSelectNDTDocument();
-                    return;
+                if (event.getSource().getClass().equals(TreeView.class)) {
+                    TreeView source = (TreeView) event.getSource();
+                    if (source.equals(treeViewCurriculum)) {
+                        doSelectTreeeViewCurriculum();
+                        return;
+                    }
                 }
             }
         }
@@ -2871,6 +3100,68 @@ public class PropertiesController extends GenericController {
             txtAreaNDTDocumentFullName.setText(selectedNDTDocument.getFullName());
             btSave.setDisable(true);
         }
+
+        private void doSelectTreeeViewCurriculum(){
+            TreeItem<String> selectedItem = treeViewCurriculum.getSelectionModel().getSelectedItem();
+            if (selectedItem == null)
+                return;
+            if (isSelectedTreeItemIsCurriculum(selectedItem)){
+                doSelectCurriculum(getCurriculumUIFromTreeItem(selectedItem));
+                return;
+            }
+            if (isSelectedTreeItemIsSection(selectedItem)){
+                CurriculumUI parent = getCurriculumUIFromTreeItem(selectedItem.getParent());
+                doSelectSection(getSectionUIFromTreeItem(parent,selectedItem));
+                return;
+            }
+            if (isSelectedTreeItemIsTopic(selectedItem)){
+                CurriculumUI mainParent = getCurriculumUIFromTreeItem(selectedItem.getParent().getParent());
+                SectionUI parent = getSectionUIFromTreeItem(mainParent, selectedItem.getParent());
+                doSelectTopic(getTopicUIFromTreeItem(parent, selectedItem));
+                return;
+            }
+            setDisabledCurriculumTitlePane(true);
+            setDisabledSectionTitlePane(true);
+            setDisabledTopicTitlePane(true);
+        }
+
+        private void doSelectCurriculum(CurriculumUI curriculumUI){
+            if (curriculumUI == null)
+                return;
+            txfCurriculumName.setText(curriculumUI.getTitle());
+            txtAreaCurriculumDescription.setText(curriculumUI.getDescription());
+            setDisabledCurriculumTitlePane(true);
+            setDisabledSectionTitlePane(true);
+            setDisabledTopicTitlePane(true);
+            setDisabledTitlePane(false, titledPaneCurriculum);
+            btSave.setDisable(true);
+
+        }
+        private void doSelectSection(SectionUI sectionUI){
+            if (sectionUI == null)
+                return;
+            txfSectionName.setText(sectionUI.getTitle());
+            txtAreaSectionDescription.setText(sectionUI.getDescription());
+            setDisabledSectionTitlePane(true);
+            setDisabledCurriculumTitlePane(true);
+            setDisabledTopicTitlePane(true);
+            setDisabledTitlePane(false, titledPaneSection);
+            btSave.setDisable(true);
+        }
+        private void doSelectTopic(TopicUI topicUI){
+            if (topicUI == null)
+                return;
+            txfTopicName.setText(topicUI.getTitle());
+            txfTopicHours.setText(topicUI.getTimeLong()+"");
+            txtAreaTopicDescription.setText(topicUI.getDecription());
+            setDisabledTopicTitlePane(true);
+            setDisabledCurriculumTitlePane(true);
+            setDisabledSectionTitlePane(true);
+            setDisabledTitlePane(false, titledPaneTopic);
+            btSave.setDisable(true);
+
+        }
+
     }
 
     private class TextFieldValidateListener implements InvalidationListener{
@@ -2968,6 +3259,20 @@ public class PropertiesController extends GenericController {
                 }
                 if (txfJobType.isEditable()){
                     btSaveJob.setDisable(false);
+                    return;
+                }
+            }
+            if (selectedTab.equals(tabCurriculum)){
+                if (txfCurriculumName.isEditable()){
+                    btSave.setDisable(false);
+                    return;
+                }
+                if (txfSectionName.isEditable()){
+                    btSave.setDisable(false);
+                    return;
+                }
+                if (txfTopicName.isEditable()){
+                    btSave.setDisable(false);
                     return;
                 }
             }

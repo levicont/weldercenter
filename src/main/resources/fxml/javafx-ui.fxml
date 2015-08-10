@@ -51,6 +51,7 @@
                   <MenuItem mnemonicParsing="false" onAction="#showPropertiesOrganizations" text="Организации" />
               <MenuItem id="miCommission" mnemonicParsing="false" onAction="#showPropertiesCommissionTab" text="Комиссия" />
                   <MenuItem id="miNDTDocument" mnemonicParsing="false" onAction="#showPropertiesNDTDocumentsTab" text="Нормативные документы" />
+                  <MenuItem mnemonicParsing="false" onAction="#showPropertiesCurriculumsTab" text="Программы подготовки" />
             </items>
           </Menu>
           <Menu id="mmHelp" mnemonicParsing="false" text="Помощь">
