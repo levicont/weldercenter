@@ -1229,7 +1229,7 @@
                                                                   <Insets bottom="8.0" left="8.0" right="8.0" />
                                                                </GridPane.margin>
                                                             </TextArea>
-                                                            <Button mnemonicParsing="false" text="+" GridPane.rowIndex="7" GridPane.valignment="BOTTOM">
+                                                            <Button mnemonicParsing="false" onAction="#addFirstSection" text="+" GridPane.rowIndex="7" GridPane.valignment="BOTTOM">
                                                                <GridPane.margin>
                                                                   <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                                                </GridPane.margin>

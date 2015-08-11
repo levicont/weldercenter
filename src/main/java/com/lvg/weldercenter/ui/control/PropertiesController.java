@@ -1137,6 +1137,145 @@ public class PropertiesController extends GenericController {
 
     }
 
+    private void updateSectionFromFields(SectionUI sectionUI){
+        if(sectionUI == null)
+            return;
+        sectionUI.setTitle(txfSectionName.getText().trim());
+        sectionUI.setDescription(txtAreaSectionDescription.getText().trim());
+
+    }
+
+    private void updateTopicFromFields(TopicUI topicUI)throws WelderException{
+        if (topicUI == null)
+            return;
+        Double hours = 0.0;
+        try {
+            hours = Double.parseDouble(txfTopicHours.getText().trim());
+        }catch(NumberFormatException ex){
+            LOGGER.warn("UPDATE TOPIC FROM FIELDS: not coorect number of hours - must be double");
+            throw new WelderException("Not correct number", ex);
+
+        }
+        topicUI.setTitle(txfTopicName.getText().trim());
+        topicUI.setDecription(txtAreaTopicDescription.getText().trim());
+        topicUI.setTimeLong(hours);
+    }
+
+    private void addSection(){
+        btSave.setDisable(true);
+        TreeItem<String> selectedItem = treeViewCurriculum.getSelectionModel().getSelectedItem();
+        if (selectedItem == null || !isSelectedTreeItemIsCurriculum(selectedItem.getParent()))
+            return;
+        CurriculumUI selectedCurriculum = getCurriculumUIFromTreeItem(selectedItem.getParent());
+        SectionUI newSection = new SectionUI();
+        selectedCurriculum.getSections().add(newSection);
+        TreeItem<String> newSectionItem = new TreeItem<String>(newSection.toString());
+        selectedItem.getParent().getChildren().add(newSectionItem);
+        treeViewCurriculum.getSelectionModel().select(newSectionItem);
+        txfSectionName.clear();
+        txtAreaSectionDescription.clear();
+        setDisabledSectionTitlePane(false);
+
+
+    }
+
+    private void editSection(){
+        if(treeViewCurriculum.getSelectionModel().getSelectedItem() == null)
+            return;
+        setDisabledSectionTitlePane(false);
+        txfSectionName.requestFocus();
+
+    }
+
+    private void deleteSection(){
+        TreeItem<String> selectedItem = treeViewCurriculum.getSelectionModel().getSelectedItem();
+        if (selectedItem == null)
+            return;
+        TreeItem<String> parentItem = selectedItem.getParent();
+        CurriculumUI parentCurriculum = getCurriculumUIFromTreeItem(parentItem);
+        SectionUI delSection = getSectionUIFromTreeItem(parentCurriculum,selectedItem);
+
+        if(delSection == null)
+            return;
+        if (getResponseDeleteDialog(1) == Dialog.Actions.OK){
+            if (delSection.getId() != 0){
+                sectionService.delete(sectionServiceUI.getSectionFromUIModel(delSection));
+                LOGGER.debug("DELETE SECTION: section has been deleted from DB");
+            }
+            allCurriculums.get(allCurriculums.indexOf(parentCurriculum)).getSections().remove(delSection);
+            allCurriculumsTreeItems.get(allCurriculumsTreeItems.indexOf(parentItem)).getChildren().remove(selectedItem);
+            initTreeViewCurriculums();
+            treeViewCurriculum.getSelectionModel().select(parentItem);
+            treeViewCurriculum.fireEvent(EventFXUtil.getMouseClickEvent());
+
+        }
+
+    }
+
+    private void saveSection(){
+        btSave.setDisable(true);
+        setDisabledSectionTitlePane(true);
+        TreeItem<String> selectedSectionItem = treeViewCurriculum.getSelectionModel().getSelectedItem();
+        if (selectedSectionItem == null)
+            return;
+        TreeItem<String> parentItem = selectedSectionItem.getParent();
+        CurriculumUI parentCurriculum = getCurriculumUIFromTreeItem(parentItem);
+        if (parentCurriculum == null)
+            return;
+        SectionUI sectionUI = getSectionUIFromTreeItem(parentCurriculum, selectedSectionItem);
+        updateSectionFromFields(sectionUI);
+        try{
+            checkSectionUI(parentCurriculum, sectionUI);
+            Section section = sectionServiceUI.getSectionFromUIModel(sectionUI);
+
+            if (section.getSectionId() != null && section.getSectionId() != 0){
+                sectionService.update(section);
+                LOGGER.debug("SAVE SECTION: section has been updated in DB");
+            }else{
+                Long id = sectionService.insert(section);
+                sectionUI.setId(id);
+                LOGGER.debug("SAVE SECTION: section has been inserted in DB");
+            }
+            treeViewCurriculum.getSelectionModel().select(parentItem);
+            saveCurriculum();
+
+            selectedSectionItem.setValue(sectionUI.toString());
+            treeViewCurriculum.getSelectionModel().clearSelection();
+            treeViewCurriculum.getSelectionModel().select(selectedSectionItem);
+            treeViewCurriculum.fireEvent(EventFXUtil.getMouseClickEvent());
+        }catch(WelderException ex){
+            LOGGER.warn("SAVE CURRICULUM: the title of curriculum must be unique.", ex);
+        }
+    }
+
+    @FXML
+    private void addFirstSection(){
+        TreeItem<String> selectedCurriculumItem = treeViewCurriculum.getSelectionModel().getSelectedItem();
+        if (selectedCurriculumItem == null || !isSelectedTreeItemIsCurriculum(selectedCurriculumItem))
+            return;
+        CurriculumUI parentCurriculum = getCurriculumUIFromTreeItem(selectedCurriculumItem);
+        if (parentCurriculum == null)
+            return;
+        SectionUI newSection = new SectionUI();
+        TreeItem<String> newSectionItem = new TreeItem<>(newSection.toString());
+        parentCurriculum.getSections().add(newSection);
+        selectedCurriculumItem.getChildren().add(newSectionItem);
+        treeViewCurriculum.getSelectionModel().clearSelection();
+        treeViewCurriculum.getSelectionModel().select(newSectionItem);
+        treeViewCurriculum.fireEvent(EventFXUtil.getMouseClickEvent());
+        editSection();
+
+    }
+
+    private void checkSectionUI(CurriculumUI parentCurriculum, SectionUI sectionUI) throws WelderException{
+        if (sectionUI == null)
+            return;
+        for (SectionUI section: parentCurriculum.getSections()){
+            if (section.getTitle().equals(sectionUI.getTitle()) && !section.equals(sectionUI))
+                throw new WelderException("The title of the section for same curriculum must be unioque");
+        }
+    }
+
     private void addCurriculum(CurriculumUI curriculumUI){
         if (curriculumUI == null)
             return;
@@ -1668,6 +1807,10 @@ public class PropertiesController extends GenericController {
                 editCurriculum();
                 return;
             }
+            if (titledPaneSection.isExpanded() && !titledPaneSection.isDisabled()){
+                editSection();
+                return;
+            }
         }
     }
 
@@ -1695,6 +1838,10 @@ public class PropertiesController extends GenericController {
         if (activeTab.equals(tabCurriculum)){
             if (txfCurriculumName.isEditable()){
                 saveCurriculum();
+                return;
+            }
+            if (txfSectionName.isEditable()){
+                saveSection();
                 return;
             }
         }
@@ -1726,6 +1873,10 @@ public class PropertiesController extends GenericController {
                 addCurriculum(new CurriculumUI());
                 return;
             }
+            if (titledPaneSection.isExpanded() && !titledPaneSection.isDisabled()){
+                addSection();
+                return;
+            }
         }
 
     }
@@ -1754,6 +1905,10 @@ public class PropertiesController extends GenericController {
         if (activeTab.equals(tabCurriculum)){
             if (titledPaneCurriculum.isExpanded() && !titledPaneCurriculum.isDisabled()){
                 deleteCurriculum();
+                return;
+            }
+            if (titledPaneSection.isExpanded() && !titledPaneSection.isDisabled()){
+                deleteSection();
                 return;
             }
         }
