@@ -1,6 +1,8 @@
 package com.lvg.weldercenter.ui.entities;
 
-import com.lvg.weldercenter.models.*;
+import com.lvg.weldercenter.models.WeldJoinType;
+import com.lvg.weldercenter.models.WeldPattern;
+import com.lvg.weldercenter.models.WeldPosition;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

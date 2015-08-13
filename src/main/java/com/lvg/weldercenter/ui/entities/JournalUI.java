@@ -1,7 +1,9 @@
 package com.lvg.weldercenter.ui.entities;
 
 import com.lvg.weldercenter.hibernate.utils.Unproximator;
-import com.lvg.weldercenter.models.*;
+import com.lvg.weldercenter.models.Journal;
+import com.lvg.weldercenter.models.Teacher;
+import com.lvg.weldercenter.models.Welder;
 import com.lvg.weldercenter.ui.util.DateUtil;
 import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -9,7 +11,9 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Victor Levchenko LVG Corp. on 15.12.14.

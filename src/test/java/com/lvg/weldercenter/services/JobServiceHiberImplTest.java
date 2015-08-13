@@ -2,8 +2,6 @@ package com.lvg.weldercenter.services;
 
 
 import com.lvg.weldercenter.models.Job;
-import com.lvg.weldercenter.services.JobService;
-import static org.junit.Assert.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +11,8 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+
+import static org.junit.Assert.*;
 
 /**
  * Created by Victor Levchenko LVG Corp. on 01.11.14.

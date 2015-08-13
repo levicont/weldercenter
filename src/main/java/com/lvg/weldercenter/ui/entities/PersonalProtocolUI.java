@@ -1,6 +1,8 @@
 package com.lvg.weldercenter.ui.entities;
 
-import com.lvg.weldercenter.models.*;
+import com.lvg.weldercenter.models.NDTDocument;
+import com.lvg.weldercenter.models.PersonalProtocol;
+import com.lvg.weldercenter.models.WeldPattern;
 import com.lvg.weldercenter.ui.util.DateUtil;
 import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleObjectProperty;

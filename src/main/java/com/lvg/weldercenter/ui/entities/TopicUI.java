@@ -3,7 +3,10 @@ package com.lvg.weldercenter.ui.entities;
 import com.lvg.weldercenter.models.Journal;
 import com.lvg.weldercenter.models.Topic;
 import com.lvg.weldercenter.ui.util.DateUtil;
-import javafx.beans.property.*;
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
 
 import java.util.Date;
 

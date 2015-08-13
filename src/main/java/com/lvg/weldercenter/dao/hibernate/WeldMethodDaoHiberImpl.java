@@ -1,6 +1,5 @@
 package com.lvg.weldercenter.dao.hibernate;
 
-import com.lvg.weldercenter.dao.WeldGasDao;
 import com.lvg.weldercenter.dao.WeldMethodDao;
 import com.lvg.weldercenter.models.WeldMethod;
 import org.springframework.stereotype.Repository;

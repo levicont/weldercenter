@@ -1,7 +1,8 @@
 package com.lvg.weldercenter.ui.entities.report;
 
-import com.lvg.weldercenter.services.CurriculumService;
-import com.lvg.weldercenter.ui.entities.*;
+import com.lvg.weldercenter.ui.entities.JournalUI;
+import com.lvg.weldercenter.ui.entities.TopicUI;
+import com.lvg.weldercenter.ui.entities.WelderUI;
 import com.lvg.weldercenter.ui.util.DateUtil;
 import com.lvg.weldercenter.ui.util.TimeTableUtil;
 import com.lvg.weldercenter.ui.util.managers.TimeTableUtilManager;

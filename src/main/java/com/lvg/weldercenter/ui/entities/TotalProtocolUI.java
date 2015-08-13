@@ -1,17 +1,12 @@
 package com.lvg.weldercenter.ui.entities;
 
-import com.lvg.weldercenter.models.CommissionCertification;
 import com.lvg.weldercenter.models.Journal;
 import com.lvg.weldercenter.models.TotalProtocol;
 import com.lvg.weldercenter.ui.util.DateUtil;
-import javafx.beans.property.SimpleMapProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by Victor Levchenko LVG Corp. on 23.01.15.

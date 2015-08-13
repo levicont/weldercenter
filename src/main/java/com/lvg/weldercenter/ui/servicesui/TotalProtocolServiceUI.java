@@ -3,7 +3,6 @@ package com.lvg.weldercenter.ui.servicesui;
 import com.lvg.weldercenter.models.TotalProtocol;
 import com.lvg.weldercenter.ui.entities.TotalProtocolUI;
 
-import java.util.Date;
 import java.util.List;
 
 /**

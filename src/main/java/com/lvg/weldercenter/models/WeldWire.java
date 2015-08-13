@@ -1,6 +1,5 @@
 package com.lvg.weldercenter.models;
 
-import javax.annotation.Generated;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;

@@ -1,7 +1,6 @@
 package com.lvg.weldercenter.ui.entities;
 
 import com.lvg.weldercenter.models.MechanicalTest;
-import com.lvg.weldercenter.models.VisualTest;
 import com.lvg.weldercenter.ui.util.DateUtil;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;

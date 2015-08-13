@@ -1,13 +1,12 @@
 package com.lvg.weldercenter.ui.servicesui.impl;
 
-import com.lvg.weldercenter.models.*;
+import com.lvg.weldercenter.models.Curriculum;
+import com.lvg.weldercenter.models.Journal;
+import com.lvg.weldercenter.models.Teacher;
+import com.lvg.weldercenter.models.Welder;
 import com.lvg.weldercenter.services.CurriculumService;
-import com.lvg.weldercenter.services.TotalProtocolService;
-import com.lvg.weldercenter.spring.factories.ServiceFactory;
-import com.lvg.weldercenter.spring.factories.ServiceUIFactory;
 import com.lvg.weldercenter.ui.entities.JournalUI;
 import com.lvg.weldercenter.ui.entities.TeacherUI;
-import com.lvg.weldercenter.ui.entities.TotalProtocolUI;
 import com.lvg.weldercenter.ui.entities.WelderUI;
 import com.lvg.weldercenter.ui.servicesui.JournalServiceUI;
 import com.lvg.weldercenter.ui.servicesui.TeacherServiceUI;

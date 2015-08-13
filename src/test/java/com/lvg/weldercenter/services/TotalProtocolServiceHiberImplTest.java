@@ -1,16 +1,13 @@
 package com.lvg.weldercenter.services;
 
 import com.lvg.weldercenter.GenericServiceHibernateTest;
-import com.lvg.weldercenter.models.CommissionCertification;
 import com.lvg.weldercenter.models.TotalProtocol;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Date;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
 
 /**
  * Created by Victor Levchenko LVG Corp. on 03.02.15.

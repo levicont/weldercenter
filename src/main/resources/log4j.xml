@@ -25,11 +25,11 @@
 	</appender>
 	
 	<logger name="com.lvg.weldercenter">
-		<level value="DEBUG" />
+		<level value="WARN" />
 	</logger>	
 	
 	<root>
-		<priority value="DEBUG" />
+		<priority value="WARN" />
 		<appender-ref ref="CONSOLE" />
 	</root>
 </log4j:configuration>

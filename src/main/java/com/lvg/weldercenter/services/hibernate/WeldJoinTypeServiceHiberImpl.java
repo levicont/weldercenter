@@ -1,7 +1,6 @@
 package com.lvg.weldercenter.services.hibernate;
 
 import com.lvg.weldercenter.dao.WeldJoinTypeDao;
-import com.lvg.weldercenter.dao.WeldPositionDao;
 import com.lvg.weldercenter.models.WeldJoinType;
 import com.lvg.weldercenter.services.WeldJoinTypeService;
 import org.springframework.beans.factory.annotation.Autowired;

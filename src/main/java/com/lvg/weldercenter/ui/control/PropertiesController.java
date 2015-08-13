@@ -25,8 +25,8 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
 import org.apache.log4j.Logger;
 import org.controlsfx.control.action.Action;
-import org.controlsfx.dialog.*;
 import org.controlsfx.dialog.Dialog;
+import org.controlsfx.dialog.Dialogs;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -1175,8 +1175,6 @@ public class PropertiesController extends GenericController {
         txfSectionName.clear();
         txtAreaSectionDescription.clear();
         setDisabledSectionTitlePane(false);
-
-
     }
 
     private void editSection(){
@@ -1184,7 +1182,6 @@ public class PropertiesController extends GenericController {
             return;
         setDisabledSectionTitlePane(false);
         txfSectionName.requestFocus();
-
     }
 
     private void deleteSection(){
@@ -1198,15 +1195,22 @@ public class PropertiesController extends GenericController {
         if(delSection == null)
             return;
         if (getResponseDeleteDialog(1) == Dialog.Actions.OK){
-            if (delSection.getId() != 0){
-                sectionService.delete(sectionServiceUI.getSectionFromUIModel(delSection));
-                LOGGER.debug("DELETE SECTION: section has been deleted from DB");
+            try {
+                sectionServiceUI.deleteSectionUI(delSection);
+
+                allCurriculums.get(allCurriculums.indexOf(parentCurriculum)).getSections().remove(delSection);
+                allCurriculumsTreeItems.get(allCurriculumsTreeItems.indexOf(parentItem)).getChildren().remove(selectedItem);
+                if (!parentItem.getChildren().isEmpty()) {
+                    treeViewCurriculum.getSelectionModel().select(parentItem.getChildren().get(0));
+                }
+                else {
+                    treeViewCurriculum.getSelectionModel().select(parentItem);
+                }
+                treeViewCurriculum.fireEvent(EventFXUtil.getMouseClickEvent());
+            }catch (WelderException ex){
+                LOGGER.debug("DELETE SECTION: section was not deleted from DB");
             }
-            allCurriculums.get(allCurriculums.indexOf(parentCurriculum)).getSections().remove(delSection);
-            allCurriculumsTreeItems.get(allCurriculumsTreeItems.indexOf(parentItem)).getChildren().remove(selectedItem);
-            initTreeViewCurriculums();
-            treeViewCurriculum.getSelectionModel().select(parentItem);
-            treeViewCurriculum.fireEvent(EventFXUtil.getMouseClickEvent());
+
 
         }
 
@@ -1226,18 +1230,7 @@ public class PropertiesController extends GenericController {
         updateSectionFromFields(sectionUI);
         try{
             checkSectionUI(parentCurriculum, sectionUI);
-            Section section = sectionServiceUI.getSectionFromUIModel(sectionUI);
-
-            if (section.getSectionId() != null && section.getSectionId() != 0){
-                sectionService.update(section);
-                LOGGER.debug("SAVE SECTION: section has been updated in DB");
-            }else{
-                Long id = sectionService.insert(section);
-                sectionUI.setId(id);
-                LOGGER.debug("SAVE SECTION: section has been inserted in DB");
-            }
-            treeViewCurriculum.getSelectionModel().select(parentItem);
-            saveCurriculum();
+            sectionServiceUI.saveSectionUI(sectionUI, parentCurriculum);
 
             selectedSectionItem.setValue(sectionUI.toString());
             treeViewCurriculum.getSelectionModel().clearSelection();
@@ -1272,7 +1265,179 @@ public class PropertiesController extends GenericController {
             return;
         for (SectionUI section: parentCurriculum.getSections()){
             if (section.getTitle().equals(sectionUI.getTitle()) && !section.equals(sectionUI))
-                throw new WelderException("The title of the section for same curriculum must be unioque");
+                throw new WelderException("The title of the section for same curriculum must be unique");
+        }
+    }
+
+    @FXML
+    private void addFirstTopic(){
+        btSave.setDisable(true);
+        TreeItem<String> selectedSectionItem = treeViewCurriculum.getSelectionModel().getSelectedItem();
+
+        if (selectedSectionItem == null || !isSelectedTreeItemIsSection(selectedSectionItem))
+            return;
+        TreeItem<String> curriculumItem = selectedSectionItem.getParent();
+        CurriculumUI parentCurriculum = getCurriculumUIFromTreeItem(curriculumItem);
+        SectionUI parentSection = getSectionUIFromTreeItem(parentCurriculum,selectedSectionItem);
+
+        TopicUI newTopic = new TopicUI();
+        parentSection.getTopics().add(newTopic);
+        TreeItem<String> newTopicItem = new TreeItem<>(newTopic.toString());
+        selectedSectionItem.getChildren().add(newTopicItem);
+        treeViewCurriculum.getSelectionModel().clearSelection();
+        treeViewCurriculum.getSelectionModel().select(newTopicItem);
+        treeViewCurriculum.fireEvent(EventFXUtil.getMouseClickEvent());
+        editTopic();
+    }
+
+    private void addTopic(){
+        btSave.setDisable(true);
+        TreeItem<String> selectedItem = treeViewCurriculum.getSelectionModel().getSelectedItem();
+
+        if (selectedItem == null || !isSelectedTreeItemIsSection(selectedItem.getParent()))
+            return;
+        TreeItem<String> sectionItem = selectedItem.getParent();
+        TreeItem<String> curriculumItem = sectionItem.getParent();
+
+        CurriculumUI selectedCurriculum = getCurriculumUIFromTreeItem(curriculumItem);
+        SectionUI selectedSection = getSectionUIFromTreeItem(selectedCurriculum,sectionItem);
+
+        TopicUI newTopic = new TopicUI();
+        selectedSection.getTopics().add(newTopic);
+        TreeItem<String> newTopicItem = new TreeItem<>(newTopic.toString());
+
+        selectedItem.getParent().getChildren().add(newTopicItem);
+        treeViewCurriculum.getSelectionModel().select(newTopicItem);
+        txfTopicName.clear();
+        txtAreaTopicDescription.clear();
+        txfTopicHours.clear();
+        setDisabledTopicTitlePane(false);
+    }
+
+    private void editTopic(){
+        if(treeViewCurriculum.getSelectionModel().getSelectedItem() == null)
+            return;
+        setDisabledTopicTitlePane(false);
+        txfTopicName.requestFocus();
+    }
+
+    private void deleteTopic(){
+        TreeItem<String> selectedItem = treeViewCurriculum.getSelectionModel().getSelectedItem();
+        if (selectedItem == null)
+            return;
+        TreeItem<String> parentSectionItem = selectedItem.getParent();
+        TreeItem<String> parentCurriculumItem = parentSectionItem.getParent();
+
+        CurriculumUI parentCurriculum = getCurriculumUIFromTreeItem(parentCurriculumItem);
+        SectionUI parentSection = getSectionUIFromTreeItem(parentCurriculum, parentSectionItem);
+        TopicUI delTopic = getTopicUIFromTreeItem(parentSection, selectedItem);
+
+        if(delTopic == null)
+            return;
+        if (getResponseDeleteDialog(1) == Dialog.Actions.OK){
+            try {
+                topicServiceUI.deleteTopicUI(delTopic);
+                initTreeViewCurriculums();
+
+
+                parentSectionItem = getSectionTreeItem(parentCurriculum, parentSection);
+
+                if (!parentSectionItem.getChildren().isEmpty()) {
+                    treeViewCurriculum.getSelectionModel().select(parentSectionItem.getChildren().get(0));
+                }
+                else {
+                    treeViewCurriculum.getSelectionModel().select(parentSectionItem);
+                }
+                treeViewCurriculum.fireEvent(EventFXUtil.getMouseClickEvent());
+            }catch (WelderException ex){
+                LOGGER.debug("DELETE TOPIC: topic was not deleted from DB");
+            }
+
+
+        }
+    }
+
+    private TreeItem<String> getTopicTreeItem(CurriculumUI parentCurriculum, SectionUI parentSection, TopicUI topicUI ){
+        if (topicUI == null)
+            return null;
+
+        TreeItem<String> parentSectionItem = getSectionTreeItem(parentCurriculum, parentSection);
+        if (parentSectionItem == null)
+            return null;
+        for (TreeItem<String> item : parentSectionItem.getChildren()){
+            if(item.getValue().equals(topicUI.toString()))
+                return item;
+        }
+        return null;
+    }
+
+    private TreeItem<String> getSectionTreeItem(CurriculumUI parentCurriculum, SectionUI sectionUI){
+        if (sectionUI == null)
+            return null;
+        TreeItem<String> parentCurriculumItem = getCurriculumTreeItem(parentCurriculum);
+        if (parentCurriculumItem == null)
+            return null;
+        for (TreeItem<String> item : parentCurriculumItem.getChildren()){
+            if(item.getValue().equals(sectionUI.toString()))
+                return item;
+        }
+
+
+        return null;
+    }
+
+    private TreeItem<String> getCurriculumTreeItem(CurriculumUI curriculumUI){
+        if (curriculumUI == null)
+            return null;
+        for (TreeItem<String> item : treeViewCurriculum.getRoot().getChildren()){
+            if (item.getValue().equals(curriculumUI.toString())){
+                return item;
+            }
+        }
+        return null;
+    }
+
+    private void saveTopic(){
+        btSave.setDisable(true);
+        setDisabledTopicTitlePane(true);
+        TreeItem<String> selectedTopicItem = treeViewCurriculum.getSelectionModel().getSelectedItem();
+        if (selectedTopicItem == null)
+            return;
+        TreeItem<String> parentSectionItem = selectedTopicItem.getParent();
+        TreeItem<String> parentCurriculumItem = parentSectionItem.getParent();
+
+        CurriculumUI parentCurriculum = getCurriculumUIFromTreeItem(parentCurriculumItem);
+        SectionUI parentSection = getSectionUIFromTreeItem(parentCurriculum, parentSectionItem);
+
+        if (parentCurriculum == null || parentSection == null)
+            return;
+
+        TopicUI topicUI = getTopicUIFromTreeItem(parentSection, selectedTopicItem);
+
+        try{
+            updateTopicFromFields(topicUI);
+            checkTopicUI(parentSection, topicUI);
+            topicServiceUI.saveTopicUI(topicUI, parentSection, parentCurriculum);
+            selectedTopicItem.setValue(topicUI.toString());
+
+            initTreeViewCurriculums();
+
+            selectedTopicItem = getTopicTreeItem(parentCurriculum, parentSection, topicUI);
+
+            treeViewCurriculum.getSelectionModel().clearSelection();
+            treeViewCurriculum.getSelectionModel().select(selectedTopicItem);
+            treeViewCurriculum.fireEvent(EventFXUtil.getMouseClickEvent());
+        }catch(WelderException ex){
+            LOGGER.warn("SAVE TOPIC: topic was NOT saved in DB.", ex);
+        }
+    }
+
+    private void checkTopicUI(SectionUI parentSection, TopicUI topicUI)throws WelderException{
+        if (topicUI == null)
+            return;
+        for (TopicUI top: parentSection.getTopics()){
+            if (top.getTitle().equals(topicUI.getTitle()) && !top.equals(topicUI))
+                throw new WelderException("The title of the topic for same section must be unioque");
         }
     }
 
@@ -1304,10 +1469,10 @@ public class PropertiesController extends GenericController {
         if (curriculumUI == null)
             return;
         if (getResponseDeleteDialog(1)==Dialog.Actions.OK){
-            if (curriculumUI.getId() != 0){
-                curriculumService.delete(
-                        curriculumServiceUI.getCurriculumFromUIModel(curriculumUI));
-                LOGGER.debug("DELETE CURRICULUM: curriculum has been deleted from DB");
+            try {
+                curriculumServiceUI.deleteCurriculumUI(curriculumUI);
+            }catch (WelderException ex){
+                LOGGER.warn("DELETE CURRICULUM: curriculum was not deleted", ex);
             }
             allCurriculums.remove(curriculumUI);
             allCurriculumsTreeItems.remove(selectedItem);
@@ -1329,19 +1494,8 @@ public class PropertiesController extends GenericController {
         updateCurriculumFromFields(curriculumUI);
         try {
             checkCurriculumUI(curriculumUI);
-            Curriculum curriculum = curriculumServiceUI.getCurriculumFromUIModel(curriculumUI);
-            if (curriculum == null)
-                return;
-
-            if (curriculum.getCurriculumId() != null && curriculum.getCurriculumId()!= 0){
-                curriculumService.update(curriculum);
-                LOGGER.debug("SAVE CURRICULUM: curriculum has been updated in DB");
-            }else{
-                Long id = curriculumService.insert(curriculum);
-                curriculumUI.setId(id);
-                LOGGER.debug("SAVE CURRICULUM: curriculum has been inserted in DB");
-            }
-
+            Long id = curriculumServiceUI.saveCurriculumUI(curriculumUI);
+            curriculumUI.setId(id);
             selectedItem.setValue(curriculumUI.toString());
             treeViewCurriculum.getSelectionModel().clearSelection();
             treeViewCurriculum.getSelectionModel().select(selectedItem);
@@ -1360,7 +1514,7 @@ public class PropertiesController extends GenericController {
             return;
         for(CurriculumUI curr : allCurriculums){
             if (curriculumUI.getTitle().equals(curr.getTitle()) && !curriculumUI.equals(curr))
-                throw new WelderException();
+                throw new WelderException("The curriculum title must be unique");
         }
 
     }
@@ -1811,6 +1965,10 @@ public class PropertiesController extends GenericController {
                 editSection();
                 return;
             }
+            if (titledPaneTopic.isExpanded() && !titledPaneTopic.isDisabled()){
+                editTopic();
+                return;
+            }
         }
     }
 
@@ -1842,6 +2000,10 @@ public class PropertiesController extends GenericController {
             }
             if (txfSectionName.isEditable()){
                 saveSection();
+                return;
+            }
+            if (txfTopicName.isEditable()){
+                saveTopic();
                 return;
             }
         }
@@ -1877,6 +2039,10 @@ public class PropertiesController extends GenericController {
                 addSection();
                 return;
             }
+            if (titledPaneTopic.isExpanded() && !titledPaneTopic.isDisabled()){
+                addTopic();
+                return;
+            }
         }
 
     }
@@ -1909,6 +2075,10 @@ public class PropertiesController extends GenericController {
             }
             if (titledPaneSection.isExpanded() && !titledPaneSection.isDisabled()){
                 deleteSection();
+                return;
+            }
+            if (titledPaneTopic.isExpanded() && !titledPaneTopic.isDisabled()){
+                deleteTopic();
                 return;
             }
         }

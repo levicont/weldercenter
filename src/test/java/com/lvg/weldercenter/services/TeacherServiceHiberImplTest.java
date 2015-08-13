@@ -2,12 +2,11 @@ package com.lvg.weldercenter.services;
 
 import com.lvg.weldercenter.GenericServiceHibernateTest;
 import com.lvg.weldercenter.models.Teacher;
-import static org.junit.Assert.*;
-import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+
+import static org.junit.Assert.*;
 
 /**
  * Created by Victor Levchenko LVG Corp. on 01.11.14.

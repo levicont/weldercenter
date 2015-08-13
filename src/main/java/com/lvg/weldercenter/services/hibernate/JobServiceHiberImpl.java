@@ -2,7 +2,6 @@ package com.lvg.weldercenter.services.hibernate;
 
 import com.lvg.weldercenter.dao.JobDao;
 import com.lvg.weldercenter.models.Job;
-import com.lvg.weldercenter.models.Qualification;
 import com.lvg.weldercenter.services.JobService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Propagation;

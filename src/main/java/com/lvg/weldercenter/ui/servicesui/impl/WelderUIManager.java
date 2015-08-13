@@ -2,7 +2,6 @@ package com.lvg.weldercenter.ui.servicesui.impl;
 
 import com.lvg.weldercenter.models.Welder;
 import com.lvg.weldercenter.services.WelderService;
-import com.lvg.weldercenter.spring.factories.ServiceFactory;
 import com.lvg.weldercenter.ui.entities.WelderUI;
 import com.lvg.weldercenter.ui.servicesui.WelderServiceUI;
 import org.springframework.beans.factory.annotation.Autowired;

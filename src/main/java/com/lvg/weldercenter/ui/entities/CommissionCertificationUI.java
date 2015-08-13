@@ -2,7 +2,6 @@ package com.lvg.weldercenter.ui.entities;
 
 import com.lvg.weldercenter.models.CommissionCertification;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.SimpleStringProperty;
 
 /**
  * Created by Victor Levchenko LVG Corp. on 23.01.15.

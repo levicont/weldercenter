@@ -5,6 +5,7 @@ package com.lvg.weldercenter.ui;
  */
 
 import net.miginfocom.swing.MigLayout;
+import org.apache.log4j.Logger;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -16,10 +17,13 @@ import java.awt.event.ComponentEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 public class SplashSwingFrame extends JWindow{
-
-    private final String IMAGE_FILE_NAME = "src/main/resources/img/splash_background.jpg";
+    private final Logger LOGGER = Logger.getLogger(SplashSwingFrame.class);
+    private final String IMAGE_FILE_NAME = "img/splash_background.jpg";
     private final String LOADING_TEXT = "Загрузка";
     private Timer timer;
     private int doteCount = 0;
@@ -39,9 +43,10 @@ public class SplashSwingFrame extends JWindow{
     public SplashSwingFrame(){
         super();
         mainWindow = this;
-        this.setSize(650, 300);
+        this.setSize(600, 250);
         setOnScreenCenter();
         init();
+        repaint();
         this.setVisible(true);
 
     }
@@ -79,10 +84,13 @@ public class SplashSwingFrame extends JWindow{
         backgroundPanel = new BackgroundPanel();
         backgroundPanel.setLayout(new MigLayout());
 
-        File imgFile = new File(IMAGE_FILE_NAME);
-
-        backgroundPanel.setImageFile(imgFile);
-
+        try{
+            InputStream inputStream = ClassLoader.getSystemClassLoader().getResourceAsStream(IMAGE_FILE_NAME);
+            BufferedImage bufImg = ImageIO.read(inputStream);
+            backgroundPanel.setImage(bufImg);
+        }catch (IOException ex){
+            LOGGER.warn("LOADING SPLASH IMAGE: can not load image "+IMAGE_FILE_NAME, ex);
+        }
 
         pnTop = new JPanel();
         pnBottom = new JPanel();
@@ -102,14 +110,15 @@ public class SplashSwingFrame extends JWindow{
         progressBar.setValue(10);
         progressBar.setForeground(Color.blue);
 
-        backgroundPanel.add(lbCaption,"gapright 333");
-        backgroundPanel.add(lbLoadingModuleName,"gapright 25 ,wrap");
-        backgroundPanel.add(progressBar,"height 5:5:5, gaptop 263, span");
+        backgroundPanel.add(lbCaption,"gapright 250");
+        backgroundPanel.add(lbLoadingModuleName,"gapright 200 ,wrap");
+        backgroundPanel.add(progressBar,"height 5:5:5, gaptop 215, span");
 
 
         Container pane = this.getContentPane();
 
         pane.add(backgroundPanel, BorderLayout.CENTER);
+        repaint();
 
     }
 

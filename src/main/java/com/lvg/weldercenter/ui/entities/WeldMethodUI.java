@@ -1,7 +1,6 @@
 package com.lvg.weldercenter.ui.entities;
 
 import com.lvg.weldercenter.models.WeldMethod;
-import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
 
 /**

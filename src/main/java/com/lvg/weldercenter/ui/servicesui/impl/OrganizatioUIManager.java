@@ -1,9 +1,7 @@
 package com.lvg.weldercenter.ui.servicesui.impl;
 
-import com.lvg.weldercenter.models.CommissionCertification;
 import com.lvg.weldercenter.models.Organization;
 import com.lvg.weldercenter.services.OrganizationService;
-import com.lvg.weldercenter.ui.entities.CommissionCertificationUI;
 import com.lvg.weldercenter.ui.entities.OrganizationUI;
 import com.lvg.weldercenter.ui.servicesui.OrganizationServiceUI;
 import org.springframework.beans.factory.annotation.Autowired;

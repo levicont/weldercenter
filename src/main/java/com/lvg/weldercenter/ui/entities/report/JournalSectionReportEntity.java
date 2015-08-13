@@ -7,7 +7,6 @@ import com.lvg.weldercenter.ui.util.DateUtil;
 import com.lvg.weldercenter.ui.util.managers.TimeTableUtilManager;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**

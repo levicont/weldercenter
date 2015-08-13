@@ -1,11 +1,7 @@
 package com.lvg.weldercenter.ui.servicesui.impl;
 
-import com.lvg.weldercenter.models.CommissionCertification;
 import com.lvg.weldercenter.models.TotalProtocol;
-import com.lvg.weldercenter.services.CommissionCertificationService;
 import com.lvg.weldercenter.services.TotalProtocolService;
-import com.lvg.weldercenter.spring.factories.ServiceFactory;
-import com.lvg.weldercenter.spring.factories.ServiceUIFactory;
 import com.lvg.weldercenter.ui.entities.TotalProtocolUI;
 import com.lvg.weldercenter.ui.servicesui.CommissionCertificationServiceUI;
 import com.lvg.weldercenter.ui.servicesui.JournalServiceUI;
@@ -14,7 +10,6 @@ import com.lvg.weldercenter.ui.util.DateUtil;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.Date;
 import java.util.List;
 
 /**

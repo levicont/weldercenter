@@ -1,7 +1,6 @@
 package com.lvg.weldercenter.models;
 
 
-import com.sun.xml.internal.bind.v2.runtime.reflect.Lister;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 

@@ -1,6 +1,5 @@
 package com.lvg.weldercenter.ui.util;
 
-import javafx.event.Event;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 

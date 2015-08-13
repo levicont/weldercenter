@@ -1,6 +1,5 @@
 package com.lvg.weldercenter.dao.hibernate;
 
-import com.lvg.weldercenter.dao.PatternDiameterDao;
 import com.lvg.weldercenter.dao.PatternThicknessDao;
 import com.lvg.weldercenter.models.PatternThickness;
 import org.springframework.stereotype.Repository;

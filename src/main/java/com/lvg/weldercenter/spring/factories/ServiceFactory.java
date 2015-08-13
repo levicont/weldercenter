@@ -1,9 +1,5 @@
 package com.lvg.weldercenter.spring.factories;
 
-import com.lvg.weldercenter.models.CommissionCertification;
-import com.lvg.weldercenter.models.PatternDiameter;
-import com.lvg.weldercenter.models.PersonalProtocol;
-import com.lvg.weldercenter.models.WeldPosition;
 import com.lvg.weldercenter.services.*;
 import com.lvg.weldercenter.spring.ContextFactory;
 import org.springframework.context.ApplicationContext;

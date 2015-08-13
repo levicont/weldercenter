@@ -1,9 +1,6 @@
 package com.lvg.weldercenter.models;
 
 import javax.persistence.*;
-
-import org.hibernate.annotations.GenericGenerator;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;

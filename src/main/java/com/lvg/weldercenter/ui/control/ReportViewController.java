@@ -4,9 +4,6 @@ import com.lvg.weldercenter.spring.factories.ServiceUIFactory;
 import com.lvg.weldercenter.ui.entities.*;
 import com.lvg.weldercenter.ui.entities.report.*;
 import com.lvg.weldercenter.ui.servicesui.PersonalProtocolServiceUI;
-import com.lvg.weldercenter.ui.util.DateUtil;
-import com.lvg.weldercenter.ui.util.TimeTableUtil;
-import com.lvg.weldercenter.ui.util.managers.TimeTableUtilManager;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.embed.swing.SwingNode;
@@ -17,11 +14,11 @@ import javafx.scene.layout.BorderPane;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.swing.JRViewer;
-import org.apache.commons.collections.map.HashedMap;
 import org.apache.log4j.Logger;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.*;
 import java.util.List;
@@ -32,17 +29,25 @@ import java.util.List;
 public class ReportViewController extends GenericController {
     private final Logger LOGGER = Logger.getLogger(ReportViewController.class);
     private JRViewer reportViewer;
-    private final URL TOTAL_PROTOCOL_REPORT_URL = getClass().getResource("/reports/total-protocol-rep.jrxml");
-    private final URL THEORY_PROTOCOL_REPORT_URL = getClass().getResource("/reports/total-protocol-theory-rep.jrxml");
-    private final URL JOURNAL_REPORT_URL = getClass().getResource("/reports/journal-rep.jrxml");
-    private final URL JOURNAL_SUBREPORT_WELDERS_DETAIL_URL = getClass().getResource("/reports/journal-about-students-subrep.jrxml");
-    private final URL JOURNAL_SUBREPORT_VISIT_TABLE_URL = getClass().getResource("/reports/journal-visit-table-subrep.jrxml");
-    private final URL JOURNAL_SUBREPORT_TIME_TABLE_URL = getClass().getResource("/reports/journal-time-table-subrep.jrxml");
-    private final URL PERSONAL_PROTOCOL_REPORT_URL = getClass().getResource("/reports/pers-protocol-rep.jrxml");
-    private final URL VISUAL_TEST_PROTOCOL_REPORT_URL = getClass().getResource("/reports/visual-test-rep.jrxml");
-    private final URL RADIATION_TEST_PROTOCOL_REPORT_URL = getClass().getResource("/reports/radiation-test-rep.jrxml");
-    private final URL MECHANICAL_TEST_PROTOCOL_REPORT_URL = getClass().getResource("/reports/mech-test-rep.jrxml");
-    private final URL UNIVERS_FONT_URL = getClass().getResource("/fonts/Univers_Medium.ttf");
+    private final URL TOTAL_PROTOCOL_REPORT_URL = ClassLoader.getSystemClassLoader().getResource("reports/total-protocol-rep.jrxml");
+    private final URL THEORY_PROTOCOL_REPORT_URL = ClassLoader.getSystemClassLoader().getResource("reports/total-protocol-theory-rep.jrxml");
+    private final URL JOURNAL_REPORT_URL = ClassLoader.getSystemClassLoader().getResource("reports/journal-rep.jrxml");
+    private final URL JOURNAL_SUBREPORT_WELDERS_DETAIL_URL =
+            ClassLoader.getSystemClassLoader().getResource("reports/journal-about-students-subrep.jrxml");
+    private final URL JOURNAL_SUBREPORT_VISIT_TABLE_URL =
+            ClassLoader.getSystemClassLoader().getResource("reports/journal-visit-table-subrep.jrxml");
+    private final URL JOURNAL_SUBREPORT_TIME_TABLE_URL =
+            ClassLoader.getSystemClassLoader().getResource("reports/journal-time-table-subrep.jrxml");
+    private final URL PERSONAL_PROTOCOL_REPORT_URL =
+            ClassLoader.getSystemClassLoader().getResource("reports/pers-protocol-rep.jrxml");
+    private final URL VISUAL_TEST_PROTOCOL_REPORT_URL =
+            ClassLoader.getSystemClassLoader().getResource("reports/visual-test-rep.jrxml");
+    private final URL RADIATION_TEST_PROTOCOL_REPORT_URL =
+            ClassLoader.getSystemClassLoader().getResource("reports/radiation-test-rep.jrxml");
+    private final URL MECHANICAL_TEST_PROTOCOL_REPORT_URL =
+            ClassLoader.getSystemClassLoader().getResource("reports/mech-test-rep.jrxml");
+    private final URL UNIVERS_FONT_URL =
+            ClassLoader.getSystemClassLoader().getResource("fonts/Univers_Medium.ttf");
 
 
     private PersonalProtocolServiceUI personalProtocolServiceUI = ServiceUIFactory.getPersonalProtocolServiceUI();
@@ -102,7 +107,7 @@ public class ReportViewController extends GenericController {
                         new TotalProtocolReportEntity(selectedTotalProtocol);
                 updateProgress(25, MAX_TASK_PROGRESS_VALUE);
                 try {
-                    JasperReport report = JasperCompileManager.compileReport(TOTAL_PROTOCOL_REPORT_URL.getFile());
+                    JasperReport report = JasperCompileManager.compileReport(TOTAL_PROTOCOL_REPORT_URL.openStream());
                     updateProgress(65, MAX_TASK_PROGRESS_VALUE);
                     print = JasperFillManager.fillReport(report,
                             totalProtocolReportEntity.getParameters(),new JREmptyDataSource());
@@ -149,7 +154,7 @@ public class ReportViewController extends GenericController {
                 totalProtocolReportEntity.getParameters().put("UNIVERS_FONT_PATH",UNIVERS_FONT_URL.getFile());
                 updateProgress(35,MAX_TASK_PROGRESS_VALUE);
                 try {
-                    JasperReport report = JasperCompileManager.compileReport(THEORY_PROTOCOL_REPORT_URL.getFile());
+                    JasperReport report = JasperCompileManager.compileReport(THEORY_PROTOCOL_REPORT_URL.openStream());
                     updateProgress(65,MAX_TASK_PROGRESS_VALUE);
                     print = JasperFillManager.fillReport(report, totalProtocolReportEntity.getParameters(),
                             new JRBeanCollectionDataSource(theoryReportEntityList));
@@ -231,20 +236,23 @@ public class ReportViewController extends GenericController {
                 JournalReportEntity journalReportEntity = journalReportEntities.iterator().next();
                 try {
 
-                    JasperReport subReport = JasperCompileManager.compileReport(JOURNAL_SUBREPORT_WELDERS_DETAIL_URL.getFile());
+                    JasperReport subReport =
+                            JasperCompileManager.compileReport(JOURNAL_SUBREPORT_WELDERS_DETAIL_URL.openStream());
                     journalReportEntity.getParameters().put("WELDER_DETAIL_SUBREPORT", subReport);
                     journalReportEntity.getParameters().put("WELDER_DETAIL_DATA_SOURCE", new JRBeanCollectionDataSource(journalReportEntities));
 
                     updateProgress(45, MAX_TASK_PROGRESS_VALUE);
 
-                    JasperReport subReportVisitTable = JasperCompileManager.compileReport(JOURNAL_SUBREPORT_VISIT_TABLE_URL.getFile());
+                    JasperReport subReportVisitTable =
+                            JasperCompileManager.compileReport(JOURNAL_SUBREPORT_VISIT_TABLE_URL.openStream());
                     journalReportEntity.getParameters().put("VISIT_TABLE_SUBREPORT", subReportVisitTable);
                     journalReportEntity.getParameters().put("VISIT_TABLE_DATA_SOURCE",
                             new JRBeanCollectionDataSource(journalVisitTableReportEntities));
 
                     updateProgress(55, MAX_TASK_PROGRESS_VALUE);
 
-                    JasperReport subReportTimeTable = JasperCompileManager.compileReport(JOURNAL_SUBREPORT_TIME_TABLE_URL.getFile());
+                    JasperReport subReportTimeTable =
+                            JasperCompileManager.compileReport(JOURNAL_SUBREPORT_TIME_TABLE_URL.openStream());
 
                     journalReportEntity.getParameters().put("TIME_TABLE_SUBREPORT", subReportTimeTable);
                     journalReportEntity.getParameters().put("TIME_TABLE_DATA_SOURCE",
@@ -253,7 +261,7 @@ public class ReportViewController extends GenericController {
 
                     updateProgress(70, MAX_TASK_PROGRESS_VALUE);
 
-                    JasperReport report = JasperCompileManager.compileReport(JOURNAL_REPORT_URL.getFile());
+                    JasperReport report = JasperCompileManager.compileReport(JOURNAL_REPORT_URL.openStream());
 
                     print = JasperFillManager.fillReport(report, journalReportEntity.getParameters(),
                             new JREmptyDataSource());
@@ -306,7 +314,7 @@ public class ReportViewController extends GenericController {
                         new PersonalProtocolReportEntity(selectedPersonalProtocol,selectedTotalProtocol);
                 updateProgress(25, MAX_TASK_PROGRESS_VALUE);
                 try {
-                    JasperReport report = JasperCompileManager.compileReport(PERSONAL_PROTOCOL_REPORT_URL.getFile());
+                    JasperReport report = JasperCompileManager.compileReport(PERSONAL_PROTOCOL_REPORT_URL.openStream());
                     updateProgress(65, MAX_TASK_PROGRESS_VALUE);
                     print = JasperFillManager.fillReport(report, protocolReportEntity.getParameters(),
                             new JREmptyDataSource());
@@ -350,7 +358,7 @@ public class ReportViewController extends GenericController {
                         new TotalProtocolReportEntity(selectedTotalProtocol);
                 updateProgress(35, MAX_TASK_PROGRESS_VALUE);
                 try {
-                    JasperReport report = JasperCompileManager.compileReport(VISUAL_TEST_PROTOCOL_REPORT_URL.getFile());
+                    JasperReport report = JasperCompileManager.compileReport(VISUAL_TEST_PROTOCOL_REPORT_URL.openStream());
                     updateProgress(65, MAX_TASK_PROGRESS_VALUE);
                     print = JasperFillManager.fillReport(report, totalProtocolReportEntity.getParameters(),
                             new JRBeanCollectionDataSource(personalProtocolReportEntities));
@@ -397,7 +405,8 @@ public class ReportViewController extends GenericController {
                         new TotalProtocolReportEntity(selectedTotalProtocol);
                 updateProgress(35, MAX_TASK_PROGRESS_VALUE);
                 try {
-                    JasperReport report = JasperCompileManager.compileReport(RADIATION_TEST_PROTOCOL_REPORT_URL.getFile());
+                    JasperReport report =
+                            JasperCompileManager.compileReport(RADIATION_TEST_PROTOCOL_REPORT_URL.openStream());
                     updateProgress(65, MAX_TASK_PROGRESS_VALUE);
                     print = JasperFillManager.fillReport(report, totalProtocolReportEntity.getParameters(),
                             new JRBeanCollectionDataSource(personalProtocolReportEntities));
@@ -444,7 +453,8 @@ public class ReportViewController extends GenericController {
                         new TotalProtocolReportEntity(selectedTotalProtocol);
                 updateProgress(45, MAX_TASK_PROGRESS_VALUE);
                 try {
-                    JasperReport report = JasperCompileManager.compileReport(MECHANICAL_TEST_PROTOCOL_REPORT_URL.getFile());
+                    JasperReport report =
+                            JasperCompileManager.compileReport(MECHANICAL_TEST_PROTOCOL_REPORT_URL.openStream());
                     updateProgress(65, MAX_TASK_PROGRESS_VALUE);
                     print = JasperFillManager.fillReport(report, totalProtocolReportEntity.getParameters(),
                             new JRBeanCollectionDataSource(personalProtocolReportEntities));

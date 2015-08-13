@@ -1,7 +1,5 @@
 package com.lvg.weldercenter.ui.entities.report;
 
-import com.lvg.weldercenter.models.WeldPattern;
-import com.lvg.weldercenter.models.WeldPosition;
 import com.lvg.weldercenter.ui.entities.*;
 
 import java.util.HashMap;

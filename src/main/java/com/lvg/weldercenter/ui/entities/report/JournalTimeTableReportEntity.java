@@ -1,11 +1,11 @@
 package com.lvg.weldercenter.ui.entities.report;
 
-import com.lvg.weldercenter.ui.entities.*;
-import com.lvg.weldercenter.ui.util.DateUtil;
+import com.lvg.weldercenter.ui.entities.JournalUI;
+import com.lvg.weldercenter.ui.entities.SectionUI;
+import com.lvg.weldercenter.ui.entities.TeacherUI;
+import com.lvg.weldercenter.ui.entities.TopicUI;
 import com.lvg.weldercenter.ui.util.TimeTableUtil;
 import com.lvg.weldercenter.ui.util.managers.TimeTableUtilManager;
-
-import java.util.List;
 
 /**
  * Created by Victor on 28.05.2015.

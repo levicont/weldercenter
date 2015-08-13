@@ -2,8 +2,6 @@ package com.lvg.weldercenter.models;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Victor Levchenko LVG Corp. on 23.10.14.

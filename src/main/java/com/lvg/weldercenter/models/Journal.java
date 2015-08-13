@@ -1,6 +1,5 @@
 package com.lvg.weldercenter.models;
 
-import org.hibernate.annotations.IndexColumn;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 

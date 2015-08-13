@@ -1,6 +1,5 @@
 package com.lvg.weldercenter.ui.entities;
 
-import com.lvg.weldercenter.models.Curriculum;
 import com.lvg.weldercenter.models.Section;
 import com.lvg.weldercenter.models.Topic;
 import javafx.beans.property.SimpleIntegerProperty;
