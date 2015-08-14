@@ -413,6 +413,7 @@ public class ProtocolController extends GenericController {
                 List<JournalUI> journalUIList = new ArrayList<JournalUI>();
                 List<PersonalProtocolUI> protocolUIFromDB = new ArrayList<PersonalProtocolUI>();
 
+
                 for (PersonalProtocol pp : personalProtocolsDB){
                     if(pp.getJournal()!=null){
                         journalUIList.add(new JournalUI(pp.getJournal()));
@@ -420,7 +421,10 @@ public class ProtocolController extends GenericController {
                 }
                 updateProgress(70, MAX_TASK_PROGRESS_VALUE);
                 double currProgress = 70;
-                double stepProgress = 30 / totalProtocolList.size();
+                double stepProgress = 30;
+                if (totalProtocolList.size() >0)
+                    stepProgress = 30 / totalProtocolList.size();
+
                 for (TotalProtocol tp : totalProtocolList){
                     currProgress+=stepProgress;
                     TotalProtocolUI totalProtocolUI = new TotalProtocolUI(tp);

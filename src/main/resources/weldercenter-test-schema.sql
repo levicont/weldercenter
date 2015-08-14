@@ -18,8 +18,8 @@
 -- Create schema test
 --
 
-CREATE DATABASE IF NOT EXISTS test;
-USE test;
+CREATE DATABASE IF NOT EXISTS weldercenter;
+USE weldercenter;
 
 --
 -- Definition of table `commission_certification`

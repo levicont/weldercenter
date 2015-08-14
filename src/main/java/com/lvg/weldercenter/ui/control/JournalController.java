@@ -423,6 +423,8 @@ public class JournalController extends GenericController{
     }
 
     private void fillJournalDetailsPane(JournalUI selectedJournal){
+        if (selectedJournal == null)
+            return;
         tfxJournalNumber.setText(selectedJournal.getNumber());
         dpDateBegin.setValue(DateUtil.getLocalDate(selectedJournal.getDateBegin()));
         dpDateEnd.setValue(DateUtil.getLocalDate(selectedJournal.getDateEnd()));

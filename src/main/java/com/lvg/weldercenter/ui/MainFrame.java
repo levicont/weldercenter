@@ -17,6 +17,7 @@ import java.util.logging.Logger;
  */
 public class MainFrame extends Application {
     private static final Logger LOGGER = Logger.getLogger("MainFrame.class");
+    private final String APPLICATION_TITLE = "Аттестационный центр сварщиков";
     private ControllerManager controllerManager;
     private Stage stage;
     private JProgressBar progressBar;
@@ -33,7 +34,7 @@ public class MainFrame extends Application {
         progressBar.setValue(55);
         splashWindow.getLbLoadingModuleName().setText(" Инициализация главного модуля");
         Localization.setLocale(new Locale("ru","RU"));
-        stage.setTitle("Welder center");
+        stage.setTitle(APPLICATION_TITLE);
         stage.setScene(new Scene(controllerManager.getMainFrame(), Color.LIGHTBLUE));
         initControllers(controllerManager);
         progressBar.setValue(100);
