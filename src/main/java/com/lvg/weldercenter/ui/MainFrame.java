@@ -5,10 +5,12 @@ import com.lvg.weldercenter.ui.control.*;
 import impl.org.controlsfx.i18n.Localization;
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import javax.swing.*;
+import java.net.URL;
 import java.util.Locale;
 import java.util.logging.Logger;
 
@@ -18,6 +20,7 @@ import java.util.logging.Logger;
 public class MainFrame extends Application {
     private static final Logger LOGGER = Logger.getLogger("MainFrame.class");
     private final String APPLICATION_TITLE = "Аттестационный центр сварщиков";
+    private final String LOGO_ICON_PATH = "img/logo64x64.png";
     private ControllerManager controllerManager;
     private Stage stage;
     private JProgressBar progressBar;
@@ -33,8 +36,9 @@ public class MainFrame extends Application {
         controllerManager = new ControllerManager(stage);
         progressBar.setValue(55);
         splashWindow.getLbLoadingModuleName().setText(" Инициализация главного модуля");
-        Localization.setLocale(new Locale("ru","RU"));
+        Localization.setLocale(new Locale("ru", "RU"));
         stage.setTitle(APPLICATION_TITLE);
+        stage.getIcons().add(new Image(ClassLoader.getSystemClassLoader().getResourceAsStream(LOGO_ICON_PATH)));
         stage.setScene(new Scene(controllerManager.getMainFrame(), Color.LIGHTBLUE));
         initControllers(controllerManager);
         progressBar.setValue(100);

@@ -23,7 +23,7 @@ import java.net.URISyntaxException;
 
 public class SplashSwingFrame extends JWindow{
     private final Logger LOGGER = Logger.getLogger(SplashSwingFrame.class);
-    private final String IMAGE_FILE_NAME = "img/splash_background.jpg";
+    private final String IMAGE_FILE_NAME = "img/splash_background.png";
     private final String LOADING_TEXT = "Загрузка";
     private Timer timer;
     private int doteCount = 0;
@@ -43,7 +43,7 @@ public class SplashSwingFrame extends JWindow{
     public SplashSwingFrame(){
         super();
         mainWindow = this;
-        this.setSize(600, 250);
+        this.setSize(600, 280);
         setOnScreenCenter();
         init();
         repaint();
@@ -112,7 +112,7 @@ public class SplashSwingFrame extends JWindow{
 
         backgroundPanel.add(lbCaption,"gapright 250");
         backgroundPanel.add(lbLoadingModuleName,"gapright 200 ,wrap");
-        backgroundPanel.add(progressBar,"height 5:5:5, gaptop 215, span");
+        backgroundPanel.add(progressBar,"height 5:5:5, gaptop 230, span");
 
 
         Container pane = this.getContentPane();

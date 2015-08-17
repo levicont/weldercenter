@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="total-protocol-theory-rep" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="842" leftMargin="0" rightMargin="0" topMargin="56" bottomMargin="42" uuid="85f85a2b-0943-449a-b2a2-d32b9d1f2df2">
 	<property name="ireport.zoom" value="1.4363522962149835"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.x" value="441"/>
 	<property name="ireport.y" value="0"/>
 	<subDataset name="dataset1" uuid="8646df78-ce36-4663-b00e-472cf91e6546">
 		<field name="mark" class="java.lang.String"/>
@@ -42,11 +42,11 @@
 			<staticText>
 				<reportElement x="33" y="51" width="28" height="70" uuid="616b2ed5-b1c6-4a55-a446-35a7f0445f1f"/>
 				<box>
-					<pen lineWidth="0.5"/>
-					<topPen lineWidth="0.5"/>
-					<leftPen lineWidth="0.5"/>
-					<bottomPen lineWidth="0.5"/>
-					<rightPen lineWidth="0.5"/>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Univers" size="10" isBold="true"/>
@@ -56,11 +56,11 @@
 			<staticText>
 				<reportElement x="61" y="51" width="128" height="70" uuid="f2d43e4e-5edd-4b77-ac6e-10c7a307e66b"/>
 				<box>
-					<pen lineWidth="0.5"/>
-					<topPen lineWidth="0.5"/>
-					<leftPen lineWidth="0.5"/>
-					<bottomPen lineWidth="0.5"/>
-					<rightPen lineWidth="0.5"/>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Univers" size="10" isBold="true"/>
@@ -70,11 +70,11 @@
 			<staticText>
 				<reportElement x="214" y="51" width="32" height="70" uuid="5deed77b-e994-490a-81d1-3b2be2cd2b74"/>
 				<box>
-					<pen lineWidth="0.5"/>
-					<topPen lineWidth="0.5"/>
-					<leftPen lineWidth="0.5"/>
-					<bottomPen lineWidth="0.5"/>
-					<rightPen lineWidth="0.5"/>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="Left">
 					<font fontName="Univers" size="10" isBold="true"/>
@@ -85,11 +85,11 @@
 			<staticText>
 				<reportElement x="408" y="51" width="74" height="70" uuid="8420a2ec-035b-40c0-a766-adbb3b3501d7"/>
 				<box>
-					<pen lineWidth="0.5"/>
-					<topPen lineWidth="0.5"/>
-					<leftPen lineWidth="0.5"/>
-					<bottomPen lineWidth="0.5"/>
-					<rightPen lineWidth="0.5"/>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Univers" size="10" isBold="true"/>
@@ -100,11 +100,11 @@
 			<staticText>
 				<reportElement x="482" y="51" width="65" height="70" uuid="ba8974e0-7c4e-4579-a75e-fe3d6b9572cc"/>
 				<box>
-					<pen lineWidth="0.5"/>
-					<topPen lineWidth="0.5"/>
-					<leftPen lineWidth="0.5"/>
-					<bottomPen lineWidth="0.5"/>
-					<rightPen lineWidth="0.5"/>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Univers" size="10" isBold="true"/>
@@ -114,11 +114,11 @@
 			<staticText>
 				<reportElement x="547" y="51" width="109" height="70" uuid="85122883-88a7-4267-a4c0-16508c56f70e"/>
 				<box>
-					<pen lineWidth="0.5"/>
-					<topPen lineWidth="0.5"/>
-					<leftPen lineWidth="0.5"/>
-					<bottomPen lineWidth="0.5"/>
-					<rightPen lineWidth="0.5"/>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Univers" size="10" isBold="true"/>
@@ -128,11 +128,11 @@
 			<staticText>
 				<reportElement x="656" y="51" width="32" height="70" uuid="68a9ca52-0407-4001-a457-c41831765539"/>
 				<box>
-					<pen lineWidth="0.5"/>
-					<topPen lineWidth="0.5"/>
-					<leftPen lineWidth="0.5"/>
-					<bottomPen lineWidth="0.5"/>
-					<rightPen lineWidth="0.5"/>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="Left">
 					<font fontName="Univers" size="10" isBold="true"/>
@@ -142,11 +142,11 @@
 			<staticText>
 				<reportElement x="189" y="51" width="25" height="70" uuid="e3d170e3-d8c4-44c7-8b89-88b83f0f8e1a"/>
 				<box>
-					<pen lineWidth="0.5"/>
-					<topPen lineWidth="0.5"/>
-					<leftPen lineWidth="0.5"/>
-					<bottomPen lineWidth="0.5"/>
-					<rightPen lineWidth="0.5"/>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="Left">
 					<font fontName="Univers" size="10" isBold="true"/>
@@ -156,11 +156,11 @@
 			<staticText>
 				<reportElement x="246" y="51" width="82" height="70" uuid="78de9384-1fc8-40f6-bc79-a5ed4b7e7967"/>
 				<box>
-					<pen lineWidth="0.5"/>
-					<topPen lineWidth="0.5"/>
-					<leftPen lineWidth="0.5"/>
-					<bottomPen lineWidth="0.5"/>
-					<rightPen lineWidth="0.5"/>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="Left">
 					<font fontName="Univers" size="10" isBold="true"/>
@@ -170,11 +170,11 @@
 			<staticText>
 				<reportElement x="328" y="51" width="40" height="70" uuid="8b0a48bb-dbec-46a3-9092-cd408b5cd202"/>
 				<box>
-					<pen lineWidth="0.5"/>
-					<topPen lineWidth="0.5"/>
-					<leftPen lineWidth="0.5"/>
-					<bottomPen lineWidth="0.5"/>
-					<rightPen lineWidth="0.5"/>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="Left">
 					<font fontName="Univers" size="10" isBold="true"/>
@@ -184,11 +184,11 @@
 			<staticText>
 				<reportElement x="368" y="51" width="40" height="70" uuid="278a6d56-dd57-479c-b1a8-34221ef6ece6"/>
 				<box>
-					<pen lineWidth="0.5"/>
-					<topPen lineWidth="0.5"/>
-					<leftPen lineWidth="0.5"/>
-					<bottomPen lineWidth="0.5"/>
-					<rightPen lineWidth="0.5"/>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="Left">
 					<font fontName="Univers" size="10" isBold="true"/>
@@ -198,11 +198,11 @@
 			<staticText>
 				<reportElement x="688" y="51" width="117" height="70" uuid="35f57d5d-7510-4f3a-be57-db5cb6c4798d"/>
 				<box>
-					<pen lineWidth="0.5"/>
-					<topPen lineWidth="0.5"/>
-					<leftPen lineWidth="0.5"/>
-					<bottomPen lineWidth="0.5"/>
-					<rightPen lineWidth="0.5"/>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Univers" size="10" isBold="true"/>
@@ -286,10 +286,10 @@
 						<textField isStretchWithOverflow="true" isBlankWhenNull="false">
 							<reportElement stretchType="RelativeToTallestObject" x="213" y="0" width="82" height="20" uuid="ac17fb5a-999f-4c43-b1db-4bdeeab62bf1"/>
 							<box>
-								<topPen lineWidth="0.5" lineStyle="Dashed"/>
-								<leftPen lineWidth="0.75"/>
-								<bottomPen lineWidth="0.5" lineStyle="Dashed"/>
-								<rightPen lineWidth="0.75"/>
+								<topPen lineWidth="0.0" lineStyle="Dashed"/>
+								<leftPen lineWidth="0.0"/>
+								<bottomPen lineWidth="0.0" lineStyle="Dashed"/>
+								<rightPen lineWidth="0.0"/>
 							</box>
 							<textElement verticalAlignment="Middle">
 								<font fontName="Univers"/>
@@ -300,10 +300,10 @@
 						<textField isStretchWithOverflow="true" isBlankWhenNull="false">
 							<reportElement stretchType="RelativeToTallestObject" x="181" y="0" width="32" height="20" uuid="e8c76cb5-4c20-4a26-b67b-1cbec33ee4c7"/>
 							<box>
-								<topPen lineWidth="0.5" lineStyle="Dashed"/>
-								<leftPen lineWidth="0.75"/>
-								<bottomPen lineWidth="0.5" lineStyle="Dashed"/>
-								<rightPen lineWidth="0.75"/>
+								<topPen lineWidth="0.0" lineStyle="Dashed"/>
+								<leftPen lineWidth="0.0"/>
+								<bottomPen lineWidth="0.0" lineStyle="Dashed"/>
+								<rightPen lineWidth="0.0"/>
 							</box>
 							<textElement verticalAlignment="Middle">
 								<font fontName="Univers"/>
@@ -314,10 +314,10 @@
 						<textField isStretchWithOverflow="true" isBlankWhenNull="false">
 							<reportElement stretchType="RelativeToTallestObject" x="295" y="0" width="40" height="20" uuid="a2264cae-224b-4511-8379-fbcffd326b24"/>
 							<box>
-								<topPen lineWidth="0.5" lineStyle="Dashed"/>
-								<leftPen lineWidth="0.75"/>
-								<bottomPen lineWidth="0.5" lineStyle="Dashed"/>
-								<rightPen lineWidth="0.75"/>
+								<topPen lineWidth="0.0" lineStyle="Dashed"/>
+								<leftPen lineWidth="0.0"/>
+								<bottomPen lineWidth="0.0" lineStyle="Dashed"/>
+								<rightPen lineWidth="0.0"/>
 							</box>
 							<textElement verticalAlignment="Middle">
 								<font fontName="Univers"/>
@@ -328,10 +328,10 @@
 						<textField isStretchWithOverflow="true" isBlankWhenNull="false">
 							<reportElement stretchType="RelativeToTallestObject" x="335" y="0" width="40" height="20" uuid="e7950640-a8d8-49bd-8ccd-8959c087b828"/>
 							<box>
-								<topPen lineWidth="0.5" lineStyle="Dashed"/>
-								<leftPen lineWidth="0.75"/>
-								<bottomPen lineWidth="0.5" lineStyle="Dashed"/>
-								<rightPen lineWidth="0.75"/>
+								<topPen lineWidth="0.0" lineStyle="Dashed"/>
+								<leftPen lineWidth="0.0"/>
+								<bottomPen lineWidth="0.0" lineStyle="Dashed"/>
+								<rightPen lineWidth="0.0"/>
 							</box>
 							<textElement verticalAlignment="Middle">
 								<font fontName="Univers"/>
@@ -342,10 +342,10 @@
 						<textField isStretchWithOverflow="true" isBlankWhenNull="false">
 							<reportElement stretchType="RelativeToTallestObject" x="375" y="0" width="74" height="20" uuid="cde17e61-f726-4b86-b678-68743514eea4"/>
 							<box>
-								<topPen lineWidth="0.5" lineStyle="Dashed"/>
-								<leftPen lineWidth="0.75"/>
-								<bottomPen lineWidth="0.5" lineStyle="Dashed"/>
-								<rightPen lineWidth="0.75"/>
+								<topPen lineWidth="0.0" lineStyle="Dashed"/>
+								<leftPen lineWidth="0.0"/>
+								<bottomPen lineWidth="0.0" lineStyle="Dashed"/>
+								<rightPen lineWidth="0.0"/>
 							</box>
 							<textElement verticalAlignment="Middle">
 								<font fontName="Univers"/>
@@ -356,10 +356,10 @@
 						<textField isStretchWithOverflow="true" isBlankWhenNull="false">
 							<reportElement stretchType="RelativeToTallestObject" x="449" y="0" width="65" height="20" uuid="da6118ee-1fa0-457b-b3e4-4018609970fb"/>
 							<box>
-								<topPen lineWidth="0.5" lineStyle="Dashed"/>
-								<leftPen lineWidth="0.75"/>
-								<bottomPen lineWidth="0.5" lineStyle="Dashed"/>
-								<rightPen lineWidth="0.75"/>
+								<topPen lineWidth="0.0" lineStyle="Dashed"/>
+								<leftPen lineWidth="0.0"/>
+								<bottomPen lineWidth="0.0" lineStyle="Dashed"/>
+								<rightPen lineWidth="0.0"/>
 							</box>
 							<textElement verticalAlignment="Middle">
 								<font fontName="Univers"/>
@@ -370,10 +370,10 @@
 						<textField isStretchWithOverflow="true" isBlankWhenNull="false">
 							<reportElement stretchType="RelativeToTallestObject" x="514" y="0" width="109" height="20" uuid="b99a1bd1-c38d-4df1-9b10-682a35e4dbda"/>
 							<box>
-								<topPen lineWidth="0.5" lineStyle="Dashed"/>
-								<leftPen lineWidth="0.75"/>
-								<bottomPen lineWidth="0.5" lineStyle="Dashed"/>
-								<rightPen lineWidth="0.75"/>
+								<topPen lineWidth="0.0" lineStyle="Dashed"/>
+								<leftPen lineWidth="0.0"/>
+								<bottomPen lineWidth="0.0" lineStyle="Dashed"/>
+								<rightPen lineWidth="0.0"/>
 							</box>
 							<textElement verticalAlignment="Middle">
 								<font fontName="Univers"/>
@@ -384,10 +384,10 @@
 						<textField isStretchWithOverflow="true" isBlankWhenNull="false">
 							<reportElement stretchType="RelativeToTallestObject" x="623" y="0" width="32" height="20" uuid="d1daecbc-7bd4-415e-a118-9dac3a5f0d94"/>
 							<box>
-								<topPen lineWidth="0.5" lineStyle="Dashed"/>
-								<leftPen lineWidth="0.75"/>
-								<bottomPen lineWidth="0.5" lineStyle="Dashed"/>
-								<rightPen lineWidth="0.75"/>
+								<topPen lineWidth="0.0" lineStyle="Dashed"/>
+								<leftPen lineWidth="0.0"/>
+								<bottomPen lineWidth="0.0" lineStyle="Dashed"/>
+								<rightPen lineWidth="0.0"/>
 							</box>
 							<textElement verticalAlignment="Middle">
 								<font fontName="Univers"/>
@@ -395,11 +395,65 @@
 							</textElement>
 							<textFieldExpression><![CDATA[$F{vtEvaluation}]]></textFieldExpression>
 						</textField>
+						<line>
+							<reportElement x="181" y="0" width="474" height="1" uuid="58f86cf4-a341-4a02-90c2-edf4550b3e09"/>
+							<graphicElement>
+								<pen lineWidth="0.75"/>
+							</graphicElement>
+						</line>
 					</jr:listContents>
 				</jr:list>
 			</componentElement>
 			<rectangle>
 				<reportElement stretchType="RelativeToTallestObject" mode="Transparent" x="33" y="0" width="772" height="20" uuid="1f9e0f52-c6f1-41ff-84e8-93bdeeae60ac"/>
+				<graphicElement>
+					<pen lineWidth="0.75"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle>
+				<reportElement stretchType="RelativeToTallestObject" mode="Transparent" x="214" y="0" width="32" height="20" uuid="23c99ac6-c05e-4da3-a969-53cf9f35a4cb"/>
+				<graphicElement>
+					<pen lineWidth="0.75"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle>
+				<reportElement stretchType="RelativeToTallestObject" mode="Transparent" x="246" y="0" width="82" height="20" uuid="8f215779-7682-4914-8007-acacdd5f82db"/>
+				<graphicElement>
+					<pen lineWidth="0.75"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle>
+				<reportElement stretchType="RelativeToTallestObject" mode="Transparent" x="328" y="0" width="40" height="20" uuid="832102e9-9011-4c0c-b315-7515b32c59a9"/>
+				<graphicElement>
+					<pen lineWidth="0.75"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle>
+				<reportElement stretchType="RelativeToTallestObject" mode="Transparent" x="368" y="0" width="40" height="20" uuid="2d2f62a5-1a77-445e-933d-6655017a8e31"/>
+				<graphicElement>
+					<pen lineWidth="0.75"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle>
+				<reportElement stretchType="RelativeToTallestObject" mode="Transparent" x="408" y="0" width="74" height="20" uuid="2a1ecbce-47aa-4899-9f6a-e372d487f221"/>
+				<graphicElement>
+					<pen lineWidth="0.75"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle>
+				<reportElement stretchType="RelativeToTallestObject" mode="Transparent" x="482" y="0" width="65" height="20" uuid="0898c770-4917-46a5-b4ff-c5be8f6b3d9a"/>
+				<graphicElement>
+					<pen lineWidth="0.75"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle>
+				<reportElement stretchType="RelativeToTallestObject" mode="Transparent" x="547" y="0" width="109" height="20" uuid="fc970bdd-bac3-45ac-a9b8-8820695d40d4"/>
+				<graphicElement>
+					<pen lineWidth="0.75"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle>
+				<reportElement stretchType="RelativeToTallestObject" mode="Transparent" x="656" y="0" width="32" height="20" uuid="78aced7f-8f63-4cdf-a987-b15595ed1545"/>
 				<graphicElement>
 					<pen lineWidth="0.75"/>
 				</graphicElement>
