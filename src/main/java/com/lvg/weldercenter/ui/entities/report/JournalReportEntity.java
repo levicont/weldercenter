@@ -1,5 +1,6 @@
 package com.lvg.weldercenter.ui.entities.report;
 
+import com.lvg.weldercenter.config.R;
 import com.lvg.weldercenter.ui.entities.JournalUI;
 import com.lvg.weldercenter.ui.entities.TeacherUI;
 import com.lvg.weldercenter.ui.entities.WeldMethodUI;
@@ -17,26 +18,18 @@ import java.util.Map;
  */
 public class JournalReportEntity extends GenericReportEntity{
 
-    private final String KEY_ID = "ID";
-    private final String KEY_NUMBER = "NUMBER";
-    private final String KEY_DATE_BEGIN = "DATE_BEGIN";
-    private final String KEY_DATE_BEGIN_FORMAT = "DATE_BEGIN_FORMAT";
-    private final String KEY_DATE_END = "DATE_END";
-    private final String KEY_DATE_END_FORMAT = "DATE_END_FORMAT";
-    private final String KEY_CURRICULUM_TITLE = "CURRICULUM_TITLE";
-    private final String KEY_WELDERS_COUNT = "WELDERS_COUNT";
-    private final String KEY_TEACHERS = "TEACHERS";
+    private final R.UI.Entities.Reports constants = null;
 
     private final Map<String, Object> parameters = new HashMap<String, Object>(){{
-        put(KEY_ID,null);
-        put(KEY_NUMBER,null);
-        put(KEY_DATE_BEGIN, null);
-        put(KEY_DATE_BEGIN_FORMAT,null);
-        put(KEY_DATE_END, null);
-        put(KEY_DATE_END_FORMAT, null);
-        put(KEY_CURRICULUM_TITLE, null);
-        put(KEY_WELDERS_COUNT, null);
-        put(KEY_TEACHERS, null);
+        put(constants.JOURNAL_KEY_ID,null);
+        put(constants.JOURNAL_KEY_NUMBER,null);
+        put(constants.JOURNAL_KEY_DATE_BEGIN, null);
+        put(constants.JOURNAL_KEY_DATE_BEGIN_FORMAT,null);
+        put(constants.JOURNAL_KEY_DATE_END, null);
+        put(constants.JOURNAL_KEY_DATE_END_FORMAT, null);
+        put(constants.JOURNAL_KEY_CURRICULUM_TITLE, null);
+        put(constants.JOURNAL_KEY_WELDERS_COUNT, null);
+        put(constants.JOURNAL_KEY_TEACHERS, null);
     }};
 
     private String jrnNumber ="";
@@ -75,16 +68,16 @@ public class JournalReportEntity extends GenericReportEntity{
     }
 
     public JournalReportEntity(JournalUI journalUI){
-        parameters.replace(KEY_ID,journalUI.getId());
-        parameters.replace(KEY_NUMBER, journalUI.getNumber());
-        parameters.replace(KEY_DATE_BEGIN, journalUI.getDateBegin());
-        parameters.replace(KEY_DATE_BEGIN_FORMAT, journalUI.getDateBeginFormat()+DATE_SUFFIX);
-        parameters.replace(KEY_DATE_END,journalUI.getDateEnd());
-        parameters.replace(KEY_DATE_END_FORMAT, journalUI.getDateEndFormat()+DATE_SUFFIX);
+        parameters.replace(constants.JOURNAL_KEY_ID,journalUI.getId());
+        parameters.replace(constants.JOURNAL_KEY_NUMBER, journalUI.getNumber());
+        parameters.replace(constants.JOURNAL_KEY_DATE_BEGIN, journalUI.getDateBegin());
+        parameters.replace(constants.JOURNAL_KEY_DATE_BEGIN_FORMAT, journalUI.getDateBeginFormat()+DATE_SUFFIX);
+        parameters.replace(constants.JOURNAL_KEY_DATE_END,journalUI.getDateEnd());
+        parameters.replace(constants.JOURNAL_KEY_DATE_END_FORMAT, journalUI.getDateEndFormat()+DATE_SUFFIX);
         if(journalUI.getCurriculum()!=null){
-            parameters.replace(KEY_CURRICULUM_TITLE, journalUI.getCurriculum());
+            parameters.replace(constants.JOURNAL_KEY_CURRICULUM_TITLE, journalUI.getCurriculum());
         }
-        parameters.replace(KEY_WELDERS_COUNT, journalUI.getWeldersCount());
+        parameters.replace(constants.JOURNAL_KEY_WELDERS_COUNT, journalUI.getWeldersCount());
         StringBuilder teachersAll = new StringBuilder();
         for(TeacherUI teacherUI: journalUI.getTeachers()){
             teachersAll.append(teacherUI.getFormatTeacherFullName("SUR-nn-sec")+", ");
@@ -92,7 +85,7 @@ public class JournalReportEntity extends GenericReportEntity{
         if (teachersAll.length()>0){
             teachersAll.deleteCharAt(teachersAll.lastIndexOf(","));
         }
-        parameters.replace(KEY_TEACHERS, teachersAll.toString());
+        parameters.replace(constants.JOURNAL_KEY_TEACHERS, teachersAll.toString());
     }
 
     public Map<String, Object> getParameters() {

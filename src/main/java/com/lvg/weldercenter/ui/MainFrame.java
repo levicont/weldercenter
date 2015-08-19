@@ -8,11 +8,12 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import org.apache.log4j.Logger;
 
 import javax.swing.*;
 import java.net.URL;
 import java.util.Locale;
-import java.util.logging.Logger;
+
 
 /**
  * Created by Victor Levchenko LVG Corp. on 24.10.14.
@@ -32,7 +33,6 @@ public class MainFrame extends Application {
         LOGGER.info(" **** in start() method");
         progressBar.setValue(30);
         this.stage = stage;
-        System.out.println(" **** in start() method");
         controllerManager = new ControllerManager(stage);
         progressBar.setValue(55);
         splashWindow.getLbLoadingModuleName().setText(" Инициализация главного модуля");
@@ -44,8 +44,6 @@ public class MainFrame extends Application {
         progressBar.setValue(100);
         splashWindow.dispose();
         stage.show();
-
-        System.out.println(" **** end of start() method");
     }
 
     @Override
