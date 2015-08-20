@@ -18,8 +18,6 @@ import java.util.Map;
  */
 public class JournalReportEntity extends GenericReportEntity{
 
-    private final R.UI.Entities.Reports constants = null;
-
     private final Map<String, Object> parameters = new HashMap<String, Object>(){{
         put(constants.JOURNAL_KEY_ID,null);
         put(constants.JOURNAL_KEY_NUMBER,null);
@@ -51,15 +49,15 @@ public class JournalReportEntity extends GenericReportEntity{
     public JournalReportEntity(JournalUI journalUI, WelderUI welderUI){
         this(journalUI);
         this.jrnNumber = journalUI.getNumber();
-        this.jrnDateBegin = journalUI.getDateBeginFormat()+DATE_SUFFIX;
-        this.jrnDateEnd = journalUI.getDateEndFormat()+DATE_SUFFIX;
+        this.jrnDateBegin = journalUI.getDateBeginFormat()+constants.GENERIC_DATE_SUFFIX;
+        this.jrnDateEnd = journalUI.getDateEndFormat()+constants.GENERIC_DATE_SUFFIX;
         this.jrnCurriculumTitle = journalUI.getCurriculum();
 
         this.jrnWelderName = welderUI.getName();
         this.jrnWelderSurname = welderUI.getSurname();
         this.jrnWelderSecname = welderUI.getSecname();
         this.jrnWelderEducation = welderUI.getEducation();
-        this.jrnWelderBirthday = welderUI.getBirthdayFormat()+DATE_SUFFIX;
+        this.jrnWelderBirthday = welderUI.getBirthdayFormat()+constants.GENERIC_DATE_SUFFIX;
         this.jrnWelderExperience = getExpirience(welderUI.getDateBegin());
         this.jrnWelderWorkPlace = welderUI.getOrganization();
         this.jrnWelderHomeAdress = welderUI.getAddress();
@@ -71,9 +69,9 @@ public class JournalReportEntity extends GenericReportEntity{
         parameters.replace(constants.JOURNAL_KEY_ID,journalUI.getId());
         parameters.replace(constants.JOURNAL_KEY_NUMBER, journalUI.getNumber());
         parameters.replace(constants.JOURNAL_KEY_DATE_BEGIN, journalUI.getDateBegin());
-        parameters.replace(constants.JOURNAL_KEY_DATE_BEGIN_FORMAT, journalUI.getDateBeginFormat()+DATE_SUFFIX);
+        parameters.replace(constants.JOURNAL_KEY_DATE_BEGIN_FORMAT, journalUI.getDateBeginFormat()+constants.GENERIC_DATE_SUFFIX);
         parameters.replace(constants.JOURNAL_KEY_DATE_END,journalUI.getDateEnd());
-        parameters.replace(constants.JOURNAL_KEY_DATE_END_FORMAT, journalUI.getDateEndFormat()+DATE_SUFFIX);
+        parameters.replace(constants.JOURNAL_KEY_DATE_END_FORMAT, journalUI.getDateEndFormat()+constants.GENERIC_DATE_SUFFIX);
         if(journalUI.getCurriculum()!=null){
             parameters.replace(constants.JOURNAL_KEY_CURRICULUM_TITLE, journalUI.getCurriculum());
         }

@@ -4,6 +4,7 @@ import com.lvg.weldercenter.models.*;
 import com.lvg.weldercenter.services.*;
 import com.lvg.weldercenter.spring.factories.ServiceFactory;
 import com.lvg.weldercenter.ui.entities.WelderUI;
+import com.lvg.weldercenter.ui.util.ControlFXUtils;
 import com.lvg.weldercenter.ui.util.DateUtil;
 import com.lvg.weldercenter.ui.util.TableUtil;
 import com.lvg.weldercenter.ui.util.managers.TableViewManager;
@@ -175,14 +176,16 @@ public class WelderController extends GenericController {
         dpDateBegin.getEditor().textProperty().addListener(new TextFieldValidateListener());
 
         clearWelderDetailsPane();
-        welderDetailsPane.setDisable(true);
+        setDisableWelderDetailsPane(true);
+        //welderDetailsPane.setDisable(true);
     }
 
     private void resetWelderDetailPane(){
         WelderUI selectedWelder = welderTableView.getSelectionModel().getSelectedItem();
         btEdit.setDisable(false);
         btSave.setDisable(true);
-        welderDetailsPane.setDisable(true);
+        setDisableWelderDetailsPane(true);
+        //welderDetailsPane.setDisable(true);
         fillWelderDetailPane(selectedWelder);
     }
 
@@ -538,6 +541,14 @@ public class WelderController extends GenericController {
 
     }
 
+    private void setDisableWelderDetailsPane(boolean disabled){
+        ControlFXUtils.setDisabledTextFields(disabled,txfSurname, txfName,
+                txfSecname, txfDocNumber, txfAddress, txfWeldMethod);
+        ControlFXUtils.setDisabledComboBoxes(disabled, cbEducation, cbQualification, cbOrganization, cbJob);
+        ControlFXUtils.setDisabledDatePickers(disabled, dpBirthday, dpDateBegin);
+        mbtWeldMethod.setDisable(disabled);
+    }
+
     @FXML
     private void addNewWelder(){
         clearWelderDetailsPane();
@@ -545,7 +556,8 @@ public class WelderController extends GenericController {
         welderTableView.getItems().add(newWelder);
         welderTableView.getSelectionModel().clearSelection();
         welderTableView.getSelectionModel().select(newWelder);
-        welderDetailsPane.setDisable(false);
+        setDisableWelderDetailsPane(false);
+        //welderDetailsPane.setDisable(false);
         btSave.setDisable(false);
     }
 
@@ -818,7 +830,8 @@ public class WelderController extends GenericController {
             LOGGER.debug("selected welder is" + selectedWelder);
             btEdit.setDisable(false);
             btSave.setDisable(true);
-            welderDetailsPane.setDisable(true);
+           setDisableWelderDetailsPane(true);
+           // welderDetailsPane.setDisable(true);
             fillWelderDetailPane(selectedWelder);
 
         }
@@ -846,10 +859,10 @@ public class WelderController extends GenericController {
         @Override
         public void handle(MouseEvent event) {
             LOGGER.debug("Active Edit Welder is clicked");
-            if(welderDetailsPane.isDisabled()){
-                welderDetailsPane.setDisable(false);
-                btEdit.setDisable(true);
-            }
+            if (welderTableView.getSelectionModel().getSelectedItem() == null)
+                return;
+            setDisableWelderDetailsPane(false);
+            txfSurname.requestFocus();
         }
     }
 

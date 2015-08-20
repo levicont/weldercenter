@@ -105,13 +105,13 @@ public class ReportViewController extends GenericController {
             protected Void call() throws Exception {
                 TotalProtocolReportEntity totalProtocolReportEntity =
                         new TotalProtocolReportEntity(selectedTotalProtocol);
-                updateProgress(25, MAX_TASK_PROGRESS_VALUE);
+                updateProgress(25, constants.GENERIC_MAX_TASK_PROGRESS_VALUE);
                 try {
                     JasperReport report = JasperCompileManager.compileReport(TOTAL_PROTOCOL_REPORT_URL.openStream());
-                    updateProgress(65, MAX_TASK_PROGRESS_VALUE);
+                    updateProgress(65, constants.GENERIC_MAX_TASK_PROGRESS_VALUE);
                     print = JasperFillManager.fillReport(report,
                             totalProtocolReportEntity.getParameters(),new JREmptyDataSource());
-                    updateProgress(90, MAX_TASK_PROGRESS_VALUE);
+                    updateProgress(90, constants.GENERIC_MAX_TASK_PROGRESS_VALUE);
                 }catch (JRException ex){
                     LOGGER.error("SHOW TOTAL PROTOCOL REPORT VIEW: Could not load report: "+ex.getMessage(),ex);
                 }
@@ -147,18 +147,18 @@ public class ReportViewController extends GenericController {
             @Override
             protected Void call() throws Exception {
                 initTheoryReportEntityList(selectedTotalProtocol);
-                updateProgress(20,MAX_TASK_PROGRESS_VALUE);
+                updateProgress(20,constants.GENERIC_MAX_TASK_PROGRESS_VALUE);
                 TotalProtocolReportEntity totalProtocolReportEntity =
                         new TotalProtocolReportEntity(selectedTotalProtocol);
-                updateProgress(25,MAX_TASK_PROGRESS_VALUE);
+                updateProgress(25,constants.GENERIC_MAX_TASK_PROGRESS_VALUE);
                 totalProtocolReportEntity.getParameters().put("UNIVERS_FONT_PATH",UNIVERS_FONT_URL.getFile());
-                updateProgress(35,MAX_TASK_PROGRESS_VALUE);
+                updateProgress(35,constants.GENERIC_MAX_TASK_PROGRESS_VALUE);
                 try {
                     JasperReport report = JasperCompileManager.compileReport(THEORY_PROTOCOL_REPORT_URL.openStream());
-                    updateProgress(65,MAX_TASK_PROGRESS_VALUE);
+                    updateProgress(65,constants.GENERIC_MAX_TASK_PROGRESS_VALUE);
                     print = JasperFillManager.fillReport(report, totalProtocolReportEntity.getParameters(),
                             new JRBeanCollectionDataSource(theoryReportEntityList));
-                    updateProgress(90,MAX_TASK_PROGRESS_VALUE);
+                    updateProgress(90,constants.GENERIC_MAX_TASK_PROGRESS_VALUE);
 
                 }catch (JRException ex){
                     LOGGER.error("SHOW THEORY REPORT VIEW: Could not load report: "+ex.getMessage(),ex);
@@ -228,11 +228,11 @@ public class ReportViewController extends GenericController {
             @Override
             protected Void call() throws Exception {
                 initJournalReportEntityList(selectedJournal);
-                updateProgress(10, MAX_TASK_PROGRESS_VALUE);
+                updateProgress(10, constants.GENERIC_MAX_TASK_PROGRESS_VALUE);
                 initJournalVisitTableReportEntityList(selectedJournal);
-                updateProgress(20, MAX_TASK_PROGRESS_VALUE);
+                updateProgress(20, constants.GENERIC_MAX_TASK_PROGRESS_VALUE);
                 initJournalSectionReportEntityList(selectedJournal);
-                updateProgress(30, MAX_TASK_PROGRESS_VALUE);
+                updateProgress(30, constants.GENERIC_MAX_TASK_PROGRESS_VALUE);
                 JournalReportEntity journalReportEntity = journalReportEntities.iterator().next();
                 try {
 
@@ -241,7 +241,7 @@ public class ReportViewController extends GenericController {
                     journalReportEntity.getParameters().put("WELDER_DETAIL_SUBREPORT", subReport);
                     journalReportEntity.getParameters().put("WELDER_DETAIL_DATA_SOURCE", new JRBeanCollectionDataSource(journalReportEntities));
 
-                    updateProgress(45, MAX_TASK_PROGRESS_VALUE);
+                    updateProgress(45, constants.GENERIC_MAX_TASK_PROGRESS_VALUE);
 
                     JasperReport subReportVisitTable =
                             JasperCompileManager.compileReport(JOURNAL_SUBREPORT_VISIT_TABLE_URL.openStream());
@@ -249,7 +249,7 @@ public class ReportViewController extends GenericController {
                     journalReportEntity.getParameters().put("VISIT_TABLE_DATA_SOURCE",
                             new JRBeanCollectionDataSource(journalVisitTableReportEntities));
 
-                    updateProgress(55, MAX_TASK_PROGRESS_VALUE);
+                    updateProgress(55, constants.GENERIC_MAX_TASK_PROGRESS_VALUE);
 
                     JasperReport subReportTimeTable =
                             JasperCompileManager.compileReport(JOURNAL_SUBREPORT_TIME_TABLE_URL.openStream());
@@ -259,13 +259,13 @@ public class ReportViewController extends GenericController {
                             new JRBeanCollectionDataSource(journalSectionReportEntities));
                     journalReportEntity.getParameters().put("PARAMETERS_MAP", journalReportEntity.getParameters());
 
-                    updateProgress(70, MAX_TASK_PROGRESS_VALUE);
+                    updateProgress(70, constants.GENERIC_MAX_TASK_PROGRESS_VALUE);
 
                     JasperReport report = JasperCompileManager.compileReport(JOURNAL_REPORT_URL.openStream());
 
                     print = JasperFillManager.fillReport(report, journalReportEntity.getParameters(),
                             new JREmptyDataSource());
-                    updateProgress(90, MAX_TASK_PROGRESS_VALUE);
+                    updateProgress(90, constants.GENERIC_MAX_TASK_PROGRESS_VALUE);
                     Platform.runLater(new Runnable() {
                         @Override
                         public void run() {
@@ -312,13 +312,13 @@ public class ReportViewController extends GenericController {
             protected Void call() throws Exception {
                 PersonalProtocolReportEntity protocolReportEntity =
                         new PersonalProtocolReportEntity(selectedPersonalProtocol,selectedTotalProtocol);
-                updateProgress(25, MAX_TASK_PROGRESS_VALUE);
+                updateProgress(25, constants.GENERIC_MAX_TASK_PROGRESS_VALUE);
                 try {
                     JasperReport report = JasperCompileManager.compileReport(PERSONAL_PROTOCOL_REPORT_URL.openStream());
-                    updateProgress(65, MAX_TASK_PROGRESS_VALUE);
+                    updateProgress(65, constants.GENERIC_MAX_TASK_PROGRESS_VALUE);
                     print = JasperFillManager.fillReport(report, protocolReportEntity.getParameters(),
                             new JREmptyDataSource());
-                    updateProgress(90, MAX_TASK_PROGRESS_VALUE);
+                    updateProgress(90, constants.GENERIC_MAX_TASK_PROGRESS_VALUE);
                 }catch(JRException ex){
                     LOGGER.error("SHOW PERSONAL PROTOCOL REPORT VIEW: Could not load report: "+ex.getMessage(),ex);
                 }
@@ -353,16 +353,16 @@ public class ReportViewController extends GenericController {
             @Override
             protected Void call() throws Exception {
                 initPersonalProtocolReportEntityList(selectedTotalProtocol);
-                updateProgress(25, MAX_TASK_PROGRESS_VALUE);
+                updateProgress(25, constants.GENERIC_MAX_TASK_PROGRESS_VALUE);
                 TotalProtocolReportEntity totalProtocolReportEntity =
                         new TotalProtocolReportEntity(selectedTotalProtocol);
-                updateProgress(35, MAX_TASK_PROGRESS_VALUE);
+                updateProgress(35, constants.GENERIC_MAX_TASK_PROGRESS_VALUE);
                 try {
                     JasperReport report = JasperCompileManager.compileReport(VISUAL_TEST_PROTOCOL_REPORT_URL.openStream());
-                    updateProgress(65, MAX_TASK_PROGRESS_VALUE);
+                    updateProgress(65, constants.GENERIC_MAX_TASK_PROGRESS_VALUE);
                     print = JasperFillManager.fillReport(report, totalProtocolReportEntity.getParameters(),
                             new JRBeanCollectionDataSource(personalProtocolReportEntities));
-                    updateProgress(90, MAX_TASK_PROGRESS_VALUE);
+                    updateProgress(90, constants.GENERIC_MAX_TASK_PROGRESS_VALUE);
 
                 }catch(JRException ex){
                     LOGGER.error("SHOW VISUAL TEST PROTOCOL REPORT VIEW: Could not load report: "+ex.getMessage(),ex);
@@ -400,17 +400,17 @@ public class ReportViewController extends GenericController {
             protected Void call() throws Exception {
 
                 initPersonalProtocolReportEntityList(selectedTotalProtocol);
-                updateProgress(25, MAX_TASK_PROGRESS_VALUE);
+                updateProgress(25, constants.GENERIC_MAX_TASK_PROGRESS_VALUE);
                 TotalProtocolReportEntity totalProtocolReportEntity =
                         new TotalProtocolReportEntity(selectedTotalProtocol);
-                updateProgress(35, MAX_TASK_PROGRESS_VALUE);
+                updateProgress(35, constants.GENERIC_MAX_TASK_PROGRESS_VALUE);
                 try {
                     JasperReport report =
                             JasperCompileManager.compileReport(RADIATION_TEST_PROTOCOL_REPORT_URL.openStream());
-                    updateProgress(65, MAX_TASK_PROGRESS_VALUE);
+                    updateProgress(65, constants.GENERIC_MAX_TASK_PROGRESS_VALUE);
                     print = JasperFillManager.fillReport(report, totalProtocolReportEntity.getParameters(),
                             new JRBeanCollectionDataSource(personalProtocolReportEntities));
-                    updateProgress(90, MAX_TASK_PROGRESS_VALUE);
+                    updateProgress(90, constants.GENERIC_MAX_TASK_PROGRESS_VALUE);
                 }catch(JRException ex){
                     LOGGER.error("SHOW RADIATION TEST PROTOCOL REPORT VIEW: Could not load report: "+ex.getMessage(),ex);
                 }
@@ -445,20 +445,20 @@ public class ReportViewController extends GenericController {
             @Override
             protected Void call() throws Exception {
                 initPersonalProtocolReportEntityList(selectedTotalProtocol);
-                updateProgress(25,MAX_TASK_PROGRESS_VALUE);
+                updateProgress(25,constants.GENERIC_MAX_TASK_PROGRESS_VALUE);
                 initPersonalProtocolReportEntityListForMT(
                         (List<PersonalProtocolReportEntity>) personalProtocolReportEntities);
-                updateProgress(35, MAX_TASK_PROGRESS_VALUE);
+                updateProgress(35, constants.GENERIC_MAX_TASK_PROGRESS_VALUE);
                 TotalProtocolReportEntity totalProtocolReportEntity =
                         new TotalProtocolReportEntity(selectedTotalProtocol);
-                updateProgress(45, MAX_TASK_PROGRESS_VALUE);
+                updateProgress(45, constants.GENERIC_MAX_TASK_PROGRESS_VALUE);
                 try {
                     JasperReport report =
                             JasperCompileManager.compileReport(MECHANICAL_TEST_PROTOCOL_REPORT_URL.openStream());
-                    updateProgress(65, MAX_TASK_PROGRESS_VALUE);
+                    updateProgress(65, constants.GENERIC_MAX_TASK_PROGRESS_VALUE);
                     print = JasperFillManager.fillReport(report, totalProtocolReportEntity.getParameters(),
                             new JRBeanCollectionDataSource(personalProtocolReportEntities));
-                    updateProgress(90, MAX_TASK_PROGRESS_VALUE);
+                    updateProgress(90, constants.GENERIC_MAX_TASK_PROGRESS_VALUE);
 
                 }catch(JRException ex){
                     LOGGER.error("SHOW MECHANICAL TEST PROTOCOL REPORT VIEW: Could not load report: "+ex.getMessage(),ex);

@@ -10,6 +10,7 @@ import java.util.*;
  * Created by Victor on 05.06.2015.
  */
 public class PersonalProtocolReportEntity extends GenericReportEntity{
+
     private final String KEY_PROT_NUMBER = "PROT_NUMBER";
     private final String KEY_PROT_DATE = "PROT_DATE";
     private final String KEY_TOTAL_PROT_NUMBER = "TOTAL_PROT_NUMBER";
@@ -55,9 +56,9 @@ public class PersonalProtocolReportEntity extends GenericReportEntity{
 
     private final int PERIOD_CERTIFICATION = 2;
 
-    private String fio = NULL_FIELD;
-    private String mark = NULL_FIELD;
-    private String ndtDocs = NULL_FIELD;
+    private String fio = constants.GENERIC_NULL_FIELD;
+    private String mark = constants.GENERIC_NULL_FIELD;
+    private String ndtDocs = constants.GENERIC_NULL_FIELD;
     private List<WeldPatternReportEntity> patterns = new ArrayList<WeldPatternReportEntity>();
 
 
@@ -106,7 +107,7 @@ public class PersonalProtocolReportEntity extends GenericReportEntity{
     public PersonalProtocolReportEntity(PersonalProtocolUI personalProtocolUI, TotalProtocolUI totalProtocolUI){
 
         parameters.replace(KEY_PROT_NUMBER, personalProtocolUI.getNumber());
-        parameters.replace(KEY_PROT_DATE, personalProtocolUI.getDatePeriodicalCertFormat()+DATE_SUFFIX);
+        parameters.replace(KEY_PROT_DATE, personalProtocolUI.getDatePeriodicalCertFormat()+constants.GENERIC_DATE_SUFFIX);
         parameters.replace(KEY_PERIOD_DATE_CERT,getNextDateCertification(personalProtocolUI.getDatePeriodicalCert()));
         parameters.replace(KEY_TOTAL_PROT_NUMBER, totalProtocolUI.getNumber());
         parameters.replace(KEY_TOTAL_PROT_DATE, totalProtocolUI.getDateCertFormat());
@@ -121,7 +122,7 @@ public class PersonalProtocolReportEntity extends GenericReportEntity{
         if (personalProtocolUI.getWelder()!=null) {
             this.fio = personalProtocolUI.getWelder().getFormatName("SUR-nn-sec");
             parameters.replace(KEY_WELDER_FULL_NAME, personalProtocolUI.getWelder().getFormatName("SUR-NN-SEC"));
-            parameters.replace(KEY_WELDER_BIRTHDAY, personalProtocolUI.getWelder().getBirthdayFormat()+DATE_SUFFIX);
+            parameters.replace(KEY_WELDER_BIRTHDAY, personalProtocolUI.getWelder().getBirthdayFormat()+constants.GENERIC_DATE_SUFFIX);
             parameters.replace(KEY_WELDER_DOC_NUMBER, personalProtocolUI.getWelder().getDocNumber());
             parameters.replace(KEY_WELDER_EXPERIENCE, getExperience(personalProtocolUI.getWelder().getDateBegin()));
             parameters.replace(KEY_WELDER_ATTEST_TYPE, personalProtocolUI.getAttestType());
@@ -169,19 +170,19 @@ public class PersonalProtocolReportEntity extends GenericReportEntity{
 
     private String getNdtDocs(List<NDTDocumentUI> ndtDocumentUIList){
         if (ndtDocumentUIList==null)
-            return NULL_FIELD;
+            return constants.GENERIC_NULL_FIELD;
         StringBuilder result = new StringBuilder();
         for (NDTDocumentUI ndt : ndtDocumentUIList){
             result.append(ndt.getName());
             result.append("; ");
         }
-        deleteLastSeparator(result,SEMICOLON_SEPARATOR);
+        deleteLastSeparator(result,constants.GENERIC_SEMICOLON_SEPARATOR);
         return result.toString();
     }
 
     private String getExperience(Date dateBegin){
         if (dateBegin==null)
-            return NULL_FIELD;
+            return constants.GENERIC_NULL_FIELD;
         LocalDate begin = DateUtil.getLocalDate(dateBegin);
         int yearsCount = LocalDate.now().getYear()-begin.getYear();
         return yearsCount+" "+DateUtil.formatedYearEndString(yearsCount);
@@ -189,34 +190,34 @@ public class PersonalProtocolReportEntity extends GenericReportEntity{
 
     private String getWeldPatternsMarks(List<WeldPatternUI> weldPatterns){
         if (weldPatterns==null || weldPatterns.isEmpty())
-            return NULL_FIELD;
+            return constants.GENERIC_NULL_FIELD;
         StringBuilder result = new StringBuilder();
         for (WeldPatternUI wp: weldPatterns){
             result.append(wp.getMark());
-            result.append(SLASH_SEPARATOR);
+            result.append(constants.GENERIC_SLASH_SEPARATOR);
         }
-        deleteLastSeparator(result, SLASH_SEPARATOR);
+        deleteLastSeparator(result, constants.GENERIC_SLASH_SEPARATOR);
         return result.toString();
     }
 
     private String getWeldPatternWeldMethods(List<WeldPatternUI> weldPatterns){
         if (weldPatterns == null || weldPatterns.isEmpty())
-            return NULL_FIELD;
+            return constants.GENERIC_NULL_FIELD;
         StringBuilder result = new StringBuilder();
         for (WeldPatternUI wp : weldPatterns){
             if (wp.getWeldMethod()!=null)
                 result.append(wp.getWeldMethod().getNameCode());
             else
-                result.append(NULL_FIELD);
-            result.append(SEMICOLON_SEPARATOR);
+                result.append(constants.GENERIC_NULL_FIELD);
+            result.append(constants.GENERIC_SEMICOLON_SEPARATOR);
         }
-        deleteLastSeparator(result, SEMICOLON_SEPARATOR);
+        deleteLastSeparator(result, constants.GENERIC_SEMICOLON_SEPARATOR);
         return result.toString();
     }
 
     private String getWeldPatternDetailTypes(List<WeldPatternUI> weldPatterns){
         if (weldPatterns == null || weldPatterns.isEmpty())
-            return NULL_FIELD;
+            return constants.GENERIC_NULL_FIELD;
         StringBuilder result = new StringBuilder();
         for (WeldPatternUI wp : weldPatterns){
             if (wp.getWeldDetail()!=null) {
@@ -227,16 +228,16 @@ public class PersonalProtocolReportEntity extends GenericReportEntity{
                 result.append(code + " (" + describe + ")");
             }
             else
-                result.append(NULL_FIELD);
-            result.append(SEMICOLON_SEPARATOR);
+                result.append(constants.GENERIC_NULL_FIELD);
+            result.append(constants.GENERIC_SEMICOLON_SEPARATOR);
         }
-        deleteLastSeparator(result, SEMICOLON_SEPARATOR);
+        deleteLastSeparator(result, constants.GENERIC_SEMICOLON_SEPARATOR);
         return result.toString();
     }
 
     private String getWeldPatternWeldPositions(List<WeldPatternUI> weldPatterns){
         if (weldPatterns == null || weldPatterns.isEmpty())
-            return NULL_FIELD;
+            return constants.GENERIC_NULL_FIELD;
         StringBuilder result = new StringBuilder();
         for (WeldPatternUI wp : weldPatterns){
             if (wp.getWeldPositions()==null || wp.getWeldPositions().isEmpty())
@@ -256,7 +257,7 @@ public class PersonalProtocolReportEntity extends GenericReportEntity{
 
     private String getWeldPatternWeldJoinTypes(List<WeldPatternUI> weldPatterns){
         if (weldPatterns == null || weldPatterns.isEmpty())
-            return NULL_FIELD;
+            return constants.GENERIC_NULL_FIELD;
         StringBuilder result = new StringBuilder();
         for (WeldPatternUI wp : weldPatterns){
             List<WeldJoinTypeUI> joinTypes = wp.getWeldJoinTypes();
@@ -276,19 +277,19 @@ public class PersonalProtocolReportEntity extends GenericReportEntity{
 
     private String getWeldPatternHeating(List<WeldPatternUI> weldPatterns){
         if (weldPatterns == null || weldPatterns.isEmpty())
-            return NULL_FIELD;
+            return constants.GENERIC_NULL_FIELD;
         StringBuilder result = new StringBuilder();
         List<String> heatings = new ArrayList<String>();
         for (WeldPatternUI wp : weldPatterns){
             if (wp.getIsHeating())
-                heatings.add(YES_STRING);
+                heatings.add(constants.GENERIC_YES_STRING);
             else
-                heatings.add(NO_STRING);
+                heatings.add(constants.GENERIC_NO_STRING);
         }
-        if (!heatings.contains(YES_STRING))
-            return NO_STRING;
-        if (!heatings.contains(NO_STRING))
-            return YES_STRING;
+        if (!heatings.contains(constants.GENERIC_YES_STRING))
+            return constants.GENERIC_NO_STRING;
+        if (!heatings.contains(constants.GENERIC_NO_STRING))
+            return constants.GENERIC_YES_STRING;
         for (String heating: heatings){
             result.append(heating);
             if (heatings.iterator().hasNext())
@@ -300,19 +301,19 @@ public class PersonalProtocolReportEntity extends GenericReportEntity{
 
     private String getWeldPatternHeatTreatment(List<WeldPatternUI> weldPatterns){
         if (weldPatterns == null || weldPatterns.isEmpty())
-            return NULL_FIELD;
+            return constants.GENERIC_NULL_FIELD;
         StringBuilder result = new StringBuilder();
         List<String> heatTreatmentList = new ArrayList<String>();
         for (WeldPatternUI wp : weldPatterns){
             if (wp.getIsHeatTreatment())
-                heatTreatmentList.add(YES_STRING);
+                heatTreatmentList.add(constants.GENERIC_YES_STRING);
             else
-                heatTreatmentList.add(NO_STRING);
+                heatTreatmentList.add(constants.GENERIC_NO_STRING);
         }
-        if (!heatTreatmentList.contains(YES_STRING))
-            return NO_STRING;
-        if (!heatTreatmentList.contains(NO_STRING))
-            return YES_STRING;
+        if (!heatTreatmentList.contains(constants.GENERIC_YES_STRING))
+            return constants.GENERIC_NO_STRING;
+        if (!heatTreatmentList.contains(constants.GENERIC_NO_STRING))
+            return constants.GENERIC_YES_STRING;
         for (String heatTreatment: heatTreatmentList){
             result.append(heatTreatment);
             if (heatTreatmentList.iterator().hasNext())
@@ -323,7 +324,7 @@ public class PersonalProtocolReportEntity extends GenericReportEntity{
 
     private String getWeldPatternSteelTypes(List<WeldPatternUI> weldPatterns){
         if (weldPatterns == null || weldPatterns.isEmpty())
-            return NULL_FIELD;
+            return constants.GENERIC_NULL_FIELD;
         StringBuilder result = new StringBuilder();
         Map<String,List<String>> steelGroupsMap = new HashMap<String, List<String>>();
         List<String> steelTypesWithoutGroup = new ArrayList<String>();
@@ -350,53 +351,53 @@ public class PersonalProtocolReportEntity extends GenericReportEntity{
             }
         }
         for (String group: steelGroupsMap.keySet()){
-            result.append(group+ COLON_SEPARATOR);
+            result.append(group+ constants.GENERIC_COLON_SEPARATOR);
             for (String type: steelGroupsMap.get(group)){
-                result.append(type+ SEMICOLON_SEPARATOR);
+                result.append(type+ constants.GENERIC_SEMICOLON_SEPARATOR);
             }
         }
         for (String type: steelTypesWithoutGroup){
-            result.append(type+ SEMICOLON_SEPARATOR);
+            result.append(type+ constants.GENERIC_SEMICOLON_SEPARATOR);
         }
-        deleteLastSeparator(result, SEMICOLON_SEPARATOR);
+        deleteLastSeparator(result, constants.GENERIC_SEMICOLON_SEPARATOR);
         return result.toString();
     }
 
     private String getWeldPatternThicknesses(List<WeldPatternUI> weldPatterns){
         if (weldPatterns == null || weldPatterns.isEmpty())
-            return NULL_FIELD;
+            return constants.GENERIC_NULL_FIELD;
         StringBuilder result = new StringBuilder();
         for (WeldPatternUI wp : weldPatterns){
             if (wp.getThickness()!= 0){
                 if (!result.toString().contains(wp.getThickness()+"")){
                     result.append(wp.getThickness());
-                    result.append(SEMICOLON_SEPARATOR);
+                    result.append(constants.GENERIC_SEMICOLON_SEPARATOR);
                 }
             }
         }
-        deleteLastSeparator(result, SEMICOLON_SEPARATOR);
+        deleteLastSeparator(result, constants.GENERIC_SEMICOLON_SEPARATOR);
         return result.toString();
     }
 
     private String getWeldPatternDiameters(List<WeldPatternUI> weldPatterns){
         if (weldPatterns == null || weldPatterns.isEmpty())
-            return NULL_FIELD;
+            return constants.GENERIC_NULL_FIELD;
         StringBuilder result = new StringBuilder();
         for (WeldPatternUI wp : weldPatterns){
             if (wp.getDiameter()!= 0){
                 if (!result.toString().contains(wp.getDiameter()+"")){
                     result.append(wp.getDiameter());
-                    result.append(SEMICOLON_SEPARATOR);
+                    result.append(constants.GENERIC_SEMICOLON_SEPARATOR);
                 }
             }
         }
-        deleteLastSeparator(result, SEMICOLON_SEPARATOR);
+        deleteLastSeparator(result, constants.GENERIC_SEMICOLON_SEPARATOR);
         return result.toString();
     }
 
     private String getWeldPatternElectrodeWire(List<WeldPatternUI> weldPatterns){
         if (weldPatterns == null || weldPatterns.isEmpty())
-            return NULL_FIELD;
+            return constants.GENERIC_NULL_FIELD;
         StringBuilder result = new StringBuilder();
         List<String> electrodes = new ArrayList<String>();
         List<String> weldWires = new ArrayList<String>();
@@ -416,34 +417,34 @@ public class PersonalProtocolReportEntity extends GenericReportEntity{
         }
         for (String el : electrodes){
             result.append(el);
-            result.append(SEMICOLON_SEPARATOR);
+            result.append(constants.GENERIC_SEMICOLON_SEPARATOR);
         }
         for (String ww: weldWires){
             result.append(ww);
-            result.append(SEMICOLON_SEPARATOR);
+            result.append(constants.GENERIC_SEMICOLON_SEPARATOR);
         }
-        deleteLastSeparator(result, SEMICOLON_SEPARATOR);
+        deleteLastSeparator(result, constants.GENERIC_SEMICOLON_SEPARATOR);
         return result.toString();
 
     }
 
     private String getWeldPatternGas(List<WeldPatternUI> weldPatterns){
         if (weldPatterns == null || weldPatterns.isEmpty())
-            return NULL_FIELD;
+            return constants.GENERIC_NULL_FIELD;
         StringBuilder result = new StringBuilder();
         for (WeldPatternUI wp : weldPatterns){
             WeldGasUI weldGas = wp.getWeldGas();
             if (weldGas!=null){
                 if (!result.toString().contains(weldGas.getType())){
                     result.append(weldGas.getType());
-                    result.append(SEMICOLON_SEPARATOR);
+                    result.append(constants.GENERIC_SEMICOLON_SEPARATOR);
                 }
 
             }
         }
-        deleteLastSeparator(result, SEMICOLON_SEPARATOR);
+        deleteLastSeparator(result, constants.GENERIC_SEMICOLON_SEPARATOR);
         if (result.toString().isEmpty())
-            return NO_STRING;
+            return constants.GENERIC_NO_STRING;
         return result.toString();
     }
 
@@ -467,7 +468,7 @@ public class PersonalProtocolReportEntity extends GenericReportEntity{
                 numberList.add(vt.getNumber());
             }
             if (!dateList.contains(vt.getDateFormat())){
-                dateList.add(vt.getDateFormat()+DATE_SUFFIX);
+                dateList.add(vt.getDateFormat()+constants.GENERIC_DATE_SUFFIX);
             }
             if (vtEvaluation==null)
                 continue;
@@ -482,19 +483,19 @@ public class PersonalProtocolReportEntity extends GenericReportEntity{
 
         for (String num : numberList){
             numbers.append(num);
-            numbers.append(SEMICOLON_SEPARATOR);
+            numbers.append(constants.GENERIC_SEMICOLON_SEPARATOR);
         }
         for (String date: dateList){
             dates.append(date);
-            dates.append(SEMICOLON_SEPARATOR);
+            dates.append(constants.GENERIC_SEMICOLON_SEPARATOR);
         }
         for (String evaluation : evaluationList){
             evaluations.append(evaluation);
-            evaluations.append(SEMICOLON_SEPARATOR);
+            evaluations.append(constants.GENERIC_SEMICOLON_SEPARATOR);
         }
-        deleteLastSeparator(numbers, SEMICOLON_SEPARATOR);
-        deleteLastSeparator(dates, SEMICOLON_SEPARATOR);
-        deleteLastSeparator(evaluations, SEMICOLON_SEPARATOR);
+        deleteLastSeparator(numbers, constants.GENERIC_SEMICOLON_SEPARATOR);
+        deleteLastSeparator(dates, constants.GENERIC_SEMICOLON_SEPARATOR);
+        deleteLastSeparator(evaluations, constants.GENERIC_SEMICOLON_SEPARATOR);
 
         parameters.replace(KEY_WELD_PATTERN_VT_NUMBERS, numbers.toString());
         parameters.replace(KEY_WELD_PATTERN_VT_DATE, dates.toString());
@@ -522,7 +523,7 @@ public class PersonalProtocolReportEntity extends GenericReportEntity{
                 numberList.add(rt.getNumber());
             }
             if (!dateList.contains(rt.getDateFormat())){
-                dateList.add(rt.getDateFormat()+DATE_SUFFIX);
+                dateList.add(rt.getDateFormat()+constants.GENERIC_DATE_SUFFIX);
             }
             if (rtEvaluation==null)
                 continue;
@@ -537,19 +538,19 @@ public class PersonalProtocolReportEntity extends GenericReportEntity{
 
         for (String num : numberList){
             numbers.append(num);
-            numbers.append(SEMICOLON_SEPARATOR);
+            numbers.append(constants.GENERIC_SEMICOLON_SEPARATOR);
         }
         for (String date: dateList){
             dates.append(date);
-            dates.append(SEMICOLON_SEPARATOR);
+            dates.append(constants.GENERIC_SEMICOLON_SEPARATOR);
         }
         for (String evaluation : evaluationList){
             evaluations.append(evaluation);
-            evaluations.append(SEMICOLON_SEPARATOR);
+            evaluations.append(constants.GENERIC_SEMICOLON_SEPARATOR);
         }
-        deleteLastSeparator(numbers, SEMICOLON_SEPARATOR);
-        deleteLastSeparator(dates, SEMICOLON_SEPARATOR);
-        deleteLastSeparator(evaluations, SEMICOLON_SEPARATOR);
+        deleteLastSeparator(numbers, constants.GENERIC_SEMICOLON_SEPARATOR);
+        deleteLastSeparator(dates, constants.GENERIC_SEMICOLON_SEPARATOR);
+        deleteLastSeparator(evaluations, constants.GENERIC_SEMICOLON_SEPARATOR);
 
         parameters.replace(KEY_WELD_PATTERN_RT_NUMBERS, numbers.toString());
         parameters.replace(KEY_WELD_PATTERN_RT_DATE, dates.toString());
@@ -577,7 +578,7 @@ public class PersonalProtocolReportEntity extends GenericReportEntity{
                 numberList.add(mt.getNumber());
             }
             if (!dateList.contains(mt.getDateFormat())){
-                dateList.add(mt.getDateFormat()+DATE_SUFFIX);
+                dateList.add(mt.getDateFormat()+constants.GENERIC_DATE_SUFFIX);
             }
             if (mtEvaluation==null)
                 continue;
@@ -592,20 +593,20 @@ public class PersonalProtocolReportEntity extends GenericReportEntity{
 
         for (String num : numberList){
             numbers.append(num);
-            numbers.append(SEMICOLON_SEPARATOR);
+            numbers.append(constants.GENERIC_SEMICOLON_SEPARATOR);
         }
         for (String date: dateList){
             dates.append(date);
-            dates.append(SEMICOLON_SEPARATOR);
+            dates.append(constants.GENERIC_SEMICOLON_SEPARATOR);
         }
         for (String evaluation : evaluationList){
             evaluations.append(evaluation);
-            evaluations.append(SEMICOLON_SEPARATOR);
+            evaluations.append(constants.GENERIC_SEMICOLON_SEPARATOR);
         }
 
-        deleteLastSeparator(numbers, SEMICOLON_SEPARATOR);
-        deleteLastSeparator(dates, SEMICOLON_SEPARATOR);
-        deleteLastSeparator(evaluations, SEMICOLON_SEPARATOR);
+        deleteLastSeparator(numbers, constants.GENERIC_SEMICOLON_SEPARATOR);
+        deleteLastSeparator(dates, constants.GENERIC_SEMICOLON_SEPARATOR);
+        deleteLastSeparator(evaluations, constants.GENERIC_SEMICOLON_SEPARATOR);
 
         parameters.replace(KEY_WELD_PATTERN_MT_NUMBERS, numbers.toString());
         parameters.replace(KEY_WELD_PATTERN_MT_DATE, dates.toString());
@@ -615,10 +616,10 @@ public class PersonalProtocolReportEntity extends GenericReportEntity{
 
     private String getNextDateCertification(Date protDate){
         if (protDate==null){
-            return NULL_FIELD;
+            return constants.GENERIC_NULL_FIELD;
         }
         LocalDate nextDate = DateUtil.getLocalDate(protDate).plusYears(PERIOD_CERTIFICATION);
-        return DateUtil.format(nextDate)+DATE_SUFFIX;
+        return DateUtil.format(nextDate)+constants.GENERIC_DATE_SUFFIX;
     }
 
     private List<WeldPatternReportEntity> getPatternsReportEntities(List<WeldPatternUI> weldPatterns){
@@ -639,7 +640,7 @@ public class PersonalProtocolReportEntity extends GenericReportEntity{
         List<WeldPatternReportEntity> result = new ArrayList<WeldPatternReportEntity>();
 
         for (WeldPatternReportEntity weldPattern : this.patterns){
-            if (!weldPattern.getMtEvaluation().equals(NULL_FIELD)){
+            if (!weldPattern.getMtEvaluation().equals(constants.GENERIC_NULL_FIELD)){
                 result.add(weldPattern);
             }
         }

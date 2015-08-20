@@ -7,6 +7,7 @@ import com.lvg.weldercenter.spring.factories.ServiceFactory;
 import com.lvg.weldercenter.spring.factories.ServiceUIFactory;
 import com.lvg.weldercenter.ui.entities.*;
 import com.lvg.weldercenter.ui.servicesui.*;
+import com.lvg.weldercenter.ui.util.ControlFXUtils;
 import com.lvg.weldercenter.ui.util.EventFXUtil;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
@@ -49,10 +50,6 @@ public class PropertiesController extends GenericController {
     public final String TITLE_PANE_JOB = "TITLE_PANE_JOB";
 
     private final Logger LOGGER = Logger.getLogger(PropertiesController.class);
-    private final String STYLE_NOT_EDITABLE_BACKGROUND = "-fx-background-color: #deefff";
-    private final String STYLE_NOT_EDIT_COMBOBOX = "-fx-opacity: 1; -fx-background-color: #deefff";
-    private final String STYLE_TAB_BACKGROUND = "-fx-background-color: linear-gradient(to TOP, #f9eee0, #f9e5cc)";
-    private final String ROOT_CURRICULUM_TITLE = "Программы подготовки";
 
     private OrganizationService organizationService = ServiceFactory.getOrganizationService();
     private WeldDetailService weldDetailService = ServiceFactory.getWeldDetailService();
@@ -1032,7 +1029,7 @@ public class PropertiesController extends GenericController {
 
 
     private void initTreeViewCurriculums(){
-        TreeItem<String> root = new TreeItem<>(ROOT_CURRICULUM_TITLE);
+        TreeItem<String> root = new TreeItem<>(constants.GENERIC_ROOT_CURRICULUM_TITLE);
         treeViewCurriculum.setRoot(root);
         treeViewCurriculum.addEventHandler(Event.ANY, new TableViewEventHandler());
         root.getChildren().clear();
@@ -3008,53 +3005,29 @@ public class PropertiesController extends GenericController {
     //Utilities -------------------------------------------------------------------
 
     private void selectFirstTableRecord(TableView tableView){
-        tableView.getSelectionModel().clearSelection();
-        tableView.getSelectionModel().selectFirst();
-        tableView.fireEvent(EventFXUtil.getMouseClickEvent());
-        tableView.requestFocus();
+        ControlFXUtils.selectFirstTableRecord(tableView);
     }
 
     private void selectRootTreeItem(TreeView treeView){
-        treeView.getSelectionModel().clearSelection();
-        treeView.getSelectionModel().select(treeView.getRoot());
-        treeView.fireEvent(EventFXUtil.getMouseClickEvent());
-        treeView.requestFocus();
+        ControlFXUtils.selectRootTreeItem(treeView);
     }
 
     private void selectLastTableRecord(TableView tableView){
-        tableView.getSelectionModel().clearSelection();
-        tableView.getSelectionModel().selectLast();
-        tableView.fireEvent(EventFXUtil.getMouseClickEvent());
-        tableView.requestFocus();
+        ControlFXUtils.selectLastTableRecord(tableView);
     }
     private void selectNextTableRecord(TableView tableView){
-        tableView.getSelectionModel().selectNext();
-        Object selectedItem = tableView.getSelectionModel().getSelectedItem();
-        tableView.getSelectionModel().clearSelection();
-        tableView.getSelectionModel().select(selectedItem);
-        tableView.fireEvent(EventFXUtil.getMouseClickEvent());
-        tableView.requestFocus();
+        ControlFXUtils.selectNextTableRecord(tableView);
     }
     private void selectPrevTableRecord(TableView tableView){
-        tableView.getSelectionModel().selectPrevious();
-        Object selectedItem = tableView.getSelectionModel().getSelectedItem();
-        tableView.getSelectionModel().clearSelection();
-        tableView.getSelectionModel().select(selectedItem);
-        tableView.fireEvent(EventFXUtil.getMouseClickEvent());
-        tableView.requestFocus();
+        ControlFXUtils.selectPrevTableRecord(tableView);
     }
 
     private void setDisabledTitlePane(boolean disabled, TitledPane titledPane){
-        if (titledPane == null)
-            return;
-        titledPane.setExpanded(!disabled);
-        titledPane.setDisable(disabled);
+        ControlFXUtils.setDisabledTitlePane(disabled, titledPane);
     }
 
     private void setActiveListView(ListView listView){
-        listView.getSelectionModel().selectFirst();
-        listView.fireEvent(EventFXUtil.getMouseClickEvent());
-        listView.requestFocus();
+        ControlFXUtils.setActiveListView(listView);
     }
 
     private void  initListView(ListView listView, ObservableList items){
@@ -3068,92 +3041,38 @@ public class PropertiesController extends GenericController {
 
     private void initTabPanes(Pane... panes){
         for (Pane p : panes)
-            p.setStyle(STYLE_TAB_BACKGROUND);
+            p.setStyle(constants.GENERIC_STYLE_TAB_BACKGROUND);
     }
 
     private Action getResponseDeleteDialog(int countOfDeletingRecords){
-        Action response = Dialogs.create().owner(mainPropertiesPane.getScene().getWindow())
-                .title("Удаление записей")
-                .masthead("Сделан выбор записей для удаления")
-                .message("Удалить выбранные записи? ("+countOfDeletingRecords+"шт.)")
-                .actions(org.controlsfx.dialog.Dialog.Actions.OK, org.controlsfx.dialog.Dialog.Actions.CANCEL)
-                .showConfirm();
-        return response;
+        return ControlFXUtils.getResponseDeleteDialog(countOfDeletingRecords,mainPropertiesPane.getScene().getWindow());
     }
 
     private void clearTextFields(TextField ... textFields){
-        for (TextField tf : textFields)
-            tf.clear();
+        ControlFXUtils.clearTextFields(textFields);
     }
 
     private void clearTextAreas(TextArea ... textAreas){
-        for (TextArea ta : textAreas)
-            ta.clear();
+        ControlFXUtils.clearTextAreas(textAreas);
     }
 
     private void setDisabledTextFields(boolean disabled, TextField ... textFields){
-        if (disabled){
-            for (TextField tf : textFields){
-                tf.setEditable(false);
-                tf.setStyle(STYLE_NOT_EDITABLE_BACKGROUND);
-            }
-        }else {
-            for (TextField tf : textFields){
-                tf.setEditable(true);
-                tf.setStyle("");
-            }
-        }
+        ControlFXUtils.setDisabledTextFields(disabled, textFields);
     }
     private void setDisabledComboBoxes(boolean disabled, ComboBox ... comboBoxes){
-        if (disabled){
-            for (ComboBox cb : comboBoxes) {
-                cb.setDisable(true);
-                cb.setStyle(STYLE_NOT_EDIT_COMBOBOX);
-            }
-        }else
-            for (ComboBox cb : comboBoxes) {
-                cb.setDisable(false);
-                cb.setStyle("");
-            }
+        ControlFXUtils.setDisabledComboBoxes(disabled, comboBoxes);
     }
 
     private void setDisabledTextAreas(boolean disable, TextArea ... textAreas){
-        if (disable){
-            for (TextArea ta : textAreas){
-                ta.setEditable(false);
-                ta.setStyle(STYLE_NOT_EDITABLE_BACKGROUND);
-                ta.setOpacity(0.7);
-            }
-        }else {
-            for (TextArea ta : textAreas){
-                ta.setEditable(true);
-                ta.setStyle("");
-                ta.setOpacity(1.0);
-            }
-        }
+        ControlFXUtils.setDisabledTextAreas(disable, textAreas);
     }
 
     private boolean isEventIsSelectedKey(Event event){
-        if (event.getClass().equals(KeyEvent.class)) {
-            if (((KeyEvent) event).getCode().equals(KeyCode.UP) ||
-                    ((KeyEvent) event).getCode().equals(KeyCode.DOWN) ||
-                    ((KeyEvent) event).getCode().equals(KeyCode.PAGE_UP) ||
-                    ((KeyEvent) event).getCode().equals(KeyCode.PAGE_DOWN) ||
-                    ((KeyEvent) event).getCode().equals(KeyCode.HOME) ||
-                    ((KeyEvent) event).getCode().equals(KeyCode.END)){
-                return true;
-            }
-        }
-        return false;
+        return ControlFXUtils.isEventIsSelectedKeyOnList(event);
     }
 
     private boolean isEventIsSelectedMouse(Event event){
-        if (event.getClass().equals(MouseEvent.class)) {
-            if (((MouseEvent)event).getEventType().equals(MouseEvent.MOUSE_CLICKED)) {
-                return true;
-            }
-        }
-        return false;
+       return ControlFXUtils.isEventIsSelectedMouse(event);
     }
 
 

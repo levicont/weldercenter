@@ -28,7 +28,7 @@ public class JournalTimeTableReportEntity extends GenericReportEntity{
         this.curriculumUI = journalUI.getCurriculum();
         this.section = sectionUI.getTitle();
         this.topic = topicUI.getTitle();
-        this.date = topicUI.getDateFormat()+DATE_SUFFIX;
+        this.date = topicUI.getDateFormat()+constants.GENERIC_DATE_SUFFIX;
         this.hours = topicUI.getTimeLong()+"";
         initTeachers(journalUI);
 

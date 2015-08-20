@@ -1,5 +1,6 @@
 package com.lvg.weldercenter.ui.control;
 
+import com.lvg.weldercenter.config.R;
 import javafx.fxml.Initializable;
 import javafx.stage.Stage;
 
@@ -10,7 +11,7 @@ abstract public class GenericController implements Initializable {
 
     private Stage stage;
     protected ControllerManager controllerManager;
-    protected final Integer MAX_TASK_PROGRESS_VALUE = 100;
+    protected R.UI.Control constants = null;
 
     public ControllerManager getControllerManager() {
         return controllerManager;

@@ -43,11 +43,11 @@ public class TotalProtocolReportEntity extends GenericReportEntity {
         put(KEY_COMMISSION_CERTIFICATION_WELD_SPEC_INV, null);
         put(KEY_COMMISSION_CERTIFICATION_NDT_SPEC_INV, null);
         put(KEY_COMMISSION_CERTIFICATION_SAFETY_SPEC_INV, null);
-        put(KEY_HEAD_OF_NDT_LABORATORY, HEAD_OF_NDT_LABORATORY);
-        put(KEY_RT_CERT_OF_HEAD_LABORATORY, RT_CERT_OF_HEAD_LABORATORY);
-        put(KEY_RT_SPEC, RT_NDT_SPEC);
-        put(KEY_RT_SPEC_CERT_NUMBER, RT_CERT_OF_NDT_SPEC);
-        put(KEY_MECH_TEST_SPEC, MECH_TEST_SPEC);
+        put(KEY_HEAD_OF_NDT_LABORATORY, constants.GENERIC_HEAD_OF_NDT_LABORATORY);
+        put(KEY_RT_CERT_OF_HEAD_LABORATORY, constants.GENERIC_RT_CERT_OF_HEAD_LABORATORY);
+        put(KEY_RT_SPEC, constants.GENERIC_RT_NDT_SPEC);
+        put(KEY_RT_SPEC_CERT_NUMBER, constants.GENERIC_RT_CERT_OF_NDT_SPEC);
+        put(KEY_MECH_TEST_SPEC, constants.GENERIC_MECH_TEST_SPEC);
     }};
 
     public TotalProtocolReportEntity(TotalProtocolUI totalProtocolUI){
@@ -59,33 +59,42 @@ public class TotalProtocolReportEntity extends GenericReportEntity {
         parameters.replace(KEY_NUMBER, totalProtocolUI.getNumber());
         parameters.replace(KEY_DATE_CERT, totalProtocolUI.getDateCert());
         parameters.replace(KEY_NEXT_DATE_CERT, totalProtocolUI.getDateCert()!=null?
-                DateUtil.format(DateUtil.getLocalDate(totalProtocolUI.getDateCert()).plusYears(2))+DATE_SUFFIX:NULL_FIELD);
-        parameters.replace(KEY_DATE_CERT_FORMAT, totalProtocolUI.getDateCertFormat()+DATE_SUFFIX);
+                DateUtil.format(DateUtil.getLocalDate(totalProtocolUI.getDateCert()).plusYears(2))+constants.GENERIC_DATE_SUFFIX:
+                constants.GENERIC_NULL_FIELD);
+        parameters.replace(KEY_DATE_CERT_FORMAT, totalProtocolUI.getDateCertFormat()+constants.GENERIC_DATE_SUFFIX);
         if(totalProtocolUI.getCommissionCertification()!=null) {
             parameters.replace(KEY_COMMISSION_CERTIFICATION_HEAD,
                     totalProtocolUI.getCommissionCertification().getHead() != null ?
-                            totalProtocolUI.getCommissionCertification().getHead().getFormatTeacherFullName("SUR-nn-sec") : NULL_FIELD);
+                            totalProtocolUI.getCommissionCertification().getHead().getFormatTeacherFullName("SUR-nn-sec") :
+                            constants.GENERIC_NULL_FIELD);
             parameters.replace(KEY_COMMISSION_CERTIFICATION_NDT_SPEC,
                     totalProtocolUI.getCommissionCertification().getNdtSpecialist() != null ?
-                            totalProtocolUI.getCommissionCertification().getNdtSpecialist().getFormatTeacherFullName("SUR-nn-sec") : NULL_FIELD);
+                            totalProtocolUI.getCommissionCertification().getNdtSpecialist().getFormatTeacherFullName("SUR-nn-sec") :
+                            constants.GENERIC_NULL_FIELD);
             parameters.replace(KEY_COMMISSION_CERTIFICATION_WELD_SPEC,
                     totalProtocolUI.getCommissionCertification().getWeldSpecialist() != null ?
-                            totalProtocolUI.getCommissionCertification().getWeldSpecialist().getFormatTeacherFullName("SUR-nn-sec") : NULL_FIELD);
+                            totalProtocolUI.getCommissionCertification().getWeldSpecialist().getFormatTeacherFullName("SUR-nn-sec") :
+                            constants.GENERIC_NULL_FIELD);
             parameters.replace(KEY_COMMISSION_CERTIFICATION_SAFETY_SPEC,
                     totalProtocolUI.getCommissionCertification().getSafetySpecialist() != null ?
-                            totalProtocolUI.getCommissionCertification().getSafetySpecialist().getFormatTeacherFullName("SUR-nn-sec") : NULL_FIELD);
+                            totalProtocolUI.getCommissionCertification().getSafetySpecialist().getFormatTeacherFullName("SUR-nn-sec") :
+                            constants.GENERIC_NULL_FIELD);
             parameters.replace(KEY_COMMISSION_CERTIFICATION_HEAD_INV,
                     totalProtocolUI.getCommissionCertification().getHead() != null ?
-                            totalProtocolUI.getCommissionCertification().getHead().getFormatTeacherFullName("nn-sec-SUR") : NULL_FIELD);
+                            totalProtocolUI.getCommissionCertification().getHead().getFormatTeacherFullName("nn-sec-SUR") :
+                            constants.GENERIC_NULL_FIELD);
             parameters.replace(KEY_COMMISSION_CERTIFICATION_NDT_SPEC_INV,
                     totalProtocolUI.getCommissionCertification().getNdtSpecialist() != null ?
-                            totalProtocolUI.getCommissionCertification().getNdtSpecialist().getFormatTeacherFullName("nn-sec-SUR") : NULL_FIELD);
+                            totalProtocolUI.getCommissionCertification().getNdtSpecialist().getFormatTeacherFullName("nn-sec-SUR") :
+                            constants.GENERIC_NULL_FIELD);
             parameters.replace(KEY_COMMISSION_CERTIFICATION_WELD_SPEC_INV,
                     totalProtocolUI.getCommissionCertification().getWeldSpecialist() != null ?
-                            totalProtocolUI.getCommissionCertification().getWeldSpecialist().getFormatTeacherFullName("nn-sec-SUR") : NULL_FIELD);
+                            totalProtocolUI.getCommissionCertification().getWeldSpecialist().getFormatTeacherFullName("nn-sec-SUR") :
+                            constants.GENERIC_NULL_FIELD);
             parameters.replace(KEY_COMMISSION_CERTIFICATION_SAFETY_SPEC_INV,
                     totalProtocolUI.getCommissionCertification().getSafetySpecialist() != null ?
-                            totalProtocolUI.getCommissionCertification().getSafetySpecialist().getFormatTeacherFullName("nn-sec-SUR") : NULL_FIELD);
+                            totalProtocolUI.getCommissionCertification().getSafetySpecialist().getFormatTeacherFullName("nn-sec-SUR") :
+                            constants.GENERIC_NULL_FIELD);
         }
     }
 

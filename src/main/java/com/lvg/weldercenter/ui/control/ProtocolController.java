@@ -401,15 +401,15 @@ public class ProtocolController extends GenericController {
         return new Task<Void>() {
             @Override
             protected Void call() throws Exception {
-                updateProgress(5, MAX_TASK_PROGRESS_VALUE);
+                updateProgress(5, constants.GENERIC_MAX_TASK_PROGRESS_VALUE);
                 totalProtocols.clear();
                 cachedTotalProtocols.clear();
                 List<Journal> journalsDb = journalService.getAll();
-                updateProgress(20, MAX_TASK_PROGRESS_VALUE);
+                updateProgress(20, constants.GENERIC_MAX_TASK_PROGRESS_VALUE);
                 List<PersonalProtocol> personalProtocolsDB = personalProtocolService.getAll();
-                updateProgress(30, MAX_TASK_PROGRESS_VALUE);
+                updateProgress(30, constants.GENERIC_MAX_TASK_PROGRESS_VALUE);
                 List<TotalProtocol> totalProtocolList  = totalProtocolService.getAll();
-                updateProgress(40, MAX_TASK_PROGRESS_VALUE);
+                updateProgress(40, constants.GENERIC_MAX_TASK_PROGRESS_VALUE);
                 List<JournalUI> journalUIList = new ArrayList<JournalUI>();
                 List<PersonalProtocolUI> protocolUIFromDB = new ArrayList<PersonalProtocolUI>();
 
@@ -419,7 +419,7 @@ public class ProtocolController extends GenericController {
                         journalUIList.add(new JournalUI(pp.getJournal()));
                     }
                 }
-                updateProgress(70, MAX_TASK_PROGRESS_VALUE);
+                updateProgress(70, constants.GENERIC_MAX_TASK_PROGRESS_VALUE);
                 double currProgress = 70;
                 double stepProgress = 30;
                 if (totalProtocolList.size() >0)
@@ -445,10 +445,10 @@ public class ProtocolController extends GenericController {
                         }
                     }
                     totalProtocols.add(treeItem);
-                    updateProgress(currProgress, MAX_TASK_PROGRESS_VALUE);
+                    updateProgress(currProgress, constants.GENERIC_MAX_TASK_PROGRESS_VALUE);
                 }
 
-                updateProgress(100, MAX_TASK_PROGRESS_VALUE);
+                updateProgress(100, constants.GENERIC_MAX_TASK_PROGRESS_VALUE);
 
                 Platform.runLater(new Runnable() {
                     @Override
@@ -1935,9 +1935,9 @@ public class ProtocolController extends GenericController {
             protected Void call() throws Exception {
 
                 updateSelectedPersonalProtocolFromFields(selectedPersonalProtocolUI);
-                updateProgress(35, MAX_TASK_PROGRESS_VALUE);
+                updateProgress(35, constants.GENERIC_MAX_TASK_PROGRESS_VALUE);
                 personalProtocolServiceUI.savePersonalProtocolUIinDB(selectedPersonalProtocolUI);
-                updateProgress(90, MAX_TASK_PROGRESS_VALUE);
+                updateProgress(90, constants.GENERIC_MAX_TASK_PROGRESS_VALUE);
                 Platform.runLater(new Runnable() {
                     @Override
                     public void run() {
@@ -1994,10 +1994,10 @@ public class ProtocolController extends GenericController {
             @Override
             protected Void call() throws Exception {
                 updateSelectedWeldPatternFromFields(selectedWeldPatternUI);
-                updateProgress(20, MAX_TASK_PROGRESS_VALUE);
+                updateProgress(20, constants.GENERIC_MAX_TASK_PROGRESS_VALUE);
                 WeldPattern weldPattern = weldPatternServiceUI.getWeldPatternFromWeldPatternUI(selectedWeldPatternUI);
                 weldPattern.setPersonalProtocol(personalProtocolServiceUI.getPersonalProtocolFromUIModel(selectedPersonalProtocolUI));
-                updateProgress(45, MAX_TASK_PROGRESS_VALUE);
+                updateProgress(45, constants.GENERIC_MAX_TASK_PROGRESS_VALUE);
                 if(selectedWeldPatternUI.getId()==0){
                     selectedWeldPatternUI.setPersonalProtocol(selectedPersonalProtocolUI);
                     Long id = weldPatternService.insert(weldPattern);
@@ -2014,7 +2014,7 @@ public class ProtocolController extends GenericController {
                     LOGGER.debug("SAVE SELECTED WELD PATTERN: selectedWeldPattern is updated.");
 
                 }
-                updateProgress(90, MAX_TASK_PROGRESS_VALUE);
+                updateProgress(90, constants.GENERIC_MAX_TASK_PROGRESS_VALUE);
                 Platform.runLater(new Runnable() {
                     @Override
                     public void run() {

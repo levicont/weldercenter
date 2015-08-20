@@ -1,5 +1,6 @@
 package com.lvg.weldercenter.ui.entities.report;
 
+import com.lvg.weldercenter.config.R;
 import com.lvg.weldercenter.ui.entities.*;
 
 import java.util.HashMap;
@@ -47,7 +48,7 @@ public class WeldPatternReportEntity extends GenericReportEntity{
         if (weldPatternUI.getWeldMethod()!=null)
             this.weldMethod = weldPatternUI.getWeldMethod().getCode();
         else
-            this.weldMethod = NULL_FIELD;
+            this.weldMethod = constants.GENERIC_NULL_FIELD;
         this.thickness = String.valueOf(weldPatternUI.getThickness());
         this.diameter = String.valueOf(weldPatternUI.getDiameter());
         this.size = getSizeFromThicknessDiameter(this.thickness,this.diameter);
@@ -81,50 +82,52 @@ public class WeldPatternReportEntity extends GenericReportEntity{
             diameterD = 0.0;
         }
         if(diameterD == 0)
-            return "250"+SIZE_SEPARATOR+"300"+SIZE_SEPARATOR+deleteFloatZeroSuffix(thickness);
-        return deleteFloatZeroSuffix(diameterD+"")+SIZE_SEPARATOR+deleteFloatZeroSuffix(""+thicknessD);
+            return constants.WELD_PATT_STANDART_WIDTH
+                    +constants.GENERIC_SIZE_SEPARATOR+constants.WELD_PATT_STANDART_LENGHT
+                    +constants.GENERIC_SIZE_SEPARATOR+deleteFloatZeroSuffix(thickness);
+        return deleteFloatZeroSuffix(diameterD+"")+constants.GENERIC_SIZE_SEPARATOR+deleteFloatZeroSuffix(""+thicknessD);
     }
     private String getWeldPatternWeldJoinTypes(List<WeldJoinTypeUI> weldJoinTypes){
         if (weldJoinTypes==null)
-            return NULL_FIELD;
+            return constants.GENERIC_NULL_FIELD;
         StringBuilder result = new StringBuilder();
         for (WeldJoinTypeUI wjt: weldJoinTypes){
             result.append(wjt.getType());
-            result.append(SPACE_SEPARATOR);
+            result.append(constants.GENERIC_SPACE_SEPARATOR);
         }
-        deleteLastSeparator(result,SPACE_SEPARATOR);
+        deleteLastSeparator(result,constants.GENERIC_SPACE_SEPARATOR);
         return result.toString();
     }
     private String getWeldPatternWeldPositions(List<WeldPositionUI> weldPositions){
         if (weldPositions==null)
-            return NULL_FIELD;
+            return constants.GENERIC_NULL_FIELD;
         StringBuilder result = new StringBuilder();
         for (WeldPositionUI wp: weldPositions){
             result.append(wp.getCode());
-            result.append(SEMICOLON_SEPARATOR);
+            result.append(constants.GENERIC_SEMICOLON_SEPARATOR);
         }
-        deleteLastSeparator(result, SEMICOLON_SEPARATOR);
+        deleteLastSeparator(result, constants.GENERIC_SEMICOLON_SEPARATOR);
         return result.toString();
     }
     private String getWeldPatternWeldMaterial(SteelTypeUI steelTypeUI){
         if (steelTypeUI==null)
-            return NULL_FIELD;
+            return constants.GENERIC_NULL_FIELD;
         SteelGroupUI steelGroup = steelTypeUI.getSteelGroupUI();
         if (steelTypeUI.getSteelGroup()==null || steelGroup.getGroup().isEmpty())
             return steelTypeUI.getType();
-        return steelGroup.getGroup()+COLON_SEPARATOR+steelTypeUI.getType();
+        return steelGroup.getGroup()+constants.GENERIC_COLON_SEPARATOR+steelTypeUI.getType();
     }
     private String getElectrodesWeldWires(WeldPatternUI weldPatternUI){
         if (weldPatternUI.getElectrode()!=null)
             return weldPatternUI.getElectrode().getType();
         if (weldPatternUI.getWeldWire()!=null)
             return weldPatternUI.getWeldWire().getType();
-        return NULL_FIELD;
+        return constants.GENERIC_NULL_FIELD;
     }
     private Map<String,String> getWeldPatternVTParameters(VisualTestUI visualTest){
         Map<String, String> resultMap = new HashMap<String, String>();
-        resultMap.put(KEY_VT_DEFECTS, NULL_FIELD);
-        resultMap.put(KEY_VT_EVALUATION, NULL_FIELD);
+        resultMap.put(KEY_VT_DEFECTS, constants.GENERIC_NULL_FIELD);
+        resultMap.put(KEY_VT_EVALUATION, constants.GENERIC_NULL_FIELD);
 
         if (visualTest==null)
             return resultMap;
@@ -136,9 +139,9 @@ public class WeldPatternReportEntity extends GenericReportEntity{
     }
     private Map<String,String> getWeldPatternRTParameters(RadiationTestUI radiationTest){
         Map<String, String> resultMap = new HashMap<String, String>();
-        resultMap.put(KEY_RT_DEFECTS, NULL_FIELD);
-        resultMap.put(KEY_RT_EVALUATION, NULL_FIELD);
-        resultMap.put(KEY_RT_SENSITIVITY, NULL_FIELD);
+        resultMap.put(KEY_RT_DEFECTS, constants.GENERIC_NULL_FIELD);
+        resultMap.put(KEY_RT_EVALUATION, constants.GENERIC_NULL_FIELD);
+        resultMap.put(KEY_RT_SENSITIVITY, constants.GENERIC_NULL_FIELD);
 
         if (radiationTest==null)
             return resultMap;
@@ -151,10 +154,10 @@ public class WeldPatternReportEntity extends GenericReportEntity{
     }
     private Map<String,String> getWeldPatternMTParameters(MechanicalTestUI mechanicalTest){
         Map<String, String> resultMap = new HashMap<String, String>();
-        resultMap.put(KEY_MT_ANGLE, NULL_FIELD);
-        resultMap.put(KEY_MT_EVALUATION, NULL_FIELD);
-        resultMap.put(KEY_MT_CLEARANCE, NULL_FIELD);
-        resultMap.put(KEY_MT_MAIN_TEST_FEATURE, NULL_FIELD);
+        resultMap.put(KEY_MT_ANGLE, constants.GENERIC_NULL_FIELD);
+        resultMap.put(KEY_MT_EVALUATION, constants.GENERIC_NULL_FIELD);
+        resultMap.put(KEY_MT_CLEARANCE, constants.GENERIC_NULL_FIELD);
+        resultMap.put(KEY_MT_MAIN_TEST_FEATURE, constants.GENERIC_NULL_FIELD);
 
         if (mechanicalTest==null)
             return resultMap;
@@ -162,10 +165,10 @@ public class WeldPatternReportEntity extends GenericReportEntity{
         resultMap.replace(KEY_MT_CLEARANCE, String.valueOf(mechanicalTest.getClearance()));
         if (mechanicalTest.getAngle()==0)
             resultMap.replace(KEY_MT_MAIN_TEST_FEATURE,deleteFloatZeroSuffix(resultMap.get(KEY_MT_CLEARANCE))+
-                MILLIMETERS_SUFFIX);
+                    constants.GENERIC_MILLIMETERS_SUFFIX);
         else
             resultMap.replace(KEY_MT_MAIN_TEST_FEATURE,deleteFloatZeroSuffix(resultMap.get(KEY_MT_ANGLE))+
-                DEGREES_SUFFIX);
+                    constants.GENERIC_DEGREES_SUFFIX);
 
         if (mechanicalTest.getEvaluation()==null)
             return resultMap;
