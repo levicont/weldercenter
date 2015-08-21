@@ -54,6 +54,11 @@ public class R {
                     "-fx-opacity: 1;" +
                     "-fx-background-color: #deefff;" +
                     "-fx-text-fill: #000";
+            public static final String GENERIC_STYLE_NOT_EDIT_TABLE_VIEW =
+                "-fx-background-color : #deefff;" +
+                        "-fx-opacity: 0.7";
+
+
             public static final String GENERIC_STYLE_NOT_EDIT_DATE_PICKER =
                     "-fx-opacity: 1;" +
                     "-fx-background-color: #deefff;" +

@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+
 <BorderPane fx:id="mainJournalPane" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.lvg.weldercenter.ui.control.JournalController">
     <bottom>
         <HBox prefHeight="32.0" prefWidth="600.0" spacing="10.0" BorderPane.alignment="CENTER">
@@ -111,7 +113,7 @@
                                                 <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                             </GridPane.margin>
                                         </Label>
-                                        <TextField fx:id="tfxJournalNumber" maxHeight="-Infinity" maxWidth="-Infinity" minWidth="45.0" prefWidth="75.0" GridPane.columnIndex="1">
+                                        <TextField fx:id="txfJournalNumber" maxHeight="-Infinity" maxWidth="-Infinity" minWidth="45.0" prefWidth="75.0" GridPane.columnIndex="1">
                                             <GridPane.margin>
                                                 <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                             </GridPane.margin>
@@ -183,7 +185,7 @@
                                     <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                  </GridPane.margin>
                               </ListView>
-                              <Button mnemonicParsing="false" onAction="#calculateCurriculum" text="Рассчитать" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                              <Button fx:id="btCalculateCurriculum" mnemonicParsing="false" onAction="#calculateCurriculum" text="Рассчитать" GridPane.columnIndex="1" GridPane.rowIndex="4">
                                  <GridPane.margin>
                                     <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                  </GridPane.margin>
@@ -195,7 +197,7 @@
                                           <Insets right="8.0" />
                                        </VBox.margin>
                                     </Button>
-                                    <Button mnemonicParsing="false" onAction="#removeWelderFromJournal" text="Удалить" />
+                                    <Button fx:id="btRemoveWelderFromJournal" mnemonicParsing="false" onAction="#removeWelderFromJournal" text="Удалить" />
                                  </children>
                               </VBox>
                               <MenuButton fx:id="teachersMenuButton" mnemonicParsing="false" prefWidth="200.0" text="Выбрать преподавателя" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="6">

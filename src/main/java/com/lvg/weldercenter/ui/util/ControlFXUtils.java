@@ -109,7 +109,6 @@ public class ControlFXUtils {
             for (ComboBox cb : comboBoxes) {
                 cb.setDisable(true);
                 cb.setStyle(R.UI.Control.GENERIC_STYLE_NOT_EDIT_COMBOBOX);
-
             }
         }else
             for (ComboBox cb : comboBoxes) {
@@ -146,6 +145,40 @@ public class ControlFXUtils {
                 ta.setStyle("");
                 ta.setOpacity(1.0);
             }
+        }
+    }
+    public static void setDisabledTableViews(boolean disable, TableView ... tableViews){
+        if (disable){
+            for (TableView tableView : tableViews){
+                //tableView.setDisable(disable);
+                tableView.setStyle(R.UI.Control.GENERIC_STYLE_NOT_EDIT_TABLE_VIEW);
+
+            }
+        }else {
+            for (TableView tableView : tableViews){
+                tableView.setDisable(disable);
+                tableView.setStyle("");
+            }
+        }
+    }
+
+    public static void setDisabledListViews(boolean disable, ListView ... listViews){
+        if (disable){
+            for (ListView listView : listViews){
+                //listView.setDisable(disable);
+                listView.setStyle(R.UI.Control.GENERIC_STYLE_NOT_EDIT_TABLE_VIEW);
+            }
+        }else {
+            for (ListView listView : listViews){
+                listView.setDisable(disable);
+                listView.setStyle("");
+            }
+        }
+    }
+
+    public static void setDisabledButtons(boolean disable, Button ... buttons){
+        for (Button bt : buttons){
+            bt.setDisable(disable);
         }
     }
 

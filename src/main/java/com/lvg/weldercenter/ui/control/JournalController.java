@@ -13,6 +13,7 @@ import com.lvg.weldercenter.spring.factories.ServiceUIFactory;
 import com.lvg.weldercenter.ui.entities.*;
 import com.lvg.weldercenter.ui.servicesui.PersonalProtocolServiceUI;
 import com.lvg.weldercenter.ui.servicesui.TotalProtocolServiceUI;
+import com.lvg.weldercenter.ui.util.ControlFXUtils;
 import com.lvg.weldercenter.ui.util.DateUtil;
 import com.lvg.weldercenter.ui.util.TableUtil;
 import com.lvg.weldercenter.ui.util.TimeTableUtil;
@@ -94,13 +95,15 @@ public class JournalController extends GenericController{
     @FXML
     GridPane journalDetailsPane;
     @FXML
-    TextField tfxJournalNumber;
+    TextField txfJournalNumber;
     @FXML
     DatePicker dpDateBegin;
     @FXML
     DatePicker dpDateEnd;
     @FXML
     ComboBox<String> cbCurriculum;
+    @FXML
+    Button btCalculateCurriculum;
 
     //Teachers
     @FXML
@@ -123,6 +126,8 @@ public class JournalController extends GenericController{
     TableColumn<WelderUI, ObservableList<String>> weldersTableWeldMethods;
     @FXML
     Button btShowWelderSelectorPane;
+    @FXML
+    Button btRemoveWelderFromJournal;
 
     //Welder selector pane VBOX
     @FXML
@@ -245,18 +250,17 @@ public class JournalController extends GenericController{
     }
 
     private void initJournalDetailsPane(){
-        tfxJournalNumber.textProperty().addListener(new ChangeJournalPropertiesListener());
+        txfJournalNumber.textProperty().addListener(new ChangeJournalPropertiesListener());
         dpDateBegin.getEditor().textProperty().addListener(new ChangeJournalPropertiesListener());
         dpDateEnd.getEditor().textProperty().addListener(new ChangeJournalPropertiesListener());
 
         selectWelderPane.setVisible(false);
         txfSearchWelder.textProperty().addListener(new SearchWelderInvalidateListener());
-
-        journalDetailsPane.setDisable(true);
+        setDisabledJournalDetailPane(true);
     }
 
     private void clearJournalDetailsPane(){
-        tfxJournalNumber.setText("");
+        txfJournalNumber.setText("");
         dpDateBegin.setValue(DateUtil.DEFAULT_DATE);
         dpDateEnd.setValue(DateUtil.DEFAULT_DATE);
         getTopics().clear();
@@ -425,7 +429,7 @@ public class JournalController extends GenericController{
     private void fillJournalDetailsPane(JournalUI selectedJournal){
         if (selectedJournal == null)
             return;
-        tfxJournalNumber.setText(selectedJournal.getNumber());
+        txfJournalNumber.setText(selectedJournal.getNumber());
         dpDateBegin.setValue(DateUtil.getLocalDate(selectedJournal.getDateBegin()));
         dpDateEnd.setValue(DateUtil.getLocalDate(selectedJournal.getDateEnd()));
         dpDateEnd.setEditable(false);
@@ -441,10 +445,10 @@ public class JournalController extends GenericController{
     private JournalUI getJournalUIFromFields(){
         JournalUI journalUI = new JournalUI();
         journalUI.setId(0);
-        if(tfxJournalNumber.getText()==null || tfxJournalNumber.getText().isEmpty()){
+        if(txfJournalNumber.getText()==null || txfJournalNumber.getText().isEmpty()){
             journalUI.setNumber("");
         }else {
-            journalUI.setNumber(tfxJournalNumber.getText());
+            journalUI.setNumber(txfJournalNumber.getText());
         }
         if(dpDateBegin.getValue()== null)
             journalUI.setDateBegin(DateUtil.getDate(DateUtil.DEFAULT_DATE));
@@ -648,7 +652,7 @@ public class JournalController extends GenericController{
         JournalUI copyJournal = getJournalUICopy(srcJournal);
         copyJournal.setId(0);
         saveJournalInDB(copyJournal);
-        journalDetailsPane.setDisable(false);
+        setDisabledJournalDetailPane(false);
         btEdit.setDisable(true);
     }
 
@@ -674,7 +678,7 @@ public class JournalController extends GenericController{
         if(selectedJournal.getId()==0){
             saveJournalInDB(getJournalUIFromFields());
             btSave.setDisable(true);
-            journalDetailsPane.setDisable(true);
+            setDisabledJournalDetailPane(true);
             return;
         }
         if(isJournalUIChanged(selectedJournal)){
@@ -692,13 +696,13 @@ public class JournalController extends GenericController{
             fillJournalDetailsPane(updJournal);
 
             btSave.setDisable(true);
-            journalDetailsPane.setDisable(true);
+            setDisabledJournalDetailPane(true);
             return;
 
         }
         LOGGER.debug("SAVE JOURNAL: Journal was not saved");
         btSave.setDisable(true);
-        journalDetailsPane.setDisable(true);
+        setDisabledJournalDetailPane(true);
 
     }
 
@@ -742,7 +746,8 @@ public class JournalController extends GenericController{
         journalTableView.getSelectionModel().select(newJournal);
 
         fillJournalDetailsPane(newJournal);
-        journalDetailsPane.setDisable(false);
+
+        setDisabledJournalDetailPane(false);
         btEdit.setDisable(true);
 
     }
@@ -823,6 +828,18 @@ public class JournalController extends GenericController{
         getTopics().addAll(topics);
     }
 
+    private void setDisabledJournalDetailPane(boolean disabled){
+        ControlFXUtils.setDisabledTextFields(disabled, txfJournalNumber, txfSearchWelder);
+        ControlFXUtils.setDisabledDatePickers(disabled, dpDateBegin);
+        ControlFXUtils.setDisabledComboBoxes(disabled, cbCurriculum);
+        ControlFXUtils.setDisabledTableViews(disabled, topicTableView, weldersTableView);
+        ControlFXUtils.setDisabledListViews(disabled, teachersListView, weldersListView);
+        ControlFXUtils.setDisabledButtons(disabled, btAddWelderToJournal, btShowWelderSelectorPane,
+                btCalculateCurriculum, btRemoveWelderFromJournal);
+        teachersMenuButton.setDisable(disabled);
+        ControlFXUtils.setDisabledDatePickers(true,dpDateEnd);
+    }
+
     private class TableViewHandler implements EventHandler<Event>{
         @Override
         public void handle(Event event) {
@@ -855,8 +872,7 @@ public class JournalController extends GenericController{
                 return;
             }
             LOGGER.debug("TABLE VIEW HANDLER: Selected journal is: \n"+selectedJournal+"\n");
-            if(!journalDetailsPane.isDisabled())
-                journalDetailsPane.setDisable(true);
+            setDisabledJournalDetailPane(true);
             btEdit.setDisable(false);
             btSave.setDisable(true);
             fillJournalDetailsPane(selectedJournal);
@@ -887,10 +903,9 @@ public class JournalController extends GenericController{
         @Override
         public void handle(MouseEvent event) {
             LOGGER.debug("ACTIVE EDIT HANDLER: click on btEdit");
-            if(journalDetailsPane.isDisabled()) {
-                journalDetailsPane.setDisable(false);
-                btEdit.setDisable(true);
-            }
+            setDisabledJournalDetailPane(false);
+            btEdit.setDisable(true);
+
         }
     }
     private class ChangeJournalPropertiesListener implements InvalidationListener{
