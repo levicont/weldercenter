@@ -1,7 +1,6 @@
 package com.lvg.weldercenter.ui.util;
 
 import com.lvg.weldercenter.config.R;
-import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
@@ -76,6 +75,16 @@ public class ControlFXUtils {
                 .title("Удаление записей")
                 .masthead("Сделан выбор записей для удаления")
                 .message("Удалить выбранные записи? ("+countOfDeletingRecords+"шт.)")
+                .actions(org.controlsfx.dialog.Dialog.Actions.OK, org.controlsfx.dialog.Dialog.Actions.CANCEL)
+                .showConfirm();
+        return response;
+    }
+
+    public static Action getResponseSaveRecordDialog(String message, Object owner){
+        Action response = Dialogs.create().owner(owner)
+                .title("Сохранение записи")
+                .masthead("Появились записи которые необходимио сохранить")
+                .message(message)
                 .actions(org.controlsfx.dialog.Dialog.Actions.OK, org.controlsfx.dialog.Dialog.Actions.CANCEL)
                 .showConfirm();
         return response;

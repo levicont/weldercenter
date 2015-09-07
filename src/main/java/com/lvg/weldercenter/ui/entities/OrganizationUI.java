@@ -67,11 +67,7 @@ public class OrganizationUI extends GenericEntityUI {
 
     @Override
     public String toString() {
-        return "OrganizationUI{" +
-                "adress=" + adress +
-                ", name=" + name +
-                ", phone=" + phone +
-                '}';
+        return getName();
     }
 
     @Override

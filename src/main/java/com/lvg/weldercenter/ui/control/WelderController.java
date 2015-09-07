@@ -3,13 +3,17 @@ package com.lvg.weldercenter.ui.control;
 import com.lvg.weldercenter.models.*;
 import com.lvg.weldercenter.services.*;
 import com.lvg.weldercenter.spring.factories.ServiceFactory;
-import com.lvg.weldercenter.ui.entities.WelderUI;
+import com.lvg.weldercenter.spring.factories.ServiceUIFactory;
+import com.lvg.weldercenter.ui.entities.*;
+import com.lvg.weldercenter.ui.servicesui.OrganizationServiceUI;
 import com.lvg.weldercenter.ui.util.ControlFXUtils;
 import com.lvg.weldercenter.ui.util.DateUtil;
 import com.lvg.weldercenter.ui.util.TableUtil;
 import com.lvg.weldercenter.ui.util.managers.TableViewManager;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -19,7 +23,6 @@ import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -50,6 +53,7 @@ public class WelderController extends GenericController {
     private JobService jobService = ServiceFactory.getJobService();
     private TableUtil<WelderUI> tableUtil = new TableViewManager();
 
+    private OrganizationServiceUI organizationServiceUI = ServiceUIFactory.getOrganizationServiceUI();
     @FXML
     private BorderPane mainWelderPane;
 
@@ -102,13 +106,13 @@ public class WelderController extends GenericController {
     @FXML
     private TextField txfAddress;
     @FXML
-    private ComboBox<String> cbEducation;
+    private ComboBox<EducationUI> cbEducation;
     @FXML
-    private ComboBox<String> cbQualification;
+    private ComboBox<QualificationUI> cbQualification;
     @FXML
-    private ComboBox<String> cbOrganization;
+    private ComboBox<OrganizationUI> cbOrganization;
     @FXML
-    private ComboBox<String> cbJob;
+    private ComboBox<JobUI> cbJob;
 
     @FXML
     private MenuButton mbtWeldMethod;
@@ -127,16 +131,16 @@ public class WelderController extends GenericController {
 
 
 
-    private ObservableList<String> weldMethodsList;
-    private ObservableList<String> txfWeldMethodList;
-    private ObservableList<WelderUI> welders;
+    private ObservableList<String> weldMethodsList = FXCollections.observableArrayList();
+    private ObservableList<String> txfWeldMethodList = FXCollections.observableArrayList();
+    private ObservableList<WelderUI> allWelders = FXCollections.observableArrayList();
+    private ObservableList<EducationUI> allEducations = FXCollections.observableArrayList();
+    private ObservableList<OrganizationUI> allOrganizations = FXCollections.observableArrayList();
+    private ObservableList<QualificationUI> allQualifications = FXCollections.observableArrayList();
+    private ObservableList<JobUI> allJobs = FXCollections.observableArrayList();
 
     public WelderController(){
         weldMethodsList = FXCollections.observableArrayList(getWeldMethods(weldMethodService.getAll()));
-        txfWeldMethodList = FXCollections.observableArrayList();
-        initWeldersList();
-
-
     }
 
 
@@ -144,20 +148,32 @@ public class WelderController extends GenericController {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         LOGGER.debug("INITIALIZING WelderPane");
         fillMenuButton(mbtWeldMethod, getWeldMethods(weldMethodService.getAll()));
+        initTableViewWelders();
         fillComboBoxes();
-        this.initWelderTable();
-        this.initWelderDetailsPane();
-        this.initControlButtons();
+        initWelderDetailsPane();
+        initControlButtons();
 
 
     }
 
-    public ObservableList<WelderUI> getWelders() {
-        return welders;
+    public ObservableList<WelderUI> getAllWelders() {
+        return allWelders;
     }
 
-    public void setWelders(ObservableList<WelderUI> welders) {
-        this.welders = welders;
+
+    private void initTableViewWelders(){
+        initWeldersList();
+        id.setCellValueFactory(new PropertyValueFactory<WelderUI, Long>("id"));
+        name.setCellValueFactory(new PropertyValueFactory<WelderUI, String>("name"));
+        surname.setCellValueFactory(new PropertyValueFactory<WelderUI, String>("surname"));
+        secname.setCellValueFactory(new PropertyValueFactory<WelderUI, String>("secname"));
+        birthdayFormat.setCellValueFactory(new PropertyValueFactory<WelderUI, String>("birthdayFormat"));
+        job.setCellValueFactory(new PropertyValueFactory<WelderUI, String>("job"));
+        weldMethods.setCellValueFactory(new PropertyValueFactory<WelderUI, ObservableList<String>>("weldMethods"));
+        welderTableView.setItems(allWelders);
+        welderTableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        welderTableView.addEventHandler(Event.ANY,new TableViewHandler());
+        hideSearchBar();
     }
 
     private void initControlButtons(){
@@ -167,17 +183,19 @@ public class WelderController extends GenericController {
     }
 
     private void initWelderDetailsPane(){
-        txfSurname.textProperty().addListener(new TextFieldValidateListener());
-        txfName.textProperty().addListener(new TextFieldValidateListener());
-        txfSecname.textProperty().addListener(new TextFieldValidateListener());
-        txfDocNumber.textProperty().addListener(new TextFieldValidateListener());
-        txfAddress.textProperty().addListener(new TextFieldValidateListener());
-        dpBirthday.getEditor().textProperty().addListener(new TextFieldValidateListener());
-        dpDateBegin.getEditor().textProperty().addListener(new TextFieldValidateListener());
+        InvalidationListener invalidationListener = new TextFieldValidateListener();
+        txfSurname.textProperty().addListener(invalidationListener);
+        txfName.textProperty().addListener(invalidationListener);
+        txfSecname.textProperty().addListener(invalidationListener);
+        txfDocNumber.textProperty().addListener(invalidationListener);
+        txfAddress.textProperty().addListener(invalidationListener);
+        dpBirthday.getEditor().textProperty().addListener(invalidationListener);
+        dpDateBegin.getEditor().textProperty().addListener(invalidationListener);
+        ChangeListener changeListener = new OrganizationFilterListener();
+        cbOrganization.getEditor().textProperty().addListener(changeListener);
 
         clearWelderDetailsPane();
         setDisableWelderDetailsPane(true);
-        //welderDetailsPane.setDisable(true);
     }
 
     private void resetWelderDetailPane(){
@@ -185,7 +203,6 @@ public class WelderController extends GenericController {
         btEdit.setDisable(false);
         btSave.setDisable(true);
         setDisableWelderDetailsPane(true);
-        //welderDetailsPane.setDisable(true);
         fillWelderDetailPane(selectedWelder);
     }
 
@@ -219,29 +236,29 @@ public class WelderController extends GenericController {
     }
 
     private void selectComboBoxItems(WelderUI selectedWelder){
-        for (String eduName: cbEducation.getItems()){
-            if(eduName.equals(selectedWelder.getEducation())){
-                cbEducation.getSelectionModel().select(eduName);
+        for (EducationUI educationUI: cbEducation.getItems()){
+            if(educationUI.toString().equals(selectedWelder.getEducation())){
+                cbEducation.getSelectionModel().select(educationUI);
                 break;
             }
         }
 
-        for (String qualifName : cbQualification.getItems()){
-            if(qualifName.equals(selectedWelder.getQualification())){
+        for (QualificationUI qualifName : cbQualification.getItems()){
+            if(qualifName.toString().equals(selectedWelder.getQualification())){
                 cbQualification.getSelectionModel().select(qualifName);
                 break;
             }
         }
 
-        for (String orgName: cbOrganization.getItems()){
-            if(orgName.equals(selectedWelder.getOrganization())){
+        for (OrganizationUI orgName: cbOrganization.getItems()){
+            if(orgName.toString().equals(selectedWelder.getOrganization())){
                 cbOrganization.getSelectionModel().select(orgName);
                 break;
             }
         }
 
-        for (String jobName : cbJob.getItems()){
-            if(jobName.equals(selectedWelder.getJob())){
+        for (JobUI jobName : cbJob.getItems()){
+            if(jobName.toString().equals(selectedWelder.getJob())){
                 cbJob.getSelectionModel().select(jobName);
                 break;
 
@@ -258,14 +275,18 @@ public class WelderController extends GenericController {
         birthdayFormat.setCellValueFactory(new PropertyValueFactory<WelderUI, String>("birthdayFormat"));
         job.setCellValueFactory(new PropertyValueFactory<WelderUI, String>("job"));
         weldMethods.setCellValueFactory(new PropertyValueFactory<WelderUI, ObservableList<String>>("weldMethods"));
-        setWelderTableItem(welderTableView, getWelders());
+        setWelderTableItem(welderTableView, getAllWelders());
         welderTableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         welderTableView.addEventHandler(Event.ANY,new TableViewHandler());
         hideSearchBar();
     }
 
     private void initWeldersList(){
-        setWelders(FXCollections.observableArrayList(getWeldersUIList(welderService.getAll())));
+        allWelders.clear();
+        for (Welder welder : welderService.getAll()){
+            WelderUI welderUI = new WelderUI(welder);
+            allWelders.add(welderUI);
+        }
     }
 
     private void updateTextFieldWeldMethodList(){
@@ -293,7 +314,6 @@ public class WelderController extends GenericController {
         }
         txfWeldMethod.setText(text.toString());
     }
-
 
     private List<WelderUI> getWeldersUIList(List<Welder> welderList){
         List<WelderUI> list = new ArrayList<WelderUI>();
@@ -326,45 +346,64 @@ public class WelderController extends GenericController {
     private void fillComboBoxes(){
         initEducationComboBox();
         initOrganizationComboBox();
+        //TODO add correct listener
+
         initQualificationComboBox();
         initJobComboBox();
     }
 
     private void initEducationComboBox(){
-        List<String> eduNames = new ArrayList<String>();
-        List<Education> educations = educationService.getAll();
-        for(Education edu : educations){
-            eduNames.add(edu.getType());
+        initAllEducationList();
+        cbEducation.setItems(allEducations);
+    }
+
+    private void initAllEducationList(){
+        allEducations.clear();
+        for (Education edu : educationService.getAll()){
+            EducationUI educationUI = new EducationUI(edu);
+            allEducations.add(educationUI);
         }
-        cbEducation.setItems(FXCollections.observableArrayList(eduNames));
     }
 
     private void initOrganizationComboBox(){
-        List<String> orgNames = new ArrayList<String>();
-        List<Organization> organizations = organizationService.getAll();
-        for(Organization org : organizations){
-            orgNames.add(org.getName());
+        initAllOrganizationList();
+        cbOrganization.setItems(allOrganizations);
+
+    }
+
+    private void initAllOrganizationList(){
+        allOrganizations.clear();
+        for (Organization org: organizationService.getAll()){
+            OrganizationUI orgUI = new OrganizationUI(org);
+            allOrganizations.add(orgUI);
         }
-        cbOrganization.setItems(FXCollections.observableArrayList(orgNames));
     }
 
     private void initQualificationComboBox(){
-        List<String> qualifNames = new ArrayList<String>();
-        List<Qualification> qualifications = qualificationService.getAll();
-        for(Qualification q : qualifications){
-            qualifNames.add(q.getType());
+        initAllQualificationList();
+        cbQualification.setItems(allQualifications);
+    }
+
+    private void initAllQualificationList(){
+        allQualifications.clear();
+        for (Qualification q : qualificationService.getAll()){
+            QualificationUI qUI = new QualificationUI(q);
+            allQualifications.add(qUI);
         }
-        cbQualification.setItems(FXCollections.observableArrayList(qualifNames));
     }
 
     private void initJobComboBox(){
-        List<String> jobNames = new ArrayList<String>();
-        List<Job> jobs = jobService.getAll();
-        for(Job j : jobs){
-            jobNames.add(j.getName());
-        }
-        cbJob.setItems(FXCollections.observableArrayList(jobNames));
+        initAllJobsList();
+        cbJob.setItems(allJobs);
 
+    }
+
+    private void initAllJobsList(){
+        allJobs.clear();
+        for (Job j: jobService.getAll()){
+            JobUI jobUI = new JobUI(j);
+            allJobs.add(jobUI);
+        }
     }
 
     private void clearWelderDetailsPane(){
@@ -468,19 +507,21 @@ public class WelderController extends GenericController {
         if(null == cbEducation.getValue()){
             welderUI.setEducation("");
         }else
-            welderUI.setEducation(cbEducation.getValue());
+            welderUI.setEducation(cbEducation.getValue().toString());
         if(null == cbQualification.getValue()){
             welderUI.setQualification("");
         }else
-            welderUI.setQualification(cbQualification.getValue());
+            welderUI.setQualification(cbQualification.getValue().toString());
         if(null == cbJob.getValue()){
             welderUI.setJob("");
         }else
-            welderUI.setJob(cbJob.getValue());
+            welderUI.setJob(cbJob.getValue().toString());
         if (null == cbOrganization.getValue()){
             welderUI.setOrganization("");
-        }else
-            welderUI.setOrganization(cbOrganization.getValue());
+        }else {
+            saveNewOrganization();
+            welderUI.setOrganization(cbOrganization.getValue()+"");
+        }
     }
 
     private void hideSearchBar(){
@@ -510,7 +551,7 @@ public class WelderController extends GenericController {
         }
         updateWelderFromFields(welder);
         welderService.update(welder);
-        if (getWelders().equals(welderTableView.getItems())) {
+        if (getAllWelders().equals(welderTableView.getItems())) {
             welderTableView.getItems().set(welderTableView.getItems().indexOf(updatedWelderUI),
                     new WelderUI(welder));
             lightRefreshTable();
@@ -518,7 +559,7 @@ public class WelderController extends GenericController {
         else {
             welderTableView.getItems().set(welderTableView.getItems().indexOf(updatedWelderUI),
                     new WelderUI(welder));
-            getWelders().remove(welderTableView.getItems().indexOf(updatedWelderUI));
+            getAllWelders().remove(welderTableView.getItems().indexOf(updatedWelderUI));
         }
         requestFocusAtTable();
         LOGGER.debug("After save selected welder is: "+welderTableView.getSelectionModel().getSelectedItem());
@@ -728,6 +769,34 @@ public class WelderController extends GenericController {
         }
     }
 
+    @FXML
+    private void saveNewOrganization(){
+        String orgName = cbOrganization.getEditor().getText();
+        if (orgName.isEmpty())
+            return;
+        for (OrganizationUI org: allOrganizations){
+            if (org.toString().toLowerCase().equals(orgName.toLowerCase()))
+                return;
+        }
+        Action saveResponse = ControlFXUtils.getResponseSaveRecordDialog("Сохранить новую организацию?",
+                mainWelderPane.getScene().getWindow());
+        if (saveResponse == Dialog.Actions.OK){
+            OrganizationUI newOrg = new OrganizationUI();
+            newOrg.setName(orgName);
+            organizationServiceUI.saveOrganizationUIinDB(newOrg);
+            initOrganizationComboBox();
+            for (OrganizationUI org : allOrganizations){
+                if (org.getName().equals(orgName)){
+                    cbOrganization.getSelectionModel().select(org);
+                }
+            }
+        }else {
+            initOrganizationComboBox();
+        }
+
+
+    }
+
     private void updateWelderFromFields(Welder welder){
         WelderUI updatedWelder = getWelderUIFromFields();
         updatedWelder.setId(welder.getWelderId());
@@ -761,7 +830,7 @@ public class WelderController extends GenericController {
         welder.setDocNumber(updatedWelder.getDocNumber());
         welder.setDateBegin(updatedWelder.getDateBegin());
         welder.setAddress(updatedWelder.getAddress());
-        LOGGER.debug("Updated welder education is: "+updatedWelder.getEducation());
+        LOGGER.debug("Updated welder education is: " + updatedWelder.getEducation());
 
         welder.setEducation(educationService.getByType(updatedWelder.getEducation()));
         welder.setQualification(qualificationService.getByType(updatedWelder.getQualification()));
@@ -802,21 +871,9 @@ public class WelderController extends GenericController {
     private class TableViewHandler implements EventHandler<Event>{
         @Override
         public void handle(Event event) {
-
-            if(event.getClass().equals(KeyEvent.class)){
-                if (((KeyEvent)event).getCode().equals(KeyCode.UP) ||
-                        ((KeyEvent)event).getCode().equals(KeyCode.DOWN) ||
-                        ((KeyEvent)event).getCode().equals(KeyCode.PAGE_DOWN) ||
-                        ((KeyEvent)event).getCode().equals(KeyCode.PAGE_UP)){
-                    doSelectWelder();
-                    return;
-                }
-            }
-            if (event.getClass().equals(MouseEvent.class)){
-                if (((MouseEvent)event).getEventType().equals(MouseEvent.MOUSE_CLICKED)){
-                    doSelectWelder();
-                    return;
-                }
+            if(ControlFXUtils.isEventIsSelectedKeyOnList(event) || ControlFXUtils.isEventIsSelectedMouse(event)){
+                doSelectWelder();
+                return;
             }
 
         }
@@ -902,14 +959,14 @@ public class WelderController extends GenericController {
             ObservableList<WelderUI> filteredList = FXCollections.observableArrayList();
             ObservableList<TableColumn<WelderUI,?>> columns = welderTableView.getColumns();
 
-            for (int i = 0; i<getWelders().size(); i++){
+            for (int i = 0; i< getAllWelders().size(); i++){
 
                 for (int j = 0; j<columns.size(); j++){
                     TableColumn<WelderUI,?> column = columns.get(j);
-                    String cellValue = column.getCellData(getWelders().get(i)).toString();
+                    String cellValue = column.getCellData(getAllWelders().get(i)).toString();
                     cellValue = cellValue.toLowerCase();
                     if (cellValue.contains(txfSearch.textProperty().get().toLowerCase())){
-                        filteredList.add(getWelders().get(i));
+                        filteredList.add(getAllWelders().get(i));
                         break;
                     }
                 }
@@ -922,4 +979,37 @@ public class WelderController extends GenericController {
 
 
     }
+
+    private class OrganizationFilterListener implements javafx.beans.value.ChangeListener<String>{
+
+
+        @Override
+        public void changed(ObservableValue observable, String oldValue, String newValue) {
+
+            if (!cbOrganization.isFocused()){
+                return;
+            }
+            if (cbOrganization.getEditor().getText().isEmpty()){
+                initOrganizationComboBox();
+                return;
+            }
+
+            ObservableList<OrganizationUI> filteredList = FXCollections.observableArrayList();
+
+            for (OrganizationUI org : allOrganizations){
+                if (org.toString().equals(newValue)) {
+                    cbOrganization.getSelectionModel().select(org);
+                    return;
+                }
+                if (org.toString().toLowerCase().contains(newValue.toLowerCase())){
+                    filteredList.add(org);
+                }            }
+            cbOrganization.setItems(filteredList);
+            cbOrganization.show();
+
+        }
+
+    }
+
+
 }

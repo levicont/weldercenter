@@ -27,6 +27,19 @@ public class OrganizatioUIManager implements OrganizationServiceUI {
         return org;
     }
 
+    @Override
+    public void saveOrganizationUIinDB(OrganizationUI organizationUI) {
+        if (organizationUI == null)
+            return;
+        Organization org = getOrganizationFromOrganizationUI(organizationUI);
+        if (org.getOrganizationId()== null || org.getOrganizationId()==0){
+            Long id = organizationService.insert(org);
+            organizationUI.setId(id);
+        }else {
+            organizationService.update(org);
+        }
+    }
+
     private void updateOrganizationFromUIModel(Organization updOrganization,
                                                          OrganizationUI modelUI){
         updOrganization.setName(modelUI.getName());
