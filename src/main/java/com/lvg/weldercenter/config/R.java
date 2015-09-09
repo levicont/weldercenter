@@ -43,6 +43,14 @@ public class R {
                 //Weld pattern properties
                 public static final String WELD_PATT_STANDART_LENGHT = "300";
                 public static final String WELD_PATT_STANDART_WIDTH = "250";
+                public static final String WELD_PATT_VT_DEFAULT_DEFECTS ="Все сварные соединения не имеют " +
+                        "отступлений по размерам и форме шва. \n" +
+                        "Отсутствуют: \n" +
+                        "а) поверхностные трещины;\n" +
+                        "б) наплывы, прожоги, поверхностные поры или шлаковые включения;\n" +
+                        "в) непровары, подрезы, смещения кромок, излом или неперпендикулярность соединяемых элементов," +
+                        " превышающие допустимые";
+
             }
         }
 

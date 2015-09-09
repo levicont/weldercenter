@@ -174,7 +174,7 @@ public class PersonalProtocolReportEntity extends GenericReportEntity{
         StringBuilder result = new StringBuilder();
         for (NDTDocumentUI ndt : ndtDocumentUIList){
             result.append(ndt.getName());
-            result.append("; ");
+            result.append(constants.GENERIC_SEMICOLON_SEPARATOR);
         }
         deleteLastSeparator(result,constants.GENERIC_SEMICOLON_SEPARATOR);
         return result.toString();
@@ -193,6 +193,8 @@ public class PersonalProtocolReportEntity extends GenericReportEntity{
             return constants.GENERIC_NULL_FIELD;
         StringBuilder result = new StringBuilder();
         for (WeldPatternUI wp: weldPatterns){
+            if (result.toString().contains(wp.getMark()))
+                continue;
             result.append(wp.getMark());
             result.append(constants.GENERIC_SLASH_SEPARATOR);
         }
@@ -225,7 +227,10 @@ public class PersonalProtocolReportEntity extends GenericReportEntity{
                 String describe = wp.getWeldDetail().getType();
                 if (describe!=null)
                     describe=describe.toLowerCase();
-                result.append(code + " (" + describe + ")");
+                String detailTypeName = code + " (" + describe + ")";
+                if (result.toString().contains(detailTypeName))
+                    continue;
+                result.append(detailTypeName);
             }
             else
                 result.append(constants.GENERIC_NULL_FIELD);
@@ -326,41 +331,67 @@ public class PersonalProtocolReportEntity extends GenericReportEntity{
         if (weldPatterns == null || weldPatterns.isEmpty())
             return constants.GENERIC_NULL_FIELD;
         StringBuilder result = new StringBuilder();
-        Map<String,List<String>> steelGroupsMap = new HashMap<String, List<String>>();
-        List<String> steelTypesWithoutGroup = new ArrayList<String>();
         for (WeldPatternUI wp : weldPatterns){
             SteelTypeUI steelTypeUI = wp.getSteelType();
-            String steelType = steelTypeUI.getType();
-            if (steelTypeUI==null)
+            if (steelTypeUI == null)
                 continue;
+            WeldMethodUI weldMethodUI = wp.getWeldMethod();
+            String weldMethodName = constants.GENERIC_NULL_FIELD;
+            if(weldMethodUI != null){
+                weldMethodName = " ("+weldMethodUI.getName()+")";
+            }
             SteelGroupUI steelGroupUI = steelTypeUI.getSteelGroupUI();
-            if (steelGroupUI==null) {
-                if (!steelTypesWithoutGroup.contains(steelType))
-                    steelTypesWithoutGroup.add(steelType);
-                continue;
-            }
-            String steelGroup = steelGroupUI.getGroup();
-
-            if (steelGroupsMap.containsKey(steelGroup)){
-                if (!steelGroupsMap.get(steelGroup).contains(steelType))
-                    steelGroupsMap.get(steelGroup).add(steelType);
+            if (steelGroupUI == null){
+                result.append(steelTypeUI.getType()+weldMethodName);
             }else {
-                List<String> steelTypesWithGroup = new ArrayList<String>();
-                steelTypesWithGroup.add(steelType);
-                steelGroupsMap.put(steelGroup,steelTypesWithGroup);
+                result.append(steelTypeUI.getType()+constants.GENERIC_COLON_SEPARATOR+steelGroupUI.getGroup()
+                        +weldMethodName);
             }
-        }
-        for (String group: steelGroupsMap.keySet()){
-            result.append(group+ constants.GENERIC_COLON_SEPARATOR);
-            for (String type: steelGroupsMap.get(group)){
-                result.append(type+ constants.GENERIC_SEMICOLON_SEPARATOR);
-            }
-        }
-        for (String type: steelTypesWithoutGroup){
-            result.append(type+ constants.GENERIC_SEMICOLON_SEPARATOR);
+            result.append(constants.GENERIC_SEMICOLON_SEPARATOR);
         }
         deleteLastSeparator(result, constants.GENERIC_SEMICOLON_SEPARATOR);
         return result.toString();
+
+//        Map<String,List<String>> steelGroupsMap = new HashMap<String, List<String>>();
+//        List<String> steelTypesWithoutGroup = new ArrayList<String>();
+//        for (WeldPatternUI wp : weldPatterns){
+//            SteelTypeUI steelTypeUI = wp.getSteelType();
+//            String steelType = steelTypeUI.getType();
+//            if (steelTypeUI==null)
+//                continue;
+//            WeldMethodUI weldMethodUI = wp.getWeldMethod();
+//            String weldMethodName = constants.GENERIC_NULL_FIELD;
+//            if(weldMethodUI != null){
+//                weldMethodName = " ("+weldMethodUI.getName()+")";
+//            }
+//            SteelGroupUI steelGroupUI = steelTypeUI.getSteelGroupUI();
+//            if (steelGroupUI==null) {
+//                if (!steelTypesWithoutGroup.contains(steelType))
+//                    steelTypesWithoutGroup.add(steelType);
+//                continue;
+//            }
+//            String steelGroup = steelGroupUI.getGroup();
+//
+//            if (steelGroupsMap.containsKey(steelGroup)){
+//                if (!steelGroupsMap.get(steelGroup).contains(steelType))
+//                    steelGroupsMap.get(steelGroup).add(steelType);
+//            }else {
+//                List<String> steelTypesWithGroup = new ArrayList<String>();
+//                steelTypesWithGroup.add(steelType);
+//                steelGroupsMap.put(steelGroup,steelTypesWithGroup);
+//            }
+//        }
+//        for (String group: steelGroupsMap.keySet()){
+//            result.append(group+ constants.GENERIC_COLON_SEPARATOR);
+//            for (String type: steelGroupsMap.get(group)){
+//                result.append(type+ constants.GENERIC_SEMICOLON_SEPARATOR);
+//            }
+//        }
+//        for (String type: steelTypesWithoutGroup){
+//            result.append(type+ constants.GENERIC_SEMICOLON_SEPARATOR);
+//        }
+//        deleteLastSeparator(result, constants.GENERIC_SEMICOLON_SEPARATOR);
+//        return result.toString();
     }
 
     private String getWeldPatternThicknesses(List<WeldPatternUI> weldPatterns){
@@ -368,9 +399,14 @@ public class PersonalProtocolReportEntity extends GenericReportEntity{
             return constants.GENERIC_NULL_FIELD;
         StringBuilder result = new StringBuilder();
         for (WeldPatternUI wp : weldPatterns){
+            WeldMethodUI weldMethodUI = wp.getWeldMethod();
+            String weldMethodName = constants.GENERIC_NULL_FIELD;
+            if(weldMethodUI != null){
+             weldMethodName = " ("+weldMethodUI.getName()+")";
+            }
             if (wp.getThickness()!= 0){
                 if (!result.toString().contains(wp.getThickness()+"")){
-                    result.append(wp.getThickness());
+                    result.append(wp.getThickness()+weldMethodName);
                     result.append(constants.GENERIC_SEMICOLON_SEPARATOR);
                 }
             }
@@ -384,9 +420,14 @@ public class PersonalProtocolReportEntity extends GenericReportEntity{
             return constants.GENERIC_NULL_FIELD;
         StringBuilder result = new StringBuilder();
         for (WeldPatternUI wp : weldPatterns){
+            WeldMethodUI weldMethodUI = wp.getWeldMethod();
+            String weldMethodName = constants.GENERIC_NULL_FIELD;
+            if(weldMethodUI != null){
+                weldMethodName = " ("+weldMethodUI.getName()+")";
+            }
             if (wp.getDiameter()!= 0){
                 if (!result.toString().contains(wp.getDiameter()+"")){
-                    result.append(wp.getDiameter());
+                    result.append(wp.getDiameter()+weldMethodName);
                     result.append(constants.GENERIC_SEMICOLON_SEPARATOR);
                 }
             }

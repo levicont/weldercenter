@@ -673,6 +673,14 @@ public class ProtocolController extends GenericController {
     }
 
     private void clearMechPane(){
+        TotalProtocolUI selectedProtocol = selectedTotalProtocolUI;
+        if(selectedProtocol == null){
+            txfWeldPatternMechNumber.clear();
+            dpWeldPatternMechDate.setValue(DateUtil.getLocalDate(new Date()));
+        }else{
+            txfWeldPatternMechNumber.setText(selectedProtocol.getNumber());
+            dpWeldPatternMechDate.setValue(DateUtil.getLocalDate(selectedProtocol.getDateCert()));
+        }
         txfWeldPatternMechNumber.clear();
         dpWeldPatternMechDate.setValue(DateUtil.getLocalDate(new Date()));
         txfWeldPatternMechAngle.clear();
@@ -681,15 +689,28 @@ public class ProtocolController extends GenericController {
     }
 
     private void clearVTPane(){
-        txfWeldPatternVTNumber.clear();
-        dpWeldPatternVTDate.setValue(DateUtil.getLocalDate(new Date()));
+
+        TotalProtocolUI selectedProtocol = selectedTotalProtocolUI;
+        if(selectedProtocol == null){
+            txfWeldPatternVTNumber.clear();
+            dpWeldPatternVTDate.setValue(DateUtil.getLocalDate(new Date()));
+        }else{
+            txfWeldPatternVTNumber.setText(selectedProtocol.getNumber());
+            dpWeldPatternVTDate.setValue(DateUtil.getLocalDate(selectedProtocol.getDateCert()));
+        }
         textAreaWeldPatternVTDefects.clear();
         cbWeldPatternVTEvaluation.getSelectionModel().clearSelection();
     }
 
     private void clearRTPane(){
-        txfWeldPatternRTNumber.clear();
-        dpWeldPatternRTDate.setValue(DateUtil.getLocalDate(new Date()));
+        TotalProtocolUI selectedProtocol = selectedTotalProtocolUI;
+        if(selectedProtocol == null){
+            txfWeldPatternRTNumber.clear();
+            dpWeldPatternRTDate.setValue(DateUtil.getLocalDate(new Date()));
+        }else{
+            txfWeldPatternRTNumber.setText(selectedProtocol.getNumber());
+            dpWeldPatternRTDate.setValue(DateUtil.getLocalDate(selectedProtocol.getDateCert()));
+        }
         cbWeldPatternRTSensitivity.getSelectionModel().clearSelection();
         textAreaWeldPatternRTDefects.clear();
         cbWeldPatternRTEvaluation.getSelectionModel().clearSelection();

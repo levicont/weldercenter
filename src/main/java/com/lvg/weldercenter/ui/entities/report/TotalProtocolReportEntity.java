@@ -28,6 +28,7 @@ public class TotalProtocolReportEntity extends GenericReportEntity {
     private final String KEY_RT_SPEC = "RT_SPEC";
     private final String KEY_RT_SPEC_CERT_NUMBER = "RT_SPEC_CERT_NUMBER";
     private final String KEY_MECH_TEST_SPEC = "MECH_TEST_SPEC";
+    private final String KEY_VT_DEFAULT_DEFECTS = "VT_DEFAULT_DEFECTS";
 
     private final Map<String, Object> parameters = new HashMap<String, Object>(){{
         put(KEY_ID,null);
@@ -48,6 +49,7 @@ public class TotalProtocolReportEntity extends GenericReportEntity {
         put(KEY_RT_SPEC, constants.GENERIC_RT_NDT_SPEC);
         put(KEY_RT_SPEC_CERT_NUMBER, constants.GENERIC_RT_CERT_OF_NDT_SPEC);
         put(KEY_MECH_TEST_SPEC, constants.GENERIC_MECH_TEST_SPEC);
+        put(KEY_VT_DEFAULT_DEFECTS, constants.WELD_PATT_VT_DEFAULT_DEFECTS);
     }};
 
     public TotalProtocolReportEntity(TotalProtocolUI totalProtocolUI){
