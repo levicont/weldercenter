@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="total-protocol-theory-rep" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="842" leftMargin="0" rightMargin="0" topMargin="56" bottomMargin="42" uuid="85f85a2b-0943-449a-b2a2-d32b9d1f2df2">
 	<property name="ireport.zoom" value="1.5799875258364844"/>
-	<property name="ireport.x" value="108"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.x" value="370"/>
+	<property name="ireport.y" value="23"/>
 	<subDataset name="dataset1" uuid="8646df78-ce36-4663-b00e-472cf91e6546">
 		<field name="mark" class="java.lang.String"/>
 		<field name="weldMethod" class="java.lang.String"/>
@@ -395,7 +395,7 @@
 				</jr:list>
 			</componentElement>
 			<rectangle>
-				<reportElement stretchType="RelativeToTallestObject" mode="Transparent" x="33" y="0" width="772" height="20" uuid="1f9e0f52-c6f1-41ff-84e8-93bdeeae60ac"/>
+				<reportElement stretchType="RelativeToTallestObject" mode="Transparent" x="33" y="0" width="514" height="20" uuid="1f9e0f52-c6f1-41ff-84e8-93bdeeae60ac"/>
 				<graphicElement>
 					<pen lineWidth="0.75"/>
 				</graphicElement>
@@ -442,11 +442,16 @@
 					<pen lineWidth="0.75"/>
 				</graphicElement>
 			</rectangle>
+			<rectangle>
+				<reportElement stretchType="RelativeToTallestObject" mode="Transparent" x="656" y="0" width="149" height="20" uuid="e33ea20f-cae2-4df9-9f69-de5430863aaf"/>
+				<graphicElement>
+					<pen lineWidth="0.75"/>
+				</graphicElement>
+			</rectangle>
 			<textField isStretchWithOverflow="true">
-				<reportElement stretchType="RelativeToTallestObject" x="547" y="0" width="109" height="20" uuid="87195f41-87cc-4604-ab8e-d3463e9d7fc1"/>
-				<textElement verticalAlignment="Top">
-					<font fontName="Univers" size="8"/>
-					<paragraph leftIndent="2" rightIndent="2"/>
+				<reportElement positionType="Float" isPrintRepeatedValues="false" x="548" y="0" width="108" height="20" uuid="3decd0a5-2934-4012-aa77-eb0ca629a058"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{VT_DEFAULT_DEFECTS}]]></textFieldExpression>
 			</textField>
