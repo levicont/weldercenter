@@ -18,7 +18,6 @@ import org.apache.log4j.Logger;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.InputStream;
 import java.net.URL;
 import java.util.*;
 import java.util.List;
@@ -42,6 +41,8 @@ public class ReportViewController extends GenericController {
             ClassLoader.getSystemClassLoader().getResource("reports/pers-protocol-rep.jrxml");
     private final URL VISUAL_TEST_PROTOCOL_REPORT_URL =
             ClassLoader.getSystemClassLoader().getResource("reports/visual-test-rep.jrxml");
+    private final URL VISUAL_TEST_PROTOCOL_SUBREPORT_URL =
+            ClassLoader.getSystemClassLoader().getResource("reports/visual-test-subrep.jrxml");
     private final URL RADIATION_TEST_PROTOCOL_REPORT_URL =
             ClassLoader.getSystemClassLoader().getResource("reports/radiation-test-rep.jrxml");
     private final URL MECHANICAL_TEST_PROTOCOL_REPORT_URL =
@@ -358,10 +359,14 @@ public class ReportViewController extends GenericController {
                         new TotalProtocolReportEntity(selectedTotalProtocol);
                 updateProgress(35, constants.GENERIC_MAX_TASK_PROGRESS_VALUE);
                 try {
+                    JasperReport subreport = JasperCompileManager.compileReport(VISUAL_TEST_PROTOCOL_SUBREPORT_URL.openStream());
+                    totalProtocolReportEntity.getParameters().put("VT_SUBREPORT",subreport);
+                    totalProtocolReportEntity.getParameters().put("VT_SUBREPORT_DATASET",
+                            new JRBeanCollectionDataSource(personalProtocolReportEntities));
                     JasperReport report = JasperCompileManager.compileReport(VISUAL_TEST_PROTOCOL_REPORT_URL.openStream());
                     updateProgress(65, constants.GENERIC_MAX_TASK_PROGRESS_VALUE);
                     print = JasperFillManager.fillReport(report, totalProtocolReportEntity.getParameters(),
-                            new JRBeanCollectionDataSource(personalProtocolReportEntities));
+                            new JREmptyDataSource());
                     updateProgress(90, constants.GENERIC_MAX_TASK_PROGRESS_VALUE);
 
                 }catch(JRException ex){

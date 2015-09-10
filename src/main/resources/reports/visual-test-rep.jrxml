@@ -1,19 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="total-protocol-theory-rep" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="842" leftMargin="0" rightMargin="0" topMargin="56" bottomMargin="42" uuid="85f85a2b-0943-449a-b2a2-d32b9d1f2df2">
 	<property name="ireport.zoom" value="1.5799875258364844"/>
-	<property name="ireport.x" value="370"/>
-	<property name="ireport.y" value="23"/>
-	<subDataset name="dataset1" uuid="8646df78-ce36-4663-b00e-472cf91e6546">
-		<field name="mark" class="java.lang.String"/>
-		<field name="weldMethod" class="java.lang.String"/>
-		<field name="size" class="java.lang.String"/>
-		<field name="weldType" class="java.lang.String"/>
-		<field name="weldPosition" class="java.lang.String"/>
-		<field name="weldMaterials" class="java.lang.String"/>
-		<field name="vtDefects" class="java.lang.String"/>
-		<field name="vtEvaluation" class="java.lang.String"/>
-		<field name="electrodes" class="java.lang.String"/>
-	</subDataset>
+	<property name="ireport.x" value="608"/>
+	<property name="ireport.y" value="22"/>
 	<parameter name="NUMBER" class="java.lang.String"/>
 	<parameter name="DATE_CERT_FORMAT" class="java.lang.String"/>
 	<parameter name="COMMISSION_CERTIFICATION_HEAD" class="java.lang.String"/>
@@ -21,6 +10,11 @@
 	<parameter name="COMMISSION_CERTIFICATION_NDT_SPEC" class="java.lang.String"/>
 	<parameter name="COMMISSION_CERTIFICATION_SAFETY_SPEC" class="java.lang.String"/>
 	<parameter name="VT_DEFAULT_DEFECTS" class="java.lang.String"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["D:\\work\\idea_progect\\weldercenter\\src\\main\\resources\\reports\\"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="VT_SUBREPORT" class="java.lang.Object"/>
+	<parameter name="VT_SUBREPORT_DATASET" class="net.sf.jasperreports.engine.JRDataSource" isForPrompting="false"/>
 	<field name="fio" class="java.lang.String"/>
 	<field name="ndtDocs" class="java.lang.String"/>
 	<field name="patterns" class="java.util.List"/>
@@ -229,232 +223,38 @@
 	</pageHeader>
 	<detail>
 		<band height="20">
-			<textField>
-				<reportElement stretchType="RelativeToTallestObject" x="33" y="0" width="28" height="20" uuid="c5848a66-fb9f-4900-b384-7af0797ea771"/>
-				<box>
-					<leftPen lineWidth="0.75"/>
-					<rightPen lineWidth="0.75"/>
-				</box>
-				<textElement verticalAlignment="Middle">
-					<font fontName="Univers"/>
-					<paragraph leftIndent="3"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement stretchType="RelativeToTallestObject" x="61" y="0" width="128" height="20" uuid="26e44a7b-7f4f-40fc-b40a-979ee657d005"/>
-				<box>
-					<leftPen lineWidth="0.75"/>
-					<rightPen lineWidth="0.75"/>
-				</box>
-				<textElement verticalAlignment="Middle">
-					<font fontName="Univers"/>
-					<paragraph leftIndent="3"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{fio}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement stretchType="RelativeToTallestObject" x="189" y="0" width="25" height="20" uuid="6cbef6f9-98a3-4c91-94ac-09e9432f57cf"/>
-				<box>
-					<leftPen lineWidth="0.75"/>
-					<rightPen lineWidth="0.75"/>
-				</box>
-				<textElement verticalAlignment="Middle">
-					<font fontName="Univers"/>
-					<paragraph leftIndent="3"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
-			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="688" y="0" width="117" height="20" uuid="fb25e374-cdd7-489f-b1bf-c12a572be589"/>
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" isPrintRepeatedValues="false" x="547" y="0" width="109" height="20" uuid="3decd0a5-2934-4012-aa77-eb0ca629a058"/>
 				<box>
+					<topPen lineWidth="0.75"/>
 					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
 					<rightPen lineWidth="0.75"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Univers"/>
-					<paragraph leftIndent="3"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{ndtDocs}]]></textFieldExpression>
-			</textField>
-			<componentElement>
-				<reportElement x="33" y="0" width="772" height="20" uuid="2c37147a-a29b-4388-a04d-dc6a97f0ee7b"/>
-				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
-					<datasetRun subDataset="dataset1" uuid="1f90f9b6-4453-4044-8c32-3f98565a2ecc">
-						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{patterns})]]></dataSourceExpression>
-					</datasetRun>
-					<jr:listContents height="20" width="772">
-						<textField isStretchWithOverflow="true" isBlankWhenNull="false">
-							<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="213" y="0" width="82" height="20" uuid="ac17fb5a-999f-4c43-b1db-4bdeeab62bf1"/>
-							<box>
-								<topPen lineWidth="0.0" lineStyle="Dashed"/>
-								<leftPen lineWidth="0.0"/>
-								<bottomPen lineWidth="0.0" lineStyle="Dashed"/>
-								<rightPen lineWidth="0.0"/>
-							</box>
-							<textElement verticalAlignment="Middle">
-								<font fontName="Univers"/>
-								<paragraph leftIndent="3" spacingBefore="2" spacingAfter="2"/>
-							</textElement>
-							<textFieldExpression><![CDATA[$F{size}]]></textFieldExpression>
-						</textField>
-						<textField isStretchWithOverflow="true" isBlankWhenNull="false">
-							<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="181" y="0" width="32" height="20" uuid="e8c76cb5-4c20-4a26-b67b-1cbec33ee4c7"/>
-							<box>
-								<topPen lineWidth="0.0" lineStyle="Dashed"/>
-								<leftPen lineWidth="0.0"/>
-								<bottomPen lineWidth="0.0" lineStyle="Dashed"/>
-								<rightPen lineWidth="0.0"/>
-							</box>
-							<textElement verticalAlignment="Middle">
-								<font fontName="Univers"/>
-								<paragraph leftIndent="3" spacingBefore="2" spacingAfter="2"/>
-							</textElement>
-							<textFieldExpression><![CDATA[$F{weldMethod}]]></textFieldExpression>
-						</textField>
-						<textField isStretchWithOverflow="true" isBlankWhenNull="false">
-							<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="295" y="0" width="40" height="20" uuid="a2264cae-224b-4511-8379-fbcffd326b24"/>
-							<box>
-								<topPen lineWidth="0.0" lineStyle="Dashed"/>
-								<leftPen lineWidth="0.0"/>
-								<bottomPen lineWidth="0.0" lineStyle="Dashed"/>
-								<rightPen lineWidth="0.0"/>
-							</box>
-							<textElement verticalAlignment="Middle">
-								<font fontName="Univers"/>
-								<paragraph leftIndent="3" spacingBefore="2" spacingAfter="2"/>
-							</textElement>
-							<textFieldExpression><![CDATA[$F{weldType}]]></textFieldExpression>
-						</textField>
-						<textField isStretchWithOverflow="true" isBlankWhenNull="false">
-							<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="335" y="0" width="40" height="20" uuid="e7950640-a8d8-49bd-8ccd-8959c087b828"/>
-							<box>
-								<topPen lineWidth="0.0" lineStyle="Dashed"/>
-								<leftPen lineWidth="0.0"/>
-								<bottomPen lineWidth="0.0" lineStyle="Dashed"/>
-								<rightPen lineWidth="0.0"/>
-							</box>
-							<textElement verticalAlignment="Middle">
-								<font fontName="Univers"/>
-								<paragraph leftIndent="3" spacingBefore="2" spacingAfter="2"/>
-							</textElement>
-							<textFieldExpression><![CDATA[$F{weldPosition}]]></textFieldExpression>
-						</textField>
-						<textField isStretchWithOverflow="true" isBlankWhenNull="false">
-							<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="375" y="0" width="74" height="20" uuid="cde17e61-f726-4b86-b678-68743514eea4"/>
-							<box>
-								<topPen lineWidth="0.0" lineStyle="Dashed"/>
-								<leftPen lineWidth="0.0"/>
-								<bottomPen lineWidth="0.0" lineStyle="Dashed"/>
-								<rightPen lineWidth="0.0"/>
-							</box>
-							<textElement verticalAlignment="Middle">
-								<font fontName="Univers"/>
-								<paragraph leftIndent="3" spacingBefore="2" spacingAfter="2"/>
-							</textElement>
-							<textFieldExpression><![CDATA[$F{weldMaterials}]]></textFieldExpression>
-						</textField>
-						<textField isStretchWithOverflow="true" isBlankWhenNull="false">
-							<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="449" y="0" width="65" height="20" uuid="da6118ee-1fa0-457b-b3e4-4018609970fb"/>
-							<box>
-								<topPen lineWidth="0.0" lineStyle="Dashed"/>
-								<leftPen lineWidth="0.0"/>
-								<bottomPen lineWidth="0.0" lineStyle="Dashed"/>
-								<rightPen lineWidth="0.0"/>
-							</box>
-							<textElement verticalAlignment="Middle">
-								<font fontName="Univers"/>
-								<paragraph leftIndent="3" spacingBefore="2" spacingAfter="2"/>
-							</textElement>
-							<textFieldExpression><![CDATA[$F{electrodes}]]></textFieldExpression>
-						</textField>
-						<textField isStretchWithOverflow="true" isBlankWhenNull="false">
-							<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="623" y="0" width="32" height="20" uuid="d1daecbc-7bd4-415e-a118-9dac3a5f0d94"/>
-							<box>
-								<topPen lineWidth="0.0" lineStyle="Dashed"/>
-								<leftPen lineWidth="0.0"/>
-								<bottomPen lineWidth="0.0" lineStyle="Dashed"/>
-								<rightPen lineWidth="0.0"/>
-							</box>
-							<textElement verticalAlignment="Middle">
-								<font fontName="Univers"/>
-								<paragraph leftIndent="3" spacingBefore="2" spacingAfter="2"/>
-							</textElement>
-							<textFieldExpression><![CDATA[$F{vtEvaluation}]]></textFieldExpression>
-						</textField>
-						<line>
-							<reportElement x="181" y="0" width="333" height="1" uuid="58f86cf4-a341-4a02-90c2-edf4550b3e09"/>
-							<graphicElement>
-								<pen lineWidth="0.75"/>
-							</graphicElement>
-						</line>
-						<line>
-							<reportElement x="623" y="0" width="32" height="1" uuid="acf16f92-7e44-4d63-8089-cfcccc75aff0"/>
-						</line>
-					</jr:listContents>
-				</jr:list>
-			</componentElement>
-			<rectangle>
-				<reportElement stretchType="RelativeToTallestObject" mode="Transparent" x="33" y="0" width="514" height="20" uuid="1f9e0f52-c6f1-41ff-84e8-93bdeeae60ac"/>
-				<graphicElement>
-					<pen lineWidth="0.75"/>
-				</graphicElement>
-			</rectangle>
-			<rectangle>
-				<reportElement stretchType="RelativeToTallestObject" mode="Transparent" x="214" y="0" width="32" height="20" uuid="23c99ac6-c05e-4da3-a969-53cf9f35a4cb"/>
-				<graphicElement>
-					<pen lineWidth="0.75"/>
-				</graphicElement>
-			</rectangle>
-			<rectangle>
-				<reportElement stretchType="RelativeToTallestObject" mode="Transparent" x="246" y="0" width="82" height="20" uuid="8f215779-7682-4914-8007-acacdd5f82db"/>
-				<graphicElement>
-					<pen lineWidth="0.75"/>
-				</graphicElement>
-			</rectangle>
-			<rectangle>
-				<reportElement stretchType="RelativeToTallestObject" mode="Transparent" x="328" y="0" width="40" height="20" uuid="832102e9-9011-4c0c-b315-7515b32c59a9"/>
-				<graphicElement>
-					<pen lineWidth="0.75"/>
-				</graphicElement>
-			</rectangle>
-			<rectangle>
-				<reportElement stretchType="RelativeToTallestObject" mode="Transparent" x="368" y="0" width="40" height="20" uuid="2d2f62a5-1a77-445e-933d-6655017a8e31"/>
-				<graphicElement>
-					<pen lineWidth="0.75"/>
-				</graphicElement>
-			</rectangle>
-			<rectangle>
-				<reportElement stretchType="RelativeToTallestObject" mode="Transparent" x="408" y="0" width="74" height="20" uuid="2a1ecbce-47aa-4899-9f6a-e372d487f221"/>
-				<graphicElement>
-					<pen lineWidth="0.75"/>
-				</graphicElement>
-			</rectangle>
-			<rectangle>
-				<reportElement stretchType="RelativeToTallestObject" mode="Transparent" x="482" y="0" width="65" height="20" uuid="0898c770-4917-46a5-b4ff-c5be8f6b3d9a"/>
-				<graphicElement>
-					<pen lineWidth="0.75"/>
-				</graphicElement>
-			</rectangle>
-			<rectangle>
-				<reportElement stretchType="RelativeToTallestObject" mode="Transparent" x="656" y="0" width="32" height="20" uuid="78aced7f-8f63-4cdf-a987-b15595ed1545"/>
-				<graphicElement>
-					<pen lineWidth="0.75"/>
-				</graphicElement>
-			</rectangle>
-			<rectangle>
-				<reportElement stretchType="RelativeToTallestObject" mode="Transparent" x="656" y="0" width="149" height="20" uuid="e33ea20f-cae2-4df9-9f69-de5430863aaf"/>
-				<graphicElement>
-					<pen lineWidth="0.75"/>
-				</graphicElement>
-			</rectangle>
-			<textField isStretchWithOverflow="true">
-				<reportElement positionType="Float" isPrintRepeatedValues="false" x="548" y="0" width="108" height="20" uuid="3decd0a5-2934-4012-aa77-eb0ca629a058"/>
-				<textElement verticalAlignment="Middle">
-					<font size="8"/>
+				<textElement verticalAlignment="Top">
+					<font size="9"/>
+					<paragraph leftIndent="2" rightIndent="2" spacingBefore="2" spacingAfter="2"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{VT_DEFAULT_DEFECTS}]]></textFieldExpression>
 			</textField>
+			<subreport runToBottom="true">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="33" y="0" width="772" height="20" uuid="34e0bb82-aa53-4fe5-91fd-564862adaeb6"/>
+				<subreportParameter name="NUMBER"/>
+				<subreportParameter name="DATE_CERT_FORMAT"/>
+				<subreportParameter name="COMMISSION_CERTIFICATION_HEAD"/>
+				<subreportParameter name="COMMISSION_CERTIFICATION_WELD_SPEC"/>
+				<subreportParameter name="COMMISSION_CERTIFICATION_NDT_SPEC"/>
+				<subreportParameter name="COMMISSION_CERTIFICATION_SAFETY_SPEC"/>
+				<subreportParameter name="VT_DEFAULT_DEFECTS"/>
+				<dataSourceExpression><![CDATA[$P{VT_SUBREPORT_DATASET}]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$P{VT_SUBREPORT}]]></subreportExpression>
+			</subreport>
+			<rectangle>
+				<reportElement stretchType="RelativeToTallestObject" mode="Transparent" x="33" y="0" width="772" height="20" uuid="a0b7d01d-127b-4b91-8f1f-7cb90046214a"/>
+				<graphicElement>
+					<pen lineWidth="0.75" lineColor="#000000"/>
+				</graphicElement>
+			</rectangle>
 		</band>
 	</detail>
 	<pageFooter>
