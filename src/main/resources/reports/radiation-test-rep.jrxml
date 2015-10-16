@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="total-protocol-theory-rep" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="842" leftMargin="0" rightMargin="0" topMargin="56" bottomMargin="42" uuid="85f85a2b-0943-449a-b2a2-d32b9d1f2df2">
 	<property name="ireport.zoom" value="1.579987525836482"/>
-	<property name="ireport.x" value="369"/>
+	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<subDataset name="dataset1" uuid="8646df78-ce36-4663-b00e-472cf91e6546">
 		<field name="mark" class="java.lang.String"/>
@@ -207,7 +207,7 @@
 	<detail>
 		<band height="20">
 			<textField>
-				<reportElement stretchType="RelativeToTallestObject" x="33" y="0" width="28" height="20" uuid="c5848a66-fb9f-4900-b384-7af0797ea771"/>
+				<reportElement stretchType="RelativeToTallestObject" x="33" y="0" width="28" height="20" isPrintWhenDetailOverflows="true" uuid="c5848a66-fb9f-4900-b384-7af0797ea771"/>
 				<box>
 					<leftPen lineWidth="0.75"/>
 					<rightPen lineWidth="0.75"/>
@@ -219,7 +219,7 @@
 				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement stretchType="RelativeToTallestObject" x="61" y="0" width="130" height="20" uuid="26e44a7b-7f4f-40fc-b40a-979ee657d005"/>
+				<reportElement stretchType="RelativeToTallestObject" x="61" y="0" width="130" height="20" isPrintWhenDetailOverflows="true" uuid="26e44a7b-7f4f-40fc-b40a-979ee657d005"/>
 				<box>
 					<leftPen lineWidth="0.75"/>
 					<rightPen lineWidth="0.75"/>
@@ -231,7 +231,7 @@
 				<textFieldExpression><![CDATA[$F{fio}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement stretchType="RelativeToTallestObject" x="191" y="0" width="27" height="20" uuid="6cbef6f9-98a3-4c91-94ac-09e9432f57cf"/>
+				<reportElement stretchType="RelativeToTallestObject" x="191" y="0" width="27" height="20" isPrintWhenDetailOverflows="true" uuid="6cbef6f9-98a3-4c91-94ac-09e9432f57cf"/>
 				<box>
 					<leftPen lineWidth="0.75"/>
 					<rightPen lineWidth="0.75"/>
@@ -243,7 +243,7 @@
 				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="672" y="0" width="133" height="20" uuid="fb25e374-cdd7-489f-b1bf-c12a572be589"/>
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="672" y="0" width="133" height="20" isPrintWhenDetailOverflows="true" uuid="fb25e374-cdd7-489f-b1bf-c12a572be589"/>
 				<box>
 					<leftPen lineWidth="0.75"/>
 					<rightPen lineWidth="0.75"/>
@@ -255,7 +255,7 @@
 				<textFieldExpression><![CDATA[$F{ndtDocs}]]></textFieldExpression>
 			</textField>
 			<componentElement>
-				<reportElement x="33" y="0" width="772" height="20" uuid="2c37147a-a29b-4388-a04d-dc6a97f0ee7b"/>
+				<reportElement x="33" y="0" width="772" height="20" isPrintWhenDetailOverflows="true" uuid="2c37147a-a29b-4388-a04d-dc6a97f0ee7b"/>
 				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
 					<datasetRun subDataset="dataset1" uuid="1f90f9b6-4453-4044-8c32-3f98565a2ecc">
 						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{patterns})]]></dataSourceExpression>
@@ -355,49 +355,49 @@
 				</jr:list>
 			</componentElement>
 			<rectangle>
-				<reportElement stretchType="RelativeToTallestObject" mode="Transparent" x="33" y="0" width="772" height="20" uuid="1f9e0f52-c6f1-41ff-84e8-93bdeeae60ac"/>
+				<reportElement stretchType="RelativeToTallestObject" mode="Transparent" x="33" y="0" width="772" height="20" isPrintWhenDetailOverflows="true" uuid="1f9e0f52-c6f1-41ff-84e8-93bdeeae60ac"/>
 				<graphicElement>
 					<pen lineWidth="0.75"/>
 				</graphicElement>
 			</rectangle>
 			<rectangle>
-				<reportElement stretchType="RelativeToTallestObject" mode="Transparent" x="218" y="0" width="85" height="20" uuid="05b504e3-e2b5-45a8-84a7-cfc86f86f0a1"/>
+				<reportElement stretchType="RelativeToTallestObject" mode="Transparent" x="218" y="0" width="85" height="20" isPrintWhenDetailOverflows="true" uuid="05b504e3-e2b5-45a8-84a7-cfc86f86f0a1"/>
 				<graphicElement>
 					<pen lineWidth="0.75"/>
 				</graphicElement>
 			</rectangle>
 			<rectangle>
-				<reportElement stretchType="RelativeToTallestObject" mode="Transparent" x="303" y="0" width="75" height="20" uuid="4b16893f-2e6a-44e3-9c90-b9ccb28b715a"/>
+				<reportElement stretchType="RelativeToTallestObject" mode="Transparent" x="303" y="0" width="75" height="20" isPrintWhenDetailOverflows="true" uuid="4b16893f-2e6a-44e3-9c90-b9ccb28b715a"/>
 				<graphicElement>
 					<pen lineWidth="0.75"/>
 				</graphicElement>
 			</rectangle>
 			<rectangle>
-				<reportElement stretchType="RelativeToTallestObject" mode="Transparent" x="378" y="0" width="73" height="20" uuid="3b3b729d-ce30-42b7-93d5-0c0abfa93787"/>
+				<reportElement stretchType="RelativeToTallestObject" mode="Transparent" x="378" y="0" width="73" height="20" isPrintWhenDetailOverflows="true" uuid="3b3b729d-ce30-42b7-93d5-0c0abfa93787"/>
 				<graphicElement>
 					<pen lineWidth="0.75"/>
 				</graphicElement>
 			</rectangle>
 			<rectangle>
-				<reportElement stretchType="RelativeToTallestObject" mode="Transparent" x="451" y="0" width="30" height="20" uuid="977bf141-72bd-484d-b65f-d5a0f526d733"/>
+				<reportElement stretchType="RelativeToTallestObject" mode="Transparent" x="451" y="0" width="30" height="20" isPrintWhenDetailOverflows="true" uuid="977bf141-72bd-484d-b65f-d5a0f526d733"/>
 				<graphicElement>
 					<pen lineWidth="0.75"/>
 				</graphicElement>
 			</rectangle>
 			<rectangle>
-				<reportElement stretchType="RelativeToTallestObject" mode="Transparent" x="481" y="0" width="151" height="20" uuid="2d70d5ab-09d0-43b1-a141-1105e0c992af"/>
+				<reportElement stretchType="RelativeToTallestObject" mode="Transparent" x="481" y="0" width="151" height="20" isPrintWhenDetailOverflows="true" uuid="2d70d5ab-09d0-43b1-a141-1105e0c992af"/>
 				<graphicElement>
 					<pen lineWidth="0.75"/>
 				</graphicElement>
 			</rectangle>
 			<rectangle>
-				<reportElement stretchType="RelativeToTallestObject" mode="Transparent" x="632" y="0" width="40" height="20" uuid="2c1fa872-fa0d-4a7d-bbdb-cdae90c23360"/>
+				<reportElement stretchType="RelativeToTallestObject" mode="Transparent" x="632" y="0" width="40" height="20" isPrintWhenDetailOverflows="true" uuid="2c1fa872-fa0d-4a7d-bbdb-cdae90c23360"/>
 				<graphicElement>
 					<pen lineWidth="0.75"/>
 				</graphicElement>
 			</rectangle>
 			<rectangle>
-				<reportElement stretchType="RelativeToTallestObject" mode="Transparent" x="672" y="0" width="133" height="20" uuid="edd54b9e-723e-42a4-a736-52f7aedbee57"/>
+				<reportElement stretchType="RelativeToTallestObject" mode="Transparent" x="672" y="0" width="133" height="20" isPrintWhenDetailOverflows="true" uuid="edd54b9e-723e-42a4-a736-52f7aedbee57"/>
 				<graphicElement>
 					<pen lineWidth="0.75"/>
 				</graphicElement>
