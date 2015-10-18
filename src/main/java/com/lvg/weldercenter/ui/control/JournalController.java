@@ -103,6 +103,8 @@ public class JournalController extends GenericController{
     @FXML
     ComboBox<String> cbCurriculum;
     @FXML
+    TextField txfCurriculum;
+    @FXML
     Button btCalculateCurriculum;
 
     //Teachers
@@ -289,6 +291,7 @@ public class JournalController extends GenericController{
         List<Curriculum> curriculums = curriculumService.getAll();
         for(Curriculum cur : curriculums){
             currNames.add(cur.getTitle());
+
         }
         cbCurriculum.setItems(FXCollections.observableArrayList(currNames));
     }
@@ -434,8 +437,12 @@ public class JournalController extends GenericController{
         dpDateEnd.setValue(DateUtil.getLocalDate(selectedJournal.getDateEnd()));
         dpDateEnd.setEditable(false);
         dpDateEnd.setDisable(true);
-        if (!selectedJournal.getCurriculum().isEmpty())
+        if (!selectedJournal.getCurriculum().isEmpty()) {
             cbCurriculum.getSelectionModel().select(selectedJournal.getCurriculum());
+            txfCurriculum.setText(cbCurriculum.getValue().toString());
+        }else {
+            txfCurriculum.setText("");
+        }
         initTopicTableView(selectedJournal);
         initWeldersTableView(selectedJournal);
         initTeacherListView(selectedJournal);
@@ -831,13 +838,40 @@ public class JournalController extends GenericController{
     private void setDisabledJournalDetailPane(boolean disabled){
         ControlFXUtils.setDisabledTextFields(disabled, txfJournalNumber, txfSearchWelder);
         ControlFXUtils.setDisabledDatePickers(disabled, dpDateBegin);
-        ControlFXUtils.setDisabledComboBoxes(disabled, cbCurriculum);
+        setDisableJournalDetailPaneComboBoxes(disabled);
         ControlFXUtils.setDisabledTableViews(disabled, topicTableView, weldersTableView);
         ControlFXUtils.setDisabledListViews(disabled, teachersListView, weldersListView);
         ControlFXUtils.setDisabledButtons(disabled, btAddWelderToJournal, btShowWelderSelectorPane,
                 btCalculateCurriculum, btRemoveWelderFromJournal);
         teachersMenuButton.setDisable(disabled);
         ControlFXUtils.setDisabledDatePickers(true,dpDateEnd);
+    }
+
+    private void setDisableJournalDetailPaneComboBoxes(boolean disabled){
+        if (disabled){
+            enableComboBoxReadOnlyMode(cbCurriculum, txfCurriculum);
+        }else{
+            disableComboBoxReadOnlyMode(cbCurriculum, txfCurriculum);
+        }
+    }
+
+    private void enableComboBoxReadOnlyMode(ComboBox comboBox, TextField replacement){
+        ControlFXUtils.setDisabledTextFields(true, replacement);
+        if (comboBox.getValue() != null){
+            comboBox.setVisible(false);
+            replacement.setVisible(true);
+            replacement.setText(comboBox.getValue().toString());
+        }else {
+            comboBox.setVisible(false);
+            replacement.setVisible(true);
+            replacement.setText("");
+        }
+    }
+
+    private void disableComboBoxReadOnlyMode(ComboBox comboBox, TextField replacement){
+        ControlFXUtils.setDisabledTextFields(false, replacement);
+        comboBox.setVisible(true);
+        replacement.setVisible(false);
     }
 
     private class TableViewHandler implements EventHandler<Event>{

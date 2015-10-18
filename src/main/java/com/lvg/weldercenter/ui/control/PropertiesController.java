@@ -18,9 +18,6 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
@@ -175,6 +172,8 @@ public class PropertiesController extends GenericController {
     private TextField txfSteelType;
     @FXML
     private ComboBox<SteelGroupUI> cbSteelTypeGroup;
+    @FXML
+    private TextField txfSteelTypeSteelGroup;
     @FXML
     private Button btSaveSteelType;
 
@@ -818,7 +817,33 @@ public class PropertiesController extends GenericController {
 
     private void setDisabledSteelTypesFields(boolean disabled){
         setDisabledTextFields(disabled, txfSteelType);
-        setDisabledComboBoxes(disabled,cbSteelTypeGroup);
+        setDisableSteelTypesComboBox(disabled);
+    }
+
+
+    private void setDisableSteelTypesComboBox(boolean disabled){
+        if (disabled){
+            enableSteelTypeComboBoxReadOnlyMode(cbSteelTypeGroup, txfSteelTypeSteelGroup);
+        }else{
+            disableSteelTypeComboBoxReadOnlyMode(cbSteelTypeGroup, txfSteelTypeSteelGroup);
+        }
+    }
+
+    private void enableSteelTypeComboBoxReadOnlyMode(ComboBox comboBox, TextField replacement){
+        ControlFXUtils.setDisabledTextFields(true,replacement);
+        comboBox.setVisible(false);
+        replacement.setVisible(true);
+        if (comboBox.getValue() != null){
+            replacement.setText(comboBox.getValue().toString());
+        }else{
+            replacement.setText("");
+        }
+    }
+
+    private void disableSteelTypeComboBoxReadOnlyMode(ComboBox comboBox, TextField replacement){
+        ControlFXUtils.setDisabledTextFields(true, replacement);
+        comboBox.setVisible(true);
+        replacement.setVisible(false);
     }
 
     private void updateSteelTypesFromFields(SteelTypeUI steelTypeUI){

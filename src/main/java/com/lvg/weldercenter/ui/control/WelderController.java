@@ -108,11 +108,19 @@ public class WelderController extends GenericController {
     @FXML
     private ComboBox<EducationUI> cbEducation;
     @FXML
+    private TextField txfEducation;
+    @FXML
     private ComboBox<QualificationUI> cbQualification;
+    @FXML
+    private TextField txfQualification;
     @FXML
     private ComboBox<OrganizationUI> cbOrganization;
     @FXML
+    private TextField txfOrganization;
+    @FXML
     private ComboBox<JobUI> cbJob;
+    @FXML
+    private TextField txfJob;
 
     @FXML
     private MenuButton mbtWeldMethod;
@@ -193,7 +201,10 @@ public class WelderController extends GenericController {
         dpDateBegin.getEditor().textProperty().addListener(invalidationListener);
         ChangeListener changeListener = new OrganizationFilterListener();
         cbOrganization.getEditor().textProperty().addListener(changeListener);
-
+        txfEducation.setVisible(true);
+        txfOrganization.setVisible(true);
+        txfQualification.setVisible(true);
+        txfJob.setVisible(true);
         clearWelderDetailsPane();
         setDisableWelderDetailsPane(true);
     }
@@ -239,6 +250,7 @@ public class WelderController extends GenericController {
         for (EducationUI educationUI: cbEducation.getItems()){
             if(educationUI.toString().equals(selectedWelder.getEducation())){
                 cbEducation.getSelectionModel().select(educationUI);
+                txfEducation.setText(educationUI.getType());
                 break;
             }
         }
@@ -246,6 +258,7 @@ public class WelderController extends GenericController {
         for (QualificationUI qualifName : cbQualification.getItems()){
             if(qualifName.toString().equals(selectedWelder.getQualification())){
                 cbQualification.getSelectionModel().select(qualifName);
+                txfQualification.setText(qualifName.getType());
                 break;
             }
         }
@@ -253,6 +266,7 @@ public class WelderController extends GenericController {
         for (OrganizationUI orgName: cbOrganization.getItems()){
             if(orgName.toString().equals(selectedWelder.getOrganization())){
                 cbOrganization.getSelectionModel().select(orgName);
+                txfOrganization.setText(orgName.getName());
                 break;
             }
         }
@@ -260,6 +274,7 @@ public class WelderController extends GenericController {
         for (JobUI jobName : cbJob.getItems()){
             if(jobName.toString().equals(selectedWelder.getJob())){
                 cbJob.getSelectionModel().select(jobName);
+                txfJob.setText(jobName.getName());
                 break;
 
             }
@@ -587,7 +602,39 @@ public class WelderController extends GenericController {
                 txfSecname, txfDocNumber, txfAddress, txfWeldMethod);
         ControlFXUtils.setDisabledComboBoxes(disabled, cbEducation, cbQualification, cbOrganization, cbJob);
         ControlFXUtils.setDisabledDatePickers(disabled, dpBirthday, dpDateBegin);
+        setDisableWelderComboBoxes(disabled);
         mbtWeldMethod.setDisable(disabled);
+    }
+
+    private void setDisableWelderComboBoxes(boolean disabled){
+        if (disabled){
+            enableComboBoxReadOnlyMode(cbEducation, txfEducation);
+            enableComboBoxReadOnlyMode(cbOrganization,txfOrganization);
+            enableComboBoxReadOnlyMode(cbQualification, txfQualification);
+            enableComboBoxReadOnlyMode(cbJob, txfJob);
+        }else {
+            disableComboboxReadOnlyMode(cbEducation, txfEducation);
+            disableComboboxReadOnlyMode(cbOrganization, txfOrganization);
+            disableComboboxReadOnlyMode(cbQualification, txfQualification);
+            disableComboboxReadOnlyMode(cbJob,txfJob);
+        }
+    }
+
+    private void enableComboBoxReadOnlyMode(final ComboBox comboBox, TextField replacement){
+        if (comboBox.getValue()!=null){
+            replacement.setVisible(true);
+            replacement.setText(comboBox.getValue().toString());
+            ControlFXUtils.setDisabledTextFields(true, replacement);
+            comboBox.setVisible(false);
+        }else {
+            replacement.setText("");
+            comboBox.setVisible(false);
+            ControlFXUtils.setDisabledTextFields(true, replacement);
+        }
+    }
+    private void disableComboboxReadOnlyMode(ComboBox comboBox, TextField replacement){
+        comboBox.setVisible(true);
+        replacement.setVisible(false);
     }
 
     @FXML
@@ -882,12 +929,13 @@ public class WelderController extends GenericController {
             WelderUI selectedWelder = welderTableView.getSelectionModel().getSelectedItem();
             if (selectedWelder == null) {
                 LOGGER.debug("there is no any welder is selected");
+                setDisableWelderDetailsPane(true);
                 return;
             }
             LOGGER.debug("selected welder is" + selectedWelder);
             btEdit.setDisable(false);
             btSave.setDisable(true);
-           setDisableWelderDetailsPane(true);
+            setDisableWelderDetailsPane(true);
            // welderDetailsPane.setDisable(true);
             fillWelderDetailPane(selectedWelder);
 

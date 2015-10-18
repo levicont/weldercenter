@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+
 <BorderPane fx:id="mainPropertiesPane" prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: linear-gradient(to bottom, #aaccff, #cceeFF);" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.lvg.weldercenter.ui.control.PropertiesController">
     <bottom>
         <HBox prefHeight="32.0" prefWidth="600.0" spacing="10.0" BorderPane.alignment="CENTER">
@@ -351,6 +353,11 @@
                                                       <Insets left="90.0" />
                                                    </GridPane.margin>
                                                 </Button>
+                                                <TextField fx:id="txfSteelTypeSteelGroup" prefWidth="150.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                                   <GridPane.margin>
+                                                      <Insets left="90.0" />
+                                                   </GridPane.margin>
+                                                </TextField>
                                              </children>
                                              <columnConstraints>
                                                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="140.0" />
