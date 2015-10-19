@@ -5,6 +5,7 @@ import com.lvg.weldercenter.models.PatternDiameter;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigInteger;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -14,9 +15,22 @@ import java.util.List;
 public class PatternDiameterDaoHiberImpl extends GenericDaoHiberImpl
         implements PatternDiameterDao {
 
+    private class DiameterComparator implements Comparator<PatternDiameter> {
+        @Override
+        public int compare(PatternDiameter o1, PatternDiameter o2) {
+            if(o1.getDiameter()>o2.getDiameter())
+                return 1;
+            if (o1.getDiameter()<o2.getDiameter())
+                return -1;
+            return 0;
+        }
+    }
+
     @Override
     public List<PatternDiameter> getAll() {
-        return getSession().createQuery("from PatternDiameter").list();
+        List<PatternDiameter> result = getSession().createQuery("from PatternDiameter").list();
+        result.sort(new DiameterComparator());
+        return result;
     }
 
     @Override

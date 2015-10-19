@@ -5,6 +5,7 @@ import com.lvg.weldercenter.models.NDTDocument;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigInteger;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -14,9 +15,18 @@ import java.util.List;
 public class NDTDocumentDaoHiberImpl extends GenericDaoHiberImpl
         implements NDTDocumentDao {
 
+    private class NDTDocumentsComparator implements Comparator<NDTDocument>{
+        @Override
+        public int compare(NDTDocument o1, NDTDocument o2) {
+            return o1.getName().compareTo(o2.getName());
+        }
+    }
+
     @Override
     public List<NDTDocument> getAll() {
-        return getSession().createQuery("from NDTDocument").list();
+        List<NDTDocument> result = getSession().createQuery("from NDTDocument").list();
+        result.sort(new NDTDocumentsComparator());
+        return result;
     }
 
     @Override

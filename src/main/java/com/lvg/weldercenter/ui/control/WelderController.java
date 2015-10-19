@@ -248,6 +248,11 @@ public class WelderController extends GenericController {
 
     private void selectComboBoxItems(WelderUI selectedWelder){
         for (EducationUI educationUI: cbEducation.getItems()){
+            if (selectedWelder.getEducation() == null || selectedWelder.getEducation().isEmpty()){
+                cbEducation.getSelectionModel().clearSelection();
+                txfEducation.setText("");
+                break;
+            }
             if(educationUI.toString().equals(selectedWelder.getEducation())){
                 cbEducation.getSelectionModel().select(educationUI);
                 txfEducation.setText(educationUI.getType());
@@ -256,6 +261,11 @@ public class WelderController extends GenericController {
         }
 
         for (QualificationUI qualifName : cbQualification.getItems()){
+            if (selectedWelder.getQualification() == null || selectedWelder.getQualification().isEmpty()){
+                cbQualification.getSelectionModel().clearSelection();
+                txfQualification.setText("");
+                break;
+            }
             if(qualifName.toString().equals(selectedWelder.getQualification())){
                 cbQualification.getSelectionModel().select(qualifName);
                 txfQualification.setText(qualifName.getType());
@@ -264,6 +274,11 @@ public class WelderController extends GenericController {
         }
 
         for (OrganizationUI orgName: cbOrganization.getItems()){
+            if (selectedWelder.getOrganization() == null || selectedWelder.getOrganization().isEmpty()){
+                cbOrganization.getSelectionModel().clearSelection();
+                txfOrganization.setText("");
+                break;
+            }
             if(orgName.toString().equals(selectedWelder.getOrganization())){
                 cbOrganization.getSelectionModel().select(orgName);
                 txfOrganization.setText(orgName.getName());
@@ -271,12 +286,16 @@ public class WelderController extends GenericController {
             }
         }
 
-        for (JobUI jobName : cbJob.getItems()){
+        for (JobUI jobName : cbJob.getItems() ){
+            if (selectedWelder.getJob() == null || selectedWelder.getJob().isEmpty()){
+                cbJob.getSelectionModel().clearSelection();
+                txfJob.setText("");
+                break;
+            }
             if(jobName.toString().equals(selectedWelder.getJob())){
                 cbJob.getSelectionModel().select(jobName);
                 txfJob.setText(jobName.getName());
                 break;
-
             }
         }
 
@@ -429,6 +448,14 @@ public class WelderController extends GenericController {
         txfAddress.clear();
         dpBirthday.setValue(DateUtil.DEFAULT_DATE);
         dpDateBegin.setValue(DateUtil.DEFAULT_DATE);
+        cbEducation.getSelectionModel().clearSelection();
+        txfEducation.clear();
+        cbOrganization.getSelectionModel().clearSelection();
+        txfOrganization.clear();
+        cbQualification.getSelectionModel().clearSelection();
+        txfQualification.clear();
+        cbJob.getSelectionModel().clearSelection();
+        txfJob.clear();
         for(MenuItem mi : mbtWeldMethod.getItems()){
             CheckMenuItem checkMI = (CheckMenuItem)mi;
             checkMI.setSelected(false);
@@ -621,15 +648,14 @@ public class WelderController extends GenericController {
     }
 
     private void enableComboBoxReadOnlyMode(final ComboBox comboBox, TextField replacement){
-        if (comboBox.getValue()!=null){
-            replacement.setVisible(true);
+        ControlFXUtils.setDisabledTextFields(true, replacement);
+        comboBox.setVisible(false);
+        replacement.setVisible(true);
+        if (comboBox.getValue()!= null){
             replacement.setText(comboBox.getValue().toString());
             ControlFXUtils.setDisabledTextFields(true, replacement);
-            comboBox.setVisible(false);
         }else {
             replacement.setText("");
-            comboBox.setVisible(false);
-            ControlFXUtils.setDisabledTextFields(true, replacement);
         }
     }
     private void disableComboboxReadOnlyMode(ComboBox comboBox, TextField replacement){
