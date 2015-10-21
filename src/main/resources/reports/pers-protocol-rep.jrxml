@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="pers-protocol-rep" language="groovy" pageWidth="595" pageHeight="842" columnWidth="525" leftMargin="56" rightMargin="14" topMargin="14" bottomMargin="14" uuid="067b331b-9d02-428e-ad99-23a3b633b330">
-	<property name="ireport.zoom" value="0.9090909090909095"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="480"/>
+	<property name="ireport.zoom" value="1.6105100000000012"/>
+	<property name="ireport.x" value="167"/>
+	<property name="ireport.y" value="108"/>
 	<parameter name="WELDER_FULL_NAME" class="java.lang.String"/>
 	<parameter name="PROT_NUMBER" class="java.lang.String"/>
 	<parameter name="PROT_DATE" class="java.lang.String"/>
@@ -213,49 +213,49 @@
 				<text><![CDATA[7. Материал образца:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="12" y="546" width="129" height="20" uuid="09365910-ff3c-4e67-94a3-7b0099cfd70b"/>
-				<textElement verticalAlignment="Middle">
+				<reportElement x="14" y="546" width="129" height="20" uuid="09365910-ff3c-4e67-94a3-7b0099cfd70b"/>
+				<textElement verticalAlignment="Top">
 					<font fontName="Univers" size="12"/>
 				</textElement>
 				<text><![CDATA[7.1. Марка и группа:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="12" y="566" width="174" height="20" uuid="6fa3ac9e-2d89-4dbb-a8db-6c26ccb91264"/>
+				<reportElement x="14" y="587" width="174" height="20" uuid="6fa3ac9e-2d89-4dbb-a8db-6c26ccb91264"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Univers" size="12"/>
 				</textElement>
 				<text><![CDATA[7.2. Толщина образца (мм):]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="12" y="586" width="227" height="20" uuid="4dfb7cf1-1da9-47d9-968a-472c1a05db2c"/>
+				<reportElement x="14" y="607" width="227" height="20" uuid="4dfb7cf1-1da9-47d9-968a-472c1a05db2c"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Univers" size="12"/>
 				</textElement>
 				<text><![CDATA[7.3. Наружный диаметр трубы (мм):]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="606" width="239" height="20" uuid="85ca5bca-f167-4f17-8292-e0301d48f23b"/>
+				<reportElement x="2" y="627" width="239" height="20" uuid="85ca5bca-f167-4f17-8292-e0301d48f23b"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Univers" size="12"/>
 				</textElement>
 				<text><![CDATA[8. Сварочные материалы: ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="12" y="626" width="257" height="20" uuid="216cb312-10af-44ce-9c69-1941526c3f91"/>
+				<reportElement x="14" y="647" width="257" height="20" uuid="216cb312-10af-44ce-9c69-1941526c3f91"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Univers" size="12"/>
 				</textElement>
 				<text><![CDATA[8.1. Электрод или присадочная проволока:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="12" y="646" width="192" height="20" uuid="94069d0d-53eb-420b-9886-9c11dd7c016a"/>
+				<reportElement x="12" y="667" width="192" height="20" uuid="94069d0d-53eb-420b-9886-9c11dd7c016a"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Univers" size="12"/>
 				</textElement>
 				<text><![CDATA[8.2. Защитный газ или флюс:]]></text>
 			</staticText>
 			<break>
-				<reportElement x="0" y="669" width="525" height="1" uuid="2656e729-d7e0-4f88-a2e9-2e31a7964db9"/>
+				<reportElement x="0" y="690" width="525" height="1" uuid="2656e729-d7e0-4f88-a2e9-2e31a7964db9"/>
 			</break>
 			<textField>
 				<reportElement x="219" y="246" width="306" height="20" uuid="fcd27de1-897f-4d01-ba85-691b7380f76b"/>
@@ -391,35 +391,35 @@
 				<textFieldExpression><![CDATA[$P{WELD_PATTERN_HEAT_TREATMENT}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="141" y="546" width="384" height="20" uuid="4aa537d3-605e-487d-9f4c-acbda344b17e"/>
-				<textElement verticalAlignment="Middle">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="143" y="546" width="382" height="41" uuid="4aa537d3-605e-487d-9f4c-acbda344b17e"/>
+				<textElement verticalAlignment="Top">
 					<font fontName="Univers" size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{WELD_PATTERN_STEEL_TYPE}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="186" y="566" width="339" height="20" uuid="0636a05b-e3c6-4b45-b0e3-7d5cb8a973e2"/>
+				<reportElement x="188" y="587" width="337" height="20" uuid="0636a05b-e3c6-4b45-b0e3-7d5cb8a973e2"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Univers" size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{WELD_PATTERN_THICKNESS}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="239" y="586" width="286" height="20" uuid="00d05212-40a5-4c70-a9cb-4169949d5cfb"/>
+				<reportElement x="241" y="607" width="284" height="20" uuid="00d05212-40a5-4c70-a9cb-4169949d5cfb"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Univers" size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{WELD_PATTERN_DIAMETER}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="269" y="626" width="256" height="20" uuid="b57dd8af-4ad0-4473-81d1-4c5b91e53348"/>
+				<reportElement x="271" y="647" width="254" height="20" uuid="b57dd8af-4ad0-4473-81d1-4c5b91e53348"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Univers" size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{WELD_PATTERN_ELECTRODE_WIRE}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="204" y="646" width="321" height="20" uuid="0d7b2514-bc0b-4285-831b-f664211db710"/>
+				<reportElement x="204" y="667" width="321" height="20" uuid="0d7b2514-bc0b-4285-831b-f664211db710"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Univers" size="12" isBold="true"/>
 				</textElement>

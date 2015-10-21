@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="total-protocol-theory-rep" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="842" leftMargin="0" rightMargin="0" topMargin="56" bottomMargin="42" uuid="85f85a2b-0943-449a-b2a2-d32b9d1f2df2">
 	<property name="ireport.zoom" value="1.4363522962149875"/>
-	<property name="ireport.x" value="54"/>
+	<property name="ireport.x" value="475"/>
 	<property name="ireport.y" value="0"/>
 	<subDataset name="dataset1" uuid="8646df78-ce36-4663-b00e-472cf91e6546">
 		<field name="mark" class="java.lang.String"/>
@@ -317,30 +317,6 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{fio}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement stretchType="RelativeToTallestObject" x="183" y="0" width="20" height="20" uuid="6cbef6f9-98a3-4c91-94ac-09e9432f57cf"/>
-				<box>
-					<leftPen lineWidth="0.75"/>
-					<rightPen lineWidth="0.75"/>
-				</box>
-				<textElement verticalAlignment="Middle">
-					<font fontName="Univers"/>
-					<paragraph leftIndent="3"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true">
-				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="677" y="0" width="128" height="20" uuid="fb25e374-cdd7-489f-b1bf-c12a572be589"/>
-				<box>
-					<leftPen lineWidth="0.75"/>
-					<rightPen lineWidth="0.75"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Univers"/>
-					<paragraph leftIndent="3"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{ndtDocs}]]></textFieldExpression>
-			</textField>
 			<componentElement>
 				<reportElement stretchType="RelativeToTallestObject" mode="Transparent" x="33" y="0" width="772" height="20" uuid="2c37147a-a29b-4388-a04d-dc6a97f0ee7b"/>
 				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
@@ -499,15 +475,30 @@
 							</textElement>
 							<textFieldExpression><![CDATA[$F{mtMainTestFeature}]]></textFieldExpression>
 						</textField>
+						<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+							<reportElement stretchType="RelativeToTallestObject" x="150" y="0" width="20" height="20" uuid="8ed5dc08-d74d-47c4-aa47-b00fbfec86e1"/>
+							<box>
+								<topPen lineWidth="0.0" lineStyle="Dashed"/>
+								<leftPen lineWidth="0.0"/>
+								<bottomPen lineWidth="0.0" lineStyle="Dashed"/>
+								<rightPen lineWidth="0.0"/>
+							</box>
+							<textElement verticalAlignment="Middle">
+								<font fontName="Univers"/>
+								<paragraph leftIndent="3" spacingBefore="2" spacingAfter="2"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{mark}]]></textFieldExpression>
+						</textField>
+						<staticText>
+							<reportElement x="644" y="0" width="128" height="20" uuid="32490038-36c0-4acf-b6d6-d39932ef5779"/>
+							<textElement textAlignment="Center" verticalAlignment="Middle">
+								<font fontName="Univers"/>
+							</textElement>
+							<text><![CDATA[НПАОП 0.00-1.16-96]]></text>
+						</staticText>
 					</jr:listContents>
 				</jr:list>
 			</componentElement>
-			<rectangle>
-				<reportElement stretchType="RelativeToTallestObject" mode="Transparent" x="33" y="0" width="772" height="20" uuid="1f9e0f52-c6f1-41ff-84e8-93bdeeae60ac"/>
-				<graphicElement>
-					<pen lineWidth="0.75"/>
-				</graphicElement>
-			</rectangle>
 			<rectangle>
 				<reportElement stretchType="RelativeToTallestObject" mode="Transparent" x="233" y="0" width="30" height="20" uuid="32dff3ee-bd1d-4b8b-8cf3-4a4423d335d5"/>
 				<graphicElement>
@@ -558,6 +549,24 @@
 			</rectangle>
 			<rectangle>
 				<reportElement stretchType="RelativeToTallestObject" mode="Transparent" x="590" y="0" width="51" height="20" uuid="2bd243f2-33f4-4fbc-994c-1261aa0e8730"/>
+				<graphicElement>
+					<pen lineWidth="0.75"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle>
+				<reportElement stretchType="RelativeToTallestObject" mode="Transparent" x="183" y="0" width="20" height="20" uuid="6356df3c-ca07-4f8e-986e-051a47ee33dd"/>
+				<graphicElement>
+					<pen lineWidth="0.75"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle>
+				<reportElement stretchType="RelativeToTallestObject" mode="Transparent" x="33" y="0" width="772" height="20" uuid="1f9e0f52-c6f1-41ff-84e8-93bdeeae60ac"/>
+				<graphicElement>
+					<pen lineWidth="0.75"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle>
+				<reportElement stretchType="RelativeToTallestObject" mode="Transparent" x="677" y="0" width="128" height="20" uuid="5c4380bc-b5ee-4f48-a12a-e67e9ed5434f"/>
 				<graphicElement>
 					<pen lineWidth="0.75"/>
 				</graphicElement>

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="total-protocol-theory-rep" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="842" leftMargin="0" rightMargin="0" topMargin="56" bottomMargin="42" uuid="85f85a2b-0943-449a-b2a2-d32b9d1f2df2">
-	<property name="ireport.zoom" value="0.8107834255862381"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.zoom" value="2.3132597365771934"/>
+	<property name="ireport.x" value="767"/>
+	<property name="ireport.y" value="8"/>
 	<parameter name="NUMBER" class="java.lang.String"/>
 	<parameter name="DATE_CERT_FORMAT" class="java.lang.String"/>
 	<parameter name="COMMISSION_CERTIFICATION_HEAD_INV" class="java.lang.String"/>
@@ -148,7 +148,7 @@
 	<detail>
 		<band height="20">
 			<textField isStretchWithOverflow="true">
-				<reportElement stretchType="RelativeToTallestObject" x="81" y="0" width="170" height="20" uuid="bbb9643b-01e8-48a2-810e-330b279be88d"/>
+				<reportElement stretchType="RelativeToTallestObject" x="81" y="0" width="170" height="20" isPrintWhenDetailOverflows="true" uuid="bbb9643b-01e8-48a2-810e-330b279be88d"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -162,7 +162,7 @@
 				<textFieldExpression><![CDATA[$F{welder}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement stretchType="RelativeToTallestObject" x="251" y="0" width="149" height="20" uuid="e29e7cc1-6589-4e17-abdd-044ca79a7975"/>
+				<reportElement stretchType="RelativeToTallestObject" x="251" y="0" width="149" height="20" isPrintWhenDetailOverflows="true" uuid="e29e7cc1-6589-4e17-abdd-044ca79a7975"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -175,7 +175,7 @@
 				<textFieldExpression><![CDATA[$F{weldMethods}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement stretchType="RelativeToTallestObject" x="400" y="0" width="156" height="20" uuid="ddee2ed9-cc90-4807-b136-14c31b17fe0a"/>
+				<reportElement stretchType="RelativeToTallestObject" x="400" y="0" width="156" height="20" isPrintWhenDetailOverflows="true" uuid="ddee2ed9-cc90-4807-b136-14c31b17fe0a"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -189,7 +189,7 @@
 				<textFieldExpression><![CDATA[$F{ndtDocs}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement stretchType="RelativeToTallestObject" x="556" y="0" width="82" height="20" uuid="71db9c9c-e8ff-48db-9012-f09dfcbe08db"/>
+				<reportElement stretchType="RelativeToTallestObject" x="556" y="0" width="82" height="20" isPrintWhenDetailOverflows="true" uuid="71db9c9c-e8ff-48db-9012-f09dfcbe08db"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -202,7 +202,7 @@
 				<textFieldExpression><![CDATA[$F{numberTickets}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement stretchType="RelativeToTallestObject" x="638" y="0" width="72" height="20" uuid="8b7eb2e1-6a82-4817-92be-9855e1f60c10"/>
+				<reportElement stretchType="RelativeToTallestObject" x="638" y="0" width="72" height="20" isPrintWhenDetailOverflows="true" uuid="8b7eb2e1-6a82-4817-92be-9855e1f60c10"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -215,7 +215,7 @@
 				<textFieldExpression><![CDATA[$F{rating}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement stretchType="RelativeToTallestObject" x="710" y="0" width="74" height="20" uuid="b42c23af-226a-4eca-aefc-892157e41c2b"/>
+				<reportElement stretchType="RelativeToTallestObject" x="710" y="0" width="74" height="20" isPrintWhenDetailOverflows="true" uuid="b42c23af-226a-4eca-aefc-892157e41c2b"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -228,7 +228,7 @@
 				<textFieldExpression><![CDATA[$F{notes}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement stretchType="RelativeToTallestObject" x="38" y="0" width="43" height="20" uuid="fa8a7b5a-4ab1-4bc3-bb54-3a94ec58b37f"/>
+				<reportElement stretchType="RelativeToTallestObject" x="38" y="0" width="43" height="20" isPrintWhenDetailOverflows="true" uuid="fa8a7b5a-4ab1-4bc3-bb54-3a94ec58b37f"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
