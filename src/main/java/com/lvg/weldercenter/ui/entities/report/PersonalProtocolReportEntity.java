@@ -405,10 +405,8 @@ public class PersonalProtocolReportEntity extends GenericReportEntity{
              weldMethodName = " ("+weldMethodUI.getName()+")";
             }
             if (wp.getThickness()!= 0){
-                if (!result.toString().contains(wp.getThickness()+"")){
                     result.append(wp.getThickness()+weldMethodName);
                     result.append(constants.GENERIC_SEMICOLON_SEPARATOR);
-                }
             }
         }
         deleteLastSeparator(result, constants.GENERIC_SEMICOLON_SEPARATOR);
@@ -426,10 +424,8 @@ public class PersonalProtocolReportEntity extends GenericReportEntity{
                 weldMethodName = " ("+weldMethodUI.getName()+")";
             }
             if (wp.getDiameter()!= 0){
-                if (!result.toString().contains(wp.getDiameter()+"")){
                     result.append(wp.getDiameter()+weldMethodName);
                     result.append(constants.GENERIC_SEMICOLON_SEPARATOR);
-                }
             }
         }
         deleteLastSeparator(result, constants.GENERIC_SEMICOLON_SEPARATOR);

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="pers-protocol-rep" language="groovy" pageWidth="595" pageHeight="842" columnWidth="525" leftMargin="56" rightMargin="14" topMargin="14" bottomMargin="14" uuid="067b331b-9d02-428e-ad99-23a3b633b330">
-	<property name="ireport.zoom" value="1.6105100000000012"/>
-	<property name="ireport.x" value="167"/>
-	<property name="ireport.y" value="108"/>
+	<property name="ireport.zoom" value="1.2100000000000006"/>
+	<property name="ireport.x" value="43"/>
+	<property name="ireport.y" value="432"/>
 	<parameter name="WELDER_FULL_NAME" class="java.lang.String"/>
 	<parameter name="PROT_NUMBER" class="java.lang.String"/>
 	<parameter name="PROT_DATE" class="java.lang.String"/>
@@ -43,7 +43,7 @@
 		<band splitType="Stretch"/>
 	</background>
 	<detail>
-		<band height="694" splitType="Stretch">
+		<band height="814" splitType="Stretch">
 			<staticText>
 				<reportElement x="0" y="26" width="525" height="20" uuid="8ee75240-6ce0-471b-ac44-6f63b69f31b8"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -108,157 +108,157 @@
 				<text><![CDATA[рассмотрела вопрос: Аттестация сварщиков НПАОП 0.00-1.16-96;]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="246" width="219" height="20" uuid="6dce9c0a-4658-4134-8df2-2386a3860766"/>
+				<reportElement x="0" y="265" width="219" height="20" uuid="6dce9c0a-4658-4134-8df2-2386a3860766"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Univers" size="12"/>
 				</textElement>
 				<text><![CDATA[1. Фамилия имя отчество сварщика:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="266" width="97" height="20" uuid="16ea24a3-f465-4a5d-a12e-1d15f196752e"/>
+				<reportElement x="0" y="285" width="97" height="20" uuid="16ea24a3-f465-4a5d-a12e-1d15f196752e"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Univers" size="12"/>
 				</textElement>
 				<text><![CDATA[2. Год рождения:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="286" width="525" height="20" uuid="dadbca86-b725-4325-b00a-ecca5963b704"/>
+				<reportElement x="0" y="305" width="525" height="20" uuid="dadbca86-b725-4325-b00a-ecca5963b704"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Univers" size="12"/>
 				</textElement>
 				<text><![CDATA[3. Номер документа о присвоении квалификации сварщика или номер предыдущего ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="12" y="306" width="180" height="20" uuid="d560d231-66cc-4bb1-a2ff-40b8db6a7c97"/>
+				<reportElement x="12" y="325" width="180" height="20" uuid="d560d231-66cc-4bb1-a2ff-40b8db6a7c97"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Univers" size="12"/>
 				</textElement>
 				<text><![CDATA[удостоверения об аттестации:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="326" width="161" height="20" uuid="33e96fba-3fbb-4f30-a62f-06861204b3bb"/>
+				<reportElement x="0" y="345" width="161" height="20" uuid="33e96fba-3fbb-4f30-a62f-06861204b3bb"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Univers" size="12"/>
 				</textElement>
 				<text><![CDATA[4. Стаж работы по сварке:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="346" width="120" height="20" uuid="f9701db3-ccce-4f23-a90a-b2f968aa918e"/>
+				<reportElement x="0" y="365" width="120" height="20" uuid="f9701db3-ccce-4f23-a90a-b2f968aa918e"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Univers" size="12"/>
 				</textElement>
 				<text><![CDATA[5. Вид аттестации:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="366" width="239" height="20" uuid="fa216a45-b6fd-458b-9567-bc95a70d89bd"/>
+				<reportElement x="0" y="385" width="239" height="20" uuid="fa216a45-b6fd-458b-9567-bc95a70d89bd"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Univers" size="12"/>
 				</textElement>
 				<text><![CDATA[6. Характеристики сварного соединения:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="12" y="386" width="207" height="20" uuid="2a31f45e-d41a-490c-8abb-f7fb1e69fb2b"/>
+				<reportElement x="12" y="405" width="207" height="20" uuid="2a31f45e-d41a-490c-8abb-f7fb1e69fb2b"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Univers" size="12"/>
 				</textElement>
 				<text><![CDATA[6.1. Маркировка образца (клеймо):]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="12" y="406" width="129" height="20" uuid="5a7fe00f-dbf1-4806-9297-8e7b7eeeb4f4"/>
+				<reportElement x="12" y="425" width="129" height="20" uuid="5a7fe00f-dbf1-4806-9297-8e7b7eeeb4f4"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Univers" size="12"/>
 				</textElement>
 				<text><![CDATA[6.2. Способ сварки:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="12" y="426" width="186" height="20" uuid="873ac771-6f36-4997-a70b-af7a387b201a"/>
+				<reportElement x="12" y="445" width="186" height="20" uuid="873ac771-6f36-4997-a70b-af7a387b201a"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Univers" size="12"/>
 				</textElement>
 				<text><![CDATA[6.3. Вид свариваемых деталей:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="12" y="446" width="339" height="20" uuid="52c90b70-ce32-4821-9ad2-3367da659066"/>
+				<reportElement x="12" y="465" width="339" height="20" uuid="52c90b70-ce32-4821-9ad2-3367da659066"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Univers" size="12"/>
 				</textElement>
 				<text><![CDATA[6.4. Тип шва, вид и характеристика сварного соединения:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="12" y="466" width="170" height="20" uuid="b899048e-311a-44a5-82a6-c91479760056"/>
+				<reportElement x="12" y="485" width="170" height="20" uuid="b899048e-311a-44a5-82a6-c91479760056"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Univers" size="12"/>
 				</textElement>
 				<text><![CDATA[6.5. Положение при сварке:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="12" y="486" width="296" height="20" uuid="0ebf77fc-c7b7-4516-91e1-00150113dba4"/>
+				<reportElement x="12" y="505" width="296" height="20" uuid="0ebf77fc-c7b7-4516-91e1-00150113dba4"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Univers" size="12"/>
 				</textElement>
 				<text><![CDATA[6.6. Предварительный и сопутствующий подогрев:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="12" y="506" width="174" height="20" uuid="ec0f1659-a050-4c2c-b03e-76ab8a6668bc"/>
+				<reportElement x="12" y="525" width="174" height="20" uuid="ec0f1659-a050-4c2c-b03e-76ab8a6668bc"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Univers" size="12"/>
 				</textElement>
 				<text><![CDATA[6.7. Термическая обработка:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="526" width="204" height="20" uuid="ba7fa3f6-29da-453c-8e6c-339a3b958e2c"/>
+				<reportElement x="0" y="545" width="204" height="20" uuid="ba7fa3f6-29da-453c-8e6c-339a3b958e2c"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Univers" size="12"/>
 				</textElement>
 				<text><![CDATA[7. Материал образца:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="14" y="546" width="129" height="20" uuid="09365910-ff3c-4e67-94a3-7b0099cfd70b"/>
+				<reportElement positionType="Float" x="14" y="565" width="129" height="20" uuid="09365910-ff3c-4e67-94a3-7b0099cfd70b"/>
 				<textElement verticalAlignment="Top">
 					<font fontName="Univers" size="12"/>
 				</textElement>
 				<text><![CDATA[7.1. Марка и группа:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="14" y="587" width="174" height="20" uuid="6fa3ac9e-2d89-4dbb-a8db-6c26ccb91264"/>
+				<reportElement positionType="Float" x="14" y="588" width="174" height="23" uuid="6fa3ac9e-2d89-4dbb-a8db-6c26ccb91264"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Univers" size="12"/>
 				</textElement>
 				<text><![CDATA[7.2. Толщина образца (мм):]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="14" y="607" width="227" height="20" uuid="4dfb7cf1-1da9-47d9-968a-472c1a05db2c"/>
+				<reportElement positionType="Float" x="14" y="610" width="225" height="20" uuid="4dfb7cf1-1da9-47d9-968a-472c1a05db2c"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Univers" size="12"/>
 				</textElement>
 				<text><![CDATA[7.3. Наружный диаметр трубы (мм):]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="2" y="627" width="239" height="20" uuid="85ca5bca-f167-4f17-8292-e0301d48f23b"/>
+				<reportElement x="2" y="644" width="523" height="23" uuid="85ca5bca-f167-4f17-8292-e0301d48f23b"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Univers" size="12"/>
 				</textElement>
 				<text><![CDATA[8. Сварочные материалы: ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="14" y="647" width="257" height="20" uuid="216cb312-10af-44ce-9c69-1941526c3f91"/>
+				<reportElement x="12" y="666" width="257" height="20" uuid="216cb312-10af-44ce-9c69-1941526c3f91"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Univers" size="12"/>
 				</textElement>
 				<text><![CDATA[8.1. Электрод или присадочная проволока:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="12" y="667" width="192" height="20" uuid="94069d0d-53eb-420b-9886-9c11dd7c016a"/>
+				<reportElement x="12" y="686" width="192" height="20" uuid="94069d0d-53eb-420b-9886-9c11dd7c016a"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Univers" size="12"/>
 				</textElement>
 				<text><![CDATA[8.2. Защитный газ или флюс:]]></text>
 			</staticText>
 			<break>
-				<reportElement x="0" y="690" width="525" height="1" uuid="2656e729-d7e0-4f88-a2e9-2e31a7964db9"/>
+				<reportElement x="0" y="751" width="525" height="1" uuid="2656e729-d7e0-4f88-a2e9-2e31a7964db9"/>
 			</break>
 			<textField>
-				<reportElement x="219" y="246" width="306" height="20" uuid="fcd27de1-897f-4d01-ba85-691b7380f76b"/>
+				<reportElement x="219" y="266" width="306" height="20" uuid="fcd27de1-897f-4d01-ba85-691b7380f76b"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Univers" size="12" isBold="true"/>
 				</textElement>
@@ -306,120 +306,121 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$P{COMISSION_SAFETY_SPEC}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="12" y="226" width="513" height="20" uuid="d3f4eaa4-5489-4f07-a9dd-0d9f3fae5e95"/>
-				<textElement verticalAlignment="Middle">
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" x="12" y="226" width="513" height="40" uuid="d3f4eaa4-5489-4f07-a9dd-0d9f3fae5e95"/>
+				<textElement verticalAlignment="Top">
 					<font fontName="Univers" size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{NDT_DOCUMENTS}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="97" y="266" width="317" height="20" uuid="d92980bb-7d8a-4fb5-9bb3-183eb234cf26"/>
+				<reportElement x="97" y="285" width="317" height="20" uuid="d92980bb-7d8a-4fb5-9bb3-183eb234cf26"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Univers" size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{WELDER_BIRTHDAY}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="192" y="306" width="318" height="20" uuid="4db79b47-c147-4e58-b9ee-582011b47f60"/>
+				<reportElement x="192" y="325" width="333" height="20" uuid="4db79b47-c147-4e58-b9ee-582011b47f60"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Univers" size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{WELDER_DOC_NUMBER}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="161" y="326" width="349" height="20" uuid="ecc2b478-6904-4aa7-a5ca-8c5115159866"/>
+				<reportElement x="161" y="345" width="364" height="20" uuid="ecc2b478-6904-4aa7-a5ca-8c5115159866"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Univers" size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{WELDER_EXPERIENCE}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="120" y="346" width="294" height="20" uuid="57eef6fc-7ab9-4fd7-a3e3-37e407f29297"/>
+				<reportElement x="120" y="365" width="405" height="20" uuid="57eef6fc-7ab9-4fd7-a3e3-37e407f29297"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Univers" size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{WELDER_ATTEST_TYPE}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="219" y="386" width="306" height="20" uuid="0a11d22c-16bf-4552-8d84-d2903ec40d23"/>
+				<reportElement x="219" y="405" width="306" height="20" uuid="0a11d22c-16bf-4552-8d84-d2903ec40d23"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Univers" size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{WELD_PATTERN_MARKS}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="141" y="406" width="286" height="20" uuid="45a9fc8f-4f09-4ef0-86f3-9048276e6e27"/>
+				<reportElement x="141" y="425" width="384" height="20" uuid="45a9fc8f-4f09-4ef0-86f3-9048276e6e27"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Univers" size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{WELD_PATTERN_WELD_METHODS}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="198" y="426" width="307" height="20" uuid="8d97e1da-02c1-41fb-a926-ac910ea9591c"/>
+				<reportElement x="198" y="445" width="327" height="20" uuid="8d97e1da-02c1-41fb-a926-ac910ea9591c"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Univers" size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{WELD_PATTERN_DETAILS_TYPES}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="351" y="446" width="174" height="20" uuid="04f024e6-360e-4073-a735-e94eaa8b85ec"/>
+				<reportElement x="351" y="465" width="174" height="20" uuid="04f024e6-360e-4073-a735-e94eaa8b85ec"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Univers" size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{WELD_JOIN_TYPES}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="182" y="466" width="343" height="20" uuid="cf105902-aec9-413f-ba75-49e9409c1dad"/>
+				<reportElement x="182" y="485" width="343" height="20" uuid="cf105902-aec9-413f-ba75-49e9409c1dad"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Univers" size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{WELD_PATTERN_WELD_POSITIONS}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="308" y="486" width="217" height="20" uuid="b80dc4d6-141a-4838-949d-c34210333e32"/>
+				<reportElement x="308" y="505" width="217" height="20" uuid="b80dc4d6-141a-4838-949d-c34210333e32"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Univers" size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{WELD_PATTERN_HEATING}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="186" y="506" width="339" height="20" uuid="6d315b9b-9878-437d-81cb-e09f7e29e182"/>
+				<reportElement x="186" y="525" width="339" height="20" uuid="6d315b9b-9878-437d-81cb-e09f7e29e182"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Univers" size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{WELD_PATTERN_HEAT_TREATMENT}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="143" y="546" width="382" height="41" uuid="4aa537d3-605e-487d-9f4c-acbda344b17e"/>
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" x="143" y="565" width="382" height="20" uuid="4aa537d3-605e-487d-9f4c-acbda344b17e"/>
 				<textElement verticalAlignment="Top">
 					<font fontName="Univers" size="12" isBold="true"/>
+					<paragraph tabStopWidth="40"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{WELD_PATTERN_STEEL_TYPE}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="188" y="587" width="337" height="20" uuid="0636a05b-e3c6-4b45-b0e3-7d5cb8a973e2"/>
+				<reportElement positionType="Float" x="186" y="588" width="339" height="23" uuid="0636a05b-e3c6-4b45-b0e3-7d5cb8a973e2"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Univers" size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{WELD_PATTERN_THICKNESS}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="241" y="607" width="284" height="20" uuid="00d05212-40a5-4c70-a9cb-4169949d5cfb"/>
-				<textElement verticalAlignment="Middle">
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" x="239" y="610" width="286" height="20" uuid="00d05212-40a5-4c70-a9cb-4169949d5cfb"/>
+				<textElement verticalAlignment="Top">
 					<font fontName="Univers" size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{WELD_PATTERN_DIAMETER}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="271" y="647" width="254" height="20" uuid="b57dd8af-4ad0-4473-81d1-4c5b91e53348"/>
+				<reportElement x="271" y="666" width="254" height="20" uuid="b57dd8af-4ad0-4473-81d1-4c5b91e53348"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Univers" size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{WELD_PATTERN_ELECTRODE_WIRE}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="204" y="667" width="321" height="20" uuid="0d7b2514-bc0b-4285-831b-f664211db710"/>
+				<reportElement x="204" y="686" width="321" height="20" uuid="0d7b2514-bc0b-4285-831b-f664211db710"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Univers" size="12" isBold="true"/>
 				</textElement>
@@ -533,21 +534,21 @@
 				<text><![CDATA[10. Наименование НД по нормам оценки качества:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="255" width="204" height="20" uuid="7b1024db-3204-4017-ab4a-51420c1594cd"/>
+				<reportElement x="0" y="258" width="204" height="23" uuid="7b1024db-3204-4017-ab4a-51420c1594cd"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Univers" size="12"/>
 				</textElement>
 				<text><![CDATA[11. Оценка теоретических знаний:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="275" width="239" height="20" uuid="348535e2-a64e-4f7c-94c9-3cb4893a65e6"/>
+				<reportElement x="0" y="281" width="239" height="20" uuid="348535e2-a64e-4f7c-94c9-3cb4893a65e6"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Univers" size="12"/>
 				</textElement>
 				<text><![CDATA[12. Решение аттестационной комиссии:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement positionType="Float" x="0" y="318" width="219" height="20" uuid="1113b824-18e3-4bcc-8608-7b1f4d119f7d"/>
+				<reportElement positionType="Float" x="0" y="325" width="219" height="20" uuid="1113b824-18e3-4bcc-8608-7b1f4d119f7d"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Univers" size="12"/>
 				</textElement>
@@ -642,29 +643,29 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$P{WELD_PATTERN_MT_DATE}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="12" y="235" width="513" height="20" uuid="4a605779-addc-4df5-b596-2e45e56cb04e"/>
-				<textElement verticalAlignment="Middle">
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" x="12" y="235" width="513" height="23" uuid="4a605779-addc-4df5-b596-2e45e56cb04e"/>
+				<textElement verticalAlignment="Top">
 					<font fontName="Univers" size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{NDT_DOCUMENTS}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="204" y="255" width="321" height="20" uuid="892e2a80-88c9-48c9-b2b2-0ba73e17ac29"/>
+				<reportElement x="204" y="258" width="321" height="23" uuid="892e2a80-88c9-48c9-b2b2-0ba73e17ac29"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Univers" size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{THEORY_EVALUATION}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement positionType="Float" x="12" y="295" width="513" height="23" uuid="f4ca8857-ae09-4e1f-96e3-1c48e1e78d0d"/>
+				<reportElement positionType="Float" x="14" y="301" width="511" height="23" uuid="f4ca8857-ae09-4e1f-96e3-1c48e1e78d0d"/>
 				<textElement verticalAlignment="Top">
 					<font fontName="Univers" size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{RESOLUTION_CERT}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement positionType="Float" x="219" y="318" width="306" height="20" uuid="6a7d4b18-5bf7-4adf-bdc1-57131d678f3b"/>
+				<reportElement positionType="Float" x="219" y="325" width="306" height="20" uuid="6a7d4b18-5bf7-4adf-bdc1-57131d678f3b"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Univers" size="12" isBold="true"/>
 				</textElement>

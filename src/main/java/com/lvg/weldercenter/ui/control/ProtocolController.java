@@ -681,8 +681,6 @@ public class ProtocolController extends GenericController {
             txfWeldPatternMechNumber.setText(selectedProtocol.getNumber());
             dpWeldPatternMechDate.setValue(DateUtil.getLocalDate(selectedProtocol.getDateCert()));
         }
-        txfWeldPatternMechNumber.clear();
-        dpWeldPatternMechDate.setValue(DateUtil.getLocalDate(new Date()));
         txfWeldPatternMechAngle.clear();
         txfWeldPatternMechClearance.clear();
         cbWeldPatternMechEvaluation.getSelectionModel().clearSelection();
