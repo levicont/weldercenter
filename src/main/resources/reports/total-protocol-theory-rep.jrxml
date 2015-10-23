@@ -146,7 +146,7 @@
 		</band>
 	</pageHeader>
 	<detail>
-		<band height="20">
+		<band height="20" splitType="Prevent">
 			<textField isStretchWithOverflow="true">
 				<reportElement stretchType="RelativeToTallestObject" x="81" y="0" width="170" height="20" isPrintWhenDetailOverflows="true" uuid="bbb9643b-01e8-48a2-810e-330b279be88d"/>
 				<box>

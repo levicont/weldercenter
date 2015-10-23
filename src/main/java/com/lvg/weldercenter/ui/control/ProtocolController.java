@@ -390,9 +390,9 @@ public class ProtocolController extends GenericController {
     private void initProtocolsTreeView(){
         prgsBarUpdater.setVisible(true);
         prgsBarUpdater.progressProperty().unbind();
-        Task updator = createProtocolsUpdater();
-        prgsBarUpdater.progressProperty().bind(updator.progressProperty());
-        Thread t = new Thread(updator);
+        Task updater = createProtocolsUpdater();
+        prgsBarUpdater.progressProperty().bind(updater.progressProperty());
+        Thread t = new Thread(updater);
         t.setName("INIT ProtocolsTreeView Thread");
         t.start();
     }
@@ -433,9 +433,9 @@ public class ProtocolController extends GenericController {
                     cachedTotalProtocols.add(totalProtocolUI);
                     for (int i = 0; i<journalUI.getWelders().size();i++){
                         //TODO load protocols from db
-                        PersonalProtocolUI pp;
-                        if(getWelderProtocolFromDB(journalUI.getWelders().get(i),journalUI)!=null){
-                            pp = getWelderProtocolFromDB(journalUI.getWelders().get(i),journalUI);
+                        PersonalProtocolUI pp = getPersonalProtocolUIFromDBList(journalUI.getWelders().get(i),journalUI,
+                                personalProtocolsDB);
+                        if(pp !=null){
                             treeItem.getChildren().add(new TreeItem<String>(PERSONAL_PROTOCOL_PREFIX_NAME
                                     + pp.toString()+ PERSONAL_PROTOCOL_DB_SUFFIX_NAME));
                         }else {
@@ -822,6 +822,22 @@ public class ProtocolController extends GenericController {
                 JournalUI journalUIDB = new JournalUI(pp.getJournal());
                 if(pp.getWelder()!=null){
                    WelderUI welderUIDB = new WelderUI(pp.getWelder());
+                    if(journalUIDB.equals(journalUI) && welderUIDB.equals(welderUI)){
+                        return new PersonalProtocolUI(pp);
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    private PersonalProtocolUI getPersonalProtocolUIFromDBList(WelderUI welderUI, JournalUI journalUI,
+                                                               List<PersonalProtocol> dbList){
+        for (PersonalProtocol pp : dbList){
+            if (pp.getJournal()!= null){
+                JournalUI journalUIDB = new JournalUI(pp.getJournal());
+                if(pp.getWelder()!=null){
+                    WelderUI welderUIDB = new WelderUI(pp.getWelder());
                     if(journalUIDB.equals(journalUI) && welderUIDB.equals(welderUI)){
                         return new PersonalProtocolUI(pp);
                     }

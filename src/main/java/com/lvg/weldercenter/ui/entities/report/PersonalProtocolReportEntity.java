@@ -19,6 +19,10 @@ public class PersonalProtocolReportEntity extends GenericReportEntity{
     private final String KEY_COMISSION_WELD_SPEC = "COMISSION_WELD_SPEC";
     private final String KEY_COMISSION_NDT_SPEC = "COMISSION_NDT_SPEC";
     private final String KEY_COMISSION_SAFETY_SPEC = "COMISSION_SAFETY_SPEC";
+    private final String KEY_COMISSION_HEAD_INV = "COMISSION_HEAD_INV";
+    private final String KEY_COMISSION_WELD_SPEC_INV = "COMISSION_WELD_SPEC_INV";
+    private final String KEY_COMISSION_NDT_SPEC_INV = "COMISSION_NDT_SPEC_INV";
+    private final String KEY_COMISSION_SAFETY_SPEC_INV = "COMISSION_SAFETY_SPEC_INV";
     private final String KEY_NDT_DOCUMENTS = "NDT_DOCUMENTS";
     private final String KEY_WELDER_FULL_NAME = "WELDER_FULL_NAME";
     private final String KEY_WELDER_BIRTHDAY = "WELDER_BIRTHDAY";
@@ -72,6 +76,10 @@ public class PersonalProtocolReportEntity extends GenericReportEntity{
         put(KEY_COMISSION_NDT_SPEC,null);
         put(KEY_COMISSION_SAFETY_SPEC,null);
         put(KEY_COMISSION_WELD_SPEC,null);
+        put(KEY_COMISSION_HEAD_INV, null);
+        put(KEY_COMISSION_NDT_SPEC_INV,null);
+        put(KEY_COMISSION_SAFETY_SPEC_INV,null);
+        put(KEY_COMISSION_WELD_SPEC_INV,null);
         put(KEY_NDT_DOCUMENTS,null);
         put(KEY_WELDER_FULL_NAME,null);
         put(KEY_WELDER_BIRTHDAY,null);
@@ -116,6 +124,10 @@ public class PersonalProtocolReportEntity extends GenericReportEntity{
             parameters.replace(KEY_COMISSION_NDT_SPEC, totalProtocolUI.getCommissionCertification().getNdtSpecialist().getFormatTeacherFullName("SUR-nn-sec"));
             parameters.replace(KEY_COMISSION_SAFETY_SPEC, totalProtocolUI.getCommissionCertification().getSafetySpecialist().getFormatTeacherFullName("SUR-nn-sec"));
             parameters.replace(KEY_COMISSION_WELD_SPEC, totalProtocolUI.getCommissionCertification().getWeldSpecialist().getFormatTeacherFullName("SUR-nn-sec"));
+            parameters.replace(KEY_COMISSION_HEAD_INV, totalProtocolUI.getCommissionCertification().getHead().getFormatTeacherFullName("nn-sec-SUR"));
+            parameters.replace(KEY_COMISSION_NDT_SPEC_INV, totalProtocolUI.getCommissionCertification().getNdtSpecialist().getFormatTeacherFullName("nn-sec-SUR"));
+            parameters.replace(KEY_COMISSION_SAFETY_SPEC_INV, totalProtocolUI.getCommissionCertification().getSafetySpecialist().getFormatTeacherFullName("nn-sec-SUR"));
+            parameters.replace(KEY_COMISSION_WELD_SPEC_INV, totalProtocolUI.getCommissionCertification().getWeldSpecialist().getFormatTeacherFullName("nn-sec-SUR"));
         }
         parameters.replace(KEY_NDT_DOCUMENTS,getNdtDocs(personalProtocolUI.getNdtDocuments()));
         this.ndtDocs = (String)parameters.get(KEY_NDT_DOCUMENTS);
