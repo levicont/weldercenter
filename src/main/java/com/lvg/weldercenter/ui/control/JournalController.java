@@ -718,13 +718,8 @@ public class JournalController extends GenericController{
         ObservableList<JournalUI> deletingJournals = journalTableView.getSelectionModel().getSelectedItems();
         if(!deletingJournals.isEmpty()){
             LOGGER.debug("REMOVE JOURNALS: start DELETE dialog...");
-            Action response = Dialogs.create().owner(mainJournalPane.getScene().getWindow())
-                    .title("Удаление записей")
-                    .masthead("Сделан выбор записей для удаления")
-                    .message("Удалить выбранные записи? ("+deletingJournals.size()+"шт.)")
-                    .actions(Dialog.Actions.OK, Dialog.Actions.CANCEL)
-                    .showConfirm();
-            if(response == Dialog.Actions.OK){
+            int delCount = deletingJournals.size();
+            if(ControlFXUtils.getResponseDeleteDialog(delCount).get() == ButtonType.OK){
                 for(JournalUI journalUI : deletingJournals){
                     Journal journalDB = journalService.get(journalUI.getId());
                     if(null!=journalDB) {
@@ -813,13 +808,8 @@ public class JournalController extends GenericController{
         if (selectedWelder == null) {
             return;
         }
-        Action response = Dialogs.create().owner(mainJournalPane.getScene().getWindow())
-                .title("Удаление записей")
-                .masthead("Сделан выбор записей для удаления")
-                .message("Удалить сварщика(ов) из данного журнала?")
-                .actions(Dialog.Actions.OK, Dialog.Actions.CANCEL)
-                .showConfirm();
-        if(response == Dialog.Actions.OK){
+
+        if(ControlFXUtils.getResponseDeleteDialog(1).get() == ButtonType.OK){
             getWelders().remove(selectedWelder);
         }
 

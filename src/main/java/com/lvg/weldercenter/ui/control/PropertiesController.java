@@ -27,6 +27,7 @@ import org.controlsfx.dialog.Dialog;
 import org.controlsfx.dialog.Dialogs;
 
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 /**
@@ -1216,7 +1217,7 @@ public class PropertiesController extends GenericController {
 
         if(delSection == null)
             return;
-        if (getResponseDeleteDialog(1) == Dialog.Actions.OK){
+        if (getResponseDeleteDialog(1).get() == ButtonType.OK){
             try {
                 sectionServiceUI.deleteSectionUI(delSection);
 
@@ -1356,7 +1357,7 @@ public class PropertiesController extends GenericController {
 
         if(delTopic == null)
             return;
-        if (getResponseDeleteDialog(1) == Dialog.Actions.OK){
+        if (getResponseDeleteDialog(1).get() == ButtonType.OK){
             try {
                 topicServiceUI.deleteTopicUI(delTopic);
                 initTreeViewCurriculums();
@@ -1490,7 +1491,7 @@ public class PropertiesController extends GenericController {
         CurriculumUI curriculumUI = getCurriculumUIFromTreeItem(selectedItem);
         if (curriculumUI == null)
             return;
-        if (getResponseDeleteDialog(1)==Dialog.Actions.OK){
+        if (getResponseDeleteDialog(1).get()==ButtonType.OK){
             try {
                 curriculumServiceUI.deleteCurriculumUI(curriculumUI);
             }catch (WelderException ex){
@@ -1602,7 +1603,7 @@ public class PropertiesController extends GenericController {
         NDTDocumentUI delNDTDocument = tableViewNDTDocuments.getSelectionModel().getSelectedItem();
         if (delNDTDocument == null)
             return;
-        if (getResponseDeleteDialog(1)==Dialog.Actions.OK){
+        if (getResponseDeleteDialog(1).get() == ButtonType.OK){
             if (delNDTDocument.getId() != 0){
                 ndtDocumentService.delete(
                         ndtDocumentServiceUI.getNDTDocumentFromUIModel(delNDTDocument));
@@ -1691,7 +1692,7 @@ public class PropertiesController extends GenericController {
         TeacherUI delTeacher = tableViewTeachers.getSelectionModel().getSelectedItem();
         if (delTeacher == null)
             return;
-        if (getResponseDeleteDialog(1)==Dialog.Actions.OK){
+        if (getResponseDeleteDialog(1).get() == ButtonType.OK){
             if (delTeacher.getId() != 0){
                 teacherService.delete(
                         teacherServiceUI.getTeacherFromTeacherUI(delTeacher));
@@ -1801,7 +1802,7 @@ public class PropertiesController extends GenericController {
         CommissionCertificationUI delComm = tableViewCommissions.getSelectionModel().getSelectedItem();
         if (delComm == null)
             return;
-        if (getResponseDeleteDialog(1)==Dialog.Actions.OK){
+        if (getResponseDeleteDialog(1).get() == ButtonType.OK){
             if (delComm.getId() != 0){
                 commissionCertificationService.delete(
                         commissionCertificationServiceUI.getCommissionCertificationFromUIModel(delComm));
@@ -1916,13 +1917,9 @@ public class PropertiesController extends GenericController {
 
         if(!delOrgList.isEmpty()){
             LOGGER.debug("start DELETE dialog...");
-            Action response = Dialogs.create().owner(mainPropertiesPane.getScene().getWindow())
-                    .title("Удаление записей")
-                    .masthead("Сделан выбор записей для удаления")
-                    .message("Удалить выбранные записи? ("+delOrgList.size()+"шт.)")
-                    .actions(org.controlsfx.dialog.Dialog.Actions.OK, org.controlsfx.dialog.Dialog.Actions.CANCEL)
-                    .showConfirm();
-            if(response == org.controlsfx.dialog.Dialog.Actions.OK){
+            int delCount = delOrgList.size();
+
+            if(getResponseDeleteDialog(delCount).get() == ButtonType.OK){
                 for(OrganizationUI orgUI : delOrgList){
                     if (orgUI.getId()!=0){
                         organizationService.delete(organizationServiceUI.getOrganizationFromOrganizationUI(orgUI));
@@ -2285,7 +2282,7 @@ public class PropertiesController extends GenericController {
         WeldDetailUI delWeldDetailUI = listViewWeldPatternsTypes.getSelectionModel().getSelectedItem();
         if (delWeldDetailUI == null)
             return;
-        if (getResponseDeleteDialog(1)== Dialog.Actions.OK){
+        if (getResponseDeleteDialog(1).get() == ButtonType.OK){
             if (delWeldDetailUI.getId()!=0){
                 weldDetailService.delete(weldDetailServiceUI.getWeldDetailFromUIModel(delWeldDetailUI));
                 LOGGER.debug("DELETE WELD PATTERN TYPE: weld detail has been removed from DB");
@@ -2312,7 +2309,7 @@ public class PropertiesController extends GenericController {
         PatternDiameterUI delDiameter = listViewDiameters.getSelectionModel().getSelectedItem();
         if (delDiameter == null)
             return;
-        if (getResponseDeleteDialog(1)==Dialog.Actions.OK){
+        if (getResponseDeleteDialog(1).get() == ButtonType.OK){
             if (delDiameter.getId() != 0){
                 patternDiameterService.delete(patternDiameterServiceUI.getPatternDiameterFromUIModel(delDiameter));
                 LOGGER.debug("DELETE DIAMETER: pattern diameter has been deleted from DB");
@@ -2354,7 +2351,7 @@ public class PropertiesController extends GenericController {
         PatternThicknessUI delThickness = listViewThickness.getSelectionModel().getSelectedItem();
         if (delThickness == null)
             return;
-        if (getResponseDeleteDialog(1)==Dialog.Actions.OK){
+        if (getResponseDeleteDialog(1).get() == ButtonType.OK){
             if (delThickness.getId() != 0){
                 patternThicknessService.delete(patternThicknessServiceUI.getPatternThicknessFromUIModel(delThickness));
                 LOGGER.debug("DELETE THICKNESS: pattern thickness has been deleted from DB");
@@ -2422,7 +2419,7 @@ public class PropertiesController extends GenericController {
         SteelTypeUI delSteelType = listViewSteelTypes.getSelectionModel().getSelectedItem();
         if (delSteelType == null)
             return;
-        if (getResponseDeleteDialog(1)==Dialog.Actions.OK){
+        if (getResponseDeleteDialog(1).get() == ButtonType.OK){
             if (delSteelType.getId() != 0){
                 steelTypeService.delete(steelTypeServiceUI.getSteelTypeFromUIModel(delSteelType));
                 LOGGER.debug("DELETE STEEL TYPE: steel type has been deleted from DB");
@@ -2510,7 +2507,7 @@ public class PropertiesController extends GenericController {
         SteelGroupUI delSteelGroup = listViewSteelGroups.getSelectionModel().getSelectedItem();
         if (delSteelGroup == null)
             return;
-        if (getResponseDeleteDialog(1)==Dialog.Actions.OK){
+        if (getResponseDeleteDialog(1).get() == ButtonType.OK){
             if (delSteelGroup.getId() != 0){
                 steelGroupService.delete(steelGroupServiceUI.getSteelGroupFromUIModel(delSteelGroup));
                 LOGGER.debug("DELETE STEEL GROUP: steel type has been deleted from DB");
@@ -2551,7 +2548,7 @@ public class PropertiesController extends GenericController {
         WeldMethodUI delWeldMethod = listViewWeldMethod.getSelectionModel().getSelectedItem();
         if (delWeldMethod == null)
             return;
-        if (getResponseDeleteDialog(1)==Dialog.Actions.OK){
+        if (getResponseDeleteDialog(1).get() == ButtonType.OK){
             if (delWeldMethod.getId() != 0){
                 weldMethodService.delete(weldMethodServiceUI.getWeldMethodFromUI(delWeldMethod));
                 LOGGER.debug("DELETE WELD METHOD: weld method has been deleted from DB");
@@ -2603,7 +2600,7 @@ public class PropertiesController extends GenericController {
         ElectrodeUI delElectrode = listViewElectrode.getSelectionModel().getSelectedItem();
         if (delElectrode == null)
             return;
-        if (getResponseDeleteDialog(1)==Dialog.Actions.OK){
+        if (getResponseDeleteDialog(1).get() == ButtonType.OK){
             if (delElectrode.getId() != 0){
                 electrodeService.delete(electrodeServiceUI.getElectrodeFromUIModel(delElectrode));
                 LOGGER.debug("DELETE ELECTRODE: elctrode has been deleted from DB");
@@ -2676,7 +2673,7 @@ public class PropertiesController extends GenericController {
         WeldWireUI delWeldWire = listViewWeldWire.getSelectionModel().getSelectedItem();
         if (delWeldWire == null)
             return;
-        if (getResponseDeleteDialog(1) == Dialog.Actions.OK) {
+        if (getResponseDeleteDialog(1).get() == ButtonType.OK) {
             if (delWeldWire.getId() != 0) {
                 weldWireService.delete(weldWireServiceUI.getWeldWireFromUIModel(delWeldWire));
                 LOGGER.debug("DELETE WELD WIRE: weld wire has been deleted from DB");
@@ -2739,7 +2736,7 @@ public class PropertiesController extends GenericController {
         WeldGasUI delWeldGas = listViewWeldGas.getSelectionModel().getSelectedItem();
         if (delWeldGas == null)
             return;
-        if (getResponseDeleteDialog(1) == Dialog.Actions.OK) {
+        if (getResponseDeleteDialog(1).get() == ButtonType.OK) {
             if (delWeldGas.getId() != 0) {
                 weldGasService.delete(weldGasServiceUI.getWeldGasFromUIModel(delWeldGas));
                 LOGGER.debug("DELETE WELD GAS: weld gas has been deleted from DB");
@@ -2803,7 +2800,7 @@ public class PropertiesController extends GenericController {
         WeldPositionUI delWeldPosition = listViewWeldPosition.getSelectionModel().getSelectedItem();
         if (delWeldPosition == null)
             return;
-        if (getResponseDeleteDialog(1) == Dialog.Actions.OK) {
+        if (getResponseDeleteDialog(1).get() == ButtonType.OK) {
             if (delWeldPosition.getId() != 0) {
                 weldPositionService.delete(weldPositionServiceUI.getWeldPositionFromUIModel(delWeldPosition));
                 LOGGER.debug("DELETE WELD POSITION: weld position has been deleted from DB");
@@ -2866,7 +2863,7 @@ public class PropertiesController extends GenericController {
         EducationUI delEducation = listViewEducation.getSelectionModel().getSelectedItem();
         if (delEducation == null)
             return;
-        if (getResponseDeleteDialog(1) == Dialog.Actions.OK) {
+        if (getResponseDeleteDialog(1).get() == ButtonType.OK) {
             if (delEducation.getId() != 0) {
                 educationService.delete(educationServiceUI.getEducationFromUIModel(delEducation));
                 LOGGER.debug("DELETE EDUCATION: education has been deleted from DB");
@@ -2929,7 +2926,7 @@ public class PropertiesController extends GenericController {
         QualificationUI delQualification = listViewQualification.getSelectionModel().getSelectedItem();
         if (delQualification == null)
             return;
-        if (getResponseDeleteDialog(1) == Dialog.Actions.OK) {
+        if (getResponseDeleteDialog(1).get() == ButtonType.OK) {
             if (delQualification.getId() != 0) {
                 qualificationService.delete(qualificationServiceUI.getQualificationFromUIModel(delQualification));
                 LOGGER.debug("DELETE QUALIFICATION: qualification has been deleted from DB");
@@ -2992,7 +2989,7 @@ public class PropertiesController extends GenericController {
         JobUI delJob = listViewJob.getSelectionModel().getSelectedItem();
         if (delJob == null)
             return;
-        if (getResponseDeleteDialog(1) == Dialog.Actions.OK) {
+        if (getResponseDeleteDialog(1).get() == ButtonType.OK) {
             if (delJob.getId() != 0) {
                 jobService.delete(jobServiceUI.getJobFromUIModel(delJob));
                 LOGGER.debug("DELETE JOB: job has been deleted from DB");
@@ -3069,8 +3066,8 @@ public class PropertiesController extends GenericController {
             p.setStyle(constants.GENERIC_STYLE_TAB_BACKGROUND);
     }
 
-    private Action getResponseDeleteDialog(int countOfDeletingRecords){
-        return ControlFXUtils.getResponseDeleteDialog(countOfDeletingRecords,mainPropertiesPane.getScene().getWindow());
+    private Optional<ButtonType> getResponseDeleteDialog(int countOfDeletingRecords){
+        return ControlFXUtils.getResponseDeleteDialog(countOfDeletingRecords);
     }
 
     private void clearTextFields(TextField ... textFields){

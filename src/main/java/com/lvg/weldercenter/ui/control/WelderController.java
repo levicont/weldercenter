@@ -771,20 +771,15 @@ public class WelderController extends GenericController {
         ObservableList<WelderUI> allWelders = welderTableView.getItems();
         if(!delWelders.isEmpty()){
             LOGGER.debug("start DELETE dialog...");
-            Action response = Dialogs.create().owner(mainWelderPane.getScene().getWindow())
-                    .title("Удаление записей")
-                    .masthead("Сделан выбор записей для удаления")
-                    .message("Удалить выбранные записи? ("+delWelders.size()+"шт.)")
-                    .actions(Dialog.Actions.OK, Dialog.Actions.CANCEL)
-                    .showConfirm();
-            if(response == Dialog.Actions.OK){
+            int delCount = delWelders.size();
+
+            if(ControlFXUtils.getResponseDeleteDialog(delCount).get() == ButtonType.OK){
                 for(WelderUI welder : delWelders){
                     Welder welderDB = welderService.get(welder.getId());
                     if(null!=welderDB)
                         welderService.delete(welderDB);
                     else
                         LOGGER.warn("Not possible to delete welder: "+welder);
-                    //allWelders.remove(welder);
                 }
                 welderTableView.getSelectionModel().clearSelection();
                 welderTableView.getSelectionModel().selectFirst();
@@ -831,7 +826,6 @@ public class WelderController extends GenericController {
         for (WeldMethod weldMethod : dbWelder.getWeldMethods()){
             weldMethodList.add(weldMethod.getName());
         }
-        //updatedWelder.setWeldMethods(weldMethodList);
     }
 
     @FXML
@@ -962,7 +956,6 @@ public class WelderController extends GenericController {
             btEdit.setDisable(false);
             btSave.setDisable(true);
             setDisableWelderDetailsPane(true);
-           // welderDetailsPane.setDisable(true);
             fillWelderDetailPane(selectedWelder);
 
         }
@@ -1022,7 +1015,6 @@ public class WelderController extends GenericController {
     }
 
     private class SearchValidateListener implements InvalidationListener{
-        //ObservableList<WelderUI> data = getWelders();
         @Override
         public void invalidated(Observable observable) {
             if (txfSearch.textProperty().get().isEmpty()){

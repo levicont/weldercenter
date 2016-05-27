@@ -10,6 +10,8 @@ import javafx.scene.layout.Pane;
 import org.controlsfx.control.action.Action;
 import org.controlsfx.dialog.Dialogs;
 
+import java.util.Optional;
+
 /**
  * Created by Victor on 20.08.2015.
  */
@@ -69,6 +71,38 @@ public class ControlFXUtils {
         for (Pane p : panes)
             p.setStyle(R.UI.Control.GENERIC_STYLE_TAB_BACKGROUND);
     }
+
+    public static Optional<ButtonType> getResponseDeleteDialog(int countOfDeletingRecords){
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Удаление записи");
+        alert.setHeaderText("Производиться попытка удалить запись(и)");
+        alert.setContentText("Вы точно хотите удалить выбранные записи? ("+ countOfDeletingRecords+"шт.");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        return result;
+    }
+
+    public static Optional<ButtonType> getResponseSaveRecordDialog(String message){
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Сохранение записи");
+        alert.setHeaderText("Появились записи которые необходимио сохранить");
+        alert.setContentText(message);
+
+        Optional<ButtonType> result = alert.showAndWait();
+        return result;
+
+    }
+
+    public static Optional<ButtonType> getResponseCloseApplication(){
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Закрытие приложения");
+        alert.setHeaderText("Производиться попытка закрыть приложение");
+        alert.setContentText("Вы уверены, что хотите завершить программу");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        return result;
+    }
+
 
     public static Action getResponseDeleteDialog(int countOfDeletingRecords, Object owner){
         Action response = Dialogs.create().owner(owner)

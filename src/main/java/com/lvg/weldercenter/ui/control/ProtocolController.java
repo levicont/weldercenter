@@ -6,6 +6,7 @@ import com.lvg.weldercenter.spring.factories.ServiceFactory;
 import com.lvg.weldercenter.spring.factories.ServiceUIFactory;
 import com.lvg.weldercenter.ui.entities.*;
 import com.lvg.weldercenter.ui.servicesui.*;
+import com.lvg.weldercenter.ui.util.ControlFXUtils;
 import com.lvg.weldercenter.ui.util.DateUtil;
 import com.lvg.weldercenter.ui.util.EventFXUtil;
 import com.lvg.weldercenter.ui.util.Printer;
@@ -2130,13 +2131,8 @@ public class ProtocolController extends GenericController {
     private void deleteWeldPattern(){
         if (selectedPersonalProtocolUI == null)
             return;
-        Action response = Dialogs.create().owner(mainProtocolPane.getScene().getWindow())
-                .title("Удаление записей")
-                .masthead("Сделан выбор записей для удаления")
-                .message("Удалить образец из данного протокола?")
-                .actions(org.controlsfx.dialog.Dialog.Actions.OK, org.controlsfx.dialog.Dialog.Actions.CANCEL)
-                .showConfirm();
-        if (response == org.controlsfx.dialog.Dialog.Actions.OK) {
+
+        if (ControlFXUtils.getResponseDeleteDialog(1).get() == ButtonType.OK) {
             WeldPatternUI delWeldPattern = tableViewWeldPatterns.getSelectionModel().getSelectedItem();
             if (delWeldPattern == null)
                 return;
