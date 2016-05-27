@@ -23,7 +23,8 @@ public class DateUtil implements Holidays{
     public static LocalDate getLocalDate(Date date) {
         if (date == null)
             return null;
-        Instant instant = date.toInstant();
+
+        Instant instant = Instant.ofEpochMilli(date.getTime());
         return instant.atZone(ZoneId.systemDefault()).toLocalDate();
     }
 
