@@ -1,6 +1,5 @@
 package com.lvg.weldercenter.ui.control;
 
-import com.lvg.weldercenter.config.R;
 import com.lvg.weldercenter.models.*;
 import com.lvg.weldercenter.services.*;
 import com.lvg.weldercenter.spring.factories.ServiceFactory;
@@ -32,8 +31,9 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import org.apache.log4j.Logger;
 
-
 import java.net.URL;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -196,7 +196,7 @@ public class WelderController extends GenericController {
         txfSecname.textProperty().addListener(invalidationListener);
         txfDocNumber.textProperty().addListener(invalidationListener);
         txfAddress.textProperty().addListener(invalidationListener);
-        dpBirthday.getEditor().textProperty().addListener(invalidationListener);
+        dpBirthday.getEditor().textProperty().addListener(new DatePickerEditorListener());
         dpDateBegin.getEditor().textProperty().addListener(invalidationListener);
         ChangeListener changeListener = new OrganizationFilterListener();
         cbOrganization.getEditor().textProperty().addListener(changeListener);
@@ -1037,6 +1037,41 @@ public class WelderController extends GenericController {
         }
 
 
+    }
+
+    private class DatePickerEditorListener implements InvalidationListener{
+
+        @Override
+        public void invalidated(Observable observable) {
+            TextField editor = null;
+            if( observable.equals(dpBirthday.getEditor().textProperty()))
+                editor = (TextField)dpBirthday.getEditor();
+            else if (observable.equals(dpBirthday.getEditor().textProperty()))
+                editor = (TextField)dpDateBegin.getEditor();
+            else return;
+            int textLength = editor.getText().length();
+            if (editor.getText().matches("[0-9]{1,2}[.][0-9]{1,2}[.][0-9]{2,4}") ||
+                    textLength >= 10)
+                checkDate(editor);
+
+        }
+
+        private void checkDate(TextField editor){
+            LocalDate date = null;
+            String dateStr = editor.getText();
+            String[] dateArgs = dateStr.split("[.]");
+
+            try {
+                date = DateUtil.parse(editor.getText());
+            }catch (DateTimeParseException ex){
+                LOGGER.warn("NOT CORRECT DATE: "+dateStr);
+                editor.setStyle("-fx-text-inner-color:red");
+                return;
+            }
+            editor.setStyle("-fx-text-inner-color:black");
+
+
+        }
     }
 
     private class OrganizationFilterListener implements javafx.beans.value.ChangeListener<String>{

@@ -49,6 +49,14 @@ public class DateUtil implements Holidays{
         return SIMPLE_DATE_FORMAT.format(date);
     }
 
+    public static LocalDate parse(String dateString){
+        if (null == dateString || dateString.isEmpty())
+            return null;
+        LocalDate result = null;
+        result = LocalDate.parse(dateString, DATE_FORMATTER);
+        return result;
+    }
+
     public static boolean isHoliday(LocalDate date) {
         if (date.getDayOfWeek().equals(SATURDAY))
             return true;
