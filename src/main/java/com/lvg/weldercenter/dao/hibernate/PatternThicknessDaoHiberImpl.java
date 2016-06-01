@@ -2,11 +2,9 @@ package com.lvg.weldercenter.dao.hibernate;
 
 import com.lvg.weldercenter.dao.PatternThicknessDao;
 import com.lvg.weldercenter.models.PatternThickness;
-import javafx.scene.control.ListView;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigInteger;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 

@@ -1,5 +1,6 @@
 package com.lvg.weldercenter.ui.control;
 
+import com.lvg.weldercenter.config.R;
 import com.lvg.weldercenter.models.*;
 import com.lvg.weldercenter.services.*;
 import com.lvg.weldercenter.spring.factories.ServiceFactory;
@@ -30,9 +31,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import org.apache.log4j.Logger;
-import org.controlsfx.control.action.Action;
-import org.controlsfx.dialog.Dialog;
-import org.controlsfx.dialog.Dialogs;
+
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -845,9 +844,8 @@ public class WelderController extends GenericController {
             if (org.toString().toLowerCase().equals(orgName.toLowerCase()))
                 return;
         }
-        Action saveResponse = ControlFXUtils.getResponseSaveRecordDialog("Сохранить новую организацию?",
-                mainWelderPane.getScene().getWindow());
-        if (saveResponse == Dialog.Actions.OK){
+        ButtonType pressedButton = ControlFXUtils.getResponseSaveRecordDialog("Сохранить новую организацию?").get();
+        if (pressedButton == ButtonType.OK){
             OrganizationUI newOrg = new OrganizationUI();
             newOrg.setName(orgName);
             organizationServiceUI.saveOrganizationUIinDB(newOrg);
@@ -921,12 +919,7 @@ public class WelderController extends GenericController {
     }
 
     private void showWarningDialog(String warnMessage){
-        Dialogs.create()
-                .owner(mainWelderPane.getScene().getWindow())
-                .title("Ошибка ввода данных")
-                .masthead("Произошла ошибка при заполнении полей")
-                .message(warnMessage)
-                .showError();
+        ControlFXUtils.showWarningDialog(warnMessage);
     }
 
     private void readyToSave(){

@@ -27,8 +27,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import org.apache.log4j.Logger;
-import org.controlsfx.control.action.Action;
-import org.controlsfx.dialog.Dialogs;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -2157,13 +2155,8 @@ public class ProtocolController extends GenericController {
     private void weldPatternTabSelectionChanged(){
         if (!tabWeldPattern.isSelected()){
             if (isSelectedWeldPatternChanged(selectedWeldPatternUI)&& !isWeldPatternSaved){
-                Action response = Dialogs.create().owner(mainProtocolPane.getScene().getWindow())
-                        .title("Сохранение записей")
-                        .masthead("Выбранный образец был изменен.")
-                        .message("Сохранить изменения в образце?")
-                        .actions(org.controlsfx.dialog.Dialog.Actions.OK, org.controlsfx.dialog.Dialog.Actions.CANCEL)
-                        .showConfirm();
-                if (response == org.controlsfx.dialog.Dialog.Actions.OK){
+                ButtonType pressedButton = ControlFXUtils.getResponseSaveRecordDialog("Сохранить изменения в образце?").get();
+                if (pressedButton == ButtonType.OK){
                     saveSelectedWeldPattern();
                     tabWeldPattern.setDisable(true);
                     LOGGER.debug("WELD_PATTERN_TAB_SELECTION_CHANGED: response OK");

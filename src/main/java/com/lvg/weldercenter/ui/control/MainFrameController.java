@@ -1,17 +1,16 @@
 package com.lvg.weldercenter.ui.control;
 
+import com.lvg.weldercenter.ui.util.ControlFXUtils;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import org.apache.log4j.Logger;
-import org.controlsfx.control.action.Action;
-import org.controlsfx.dialog.Dialog;
-import org.controlsfx.dialog.Dialogs;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -253,17 +252,11 @@ public class MainFrameController extends GenericController{
     private class ApplicationWindowHandler implements EventHandler<javafx.stage.WindowEvent>{
         @Override
         public void handle(javafx.stage.WindowEvent event) {
-                Action response = Dialogs.create().owner(mainPane)
-                        .title("Закрытие приложения")
-                        .masthead("Приложение будет закрыто")
-                        .message("Продолжить?")
-                        .actions(Dialog.Actions.OK, Dialog.Actions.CANCEL)
-                        .showConfirm();
 
-                LOGGER.debug("REQUEST CLOSING: response: "+response.toString());
-                if (response.equals(Dialog.Actions.CANCEL))
+                ButtonType pressedButton = ControlFXUtils.getResponseCloseApplication().get();
+                if (pressedButton == ButtonType.CANCEL)
                     event.consume();
-                if(response.equals(Dialog.Actions.OK)){
+                if(pressedButton == ButtonType.OK){
                     Platform.exit();
                     System.exit(0);
                 }

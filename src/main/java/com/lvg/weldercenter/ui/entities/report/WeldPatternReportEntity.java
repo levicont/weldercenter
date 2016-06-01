@@ -1,6 +1,5 @@
 package com.lvg.weldercenter.ui.entities.report;
 
-import com.lvg.weldercenter.config.R;
 import com.lvg.weldercenter.ui.entities.*;
 
 import java.util.HashMap;

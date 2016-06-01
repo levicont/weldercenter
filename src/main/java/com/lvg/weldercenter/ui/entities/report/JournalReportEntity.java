@@ -1,6 +1,5 @@
 package com.lvg.weldercenter.ui.entities.report;
 
-import com.lvg.weldercenter.config.R;
 import com.lvg.weldercenter.ui.entities.JournalUI;
 import com.lvg.weldercenter.ui.entities.TeacherUI;
 import com.lvg.weldercenter.ui.entities.WeldMethodUI;

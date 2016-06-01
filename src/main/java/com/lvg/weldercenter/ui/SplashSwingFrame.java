@@ -18,8 +18,6 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URI;
-import java.net.URISyntaxException;
 
 public class SplashSwingFrame extends JWindow{
     private final Logger LOGGER = Logger.getLogger(SplashSwingFrame.class);

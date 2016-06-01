@@ -7,8 +7,6 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
-import org.controlsfx.control.action.Action;
-import org.controlsfx.dialog.Dialogs;
 
 import java.util.Optional;
 
@@ -103,26 +101,15 @@ public class ControlFXUtils {
         return result;
     }
 
-
-    public static Action getResponseDeleteDialog(int countOfDeletingRecords, Object owner){
-        Action response = Dialogs.create().owner(owner)
-                .title("Удаление записей")
-                .masthead("Сделан выбор записей для удаления")
-                .message("Удалить выбранные записи? ("+countOfDeletingRecords+"шт.)")
-                .actions(org.controlsfx.dialog.Dialog.Actions.OK, org.controlsfx.dialog.Dialog.Actions.CANCEL)
-                .showConfirm();
-        return response;
+    public static void showWarningDialog(String message){
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("Предупреждение");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 
-    public static Action getResponseSaveRecordDialog(String message, Object owner){
-        Action response = Dialogs.create().owner(owner)
-                .title("Сохранение записи")
-                .masthead("Появились записи которые необходимио сохранить")
-                .message(message)
-                .actions(org.controlsfx.dialog.Dialog.Actions.OK, org.controlsfx.dialog.Dialog.Actions.CANCEL)
-                .showConfirm();
-        return response;
-    }
+
 
     public static  void clearTextFields(TextField ... textFields){
         for (TextField tf : textFields)

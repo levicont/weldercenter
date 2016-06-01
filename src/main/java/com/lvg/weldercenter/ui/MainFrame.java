@@ -2,7 +2,6 @@ package com.lvg.weldercenter.ui;
 
 import com.lvg.weldercenter.spring.ContextFactory;
 import com.lvg.weldercenter.ui.control.*;
-import impl.org.controlsfx.i18n.Localization;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -11,7 +10,6 @@ import javafx.stage.Stage;
 import org.apache.log4j.Logger;
 
 import javax.swing.*;
-import java.net.URL;
 import java.util.Locale;
 
 
@@ -36,7 +34,6 @@ public class MainFrame extends Application {
         controllerManager = new ControllerManager(stage);
         progressBar.setValue(55);
         splashWindow.getLbLoadingModuleName().setText(" Инициализация главного модуля");
-        Localization.setLocale(new Locale("ru", "RU"));
         stage.setTitle(APPLICATION_TITLE);
         stage.getIcons().add(new Image(ClassLoader.getSystemClassLoader().getResourceAsStream(LOGO_ICON_PATH)));
         stage.setScene(new Scene(controllerManager.getMainFrame(), Color.LIGHTBLUE));
