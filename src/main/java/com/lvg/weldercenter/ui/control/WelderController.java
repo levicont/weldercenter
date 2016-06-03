@@ -37,6 +37,8 @@ import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by Victor Levchenko LVG Corp. on 14.11.14.
@@ -196,7 +198,7 @@ public class WelderController extends GenericController {
         txfSecname.textProperty().addListener(invalidationListener);
         txfDocNumber.textProperty().addListener(invalidationListener);
         txfAddress.textProperty().addListener(invalidationListener);
-        dpBirthday.getEditor().textProperty().addListener(new DatePickerEditorListener());
+        dpBirthday.getEditor().textProperty().addListener(new DatePickerEditorListener(dpBirthday));
         dpDateBegin.getEditor().textProperty().addListener(invalidationListener);
         ChangeListener changeListener = new OrganizationFilterListener();
         cbOrganization.getEditor().textProperty().addListener(changeListener);
@@ -1039,20 +1041,42 @@ public class WelderController extends GenericController {
 
     }
 
-    private class DatePickerEditorListener implements InvalidationListener{
+    private class DatePickerEditorListener implements ChangeListener<String>{
+
+        private final String COMMON_DATE_PATTERN_REGEX = "[0-9]{1,2}[.][0-9]{1,2}[.][0-9]{2,4}";
+        private final String MASK_DATE_TEXT = "ДД.ММ.ГГГГ";
+        private final Pattern COMMON_DATE_PATTERN = Pattern.compile(COMMON_DATE_PATTERN_REGEX);
+        private final DatePicker source;
+
+        public DatePickerEditorListener(DatePicker source){
+            this.source = source;
+        }
 
         @Override
-        public void invalidated(Observable observable) {
-            TextField editor = null;
-            if( observable.equals(dpBirthday.getEditor().textProperty()))
-                editor = (TextField)dpBirthday.getEditor();
-            else if (observable.equals(dpBirthday.getEditor().textProperty()))
-                editor = (TextField)dpDateBegin.getEditor();
-            else return;
+        public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+            Matcher matcher = COMMON_DATE_PATTERN.matcher(newValue);
+            TextField editor = source.getEditor();
             int textLength = editor.getText().length();
-            if (editor.getText().matches("[0-9]{1,2}[.][0-9]{1,2}[.][0-9]{2,4}") ||
+            if ( matcher.matches() || textLength >= 10 ){
+                checkDate(editor);
+
+            }else {
+               maskEditor(editor);
+            }
+        }
+
+       private void invalidated(Observable observable) {
+            TextField editor = source.getEditor();
+            int textLength = editor.getText().length();
+            if (editor.getText().matches(COMMON_DATE_PATTERN_REGEX) ||
                     textLength >= 10)
                 checkDate(editor);
+
+        }
+        private void maskEditor(TextField editor){
+            editor.setText(MASK_DATE_TEXT);
+            editor.selectPositionCaret(1);
+
 
         }
 
