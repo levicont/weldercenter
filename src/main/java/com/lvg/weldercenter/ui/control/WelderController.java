@@ -9,6 +9,7 @@ import com.lvg.weldercenter.ui.servicesui.OrganizationServiceUI;
 import com.lvg.weldercenter.ui.util.ControlFXUtils;
 import com.lvg.weldercenter.ui.util.DateUtil;
 import com.lvg.weldercenter.ui.util.TableUtil;
+import com.lvg.weldercenter.ui.util.managers.FormatterManager;
 import com.lvg.weldercenter.ui.util.managers.TableViewManager;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
@@ -53,6 +54,7 @@ public class WelderController extends GenericController {
     private QualificationService qualificationService = ServiceFactory.getQualificationService();
     private JobService jobService = ServiceFactory.getJobService();
     private TableUtil<WelderUI> tableUtil = new TableViewManager();
+    private FormatterManager formatterManager = new FormatterManager();
 
     private OrganizationServiceUI organizationServiceUI = ServiceUIFactory.getOrganizationServiceUI();
     @FXML
@@ -199,6 +201,7 @@ public class WelderController extends GenericController {
         txfDocNumber.textProperty().addListener(invalidationListener);
         txfAddress.textProperty().addListener(invalidationListener);
         dpBirthday.getEditor().textProperty().addListener(new DatePickerEditorListener(dpBirthday));
+        dpBirthday.getEditor().setTextFormatter(formatterManager.getDateTextFieldFormatter());
         dpDateBegin.getEditor().textProperty().addListener(invalidationListener);
         ChangeListener changeListener = new OrganizationFilterListener();
         cbOrganization.getEditor().textProperty().addListener(changeListener);
@@ -1043,7 +1046,7 @@ public class WelderController extends GenericController {
 
     private class DatePickerEditorListener implements ChangeListener<String>{
 
-        private final String COMMON_DATE_PATTERN_REGEX = "[0-9]{1,2}[.][0-9]{1,2}[.][0-9]{2,4}";
+        private final String COMMON_DATE_PATTERN_REGEX = "^[0-9]{1,2}[.][0-9]{1,2}[.][0-9]{2,4}";
         private final String MASK_DATE_TEXT = "ДД.ММ.ГГГГ";
         private final Pattern COMMON_DATE_PATTERN = Pattern.compile(COMMON_DATE_PATTERN_REGEX);
         private final DatePicker source;
@@ -1060,8 +1063,6 @@ public class WelderController extends GenericController {
             if ( matcher.matches() || textLength >= 10 ){
                 checkDate(editor);
 
-            }else {
-               maskEditor(editor);
             }
         }
 
