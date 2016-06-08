@@ -149,11 +149,9 @@ public class ControlFXUtils {
     public static void setDisabledDatePickers(boolean disabled, DatePicker ... datePickers){
         if (disabled){
             for (DatePicker dp : datePickers) {
-
                 dp.setDisable(true);
                 dp.setStyle(R.UI.Control.GENERIC_STYLE_NOT_EDIT_DATE_PICKER);
                 setDisabledTextFields(disabled, dp.getEditor());
-                dp.getEditor().setStyle(R.UI.Control.GENERIC_STYLE_NOT_EDIT_DATE_PICKER);
             }
         }else
             for (DatePicker dp : datePickers) {

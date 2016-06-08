@@ -250,9 +250,7 @@ public class JournalController extends GenericController{
 
     private void initJournalDetailsPane(){
         txfJournalNumber.textProperty().addListener(new ChangeJournalPropertiesListener());
-        dpDateBegin.getEditor().textProperty().addListener(new ChangeJournalPropertiesListener());
-        dpDateEnd.getEditor().textProperty().addListener(new ChangeJournalPropertiesListener());
-
+        initDatePickers(dpDateBegin, dpDateEnd);
         selectWelderPane.setVisible(false);
         txfSearchWelder.textProperty().addListener(new SearchWelderInvalidateListener());
         setDisabledJournalDetailPane(true);

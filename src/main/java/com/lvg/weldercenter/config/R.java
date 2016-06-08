@@ -70,7 +70,7 @@ public class R {
             public static final String GENERIC_STYLE_NOT_EDIT_DATE_PICKER =
                     "-fx-opacity: 1;" +
                     "-fx-background-color: #deefff;" +
-                    "-fx-text-fill: #121212";
+                    "-fx-text-fill: #000";
             public static final String GENERIC_STYLE_TAB_BACKGROUND = "-fx-background-color: linear-gradient(to TOP, #f9eee0, #f9e5cc)";
             public static final String GENERIC_ROOT_CURRICULUM_TITLE = "Программы подготовки";
             public static final Integer GENERIC_MAX_TASK_PROGRESS_VALUE = 100;

@@ -356,6 +356,7 @@ public class ProtocolController extends GenericController {
 
     private void initPersonalProtocolTab(){
         initTheoryTestRatingsList();
+        initDatePickers(dpPersonalProtocolDate);
         cbTheoryTestRating.setItems(theoryTestRatingsList);
         initAllNDTdocs();
         listViewAllDocs.setItems(allNTDdocs);
@@ -546,6 +547,7 @@ public class ProtocolController extends GenericController {
     private void initWeldPatternTab(){
         tabWeldPattern.setDisable(true);
         tabWeldPattern.setClosable(true);
+        initDatePickers(dpWeldPatternMechDate, dpWeldPatternRTDate, dpWeldPatternVTDate);
         initComboBoxDetailType();
         initComboBoxDiameter();
         initComboBoxThickness();

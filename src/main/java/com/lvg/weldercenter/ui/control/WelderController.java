@@ -54,7 +54,6 @@ public class WelderController extends GenericController {
     private QualificationService qualificationService = ServiceFactory.getQualificationService();
     private JobService jobService = ServiceFactory.getJobService();
     private TableUtil<WelderUI> tableUtil = new TableViewManager();
-    private FormatterManager formatterManager = new FormatterManager();
 
     private OrganizationServiceUI organizationServiceUI = ServiceUIFactory.getOrganizationServiceUI();
     @FXML
@@ -200,9 +199,7 @@ public class WelderController extends GenericController {
         txfSecname.textProperty().addListener(invalidationListener);
         txfDocNumber.textProperty().addListener(invalidationListener);
         txfAddress.textProperty().addListener(invalidationListener);
-        dpBirthday.getEditor().textProperty().addListener(new DatePickerEditorListener(dpBirthday));
-        dpBirthday.getEditor().setTextFormatter(formatterManager.getDateTextFieldFormatter());
-        dpDateBegin.getEditor().textProperty().addListener(invalidationListener);
+        initDatePickers(dpDateBegin,dpBirthday);
         ChangeListener changeListener = new OrganizationFilterListener();
         cbOrganization.getEditor().textProperty().addListener(changeListener);
         txfEducation.setVisible(true);
@@ -1007,7 +1004,6 @@ public class WelderController extends GenericController {
         public void invalidated(Observable observable) {
             if (welderDetailsPane.isDisabled())
                 return;
-            LOGGER.debug("VALIDATE LISTENER: Text in text field is changed ");
             readyToSave();
         }
     }
@@ -1044,60 +1040,6 @@ public class WelderController extends GenericController {
 
     }
 
-    private class DatePickerEditorListener implements ChangeListener<String>{
-
-        private final String COMMON_DATE_PATTERN_REGEX = "^[0-9]{1,2}[.][0-9]{1,2}[.][0-9]{2,4}";
-        private final String MASK_DATE_TEXT = "ДД.ММ.ГГГГ";
-        private final Pattern COMMON_DATE_PATTERN = Pattern.compile(COMMON_DATE_PATTERN_REGEX);
-        private final DatePicker source;
-
-        public DatePickerEditorListener(DatePicker source){
-            this.source = source;
-        }
-
-        @Override
-        public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-            Matcher matcher = COMMON_DATE_PATTERN.matcher(newValue);
-            TextField editor = source.getEditor();
-            int textLength = editor.getText().length();
-            if ( matcher.matches() || textLength >= 10 ){
-                checkDate(editor);
-
-            }
-        }
-
-       private void invalidated(Observable observable) {
-            TextField editor = source.getEditor();
-            int textLength = editor.getText().length();
-            if (editor.getText().matches(COMMON_DATE_PATTERN_REGEX) ||
-                    textLength >= 10)
-                checkDate(editor);
-
-        }
-        private void maskEditor(TextField editor){
-            editor.setText(MASK_DATE_TEXT);
-            editor.selectPositionCaret(1);
-
-
-        }
-
-        private void checkDate(TextField editor){
-            LocalDate date = null;
-            String dateStr = editor.getText();
-            String[] dateArgs = dateStr.split("[.]");
-
-            try {
-                date = DateUtil.parse(editor.getText());
-            }catch (DateTimeParseException ex){
-                LOGGER.warn("NOT CORRECT DATE: "+dateStr);
-                editor.setStyle("-fx-text-inner-color:red");
-                return;
-            }
-            editor.setStyle("-fx-text-inner-color:black");
-
-
-        }
-    }
 
     private class OrganizationFilterListener implements javafx.beans.value.ChangeListener<String>{
 
