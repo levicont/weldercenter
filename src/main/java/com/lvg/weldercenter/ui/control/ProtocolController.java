@@ -13,6 +13,8 @@ import com.lvg.weldercenter.ui.util.Printer;
 import javafx.application.Platform;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
@@ -571,6 +573,13 @@ public class ProtocolController extends GenericController {
             weldPatternAllWeldJoinTypes.add(item);
             item.addEventHandler(ActionEvent.ACTION, new CheckMenuItemHandler());
         }
+        //TODO try to make valid listener for showing popup menu
+        menuButtonWeldJoinType.showingProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+
+            }
+        });
         menuButtonWeldJoinType.getItems().clear();
         menuButtonWeldJoinType.getItems().addAll(weldPatternAllWeldJoinTypes);
     }
@@ -2377,8 +2386,10 @@ public class ProtocolController extends GenericController {
 
             if (event.getSource().getClass().equals(CheckMenuItem.class)) {
                 CheckMenuItem source = (CheckMenuItem) event.getSource();
-                if (menuButtonWeldPosition.getItems().contains(source))
+                if (menuButtonWeldPosition.getItems().contains(source)) {
                     fillTextFieldWeldPosition();
+                    menuButtonWeldPosition.fire();
+                }
                 if (menuButtonWeldJoinType.getItems().contains(source))
                     fillTextFieldWeldJoinType();
             }
