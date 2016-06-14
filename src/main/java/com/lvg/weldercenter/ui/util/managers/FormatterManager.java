@@ -120,29 +120,38 @@ public class FormatterManager {
             TextField editor = getEditor(source);
             int textLength = editor.getText().length();
             if ( matcher.matches() || textLength >= 10 ){
-                checkDate(editor);
+                if(isCorrectDate(editor) && isDatePicker(source)){
+                    DatePicker dp = (DatePicker)source;
+                    dp.setValue(DateUtil.parse(editor.getText()));
+                }
+
             }
         }
 
         private TextField getEditor(Node source){
             if (source instanceof TextField)
                 return (TextField)source;
-            if (source instanceof DatePicker)
+            if ( isDatePicker(source))
                 return ((DatePicker)source).getEditor();
             throw new IllegalArgumentException("Component has not editor");
         }
 
-        private void checkDate(TextField editor){
+        private boolean isDatePicker(Node source){
+            return source instanceof DatePicker;
+        }
+
+        private boolean isCorrectDate(TextField editor){
             String dateStr = editor.getText();
             try {
                 DateUtil.parse(editor.getText());
             }catch (DateTimeParseException ex){
                 LOGGER.debug("NOT CORRECT DATE: "+dateStr);
                 editor.setStyle("-fx-text-inner-color:red");
-                return;
+                return false;
             }
-            editor.setStyle("-fx-text-inner-color:black");
 
+            editor.setStyle("-fx-text-inner-color:black");
+            return true;
 
         }
     }
