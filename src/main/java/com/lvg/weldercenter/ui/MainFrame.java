@@ -10,7 +10,6 @@ import javafx.stage.Stage;
 import org.apache.log4j.Logger;
 
 import javax.swing.*;
-import java.util.Locale;
 
 
 /**

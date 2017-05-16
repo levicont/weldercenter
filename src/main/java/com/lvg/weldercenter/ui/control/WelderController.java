@@ -9,7 +9,6 @@ import com.lvg.weldercenter.ui.servicesui.OrganizationServiceUI;
 import com.lvg.weldercenter.ui.util.ControlFXUtils;
 import com.lvg.weldercenter.ui.util.DateUtil;
 import com.lvg.weldercenter.ui.util.TableUtil;
-import com.lvg.weldercenter.ui.util.managers.FormatterManager;
 import com.lvg.weldercenter.ui.util.managers.TableViewManager;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
@@ -33,13 +32,9 @@ import javafx.scene.layout.VBox;
 import org.apache.log4j.Logger;
 
 import java.net.URL;
-import java.time.LocalDate;
-import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Created by Victor Levchenko LVG Corp. on 14.11.14.

@@ -34,6 +34,7 @@ public class R {
                 public static  final String JOURNAL_KEY_NUMBER = "NUMBER";
                 public static  final String JOURNAL_KEY_DATE_BEGIN = "DATE_BEGIN";
                 public static  final String JOURNAL_KEY_DATE_BEGIN_FORMAT = "DATE_BEGIN_FORMAT";
+                public static  final String JOURNAL_KEY_DATE_BEGIN_FORMAT_YEAR = "DATE_BEGIN_FORMAT_YEAR";
                 public static  final String JOURNAL_KEY_DATE_END = "DATE_END";
                 public static  final String JOURNAL_KEY_DATE_END_FORMAT = "DATE_END_FORMAT";
                 public static  final String JOURNAL_KEY_CURRICULUM_TITLE = "CURRICULUM_TITLE";

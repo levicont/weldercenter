@@ -22,6 +22,7 @@ public class JournalReportEntity extends GenericReportEntity{
         put(constants.JOURNAL_KEY_NUMBER,null);
         put(constants.JOURNAL_KEY_DATE_BEGIN, null);
         put(constants.JOURNAL_KEY_DATE_BEGIN_FORMAT,null);
+        put(constants.JOURNAL_KEY_DATE_BEGIN_FORMAT_YEAR, null);
         put(constants.JOURNAL_KEY_DATE_END, null);
         put(constants.JOURNAL_KEY_DATE_END_FORMAT, null);
         put(constants.JOURNAL_KEY_CURRICULUM_TITLE, null);
@@ -31,6 +32,7 @@ public class JournalReportEntity extends GenericReportEntity{
 
     private String jrnNumber ="";
     private String jrnDateBegin="";
+    private String jrnDateBeginYear="";
     private String jrnDateEnd="";
     private String jrnCurriculumTitle="";
 
@@ -49,6 +51,7 @@ public class JournalReportEntity extends GenericReportEntity{
         this(journalUI);
         this.jrnNumber = journalUI.getNumber();
         this.jrnDateBegin = journalUI.getDateBeginFormat()+constants.GENERIC_DATE_SUFFIX;
+        this.jrnDateBeginYear = DateUtil.getLocalDate(journalUI.getDateBegin()).getYear()+"";
         this.jrnDateEnd = journalUI.getDateEndFormat()+constants.GENERIC_DATE_SUFFIX;
         this.jrnCurriculumTitle = journalUI.getCurriculum();
 
@@ -69,6 +72,8 @@ public class JournalReportEntity extends GenericReportEntity{
         parameters.replace(constants.JOURNAL_KEY_NUMBER, journalUI.getNumber());
         parameters.replace(constants.JOURNAL_KEY_DATE_BEGIN, journalUI.getDateBegin());
         parameters.replace(constants.JOURNAL_KEY_DATE_BEGIN_FORMAT, journalUI.getDateBeginFormat()+constants.GENERIC_DATE_SUFFIX);
+        parameters.replace(constants.JOURNAL_KEY_DATE_BEGIN_FORMAT_YEAR,
+                DateUtil.getLocalDate(journalUI.getDateBegin()).getYear()+"");
         parameters.replace(constants.JOURNAL_KEY_DATE_END,journalUI.getDateEnd());
         parameters.replace(constants.JOURNAL_KEY_DATE_END_FORMAT, journalUI.getDateEndFormat()+constants.GENERIC_DATE_SUFFIX);
         if(journalUI.getCurriculum()!=null){
@@ -209,6 +214,14 @@ public class JournalReportEntity extends GenericReportEntity{
 
     public void setJrnWelderWeldMethods(String jrnWelderWeldMethods) {
         this.jrnWelderWeldMethods = jrnWelderWeldMethods;
+    }
+
+    public String getJrnDateBeginYear() {
+        return jrnDateBeginYear;
+    }
+
+    public void setJrnDateBeginYear(String jrnDateBeginYear) {
+        this.jrnDateBeginYear = jrnDateBeginYear;
     }
 
     public String getJrnWelderHomeAdress() {

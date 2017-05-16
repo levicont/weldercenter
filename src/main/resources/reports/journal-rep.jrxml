@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="journal-rep" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="511" leftMargin="56" rightMargin="28" topMargin="14" bottomMargin="14" uuid="2166879d-58eb-45f8-afd3-2ced7e057eb9">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="48"/>
 	<parameter name="WELDER_DETAIL_SUBREPORT" class="java.lang.Object"/>
 	<parameter name="NUMBER" class="java.lang.String"/>
 	<parameter name="WELDER_DETAIL_DATA_SOURCE" class="net.sf.jasperreports.engine.JRDataSource"/>
@@ -17,6 +17,7 @@
 	<parameter name="TIME_TABLE_DATA_SOURCE" class="net.sf.jasperreports.engine.JRDataSource"/>
 	<parameter name="TEACHERS" class="java.lang.String"/>
 	<parameter name="PARAMETERS_MAP" class="java.lang.Object"/>
+	<parameter name="DATE_BEGIN_FORMAT_YEAR" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -89,12 +90,20 @@
 				<textFieldExpression><![CDATA[$P{DATE_END_FORMAT}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="175" y="409" width="175" height="20" uuid="25b58feb-d20b-4378-8395-3c8910e5c698"/>
+				<reportElement x="205" y="409" width="70" height="20" uuid="25b58feb-d20b-4378-8395-3c8910e5c698"/>
 				<textElement textAlignment="Center">
 					<font fontName="Univers" size="14"/>
 				</textElement>
-				<text><![CDATA[Харьков - 2015 г.]]></text>
+				<text><![CDATA[Харьков - ]]></text>
 			</staticText>
+			<textField>
+				<reportElement x="275" y="409" width="100" height="20" uuid="644b0d40-118b-4022-b018-b8df352fd13b"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Univers" size="14" isBold="true"/>
+					<paragraph leftIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{DATE_BEGIN_FORMAT_YEAR}]]></textFieldExpression>
+			</textField>
 		</band>
 		<band height="49" splitType="Stretch">
 			<break>
