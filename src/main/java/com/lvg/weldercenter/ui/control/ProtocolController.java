@@ -39,7 +39,7 @@ import java.util.ResourceBundle;
  */
 public class ProtocolController extends GenericController {
     private static final Logger LOGGER = Logger.getLogger(ProtocolController.class);
-    private static final String TREE_ROOT_ITEM_NAME = "Общие протоколы";
+    private static final String TREE_ROOT_ITEM_NAME = "Общие протокол";
     private static final String PERSONAL_PROTOCOL_PREFIX_NAME = "Перс. протокол: ";
     private static final String PERSONAL_PROTOCOL_DB_SUFFIX_NAME = " (БД)";
     private final String EMPTY_STRING_ITEM = "нет";
