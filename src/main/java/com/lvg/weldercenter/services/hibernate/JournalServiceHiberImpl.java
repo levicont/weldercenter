@@ -2,6 +2,7 @@ package com.lvg.weldercenter.services.hibernate;
 
 import com.lvg.weldercenter.dao.JournalDao;
 import com.lvg.weldercenter.models.Journal;
+import com.lvg.weldercenter.models.PersonalProtocol;
 import com.lvg.weldercenter.services.JournalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Propagation;
@@ -28,9 +29,7 @@ public class JournalServiceHiberImpl implements JournalService {
     }
 
     @Override
-    public Journal get(Long id) {
-        return dao.get(id);
-    }
+    public Journal get(Long id) {return dao.get(id); }
 
     @Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)

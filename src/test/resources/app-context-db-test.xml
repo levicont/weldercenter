@@ -18,7 +18,7 @@
     <context:property-placeholder location="classpath:properties/jdbc.properties"/>
 
     <jdbc:initialize-database data-source="dataSource">
-        <jdbc:script location="classpath:weldercenter-test-schema.sql"/>
+        <jdbc:script location="classpath:db/weldercenter-2017-06-20-test.sql"/>
     </jdbc:initialize-database>
 
     <bean class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor"/>
