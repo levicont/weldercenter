@@ -68,7 +68,8 @@ public class Journal implements Serializable{
         this.dateEnd = dateEnd;
     }
 
-    @OneToMany(targetEntity = PersonalProtocol.class, mappedBy = "journal")
+    @OneToMany(targetEntity = PersonalProtocol.class, mappedBy = "journal",
+    fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     //@LazyCollection(value = LazyCollectionOption.FALSE)
     public List<PersonalProtocol> getPersonalProtocols() {
         return personalProtocols;
