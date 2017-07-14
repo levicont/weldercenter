@@ -1,31 +1,6 @@
 package com.lvg.weldercenter.utils
 
-import com.lvg.weldercenter.models.CommissionCertification
-import com.lvg.weldercenter.models.Curriculum
-import com.lvg.weldercenter.models.Education
-import com.lvg.weldercenter.models.Electrode
-import com.lvg.weldercenter.models.Evaluation
-import com.lvg.weldercenter.models.Job
-import com.lvg.weldercenter.models.Journal
-import com.lvg.weldercenter.models.MechanicalTest
-import com.lvg.weldercenter.models.Organization
-import com.lvg.weldercenter.models.Qualification
-import com.lvg.weldercenter.models.RadiationTest
-import com.lvg.weldercenter.models.Section
-import com.lvg.weldercenter.models.SteelGroup
-import com.lvg.weldercenter.models.SteelType
-import com.lvg.weldercenter.models.Teacher
-import com.lvg.weldercenter.models.Topic
-import com.lvg.weldercenter.models.VisualTest
-import com.lvg.weldercenter.models.WeldDetail
-import com.lvg.weldercenter.models.WeldGas
-import com.lvg.weldercenter.models.WeldJoinType
-import com.lvg.weldercenter.models.WeldMethod
-import com.lvg.weldercenter.models.WeldPattern
-import com.lvg.weldercenter.models.WeldPosition
-import com.lvg.weldercenter.models.WeldWire
-import com.lvg.weldercenter.models.Welder
-
+import com.lvg.weldercenter.models.*
 /**
  * Created by Victor on 06.07.2017.
  */
@@ -243,4 +218,13 @@ class ModelGenerator {
         weldDetail.code = 'T'
         return weldDetail
     }
+
+    static NDTDocument getNDTDocument(){
+        def ndtDocument = new NDTDocument()
+        ndtDocument.name = 'ISO 9712'
+        ndtDocument.fullName = 'NDT Certification'
+        return ndtDocument
+    }
+
+    
 }
