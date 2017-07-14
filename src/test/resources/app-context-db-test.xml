@@ -15,10 +15,10 @@
             http://www.springframework.org/schema/jdbc/spring-jdbc-3.0.xsd">
 
     <context:component-scan base-package="com.lvg.weldercenter.dao.hibernate"/>
-    <context:property-placeholder location="classpath:properties/jdbc.properties"/>
+    <context:property-placeholder location="classpath:db/jdbctest.properties"/>
 
     <jdbc:initialize-database data-source="dataSource">
-        <jdbc:script location="classpath:db/weldercenter-2017-06-20-test.sql"/>
+        <jdbc:script location="classpath:db/weldercenter-empty-test.sql"/>
     </jdbc:initialize-database>
 
     <bean class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor"/>

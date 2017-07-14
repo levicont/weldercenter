@@ -1,10 +1,29 @@
 package com.lvg.weldercenter.utils
 
+import com.lvg.weldercenter.models.CommissionCertification
+import com.lvg.weldercenter.models.Curriculum
 import com.lvg.weldercenter.models.Education
 import com.lvg.weldercenter.models.Electrode
+import com.lvg.weldercenter.models.Evaluation
 import com.lvg.weldercenter.models.Job
+import com.lvg.weldercenter.models.Journal
+import com.lvg.weldercenter.models.MechanicalTest
 import com.lvg.weldercenter.models.Organization
 import com.lvg.weldercenter.models.Qualification
+import com.lvg.weldercenter.models.RadiationTest
+import com.lvg.weldercenter.models.Section
+import com.lvg.weldercenter.models.SteelGroup
+import com.lvg.weldercenter.models.SteelType
+import com.lvg.weldercenter.models.Teacher
+import com.lvg.weldercenter.models.Topic
+import com.lvg.weldercenter.models.VisualTest
+import com.lvg.weldercenter.models.WeldDetail
+import com.lvg.weldercenter.models.WeldGas
+import com.lvg.weldercenter.models.WeldJoinType
+import com.lvg.weldercenter.models.WeldMethod
+import com.lvg.weldercenter.models.WeldPattern
+import com.lvg.weldercenter.models.WeldPosition
+import com.lvg.weldercenter.models.WeldWire
 import com.lvg.weldercenter.models.Welder
 
 /**
@@ -60,8 +79,168 @@ class ModelGenerator {
 
     static Electrode getEletrode(){
         Electrode electrode = new Electrode()
-
         electrode.type = 'АНО-21'
+        return electrode
     }
 
+    static Teacher getTeacher(){
+        return  new Teacher(name: 'Петр', surname: 'Петров', secname: 'Петрович')
+    }
+
+    static CommissionCertification getCommissionCertification(){
+        def commission = new CommissionCertification()
+        commission.head = getTeacher()
+        commission.ndtSpecialist = getTeacher()
+        commission.safetySpecialist = getTeacher()
+        commission.weldSpecialist = getTeacher()
+        return commission
+    }
+
+    static Topic getTopic(){
+        def topic = new Topic()
+        topic.description = 'Topic description'
+        topic.orderIndex = 1
+        topic.title = 'Title'
+        topic.timelong = 0.5
+        return topic
+    }
+
+    static Section getSection(){
+        def section = new Section()
+        section.title = 'Section'
+        section.orderIndex = 1
+        section.description = 'Section description'
+        section.topics.add(getTopic())
+        return section
+    }
+
+    static Curriculum getCurriculum(){
+        def curriculum = new Curriculum()
+        curriculum.title = 'Curriculum'
+        curriculum.description = 'Curriculum description'
+        curriculum.sections.add(getSection())
+        return curriculum
+    }
+
+    static Evaluation getEvaluation(){
+        def evaluation = new Evaluation()
+        evaluation.type = 'OK status'
+        return evaluation
+    }
+
+    static Journal getJournal(){
+        def journal = new Journal()
+        journal.curriculum = getCurriculum()
+        journal.number = '17-001'
+        journal.dateBegin = new Date()
+        journal.dateEnd = new Date()
+        journal.teachers.add(getTeacher())
+        journal.welders.add(getWelder())
+        return journal
+    }
+
+
+
+    static SteelType getSteelType(){
+        def steelType = new SteelType()
+        steelType.stGroup = getSteelGroup()
+        steelType.type = 'Сталь 20'
+        return steelType
+    }
+
+    static SteelGroup getSteelGroup() {
+        def steelGroup = new SteelGroup()
+        steelGroup.stGroup = 'w01'
+        steelGroup.description = 'Steel group description'
+        return steelGroup
+    }
+
+    static WeldPattern getWeldPattern(){
+        def weldPattern = new WeldPattern()
+        weldPattern.diameter = 76.0
+        weldPattern.thickness = 4.0
+        weldPattern.electrode = getEletrode()
+        weldPattern.mark = '01'
+        weldPattern.steelType = getSteelType()
+        weldPattern.weldDetail = getWeldDetail()
+        weldPattern.weldGas = getWeldGas()
+        weldPattern.weldJoinTypes.add(getWeldJoinType())
+        weldPattern.weldMethod = getWeldMethod()
+        weldPattern.weldPositions.add(getWeldPosition())
+        weldPattern.weldWire = getWeldWire()
+
+        weldPattern.mechanicalTest = getMechanicalTest()
+        weldPattern.radiationTest = getRadiationTest()
+        weldPattern.visualTest = getVisualTest()
+
+
+
+    }
+
+    static WeldWire getWeldWire() {
+        def weldWire = new WeldWire()
+        weldWire.type = 'Св08Г2С'
+        return weldWire
+    }
+
+    static VisualTest getVisualTest() {
+        def visualTest = new VisualTest()
+        visualTest.number = '17-03'
+        visualTest.defects = 'ДНО'
+        visualTest.protDate = new Date()
+        visualTest.evaluation = getEvaluation()
+        return visualTest
+    }
+
+    static RadiationTest getRadiationTest() {
+        def radiationTest = new RadiationTest()
+        radiationTest.protDate = new Date()
+        radiationTest.number = '17-02'
+        radiationTest.defects = 'ДНО'
+        radiationTest.sensitivity = 0.3
+        radiationTest.evaluation = getEvaluation()
+        return radiationTest
+    }
+
+    static MechanicalTest getMechanicalTest() {
+        def mechanicalTest = new MechanicalTest()
+        mechanicalTest.angle = 120.0
+        mechanicalTest.clearance = 10.0
+        mechanicalTest.number = '17-01'
+        mechanicalTest.protDate = new Date()
+        mechanicalTest.evaluation = getEvaluation()
+        return mechanicalTest
+    }
+
+    static WeldPosition getWeldPosition() {
+        def weldPosition = new WeldPosition()
+        weldPosition.code = 'pf'
+        weldPosition.type = 'pf description'
+    }
+
+    static WeldMethod getWeldMethod() {
+        def weldMethod = new WeldMethod()
+        weldMethod.code = '135'
+        weldMethod.name = 'MAG'
+        return weldMethod
+    }
+
+    static WeldGas getWeldGas() {
+        def weldGas = new WeldGas()
+        weldGas.type = 'C02'
+        return weldGas
+    }
+
+    static WeldJoinType getWeldJoinType(){
+        def weldJoinType = new WeldJoinType()
+        weldJoinType.type = 'PC'
+        weldJoinType.description = 'PC description'
+    }
+
+    static WeldDetail getWeldDetail() {
+        def weldDetail = new WeldDetail()
+        weldDetail.type = 'Tube'
+        weldDetail.code = 'T'
+        return weldDetail
+    }
 }
