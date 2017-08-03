@@ -29,6 +29,7 @@ class ModelGenerator {
     static Qualification getQualification() {
         Qualification qualification = new Qualification()
         qualification.type = 'электросварщик'
+        return qualification
     }
 
     static Job getJob() {

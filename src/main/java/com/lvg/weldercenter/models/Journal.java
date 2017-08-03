@@ -79,7 +79,7 @@ public class Journal implements Serializable{
         this.personalProtocols = personalProtocols;
     }
 
-    @ManyToOne(targetEntity = Curriculum.class)
+    @ManyToOne(targetEntity = Curriculum.class, cascade = CascadeType.ALL)
     @JoinColumn(name = "id_curriculum")
     public Curriculum getCurriculum() {
         return curriculum;
@@ -89,8 +89,7 @@ public class Journal implements Serializable{
         this.curriculum = curriculum;
     }
 
-    @ManyToMany
-    @LazyCollection(value = LazyCollectionOption.FALSE)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "journal_welder",
         joinColumns = {@JoinColumn(name = "id_journal")},
         inverseJoinColumns = {@JoinColumn(name = "id_welder")})
@@ -102,8 +101,7 @@ public class Journal implements Serializable{
         this.welders = welders;
     }
 
-    @ManyToMany
-    @LazyCollection(value = LazyCollectionOption.FALSE)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "journal_teacher",
             joinColumns = {@JoinColumn(name = "id_journal")},
             inverseJoinColumns = {@JoinColumn(name = "id_teacher")})

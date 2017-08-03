@@ -110,7 +110,7 @@ public class Welder implements Serializable{
         this.address = address;
     }
 
-    @ManyToOne(targetEntity = Education.class)
+    @ManyToOne(targetEntity = Education.class, cascade = {CascadeType.ALL})
     @JoinColumn(name = "id_education")
     public Education getEducation() {
         return education;
@@ -120,7 +120,7 @@ public class Welder implements Serializable{
         this.education = education;
     }
 
-    @ManyToOne(targetEntity = Qualification.class)
+    @ManyToOne(targetEntity = Qualification.class, cascade = {CascadeType.ALL})
     @JoinColumn(name = "id_qualification")
     public Qualification getQualification() {
         return qualification;
@@ -130,7 +130,7 @@ public class Welder implements Serializable{
         this.qualification = qualification;
     }
 
-    @ManyToOne(targetEntity = Organization.class)
+    @ManyToOne(targetEntity = Organization.class, cascade = {CascadeType.ALL})
     @JoinColumn(name = "id_organization")
     public Organization getOrganization() {
         return organization;
@@ -140,7 +140,7 @@ public class Welder implements Serializable{
         this.organization = organization;
     }
 
-    @ManyToOne(targetEntity = Job.class)
+    @ManyToOne(targetEntity = Job.class, cascade = {CascadeType.ALL})
     @JoinColumn(name = "id_job")
     public Job getJob() {
         return job;

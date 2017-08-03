@@ -73,8 +73,7 @@ public class Section implements Serializable{
         this.curriculums = curriculums;
     }
 
-    @ManyToMany
-    @LazyCollection(value = LazyCollectionOption.FALSE)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "section_topic",
             joinColumns = {@JoinColumn(name = "id_section")},
             inverseJoinColumns = {@JoinColumn(name = "id_topic")})

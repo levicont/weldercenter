@@ -63,8 +63,7 @@ public class Curriculum implements Serializable{
         this.journals = journals;
     }
 
-    @ManyToMany
-    @LazyCollection(value = LazyCollectionOption.FALSE)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "curriculum_section",
             joinColumns = {@JoinColumn(name = "id_curriculum")},
             inverseJoinColumns = {@JoinColumn(name = "id_section")})
