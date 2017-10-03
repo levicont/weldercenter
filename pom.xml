@@ -111,6 +111,13 @@
 
 
 	<dependencies>
+        <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-nop -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-nop</artifactId>
+            <version>1.6.4</version>
+        </dependency>
+
         <dependency>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-surefire-plugin</artifactId>
@@ -121,6 +128,12 @@
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-compiler-plugin</artifactId>
             <version>3.3</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-jdk14</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
 
@@ -136,17 +149,11 @@
 			<version>4.10</version>
 		</dependency>
 
-        <dependency>
-            <groupId>org.hibernate.javax.persistence</groupId>
-            <artifactId>hibernate-jpa-2.0-api</artifactId>
-            <version>1.0.1.Final</version>
-        </dependency>
-
-        <dependency>
+        <!--dependency>
             <groupId>javassist</groupId>
             <artifactId>javassist</artifactId>
             <version>3.12.1.GA</version>
-        </dependency>
+        </dependency-->
 
         <dependency>
 			<groupId>log4j</groupId>
@@ -230,10 +237,30 @@
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
-			<version>4.0.0.Final</version>
+			<version>5.0.0.Final</version>
 		</dependency>
+        <!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-entitymanager -->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-entitymanager</artifactId>
+            <version>5.0.0.Final</version>
+        </dependency>
 
-		<dependency>
+        <!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-validator -->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>5.0.0.Final</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.hibernate.javax.persistence/hibernate-jpa-2.1-api -->
+        <dependency>
+            <groupId>org.hibernate.javax.persistence</groupId>
+            <artifactId>hibernate-jpa-2.1-api</artifactId>
+            <version>1.0.0.Final</version>
+        </dependency>
+
+
+        <dependency>
 			<groupId>org.apache.marmotta</groupId>
 			<artifactId>marmotta-splash</artifactId>
 			<version>3.0.0-incubating</version>
@@ -244,6 +271,20 @@
 			<artifactId>jcalendar</artifactId>
 			<version>1.4</version>
 		</dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-c3p0 ->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-c3p0</artifactId>
+            <version>4.3.11.Final</version>
+        </dependency-->
+
+        <!-- https://mvnrepository.com/artifact/org.codehaus.btm/btm -->
+        <dependency>
+            <groupId>org.codehaus.btm</groupId>
+            <artifactId>btm</artifactId>
+            <version>2.1.4</version>
+        </dependency>
 
 		<dependency>
 			<groupId>mysql</groupId>
@@ -292,6 +333,8 @@
             <artifactId>groovy-all</artifactId>
             <version>2.4.3</version>
         </dependency>
+
+
 
     </dependencies>
 </project>
