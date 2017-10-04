@@ -1,5 +1,6 @@
 package com.lvg.weldercenter.se.test.models
 
+import com.lvg.weldercenter.se.models.Organization
 import com.lvg.weldercenter.se.models.Welder
 import com.lvg.weldercenter.se.utils.DatabaseProduct
 import com.lvg.weldercenter.se.utils.TransactionManagerSetup
@@ -11,7 +12,6 @@ import javax.persistence.EntityManagerFactory
 import javax.persistence.Persistence
 import javax.transaction.UserTransaction
 import java.time.LocalDate
-
 
 class WelderTest {
 
@@ -43,7 +43,7 @@ class WelderTest {
     }
 
     @Test
-    public void WelderSaveTest(){
+    void WelderSaveTest(){
         UserTransaction tx = TMS.getUserTransaction()
 
         tx.begin()
@@ -52,6 +52,13 @@ class WelderTest {
         welder.birthday = LocalDate.of(1984,10,28)
         welder.dateBegin = LocalDate.of(2000,10,28)
         welder.docNumber = '17-033/17'
+        welder.address = 'Michigan City 12066'
+        welder.education = 'среднее-специальное'
+        welder.qualification = 'электросварщик'
+        welder.job = 'элекросварщик'
+        welder.organization = getOragnization()
+
+
         em.persist(welder)
         tx.commit()
 
@@ -69,12 +76,18 @@ class WelderTest {
         assert welder.birthday == LocalDate.of(1984,10,28)
         assert welder.dateBegin == LocalDate.of(2000,10,28)
         assert welder.docNumber == '17-033/17'
-
+        assert welder.address == 'Michigan City 12066'
+        assert welder.education == 'среднее-специальное'
+        assert welder.qualification == 'электросварщик'
+        assert welder.job == 'элекросварщик'
+        def org = welder.getOrganization()
+        print org
+        assert org.name == 'IBM'
         Serializable s = welder
     }
 
     @Test
-    public void WelderEqualsHashTest(){
+    void WelderEqualsHashTest(){
         def welder1 = new Welder(name: 'Иван', surname: 'Иванов', secname: 'Иванович')
         def welder2 = new Welder(name: 'Иван', surname: 'Иванов', secname: 'Иванович')
 
@@ -92,5 +105,9 @@ class WelderTest {
 
         assert list.size() == 1
 
+    }
+
+    private Organization getOragnization(){
+        return new Organization(name: 'IBM', address: 'New-York', phone: '(0595)466-15-59')
     }
 }

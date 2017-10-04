@@ -7,6 +7,7 @@
         <jta-data-source>wcDS</jta-data-source>
         <class>com.lvg.weldercenter.se.models</class>
         <class>com.lvg.weldercenter.se.models.Welder</class>
+        <class>com.lvg.weldercenter.se.models.Organization</class>
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
         <properties>
             <property name="hibernate.format_sql" value="true"/>
