@@ -1,64 +1,22 @@
 package com.lvg.weldercenter.se.test.models
 
-import com.lvg.weldercenter.se.models.Organization
 import com.lvg.weldercenter.se.models.Welder
-import com.lvg.weldercenter.se.utils.DatabaseProduct
-import com.lvg.weldercenter.se.utils.TransactionManagerSetup
 import org.junit.Assert
 import org.junit.Test
 
 import javax.persistence.EntityManager
-import javax.persistence.EntityManagerFactory
-import javax.persistence.Persistence
 import javax.transaction.UserTransaction
 import java.time.LocalDate
 
-class WelderTest {
+class WelderTest extends GenericModelTest{
 
-    private static final TransactionManagerSetup TMS = getTransactionManagerSetup(DatabaseProduct.MYSQL);
-    private static final EntityManagerFactory EMF = getEntityManagerFactory(Constants.PERSISTENCE_UNIT_NAME);
-
-
-    private static TransactionManagerSetup getTransactionManagerSetup(DatabaseProduct dbProduct){
-        TransactionManagerSetup result = null;
-        try{
-            result =  new TransactionManagerSetup(dbProduct);
-        }catch(Exception ex){
-            System.out.println("We have exception: " + ex.getMessage());
-            System.exit(0);
-        }
-        return result;
-    }
-
-    private static EntityManagerFactory getEntityManagerFactory(String persistenceUnitName){
-        EntityManagerFactory result = null;
-        try{
-            result =  Persistence.createEntityManagerFactory(persistenceUnitName);
-        }catch(Exception ex){
-            System.out.println("We have exception: " + ex.getMessage());
-            ex.printStackTrace();
-            System.exit(0);
-        }
-        return result;
-    }
 
     @Test
-    void WelderSaveTest(){
+    void insertItemTest(){
         UserTransaction tx = TMS.getUserTransaction()
-
         tx.begin()
         EntityManager em = EMF.createEntityManager()
-        Welder welder = new Welder(name: 'Иван', surname: 'Иванов', secname: 'Иванович')
-        welder.birthday = LocalDate.of(1984,10,28)
-        welder.dateBegin = LocalDate.of(2000,10,28)
-        welder.docNumber = '17-033/17'
-        welder.address = 'Michigan City 12066'
-        welder.education = 'среднее-специальное'
-        welder.qualification = 'электросварщик'
-        welder.job = 'элекросварщик'
-        welder.organization = getOragnization()
-
-
+        Welder welder = getWelder()
         em.persist(welder)
         tx.commit()
 
@@ -69,27 +27,82 @@ class WelderTest {
 
         Assert.assertEquals(1, list.size())
         welder = list.get(0)
+        def org = welder.getOrganization()
 
+        assert welder.id != null
         assert welder.name == 'Иван'
         assert welder.surname == 'Иванов'
-        assert welder.secname == 'Иванович'
+        assert welder.secondName == 'Иванович'
         assert welder.birthday == LocalDate.of(1984,10,28)
         assert welder.dateBegin == LocalDate.of(2000,10,28)
-        assert welder.docNumber == '17-033/17'
+        assert welder.documentNumber == '17-033/17'
         assert welder.address == 'Michigan City 12066'
         assert welder.education == 'среднее-специальное'
         assert welder.qualification == 'электросварщик'
         assert welder.job == 'элекросварщик'
-        def org = welder.getOrganization()
-        print org
+        assert org.id != null
         assert org.name == 'IBM'
-        Serializable s = welder
     }
 
     @Test
-    void WelderEqualsHashTest(){
-        def welder1 = new Welder(name: 'Иван', surname: 'Иванов', secname: 'Иванович')
-        def welder2 = new Welder(name: 'Иван', surname: 'Иванов', secname: 'Иванович')
+    void updateItemTest(){
+        UserTransaction tx = TMS.getUserTransaction()
+        tx.begin()
+        EntityManager em = EMF.createEntityManager()
+        Welder welder = getWelder()
+        em.persist(welder)
+        tx.commit()
+
+        assert welder.id != null
+        def WELDER_ID = welder.id
+        tx.begin()
+        em = EMF.createEntityManager()
+        Welder welderUpd = em.find(Welder.class, WELDER_ID)
+        welderUpd.surname = 'Петров'
+        em.persist(welderUpd)
+        tx.commit()
+
+        tx.begin()
+        em = EMF.createEntityManager()
+        Welder chkWelder = em.find(Welder.class, WELDER_ID)
+        assert chkWelder.surname == 'Петров'
+        tx.commit()
+
+
+    }
+
+
+    @Test
+    void deleteItemTest(){
+        UserTransaction tx = TMS.getUserTransaction()
+        tx.begin()
+        EntityManager em = EMF.createEntityManager()
+        Welder welder = getWelder()
+        em.persist(welder)
+        tx.commit()
+
+        assert welder.id != null
+        def WELDER_ID = welder.id
+
+        tx.begin()
+        em = EMF.createEntityManager()
+        Welder welderUpd = em.find(Welder.class, WELDER_ID)
+        em.remove(welderUpd)
+        tx.commit()
+
+        tx.begin()
+        em = EMF.createEntityManager()
+        Welder chkWelder = em.find(Welder.class, WELDER_ID)
+        assert chkWelder == null
+        tx.commit()
+
+
+    }
+
+    @Test
+    void equalsHashCodeTest(){
+        def welder1 = new Welder(name: 'Иван', surname: 'Иванов', secondName: 'Иванович')
+        def welder2 = new Welder(name: 'Иван', surname: 'Иванов', secondName: 'Иванович')
 
         assert welder1 == welder2
 
@@ -107,7 +120,9 @@ class WelderTest {
 
     }
 
-    private Organization getOragnization(){
-        return new Organization(name: 'IBM', address: 'New-York', phone: '(0595)466-15-59')
+    @Test
+    void toStringTest(){
+        def welder = new Welder(name: 'Иван', surname: 'Иванов', secondName: 'Иванович')
+        assert welder.toString() == "Иванов Иван Иванович"
     }
 }

@@ -12,129 +12,49 @@ class Welder implements Serializable{
 
     @Id
     @GeneratedValue(generator = "ID_GENERATOR")
-    protected Long id
+    @Column(name = "ID")
+    Long id
 
     @NotNull
     @Size(min = 2, max = 50)
-    protected String name
+    @Column(name = "NAME")
+    String name
 
     @NotNull
     @Size(min = 2, max = 50)
-    protected String surname
+    @Column(name = "SURNAME")
+    String surname
 
     @NotNull
     @Size(min = 2, max = 50)
-    protected String secname
+    @Column(name = "SECOND_NAME")
+    String secondName
 
     @Convert(converter = LocalDateConverter.class)
-    protected LocalDate birthday
+    @Column(name = "BIRTHDAY")
+    LocalDate birthday
 
     @Convert(converter = LocalDateConverter.class)
-    protected LocalDate dateBegin
+    @Column(name = "DATE_BEGIN")
+    LocalDate dateBegin
 
     @Size(max = 10)
-    protected String docNumber
+    @Column(name = "DOCUMENT_NUMBER")
+    String documentNumber
 
-    protected String address
-    protected String education
-    protected String qualification
-    protected String job
+    @Column(name = "ADDRESS")
+    String address
+    @Column(name = "EDUCATION")
+    String education
+    @Column(name = "QUALIFICATION")
+    String qualification
+    @Column(name = "JOB")
+    String job
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-    @JoinColumn(name = 'organization_id')
-    protected Organization organization
+    @JoinColumn(name = 'ORGANIZATION_ID')
+    Organization organization
 
-    Long getId() {
-        return id
-    }
-
-    String getName() {
-        return name
-    }
-
-    void setName(String name) {
-        this.name = name
-    }
-
-    String getSurname() {
-        return surname
-    }
-
-    void setSurname(String surname) {
-        this.surname = surname
-    }
-
-    String getSecname() {
-        return secname
-    }
-
-    void setSecname(String secname) {
-        this.secname = secname
-    }
-
-    LocalDate getBirthday() {
-        return birthday
-    }
-
-    void setBirthday(LocalDate birthday) {
-        this.birthday = birthday
-    }
-
-    LocalDate getDateBegin() {
-        return dateBegin
-    }
-
-    void setDateBegin(LocalDate dateBegin) {
-        this.dateBegin = dateBegin
-    }
-
-    String getDocNumber() {
-        return docNumber
-    }
-
-    void setDocNumber(String docNumber) {
-        this.docNumber = docNumber
-    }
-
-    String getAddress() {
-        return address
-    }
-
-    void setAddress(String address) {
-        this.address = address
-    }
-
-    String getEducation() {
-        return education
-    }
-
-    void setEducation(String education) {
-        this.education = education
-    }
-
-    String getQualification() {
-        return qualification
-    }
-
-    void setQualification(String qualification) {
-        this.qualification = qualification
-    }
-
-    String getJob() {
-        return job
-    }
-
-    void setJob(String job) {
-        this.job = job
-    }
-
-    Organization getOrganization() {
-        return organization
-    }
-
-    void setOrganization(Organization organization) {
-        this.organization = organization
-    }
 
     boolean equals(o) {
         if (this.is(o)) return true
@@ -149,5 +69,9 @@ class Welder implements Serializable{
 
     int hashCode() {
         return (id != null ? id.hashCode() : 0)
+    }
+
+    String toString(){
+        return "$surname $name $secondName"
     }
 }

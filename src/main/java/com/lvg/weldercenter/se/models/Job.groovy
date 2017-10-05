@@ -1,33 +1,34 @@
 package com.lvg.weldercenter.se.models
 
+import com.lvg.weldercenter.se.cfg.R
+
 import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue
 import javax.persistence.Id
 
-import static com.lvg.weldercenter.se.cfg.R.ModelsConfig.ID_GENERATOR_NAME
+/**
+ * Created by Victor on 05.10.2017.
+ */
 
 @Entity
-class Organization implements Serializable{
+class Job implements Serializable{
 
     @Id
-    @GeneratedValue(generator = ID_GENERATOR_NAME)
-    @Column(name = "ID")
+    @GeneratedValue(generator = R.ModelsConfig.ID_GENERATOR_NAME)
+    @Column(name = 'ID')
     Long id
-    @Column(name = "NAME")
+
+    @Column(name = 'NAME')
     String name
-    @Column(name = "ADDRESS")
-    String address
-    @Column(name = "PHONE")
-    String phone
 
     boolean equals(o) {
         if (this.is(o)) return true
         if (getClass() != o.class) return false
 
-        Organization that = (Organization) o
+        Job job = (Job) o
 
-        if (id != that.id) return false
+        if (id != job.id) return false
 
         return true
     }
@@ -37,6 +38,6 @@ class Organization implements Serializable{
     }
 
     String toString(){
-        return "$name, $address, $phone"
+        return name
     }
 }

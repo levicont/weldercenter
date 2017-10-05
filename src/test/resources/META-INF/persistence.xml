@@ -8,6 +8,9 @@
         <class>com.lvg.weldercenter.se.models</class>
         <class>com.lvg.weldercenter.se.models.Welder</class>
         <class>com.lvg.weldercenter.se.models.Organization</class>
+        <class>com.lvg.weldercenter.se.models.Education</class>
+        <class>com.lvg.weldercenter.se.models.Job</class>
+        <class>com.lvg.weldercenter.se.models.Qualification</class>
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
         <properties>
             <property name="hibernate.format_sql" value="true"/>
