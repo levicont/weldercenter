@@ -1,10 +1,5 @@
 package com.lvg.weldercenter.se.test.models
-
-import com.lvg.weldercenter.se.models.Education
-import com.lvg.weldercenter.se.models.Job
-import com.lvg.weldercenter.se.models.Organization
-import com.lvg.weldercenter.se.models.Qualification
-import com.lvg.weldercenter.se.models.Welder
+import com.lvg.weldercenter.se.models.*
 import com.lvg.weldercenter.se.test.utils.ConnectionManager
 import com.lvg.weldercenter.se.utils.TransactionManagerSetup
 
@@ -42,6 +37,43 @@ abstract class GenericModelTest {
 
     protected Qualification getQualification(){
         return new Qualification(name: 'электросварщик')
+    }
+
+    protected WeldMethod getWeldMethod(){
+        return new WeldMethod(name: 'РДЭ', code: '111')
+    }
+
+    protected Journal getJournal(){
+        def journal = new Journal()
+        journal.number = '17/001'
+        journal.dateBegin = LocalDate.of(2017, 05, 25)
+        journal.dateEnd = journal.dateBegin.plusWeeks(1)
+        return journal
+    }
+
+    protected Set<Topic> getTopics(SectionType sectionType){
+        def topics = new LinkedHashSet<Topic>()
+        if (sectionType == SectionType.WELDING) {
+            topics.add(new Topic(orderIndex: 0, title: 'Введение в сварочное дело',
+                    description: 'Общие вопросы сварки', timeLongHours: 1.0))
+
+            topics.add(new Topic(orderIndex: 1, title: 'Введение в методы сварки',
+                    description: 'Общие вопросы методов сварки', timeLongHours: 3.5))
+
+            topics.add(new Topic(orderIndex: 2, title: 'Введение в положения сварки',
+                    description: 'Общие вопросы положений сварки', timeLongHours: 5.0))
+        }
+        else if (sectionType == SectionType.DEFECTS){
+            topics.add(new Topic(orderIndex: 0, title: 'Введение в дефекты',
+                    description: 'Общие вопросы дефектоскопии', timeLongHours: 1.0))
+
+            topics.add(new Topic(orderIndex: 1, title: 'Введение в методы контроля дефектов',
+                    description: 'Общие вопросы методов контроля сварки', timeLongHours: 3.5))
+
+            topics.add(new Topic(orderIndex: 2, title: 'Введение в исправление дефектор сварки',
+                    description: 'Общие вопросы методов исправления дефектов сварки', timeLongHours: 5.0))
+        }
+        return topics
     }
 
     abstract void insertItemTest()

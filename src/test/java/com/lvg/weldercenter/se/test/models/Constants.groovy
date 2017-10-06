@@ -1,5 +1,4 @@
 package com.lvg.weldercenter.se.test.models
-
 /**
  * Created by Victor on 03.10.2017.
  */
