@@ -22,9 +22,7 @@ class Section implements Serializable{
     String description;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinTable(name = 'CURRICULUM_SECTION',
-        joinColumns = @JoinColumn(name = 'SECTION_ID'),
-        inverseJoinColumns = @JoinColumn(nullable = false))
+    @JoinColumn(name = 'CURRICULUM_ID', nullable = false)
     Curriculum curriculum
 
     @ElementCollection

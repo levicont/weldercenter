@@ -88,11 +88,11 @@ abstract class GenericModelTest {
 
     protected Set<Section> getSections(){
         Set<Section> sections = new HashSet<Section>()
-        sections << new Section(orderIndex: 1, title: 'Дефекты металлопродукции',
+        sections << new Section(orderIndex: 0, title: 'Дефекты металлопродукции',
            description:  'Введение в дефекты металлопродукции')
-        sections << new Section(orderIndex: 2, title: 'Сварка',
+        sections << new Section(orderIndex: 1, title: 'Сварка',
                 description:  'Введение в основы сварки')
-        sections << new Section(orderIndex: 3, title: 'Охрана труда',
+        sections << new Section(orderIndex: 2, title: 'Охрана труда',
                 description:  'Введение в охрану труда при сварке')
 
         sections.each {section ->
@@ -118,7 +118,12 @@ abstract class GenericModelTest {
     protected Curriculum getCurriculum(){
         def curriculum = new Curriculum(title: 'Подготовка 20 часов',
                 description: 'Программа подготовки сварщиков перед аттестацией - 20 часов')
-        curriculum.sections << getSections()
+        curriculum.sections.add(getSections().getAt(0))
+        curriculum.sections.add(getSections().getAt(1))
+        curriculum.sections.add(getSections().getAt(2))
+
+        curriculum.sections.each {it.curriculum = curriculum}
+
         return curriculum
     }
 

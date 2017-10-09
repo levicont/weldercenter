@@ -38,8 +38,9 @@ class CurriculumTest extends GenericModelTest{
         assert curriculum.sections.getAt(0).orderIndex == 0
         assert curriculum.sections.getAt(2).orderIndex == 2
 
-        Set<Topic> topicOfFirstSection = sections.getAt(0)
+        def topicOfFirstSection = curriculum.sections.getAt(0).topics
         assert topicOfFirstSection.size() == 3
+        assert topicOfFirstSection.getAt(0).toString() == 'Введение в дефекты'
         assert topicOfFirstSection.getAt(0).orderIndex == 0
         assert topicOfFirstSection.getAt(2).orderIndex == 2
 

@@ -2,16 +2,7 @@ package com.lvg.weldercenter.se.models
 
 import com.lvg.weldercenter.se.cfg.R
 
-import javax.persistence.CollectionTable
-import javax.persistence.Column
-import javax.persistence.ElementCollection
-import javax.persistence.Entity
-import javax.persistence.GeneratedValue
-import javax.persistence.Id
-import javax.persistence.JoinColumn
-import javax.persistence.JoinColumns
-import javax.persistence.OneToMany
-import javax.persistence.OrderBy
+import javax.persistence.*
 import javax.validation.constraints.NotNull
 
 @Entity
@@ -31,7 +22,8 @@ class Curriculum implements Serializable{
     String description
 
 
-    @OneToMany(mappedBy = 'curriculum')
+    @OneToMany(mappedBy = 'curriculum', fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @OrderBy('orderIndex')
     Set<Section> sections = new LinkedHashSet<>()
 
     boolean equals(o) {
