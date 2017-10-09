@@ -1,4 +1,4 @@
-package com.lvg.weldercenter.se.test.models
+package com.lvg.weldercenter.se.models
 
 import javax.persistence.Column
 import javax.persistence.Embeddable

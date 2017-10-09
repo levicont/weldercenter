@@ -73,8 +73,56 @@ abstract class GenericModelTest {
             topics.add(new Topic(orderIndex: 2, title: 'Введение в исправление дефектор сварки',
                     description: 'Общие вопросы методов исправления дефектов сварки', timeLongHours: 5.0))
         }
+        else if (sectionType == SectionType.HEALTH){
+            topics.add(new Topic(orderIndex: 0, title: 'Введение в охрану труда',
+                    description: 'Общие вопросы охраны труда при сварке', timeLongHours: 2.0))
+
+            topics.add(new Topic(orderIndex: 1, title: 'Электробезопасность',
+                    description: 'Общие вопросы по электробезопасности', timeLongHours: 3.5))
+
+            topics.add(new Topic(orderIndex: 2, title: 'Заземление',
+                    description: 'Общие вопросы по заземлении', timeLongHours: 1.6))
+        }
         return topics
     }
+
+    protected Set<Section> getSections(){
+        Set<Section> sections = new HashSet<Section>()
+        sections << new Section(orderIndex: 1, title: 'Дефекты металлопродукции',
+           description:  'Введение в дефекты металлопродукции')
+        sections << new Section(orderIndex: 2, title: 'Сварка',
+                description:  'Введение в основы сварки')
+        sections << new Section(orderIndex: 3, title: 'Охрана труда',
+                description:  'Введение в охрану труда при сварке')
+
+        sections.each {section ->
+            if (section.orderIndex == 0)
+                section.topics.addAll(getTopics(SectionType.DEFECTS))
+            if (section.orderIndex == 1)
+                section.topics.addAll(getTopics(SectionType.WELDING))
+            if (section.orderIndex == 2)
+                section.topics.addAll(getTopics(SectionType.HEALTH))
+        }
+
+        return sections
+    }
+
+    protected Section getSingleSection(){
+        def section = new Section(orderIndex: 1, title: 'Дефекты металлопродукции',
+                description:  'Введение в дефекты металлопродукции')
+        section.topics.addAll(getTopics(SectionType.DEFECTS))
+
+        return section
+    }
+
+    protected Curriculum getCurriculum(){
+        def curriculum = new Curriculum(title: 'Подготовка 20 часов',
+                description: 'Программа подготовки сварщиков перед аттестацией - 20 часов')
+        curriculum.sections << getSections()
+        return curriculum
+    }
+
+
 
     abstract void insertItemTest()
     abstract void updateItemTest()

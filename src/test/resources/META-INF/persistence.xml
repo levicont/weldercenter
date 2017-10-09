@@ -15,6 +15,8 @@
         <class>com.lvg.weldercenter.se.models.Qualification</class>
         <class>com.lvg.weldercenter.se.models.WeldMethod</class>
         <class>com.lvg.weldercenter.se.models.Journal</class>
+        <class>com.lvg.weldercenter.se.models.Curriculum</class>
+        <class>com.lvg.weldercenter.se.models.Section</class>
 
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
         <properties>
