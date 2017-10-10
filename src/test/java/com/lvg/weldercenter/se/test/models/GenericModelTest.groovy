@@ -48,6 +48,10 @@ abstract class GenericModelTest {
         journal.number = '17/001'
         journal.dateBegin = LocalDate.of(2017, 05, 25)
         journal.dateEnd = journal.dateBegin.plusWeeks(1)
+        def curriculum = getCurriculum()
+        def teachers = getTeachers()
+        journal.curriculum = curriculum
+        journal.teachers = teachers
         return journal
     }
 
@@ -127,7 +131,16 @@ abstract class GenericModelTest {
         return curriculum
     }
 
+    protected Teacher getTeacher(){
+        return new Teacher(name: 'Амвросий', secondName: 'Федорович', surname: 'Кац')
+    }
 
+    protected Set<Teacher> getTeachers(){
+        def result = new HashSet<Teacher>()
+        result << new Teacher(name: 'Амвросий', secondName: 'Федорович', surname: 'Кац')
+        result << new Teacher(name: 'Феликс', secondName: 'Давидович', surname: 'Соберицкий')
+        result << new Teacher(name: 'Израиль', secondName: 'Аскольдович', surname: 'Новировский')
+    }
 
     abstract void insertItemTest()
     abstract void updateItemTest()

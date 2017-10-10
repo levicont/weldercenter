@@ -25,9 +25,15 @@ class Journal implements Serializable{
     @Column(name = 'DATE_END')
     LocalDate dateEnd
 
-    //TODO must be Curriculum
-    @Column(name = 'CURRICULUM')
-    String curriculum
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @JoinColumn(name = 'CURRICULUM_ID')
+    Curriculum curriculum
+
+    @ManyToMany(targetEntity = Teacher.class, cascade = CascadeType.PERSIST)
+    @JoinTable(name = 'journal_teacher',
+        joinColumns = @JoinColumn(name = 'JOURNAL_ID'),
+        inverseJoinColumns = @JoinColumn(name = 'TEACHER_ID'))
+    Set<Teacher> teachers = new HashSet<>()
 
     boolean equals(o) {
         if (this.is(o)) return true

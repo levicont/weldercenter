@@ -65,6 +65,7 @@ class JournalTest extends GenericModelTest{
     }
 
     @Override
+    @Test
     void deleteItemTest() {
         UserTransaction tx = TMS.getUserTransaction()
         tx.begin()
@@ -91,6 +92,7 @@ class JournalTest extends GenericModelTest{
     }
 
     @Override
+    @Test
     void equalsHashCodeTest() {
         def journal2 = getJournal()
         def journal1 = getJournal()

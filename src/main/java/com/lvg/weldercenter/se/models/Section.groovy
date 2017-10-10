@@ -15,7 +15,7 @@ class Section implements Serializable{
     @Column(name = 'ORDER_INDEX')
     Integer orderIndex;
 
-    @Column(name = 'TITLE', nullable = false, unique = true)
+    @Column(name = 'TITLE', nullable = false)
     String title;
 
     @Column(name = 'DESCRIPTION')
