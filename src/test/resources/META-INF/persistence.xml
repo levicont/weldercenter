@@ -18,6 +18,8 @@
         <class>com.lvg.weldercenter.se.models.Curriculum</class>
         <class>com.lvg.weldercenter.se.models.Section</class>
         <class>com.lvg.weldercenter.se.models.Teacher</class>
+        <class>com.lvg.weldercenter.se.models.PersonalProtocol</class>
+        <class>com.lvg.weldercenter.se.models.NDTDocument</class>
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
         <properties>
             <property name="hibernate.format_sql" value="true"/>

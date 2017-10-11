@@ -25,7 +25,6 @@ class WelderTest extends GenericModelTest{
         def list = em.createQuery('select w from Welder w').getResultList()
         tx.commit()
 
-        Assert.assertEquals(1, list.size())
         welder = list.get(0)
         def org = welder.getOrganization()
 

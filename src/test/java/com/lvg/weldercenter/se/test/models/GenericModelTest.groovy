@@ -135,6 +135,32 @@ abstract class GenericModelTest {
         return new Teacher(name: 'Амвросий', secondName: 'Федорович', surname: 'Кац')
     }
 
+    protected PersonalProtocol getPersonalProtocol(Welder welder, Journal journal ){
+        def pProtocol = new PersonalProtocol(welder, journal)
+        pProtocol.attestType = AttestType.PRIMARY
+        pProtocol.number = '17/001'
+        pProtocol.dateCertification = LocalDate.of(2017, 6, 1)
+        pProtocol.resolutionCertification = '111 T BW  W02 В t4/t8 D57/D159 PF PC ss nb\n' +
+                'Ручная дуговая сварка покрытым электродом технологических трубопроводов, трубопроводов пара и горячей воды, стальных конструкций t=3-16 мм, D>25 мм из н/у и н/л сталей во всех пространственных положениях, кроме сверху-вниз.  \n' +
+                '111 T P BW FW W01 W02 A В R RA RВ  t3-16 D>25 PA PB PD PE PF PC  ss(nb, mb) bs(ng, gg)'
+        pProtocol.theoryTest = new TheoryTest(ticketNumber: '1, 2, 9', rating: 'сдано')
+        pProtocol.ndtDocuments = getNDTDocuments()
+        return pProtocol
+    }
+
+    protected NDTDocument getNDTDocument(){
+        return new NDTDocument( code:  'ДБН В.2.5-20-2001', fullTitle: 'Газоснабжение')
+    }
+
+    protected Set<NDTDocument> getNDTDocuments(){
+        def docs = new HashSet<NDTDocument>()
+        docs << new NDTDocument( code:  'ДБН В.2.5-20-2001', fullTitle: 'Газоснабжение')
+        docs << new NDTDocument( code:  'НПАОП 0.00-1.59-87', fullTitle: 'Правила устройства и безопасной эксплуатации сосудов, работающих под давлением')
+        docs << new NDTDocument( code:  'ДСТУ-Н Б В.2.5-66:2012', fullTitle: 'Тепловые сети')
+        return docs
+
+    }
+
     protected Set<Teacher> getTeachers(){
         def result = new HashSet<Teacher>()
         result << new Teacher(name: 'Амвросий', secondName: 'Федорович', surname: 'Кац')
