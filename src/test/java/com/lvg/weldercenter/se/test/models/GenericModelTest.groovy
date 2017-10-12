@@ -168,6 +168,11 @@ abstract class GenericModelTest {
         result << new Teacher(name: 'Израиль', secondName: 'Аскольдович', surname: 'Новировский')
     }
 
+    protected WeldPattern getWeldPattern(){
+        def wp = new WeldPattern(mark: 'T', diametr: 89.0, thickness: 3.0)
+        return wp
+    }
+
     abstract void insertItemTest()
     abstract void updateItemTest()
     abstract void deleteItemTest()
