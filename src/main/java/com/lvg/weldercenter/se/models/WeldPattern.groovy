@@ -4,9 +4,12 @@ import com.lvg.weldercenter.se.cfg.R
 
 import javax.persistence.Column
 import javax.persistence.Entity
+import javax.persistence.EnumType
+import javax.persistence.Enumerated
 import javax.persistence.GeneratedValue
 import javax.persistence.Id
 import javax.persistence.Table
+import javax.validation.constraints.NotNull
 
 @Entity
 @Table(name = 'weld_pattern')
@@ -31,6 +34,48 @@ class WeldPattern implements Serializable{
 
     @Column(name ='IS_HEAT_TREATMENT')
     Boolean isHeatTreatment = false
+
+    @Column(name = 'WELD_METHOD')
+    String weldMethod
+
+    @Column(name = 'ELECTRODE')
+    String electrode
+
+    @Column(name = 'WELD_WIRE')
+    String weldWire
+
+    @Column(name = 'WELD_GAS')
+    String weldGas
+
+    @Column(name = 'WELD_DETAIL')
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    WeldDetail weldDetail = WeldDetail.P
+
+    //TODO has to be @ManyToOne relationship
+    @Column(name = 'STEEL_TYPE')
+    String steelType
+
+    //TODO has to be embeddable
+    @Column(name = 'RADIATION_TEST')
+    String radiationTest
+
+    //TODO has to be embeddable
+    @Column(name = 'VISUAL_TEST')
+    String visualTest
+
+    //TODO has to be embeddable
+    @Column(name = 'MECHANICAL_TEST')
+    String mechanicalTest
+
+
+    //TODO has to be set
+    @Column(name = 'WELD_JOIN_TYPES')
+    String weldJoinTypes
+
+    @Column(name = 'WELD_POSITIONS')
+    String weldPositions
+
 
 
 
