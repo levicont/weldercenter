@@ -21,6 +21,9 @@
         <class>com.lvg.weldercenter.se.models.PersonalProtocol</class>
         <class>com.lvg.weldercenter.se.models.NDTDocument</class>
         <class>com.lvg.weldercenter.se.models.WeldPattern</class>
+        <class>com.lvg.weldercenter.se.models.Electrode</class>
+        <class>com.lvg.weldercenter.se.models.WeldWire</class>
+
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
         <properties>
             <property name="hibernate.format_sql" value="true"/>

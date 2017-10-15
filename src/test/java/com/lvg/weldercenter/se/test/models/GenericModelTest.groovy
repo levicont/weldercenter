@@ -168,8 +168,17 @@ abstract class GenericModelTest {
         result << new Teacher(name: 'Израиль', secondName: 'Аскольдович', surname: 'Новировский')
     }
 
+    protected Electrode getElectrode(){
+        return new Electrode(type: 'АНО-21')
+    }
+
+    protected WeldWire getWeldWire(){
+        return new WeldWire(type: 'св08Г2С')
+    }
+
     protected WeldPattern getWeldPattern(){
-        def wp = new WeldPattern(mark: 'T', diametr: 89.0, thickness: 3.0)
+        def wp = new WeldPattern(mark: '01', diametr: 89.0, thickness: 3.0)
+        wp.electrode = getElectrode().type
         return wp
     }
 

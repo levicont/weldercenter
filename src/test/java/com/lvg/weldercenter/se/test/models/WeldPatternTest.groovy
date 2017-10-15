@@ -1,4 +1,6 @@
 package com.lvg.weldercenter.se.test.models
+
+import com.lvg.weldercenter.se.models.WeldDetailType
 import com.lvg.weldercenter.se.models.WeldPattern
 import org.junit.Test
 
@@ -25,7 +27,8 @@ class WeldPatternTest extends GenericModelTest{
 
         tx.commit()
         assert weldPattern1.id != null
-        assert weldPattern1.mark == 'T'
+        assert weldPattern1.mark == '01'
+        assert weldPattern1.electrode == 'АНО-21'
         assert weldPattern1.diametr == 89.0
         assert weldPattern1.thickness == 3.0
         assert weldPattern.isHeating == false
@@ -47,7 +50,8 @@ class WeldPatternTest extends GenericModelTest{
         tx.begin()
         em = EMF.createEntityManager()
         def weldPatternUpd = em.find(WeldPattern.class, WELD_PATTERN_ID)
-        weldPatternUpd.mark = 'P'
+        weldPatternUpd.mark = '02'
+        weldPatternUpd.weldDetail = WeldDetailType.P.value
         weldPatternUpd.diametr = 0.0
         weldPatternUpd.isHeatTreatment = true
         em.persist(weldPatternUpd)
@@ -56,9 +60,10 @@ class WeldPatternTest extends GenericModelTest{
         tx.begin()
         em = EMF.createEntityManager()
         def chkWeldPattern = em.find(WeldPattern.class, WELD_PATTERN_ID)
-        assert chkWeldPattern.mark == 'P'
+        assert chkWeldPattern.mark == '02'
         assert chkWeldPattern.diametr == 0.0
         assert chkWeldPattern.isHeatTreatment == true
+        assert chkWeldPattern.weldDetail == WeldDetailType.P.value
         tx.commit()
 
     }
@@ -116,6 +121,6 @@ class WeldPatternTest extends GenericModelTest{
     void toStringTest() {
         def wp = getWeldPattern()
 
-        assert wp.toString() == "T"
+        assert wp.toString() == "01"
     }
 }

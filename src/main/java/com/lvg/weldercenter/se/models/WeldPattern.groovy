@@ -28,8 +28,8 @@ class WeldPattern implements Serializable{
     @Column(name ='IS_HEAT_TREATMENT')
     Boolean isHeatTreatment = false
 
-    @Column(name = 'WELD_METHOD')
-    String weldMethod
+    @Column(name = 'WELD_METHOD_CODE')
+    String weldMethod = WeldMethodType.MAG
 
     @Column(name = 'ELECTRODE')
     String electrode
@@ -43,8 +43,7 @@ class WeldPattern implements Serializable{
     @ManyToOne
     PersonalProtocol personalProtocol
 
-    @Column(name = 'WELD_DETAIL')
-    String weldDetail = WeldDetail.P
+    WeldDetail weldDetail
 
     //TODO has to be @ManyToOne relationship
     @Column(name = 'STEEL_TYPE')
