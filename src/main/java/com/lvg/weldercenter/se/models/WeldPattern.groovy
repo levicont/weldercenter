@@ -2,14 +2,7 @@ package com.lvg.weldercenter.se.models
 
 import com.lvg.weldercenter.se.cfg.R
 
-import javax.persistence.Column
-import javax.persistence.Entity
-import javax.persistence.EnumType
-import javax.persistence.Enumerated
-import javax.persistence.GeneratedValue
-import javax.persistence.Id
-import javax.persistence.Table
-import javax.validation.constraints.NotNull
+import javax.persistence.*
 
 @Entity
 @Table(name = 'weld_pattern')
@@ -47,10 +40,11 @@ class WeldPattern implements Serializable{
     @Column(name = 'WELD_GAS')
     String weldGas
 
+    @ManyToOne
+    PersonalProtocol personalProtocol
+
     @Column(name = 'WELD_DETAIL')
-    @NotNull
-    @Enumerated(EnumType.STRING)
-    WeldDetail weldDetail = WeldDetail.P
+    String weldDetail = WeldDetail.P
 
     //TODO has to be @ManyToOne relationship
     @Column(name = 'STEEL_TYPE')

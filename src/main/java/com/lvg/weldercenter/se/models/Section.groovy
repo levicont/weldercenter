@@ -13,13 +13,13 @@ class Section implements Serializable{
     Long id
 
     @Column(name = 'ORDER_INDEX')
-    Integer orderIndex;
+    Integer orderIndex
 
     @Column(name = 'TITLE', nullable = false)
-    String title;
+    String title
 
     @Column(name = 'DESCRIPTION')
-    String description;
+    String description
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = 'CURRICULUM_ID', nullable = false)
@@ -31,10 +31,11 @@ class Section implements Serializable{
 
     boolean equals(o) {
         if (this.is(o)) return true
-        if (getClass() != o.class) return false
+        if (!(o instanceof Section)) return false
 
         Section section = (Section) o
 
+        if (curriculum != section.curriculum) return false
         if (id != section.id) return false
         if (title != section.title) return false
 
@@ -45,6 +46,7 @@ class Section implements Serializable{
         int result
         result = (id != null ? id.hashCode() : 0)
         result = 31 * result + (title != null ? title.hashCode() : 0)
+        result = 31 * result + (curriculum != null ? curriculum.hashCode() : 0)
         return result
     }
 

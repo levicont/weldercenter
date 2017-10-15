@@ -31,7 +31,7 @@ class QualificationTest extends GenericModelTest{
 
 
         assert qualification.id != null
-        assert qualification.name == 'электросварщик'
+        assert qualification.type == 'электросварщик'
     }
 
     @Override
@@ -49,14 +49,14 @@ class QualificationTest extends GenericModelTest{
         tx.begin()
         em = EMF.createEntityManager()
         Qualification qualificationUpd = em.find(Qualification.class, QUALIFICATION_ID)
-        qualificationUpd.name = 'газосварщик'
+        qualificationUpd.type = 'газосварщик'
         em.persist(qualificationUpd)
         tx.commit()
 
         tx.begin()
         em = EMF.createEntityManager()
         Qualification chkQualification = em.find(Qualification.class, QUALIFICATION_ID)
-        assert chkQualification.name == 'газосварщик'
+        assert chkQualification.type == 'газосварщик'
         tx.commit()
     }
 
@@ -112,7 +112,7 @@ class QualificationTest extends GenericModelTest{
     @Test
     void toStringTest() {
         def qualification = getQualification()
-        qualification.name = 'газосварщик'
+        qualification.type = 'газосварщик'
         assert qualification.toString() == 'газосварщик'
     }
 }

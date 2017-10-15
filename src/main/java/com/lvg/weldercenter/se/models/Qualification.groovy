@@ -17,25 +17,29 @@ class Qualification implements Serializable{
     @GeneratedValue(generator = R.ModelsConfig.ID_GENERATOR_NAME)
     @Column(name = 'ID')
     Long id
-    @Column(name = 'NAME')
-    String name
+    @Column(name = 'TYPE')
+    String type
 
     boolean equals(o) {
         if (this.is(o)) return true
-        if (getClass() != o.class) return false
+        if (!(o instanceof Qualification)) return false
 
         Qualification that = (Qualification) o
 
         if (id != that.id) return false
+        if (type != that.type) return false
 
         return true
     }
 
     int hashCode() {
-        return (id != null ? id.hashCode() : 0)
+        int result
+        result = (id != null ? id.hashCode() : 0)
+        result = 31 * result + (type != null ? type.hashCode() : 0)
+        return result
     }
 
     String toString(){
-        return name
+        return type
     }
 }

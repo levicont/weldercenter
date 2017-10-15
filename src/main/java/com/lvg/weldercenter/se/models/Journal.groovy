@@ -37,10 +37,11 @@ class Journal implements Serializable{
 
     boolean equals(o) {
         if (this.is(o)) return true
-        if (getClass() != o.class) return false
+        if (!(o instanceof Journal)) return false
 
         Journal journal = (Journal) o
 
+        if (dateBegin != journal.dateBegin) return false
         if (id != journal.id) return false
         if (number != journal.number) return false
 
@@ -51,6 +52,7 @@ class Journal implements Serializable{
         int result
         result = (id != null ? id.hashCode() : 0)
         result = 31 * result + (number != null ? number.hashCode() : 0)
+        result = 31 * result + (dateBegin != null ? dateBegin.hashCode() : 0)
         return result
     }
 

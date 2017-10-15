@@ -55,20 +55,29 @@ class Welder implements Serializable{
     @JoinColumn(name = 'ORGANIZATION_ID')
     Organization organization
 
-
     boolean equals(o) {
         if (this.is(o)) return true
-        if (getClass() != o.class) return false
+        if (!(o instanceof Welder)) return false
 
         Welder welder = (Welder) o
 
+        if (birthday != welder.birthday) return false
         if (id != welder.id) return false
+        if (name != welder.name) return false
+        if (secondName != welder.secondName) return false
+        if (surname != welder.surname) return false
 
         return true
     }
 
     int hashCode() {
-        return (id != null ? id.hashCode() : 0)
+        int result
+        result = (id != null ? id.hashCode() : 0)
+        result = 31 * result + (name != null ? name.hashCode() : 0)
+        result = 31 * result + (surname != null ? surname.hashCode() : 0)
+        result = 31 * result + (secondName != null ? secondName.hashCode() : 0)
+        result = 31 * result + (birthday != null ? birthday.hashCode() : 0)
+        return result
     }
 
     String toString(){

@@ -1,7 +1,7 @@
 package com.lvg.weldercenter.se.models
 
 
-enum WeldDetail implements Serializable{
+enum WeldDetail{
 
     T(code:'T', description: 'труба'),
     P(code:'P', description: 'пластина')

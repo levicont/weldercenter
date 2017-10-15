@@ -21,17 +21,21 @@ class Education implements Serializable{
 
     boolean equals(o) {
         if (this.is(o)) return true
-        if (getClass() != o.class) return false
+        if (!(o instanceof Education)) return false
 
-        Education education = (Education) o
+        Education education1 = (Education) o
 
-        if (id != education.id) return false
+        if (education != education1.education) return false
+        if (id != education1.id) return false
 
         return true
     }
 
     int hashCode() {
-        return (id != null ? id.hashCode() : 0)
+        int result
+        result = (id != null ? id.hashCode() : 0)
+        result = 31 * result + (education != null ? education.hashCode() : 0)
+        return result
     }
 
     String toString(){

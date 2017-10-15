@@ -36,7 +36,7 @@ abstract class GenericModelTest {
     }
 
     protected Qualification getQualification(){
-        return new Qualification(name: 'электросварщик')
+        return new Qualification(type: 'электросварщик')
     }
 
     protected WeldMethod getWeldMethod(){
