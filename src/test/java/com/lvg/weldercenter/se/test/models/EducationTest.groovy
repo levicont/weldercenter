@@ -19,19 +19,17 @@ class EducationTest extends GenericModelTest{
         EntityManager em = EMF.createEntityManager()
         Education education = getEducation()
         em.persist(education)
+        def EDUCATION_ID = education.id
         tx.commit()
 
         tx.begin()
         em = EMF.createEntityManager()
-        def list = em.createQuery('select e from Education e').getResultList()
+
+        def chkEducation = em.find(Education.class, EDUCATION_ID)
         tx.commit()
 
-        assert list.size() == 1
-        education = list.get(0)
-
-
-        assert education.id != null
-        assert education.education == 'среднее-специальное'
+        assert chkEducation.id != null
+        assert chkEducation.education == 'среднее-специальное'
 
     }
 

@@ -19,19 +19,16 @@ class JobTest extends GenericModelTest{
         EntityManager em = EMF.createEntityManager()
         Job job = getJob()
         em.persist(job)
+        def JOB_ID = job.id
         tx.commit()
 
         tx.begin()
         em = EMF.createEntityManager()
-        def list = em.createQuery('select j from Job j').getResultList()
+        def chkJob = em.find(Job.class, JOB_ID)
         tx.commit()
 
-        assert list.size() == 1
-        job = list.get(0)
-
-
-        assert job.id != null
-        assert job.name == 'электросварщик'
+        assert chkJob.id != null
+        assert chkJob.name == 'электросварщик'
 
     }
 

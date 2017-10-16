@@ -6,9 +6,9 @@ import javax.persistence.Embeddable
 @Embeddable
 class WeldDetail implements Serializable{
 
-    @Column(name = 'WELD_PATTERN_CODE')
+    @Column(name = 'WELD_DETAIL_CODE')
     String code
-    @Column(name = 'WELD_PATTERN_DESCRIPTION')
+    @Column(name = 'WELD_DETAIL_DESCRIPTION')
     String description
 
     protected  WeldDetail(){}

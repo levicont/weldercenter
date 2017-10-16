@@ -45,13 +45,10 @@ class WeldPattern implements Serializable{
 
     WeldDetail weldDetail
 
-    //TODO has to be @ManyToOne relationship
     @Column(name = 'STEEL_TYPE')
     String steelType
 
-    //TODO has to be embeddable
-    @Column(name = 'RADIATION_TEST')
-    String radiationTest
+    RadiationTest radiationTest
 
     //TODO has to be embeddable
     @Column(name = 'VISUAL_TEST')
@@ -66,6 +63,7 @@ class WeldPattern implements Serializable{
     @Column(name = 'WELD_JOIN_TYPES')
     String weldJoinTypes
 
+    //TODO has to be set
     @Column(name = 'WELD_POSITIONS')
     String weldPositions
 

@@ -19,19 +19,16 @@ class QualificationTest extends GenericModelTest{
         EntityManager em = EMF.createEntityManager()
         Qualification qualification = getQualification()
         em.persist(qualification)
+        def QUALIFICATION_ID = qualification.id
         tx.commit()
 
         tx.begin()
         em = EMF.createEntityManager()
-        def list = em.createQuery('select q from Qualification q').getResultList()
+        def chkQualification = em.find(Qualification.class, QUALIFICATION_ID)
         tx.commit()
 
-        assert list.size() == 1
-        qualification = list.get(0)
-
-
-        assert qualification.id != null
-        assert qualification.type == 'электросварщик'
+        assert chkQualification.id != null
+        assert chkQualification.type == 'электросварщик'
     }
 
     @Override

@@ -176,9 +176,26 @@ abstract class GenericModelTest {
         return new WeldWire(type: 'св08Г2С')
     }
 
+    protected WeldGas getWeldGas(){
+        return new WeldGas(type: 'Аргон')
+    }
+
+    protected SteelType getSteelType() {
+        new SteelType(type: 'сталь 20', steelGroup: SteelGroup.W01)
+    }
+
+    protected RadiationTest getRadiationTest(){
+        new RadiationTest(protocolNumber: '17-001', defects: 'ДНО', sensitivity: 0.3)
+    }
+
     protected WeldPattern getWeldPattern(){
         def wp = new WeldPattern(mark: '01', diametr: 89.0, thickness: 3.0)
         wp.electrode = getElectrode().type
+        wp.radiationTest = getRadiationTest()
+        wp.weldWire = getWeldWire()
+        wp.weldGas = getWeldGas()
+        wp.steelType = getSteelType()
+        wp.weldDetail = WeldDetailType.P.value
         return wp
     }
 
@@ -187,4 +204,6 @@ abstract class GenericModelTest {
     abstract void deleteItemTest()
     abstract void equalsHashCodeTest()
     abstract void toStringTest()
+
+
 }

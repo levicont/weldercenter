@@ -18,23 +18,20 @@ class CurriculumTest extends GenericModelTest{
         EntityManager em = EMF.createEntityManager()
         Curriculum curriculum = getCurriculum()
         em.persist(curriculum)
+        def CURRICULUM_ID = curriculum.id
         tx.commit()
 
         tx.begin()
         em = EMF.createEntityManager()
-        def list = em.createQuery('select c from Curriculum c').getResultList()
+        def chkCurriculum = em.find(Curriculum.class, CURRICULUM_ID)
         tx.commit()
 
-        assert list.size() == 1
-        curriculum = list.get(0)
-
-
-        assert curriculum.id != null
-        assert curriculum.title == 'Подготовка 20 часов'
-        assert curriculum.description == 'Программа подготовки сварщиков перед аттестацией - 20 часов'
-        assert curriculum.sections.size() == 3
-        assert curriculum.sections.getAt(0).orderIndex == 0
-        assert curriculum.sections.getAt(2).orderIndex == 2
+        assert chkCurriculum.id != null
+        assert chkCurriculum.title == 'Подготовка 20 часов'
+        assert chkCurriculum.description == 'Программа подготовки сварщиков перед аттестацией - 20 часов'
+        assert chkCurriculum.sections.size() == 3
+        assert chkCurriculum.sections.getAt(0).orderIndex == 0
+        assert chkCurriculum.sections.getAt(2).orderIndex == 2
 
         def topicOfFirstSection = curriculum.sections.getAt(0).topics
         assert topicOfFirstSection.size() == 3

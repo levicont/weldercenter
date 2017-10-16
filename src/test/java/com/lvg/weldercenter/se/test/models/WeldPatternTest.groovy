@@ -1,5 +1,6 @@
 package com.lvg.weldercenter.se.test.models
 
+import com.lvg.weldercenter.se.models.Evaluation
 import com.lvg.weldercenter.se.models.WeldDetailType
 import com.lvg.weldercenter.se.models.WeldPattern
 import org.junit.Test
@@ -29,10 +30,16 @@ class WeldPatternTest extends GenericModelTest{
         assert weldPattern1.id != null
         assert weldPattern1.mark == '01'
         assert weldPattern1.electrode == 'АНО-21'
-        assert weldPattern1.diametr == 89.0
-        assert weldPattern1.thickness == 3.0
-        assert weldPattern.isHeating == false
-        assert weldPattern.isHeatTreatment == false
+        assert weldPattern1.diametr == Double.valueOf(89.0)
+        assert weldPattern1.thickness == Double.valueOf(3.0)
+        assert !weldPattern1.isHeating
+        assert !weldPattern1.isHeatTreatment
+        assert weldPattern1.weldGas == 'Аргон'
+        assert weldPattern1.weldWire == 'св08Г2С'
+        assert weldPattern1.steelType == 'сталь 20'
+        assert weldPattern1.radiationTest.defects == 'ДНО'
+        assert weldPattern1.radiationTest.evaluation == Evaluation.E
+        assert weldPattern1.weldDetail == WeldDetailType.P.value
     }
 
     @Override

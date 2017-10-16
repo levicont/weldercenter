@@ -20,20 +20,20 @@ class WeldMethodTest extends GenericModelTest{
         EntityManager em = EMF.createEntityManager()
         WeldMethod weldMethod = getWeldMethod()
         em.persist(weldMethod)
+        def WELD_METHOD_ID = weldMethod.id
         tx.commit()
 
         tx.begin()
         em = EMF.createEntityManager()
-        def list = em.createQuery('select wm from WeldMethod wm').getResultList()
+        def chkWeldMethod = em.find(WeldMethod.class, WELD_METHOD_ID)
         tx.commit()
 
-        assert list.size() == 1
-        weldMethod = list.get(0)
+        assert chkWeldMethod != null
 
 
-        assert weldMethod.id != null
-        assert weldMethod.name == 'РДЭ'
-        assert weldMethod.code == '111'
+        assert chkWeldMethod.id != null
+        assert chkWeldMethod.name == 'РДЭ'
+        assert chkWeldMethod.code == '111'
     }
 
     @Override

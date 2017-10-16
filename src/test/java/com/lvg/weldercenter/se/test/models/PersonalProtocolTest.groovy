@@ -29,24 +29,20 @@ class PersonalProtocolTest extends GenericModelTest{
         pp.ndtDocuments.each {em.persist(it)}
 
         em.persist(pp)
-
+        def PP_ID = pp.id
         tx.commit()
 
         tx.begin()
         em = EMF.createEntityManager()
-        def list = em.createQuery('select p from PersonalProtocol p').getResultList()
+        def chkPP = em.find(PersonalProtocol.class, PP_ID)
         tx.commit()
 
-        assert list.size() == 1
-        pp = list.get(0)
-
-
-        assert pp.id != null
-        assert pp.number == '17/001'
-        assert pp.dateCertification == LocalDate.of(2017,6,1)
-        assert pp.theoryTest.rating == 'сдано'
-        assert pp.theoryTest.ticketNumber == '1, 2, 9'
-        assert pp.ndtDocuments.size() == 3
+        assert chkPP.id != null
+        assert chkPP.number == '17/001'
+        assert chkPP.dateCertification == LocalDate.of(2017,6,1)
+        assert chkPP.theoryTest.rating == 'сдано'
+        assert chkPP.theoryTest.ticketNumber == '1, 2, 9'
+        assert chkPP.ndtDocuments.size() == 3
 
         assert "$pp.attestType" == "$AttestType.PRIMARY"
     }

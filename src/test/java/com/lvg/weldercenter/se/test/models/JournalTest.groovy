@@ -21,21 +21,18 @@ class JournalTest extends GenericModelTest{
         EntityManager em = EMF.createEntityManager()
         Journal journal = getJournal()
         em.persist(journal)
+        def JOURNAL_ID = journal.id
         tx.commit()
 
         tx.begin()
         em = EMF.createEntityManager()
-        def list = em.createQuery('select j from Journal j').getResultList()
+        def chkJournal = em.find(Journal.class, JOURNAL_ID)
         tx.commit()
 
-        assert list.size() == 1
-        journal = list.get(0)
-
-
-        assert journal.id != null
-        assert journal.number == '17/001'
-        assert journal.dateBegin == LocalDate.of(2017, 05, 25)
-        assert journal.dateEnd == journal.dateBegin.plusWeeks(1)
+        assert chkJournal.id != null
+        assert chkJournal.number == '17/001'
+        assert chkJournal.dateBegin == LocalDate.of(2017, 05, 25)
+        assert chkJournal.dateEnd == journal.dateBegin.plusWeeks(1)
     }
 
     @Override
