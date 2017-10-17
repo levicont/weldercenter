@@ -50,18 +50,14 @@ class WeldPattern implements Serializable{
 
     RadiationTest radiationTest
 
-    //TODO has to be embeddable
-    @Column(name = 'VISUAL_TEST')
-    String visualTest
+    VisualTest visualTest
 
-    //TODO has to be embeddable
-    @Column(name = 'MECHANICAL_TEST')
-    String mechanicalTest
+    MechanicalTest mechanicalTest
 
 
-    //TODO has to be set
-    @Column(name = 'WELD_JOIN_TYPES')
-    String weldJoinTypes
+    @ElementCollection
+    @CollectionTable(name = 'weld_pattern_weld_joins')
+    Set<WeldJoin> weldJoins = new HashSet<>()
 
     //TODO has to be set
     @Column(name = 'WELD_POSITIONS')

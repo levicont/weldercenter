@@ -188,13 +188,25 @@ abstract class GenericModelTest {
         new RadiationTest(protocolNumber: '17-001', defects: 'ДНО', sensitivity: 0.3)
     }
 
+    protected VisualTest getVisualTest(){
+        new VisualTest(protocolNumber: '17-001', defects: 'ДНО')
+    }
+
+    protected MechanicalTest getMechanicalTest(){
+        new MechanicalTest(protocolNumber: '17-001', clearance: 9.0D)
+    }
+
     protected WeldPattern getWeldPattern(){
         def wp = new WeldPattern(mark: '01', diametr: 89.0, thickness: 3.0)
         wp.electrode = getElectrode().type
         wp.radiationTest = getRadiationTest()
+        wp.visualTest = getVisualTest()
+        wp.mechanicalTest = getMechanicalTest()
         wp.weldWire = getWeldWire()
         wp.weldGas = getWeldGas()
         wp.steelType = getSteelType()
+        wp.weldJoins.add(WeldJoinType.BS.value)
+        wp.weldJoins.add(WeldJoinType.GG.value)
         wp.weldDetail = WeldDetailType.P.value
         return wp
     }

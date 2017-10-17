@@ -18,27 +18,25 @@ package com.lvg.weldercenter.se.models
  */
 enum WeldJoinType implements Serializable{
 
-    BW(code: 'BW', description: 'стыковой шов'),
-    FW(code: 'FW', description: 'угловой шов'),
-    SS(code: 'ss', description: 'односторонний сварной шов'),
-    BS(code: 'bs', description: 'двухсторонний сварной шов'),
-    MB(code: 'mb', description: 'с подкладкой'),
-    NB(code: 'nb', description: 'без подкладки'),
-    GG(code: 'gg', description: 'с зачисткой корня шва'),
-    NG(code: 'ng', description: 'без зачистки корня шва'),
-    VM(code: 'vm', description: 'с присадочным материалом'),
-    NM(code: 'nm', description: 'без присадочного материала')
+    BW(new WeldJoin(code: 'BW', description: 'стыковой шов')),
+    FW(new WeldJoin(code: 'FW', description: 'угловой шов')),
+    SS(new WeldJoin(code: 'ss', description: 'односторонний сварной шов')),
+    BS(new WeldJoin(code: 'bs', description: 'двухсторонний сварной шов')),
+    MB(new WeldJoin(code: 'mb', description: 'с подкладкой')),
+    NB(new WeldJoin(code: 'nb', description: 'без подкладки')),
+    GG(new WeldJoin(code: 'gg', description: 'с зачисткой корня шва')),
+    NG(new WeldJoin(code: 'ng', description: 'без зачистки корня шва')),
+    VM(new WeldJoin(code: 'vm', description: 'с присадочным материалом')),
+    NM(new WeldJoin(code: 'nm', description: 'без присадочного материала'))
 
-    String code
-    String description
+    WeldJoin value
 
-    WeldJoinType(String code, String description){
-        this.code = code
-        this.description = description
+    WeldJoinType(WeldJoin value){
+        this.value = value
     }
 
     String toString(){
-        return "$code"
+        return "$value.code"
     }
 
 

@@ -2,6 +2,7 @@ package com.lvg.weldercenter.se.test.models
 
 import com.lvg.weldercenter.se.models.Evaluation
 import com.lvg.weldercenter.se.models.WeldDetailType
+import com.lvg.weldercenter.se.models.WeldJoinType
 import com.lvg.weldercenter.se.models.WeldPattern
 import org.junit.Test
 
@@ -39,7 +40,12 @@ class WeldPatternTest extends GenericModelTest{
         assert weldPattern1.steelType == 'сталь 20'
         assert weldPattern1.radiationTest.defects == 'ДНО'
         assert weldPattern1.radiationTest.evaluation == Evaluation.E
+        assert weldPattern1.visualTest.defects == 'ДНО'
+        assert weldPattern1.visualTest.evaluation == Evaluation.E
+        assert weldPattern1.mechanicalTest.clearance == 9.0D
+        assert weldPattern1.visualTest.evaluation == Evaluation.E
         assert weldPattern1.weldDetail == WeldDetailType.P.value
+        assert weldPattern1.weldJoins.contains(WeldJoinType.GG.value) && weldPattern1.weldJoins.contains(WeldJoinType.BS.value)
     }
 
     @Override
