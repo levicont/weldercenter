@@ -17,21 +17,19 @@ class OrganizationTest extends GenericModelTest{
         EntityManager em = EMF.createEntityManager()
         Organization organization = getOragnization()
         em.persist(organization)
+        def ORGANIZATION_ID = organization.id
         tx.commit()
 
         tx.begin()
         em = EMF.createEntityManager()
-        def list = em.createQuery('select o from Organization o').getResultList()
+        Organization organization1 = em.find(Organization.class, ORGANIZATION_ID)
         tx.commit()
 
-        Assert.assertEquals(1, list.size())
-        organization = list.get(0)
-
-
-        assert organization.id != null
-        assert organization.name == 'IBM'
-        assert organization.address == 'New-York'
-        assert organization.phone == '(0595)466-15-59'
+        assert organization1 != null
+        assert organization1.id != null
+        assert organization1.name == 'IBM'
+        assert organization1.address == 'New-York'
+        assert organization1.phone == '(0595)466-15-59'
 
     }
 

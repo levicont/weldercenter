@@ -11,7 +11,7 @@ import javax.validation.constraints.Size
 
 
 @Entity
-@Table(name = 'weld_mathod')
+@Table(name = 'weld_method')
 class WeldMethod implements Serializable{
 
     @Id
