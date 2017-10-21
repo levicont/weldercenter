@@ -6,10 +6,12 @@ import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue
 import javax.persistence.Id
+import javax.persistence.Table
 import javax.validation.constraints.Size
 
 
 @Entity
+@Table(name = 'weld_mathod')
 class WeldMethod implements Serializable{
 
     @Id

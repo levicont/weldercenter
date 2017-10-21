@@ -1,24 +1,37 @@
 package com.lvg.weldercenter.se.models
 
-/**
- * According EN 247
- */
-enum WeldPosition implements Serializable{
-    PA(code: 'PA', description: 'нижнее для угловых и стыковых швов'),
-    PB(code: 'PB', description: 'горизонтальное нижнее для угловых швов'),
-    PC(code: 'PC', description: 'горизонтальное на вертикальной плоскости'),
-    PD(code: 'PD', description: 'горизонтальное потолочное'),
-    PE(code: 'PE', description: 'потолочное'),
-    PF(code: 'PF', description: 'снизу вверх'),
-    PG(code: 'PG', description: 'сверху вниз'),
-    H_LO45(code: 'H-LO45', description: 'ось переменная')
+import javax.persistence.Column
+import javax.persistence.Embeddable
 
+@Embeddable
+class WeldPosition implements Serializable{
+
+    @Column(name = 'WELD_POSITION_CODE')
     String code
+
+    @Column(name = 'WELD_POSITION_DESCRIPTION')
     String description
+
+    protected WeldPosition(){}
 
     WeldPosition(String code, String description){
         this.code = code
         this.description = description
+    }
+
+    boolean equals(o) {
+        if (this.is(o)) return true
+        if (getClass() != o.class) return false
+
+        WeldPosition that = (WeldPosition) o
+
+        if (code != that.code) return false
+
+        return true
+    }
+
+    int hashCode() {
+        return (code != null ? code.hashCode() : 0)
     }
 
     String toString(){

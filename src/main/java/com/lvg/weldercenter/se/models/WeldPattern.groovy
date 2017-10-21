@@ -59,9 +59,9 @@ class WeldPattern implements Serializable{
     @CollectionTable(name = 'weld_pattern_weld_joins')
     Set<WeldJoin> weldJoins = new HashSet<>()
 
-    //TODO has to be set
-    @Column(name = 'WELD_POSITIONS')
-    String weldPositions
+    @ElementCollection
+    @CollectionTable(name = 'weld_pattern_weld_positions')
+    Set<WeldPosition> weldPositions = new HashSet<>()
 
 
 

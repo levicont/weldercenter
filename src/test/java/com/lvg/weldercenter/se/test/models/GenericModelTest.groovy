@@ -205,8 +205,13 @@ abstract class GenericModelTest {
         wp.weldWire = getWeldWire()
         wp.weldGas = getWeldGas()
         wp.steelType = getSteelType()
+
         wp.weldJoins.add(WeldJoinType.BS.value)
         wp.weldJoins.add(WeldJoinType.GG.value)
+
+        wp.weldPositions.add(WeldPositionType.PA.value)
+        wp.weldPositions.add(WeldPositionType.PB.value)
+
         wp.weldDetail = WeldDetailType.P.value
         return wp
     }

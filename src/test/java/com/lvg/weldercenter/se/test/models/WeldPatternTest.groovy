@@ -4,6 +4,7 @@ import com.lvg.weldercenter.se.models.Evaluation
 import com.lvg.weldercenter.se.models.WeldDetailType
 import com.lvg.weldercenter.se.models.WeldJoinType
 import com.lvg.weldercenter.se.models.WeldPattern
+import com.lvg.weldercenter.se.models.WeldPositionType
 import org.junit.Test
 
 import javax.persistence.EntityManager
@@ -46,6 +47,8 @@ class WeldPatternTest extends GenericModelTest{
         assert weldPattern1.visualTest.evaluation == Evaluation.E
         assert weldPattern1.weldDetail == WeldDetailType.P.value
         assert weldPattern1.weldJoins.contains(WeldJoinType.GG.value) && weldPattern1.weldJoins.contains(WeldJoinType.BS.value)
+        assert weldPattern1.weldPositions.contains(WeldPositionType.PA.value) &&
+                weldPattern1.weldPositions.contains(WeldPositionType.PB.value)
     }
 
     @Override
