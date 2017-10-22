@@ -3,9 +3,11 @@ package com.lvg.weldercenter.se.models
 import com.lvg.weldercenter.se.cfg.R
 import com.lvg.weldercenter.se.converters.LocalDateConverter
 
+import javax.persistence.CascadeType
 import javax.persistence.Column
 import javax.persistence.Convert
 import javax.persistence.Entity
+import javax.persistence.FetchType
 import javax.persistence.ForeignKey
 import javax.persistence.GeneratedValue
 import javax.persistence.Id
@@ -41,6 +43,9 @@ class PersonalProtocol implements Serializable{
 
     TheoryTest theoryTest
 
+    @OneToMany(mappedBy = 'personalProtocol', fetch = FetchType.LAZY)
+    Set<WeldPattern> weldPatterns = new HashSet<>()
+
     @ManyToOne
     @JoinColumn(name = 'WELDER_ID', nullable = false)
     Welder welder
@@ -49,7 +54,7 @@ class PersonalProtocol implements Serializable{
     @JoinColumn(name = 'JOURNAL_ID', nullable = false)
     Journal journal
 
-    @ManyToMany(targetEntity = NDTDocument.class)
+    @ManyToMany(targetEntity = NDTDocument.class, cascade = CascadeType.PERSIST)
     @JoinTable(name = 'personal_protocol_ndt_document',
         joinColumns = @JoinColumn(name = 'PERSONAL_PROTOCOL_ID'),
         inverseJoinColumns = @JoinColumn(name = 'NDT_DOCUMENT_ID'))

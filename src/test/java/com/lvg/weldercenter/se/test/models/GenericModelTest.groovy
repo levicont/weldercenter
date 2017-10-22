@@ -196,8 +196,9 @@ abstract class GenericModelTest {
         new MechanicalTest(protocolNumber: '17-001', clearance: 9.0D)
     }
 
-    protected WeldPattern getWeldPattern(){
+    protected WeldPattern getWeldPattern(PersonalProtocol pp){
         def wp = new WeldPattern(mark: '01', diametr: 89.0, thickness: 3.0)
+        wp.personalProtocol = pp
         wp.electrode = getElectrode().type
         wp.radiationTest = getRadiationTest()
         wp.visualTest = getVisualTest()

@@ -40,7 +40,7 @@ class WeldPattern implements Serializable{
     @Column(name = 'WELD_GAS')
     String weldGas
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     PersonalProtocol personalProtocol
 
     WeldDetail weldDetail
@@ -56,15 +56,21 @@ class WeldPattern implements Serializable{
 
 
     @ElementCollection
-    @CollectionTable(name = 'weld_pattern_weld_joins')
+    @CollectionTable(name = 'w_pattern_w_join',
+            joinColumns = @JoinColumn(name = 'w_pattern_id'))
     Set<WeldJoin> weldJoins = new HashSet<>()
 
     @ElementCollection
-    @CollectionTable(name = 'weld_pattern_weld_positions')
+    @CollectionTable(name = 'w_pattern_w_position',
+            joinColumns = @JoinColumn(name = 'w_pattern_id'))
     Set<WeldPosition> weldPositions = new HashSet<>()
 
+    protected WeldPattern() {
+    }
 
-
+    WeldPattern(PersonalProtocol personalProtocol){
+        this.personalProtocol = personalProtocol
+    }
 
     boolean equals(o) {
         if (this.is(o)) return true

@@ -18,7 +18,13 @@ class WeldPatternTest extends GenericModelTest{
         UserTransaction tx = TMS.getUserTransaction()
         tx.begin()
         EntityManager em = EMF.createEntityManager()
-        def weldPattern = getWeldPattern()
+        def welder = getWelder()
+        def journal = getJournal()
+        em.persist(welder)
+        em.persist(journal)
+        def pp = getPersonalProtocol(welder, journal)
+        em.persist(pp)
+        def weldPattern = getWeldPattern(pp)
         em.persist(weldPattern)
         def WELD_PATTERN_ID = weldPattern.id
         assert WELD_PATTERN_ID != null
@@ -57,7 +63,13 @@ class WeldPatternTest extends GenericModelTest{
         UserTransaction tx = TMS.getUserTransaction()
         tx.begin()
         EntityManager em = EMF.createEntityManager()
-        def weldPattern = getWeldPattern()
+        def welder = getWelder()
+        def journal = getJournal()
+        em.persist(welder)
+        em.persist(journal)
+        def pp = getPersonalProtocol(welder, journal)
+        em.persist(pp)
+        def weldPattern = getWeldPattern(pp)
         em.persist(weldPattern)
         tx.commit()
 
@@ -78,7 +90,7 @@ class WeldPatternTest extends GenericModelTest{
         def chkWeldPattern = em.find(WeldPattern.class, WELD_PATTERN_ID)
         assert chkWeldPattern.mark == '02'
         assert chkWeldPattern.diametr == 0.0
-        assert chkWeldPattern.isHeatTreatment == true
+        assert chkWeldPattern.isHeatTreatment
         assert chkWeldPattern.weldDetail == WeldDetailType.P.value
         tx.commit()
 
@@ -90,7 +102,13 @@ class WeldPatternTest extends GenericModelTest{
         UserTransaction tx = TMS.getUserTransaction()
         tx.begin()
         EntityManager em = EMF.createEntityManager()
-        def wp = getWeldPattern()
+        def welder = getWelder()
+        def journal = getJournal()
+        em.persist(welder)
+        em.persist(journal)
+        def pp = getPersonalProtocol(welder, journal)
+        em.persist(pp)
+        def wp = getWeldPattern(pp)
         em.persist(wp)
         tx.commit()
 
@@ -114,8 +132,14 @@ class WeldPatternTest extends GenericModelTest{
     @Override
     @Test
     void equalsHashCodeTest() {
-        def wp1 = getWeldPattern()
-        def wp2 = getWeldPattern()
+        def welder = getWelder()
+        welder.id = 100
+        def journal = getJournal()
+        journal.id = 100
+        def pp = getPersonalProtocol(welder, journal)
+
+        def wp1 = getWeldPattern(pp)
+        def wp2 = getWeldPattern(pp)
 
         assert wp1 == wp2
 
@@ -135,7 +159,13 @@ class WeldPatternTest extends GenericModelTest{
     @Override
     @Test
     void toStringTest() {
-        def wp = getWeldPattern()
+        def welder = getWelder()
+        welder.id = 100
+        def journal = getJournal()
+        journal.id = 100
+        def pp = getPersonalProtocol(welder, journal)
+        def weldPattern = getWeldPattern(pp)
+        def wp = weldPattern
 
         assert wp.toString() == "01"
     }

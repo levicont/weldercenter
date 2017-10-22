@@ -21,14 +21,19 @@ class PersonalProtocolTest extends GenericModelTest{
         Welder welder = getWelder()
         Journal journal = getJournal()
 
-
         em.persist(welder)
         em.persist(journal)
 
         PersonalProtocol pp = getPersonalProtocol(welder,journal)
         pp.ndtDocuments.each {em.persist(it)}
 
+        def weldPattern = getWeldPattern(pp)
+
+
+        pp.weldPatterns.add(weldPattern)
+
         em.persist(pp)
+        em.persist(weldPattern)
         def PP_ID = pp.id
         tx.commit()
 
@@ -43,6 +48,8 @@ class PersonalProtocolTest extends GenericModelTest{
         assert chkPP.theoryTest.rating == 'сдано'
         assert chkPP.theoryTest.ticketNumber == '1, 2, 9'
         assert chkPP.ndtDocuments.size() == 3
+        assert chkPP.weldPatterns.size() == 1
+        assert chkPP.weldPatterns.getAt(0).mark == '01'
 
         assert "$pp.attestType" == "$AttestType.PRIMARY"
     }

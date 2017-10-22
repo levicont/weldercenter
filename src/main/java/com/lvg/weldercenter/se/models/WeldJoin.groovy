@@ -7,9 +7,9 @@ import javax.persistence.Embeddable
 class WeldJoin implements Serializable{
 
 
-    @Column(name = 'WELD_JOIN_CODE')
+    @Column(name = 'CODE',nullable = false)
     String code
-    @Column(name = 'WELD_JOIN_DESCRIPTION')
+    @Column(name = 'DESCRIPTION')
     String description
 
     protected WeldJoin(){}

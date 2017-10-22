@@ -6,10 +6,10 @@ import javax.persistence.Embeddable
 @Embeddable
 class WeldPosition implements Serializable{
 
-    @Column(name = 'WELD_POSITION_CODE')
+    @Column(name = 'CODE', nullable = false)
     String code
 
-    @Column(name = 'WELD_POSITION_DESCRIPTION')
+    @Column(name = 'DESCRIPTION')
     String description
 
     protected WeldPosition(){}
