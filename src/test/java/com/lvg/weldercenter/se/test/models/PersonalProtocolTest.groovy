@@ -16,42 +16,50 @@ class PersonalProtocolTest extends GenericModelTest{
     @Test
     void insertItemTest() {
         UserTransaction tx = TMS.getUserTransaction()
-        tx.begin()
-        EntityManager em = EMF.createEntityManager()
-        Welder welder = getWelder()
-        Journal journal = getJournal()
+        EntityManager em
+        def PP_ID
+        def insert = {
+            em = EMF.createEntityManager()
+            Welder welder = getWelder()
+            Journal journal = getJournal()
 
-        em.persist(welder)
-        em.persist(journal)
+            em.persist(welder)
+            em.persist(journal)
 
-        PersonalProtocol pp = getPersonalProtocol(welder,journal)
-        pp.ndtDocuments.each {em.persist(it)}
+            PersonalProtocol pp = getPersonalProtocol(welder,journal)
+            pp.ndtDocuments.each {em.persist(it)}
 
-        def weldPattern = getWeldPattern(pp)
+            def weldPattern = getWeldPattern(pp)
+            pp.weldPatterns.add(weldPattern)
+
+            em.persist(pp)
+            em.persist(weldPattern)
+            PP_ID = pp.id
+            return em
+        }
+        callInTransaction(tx, insert)
+        assert PP_ID != null
+
+        def chkPP
+        def find = {
+            em = EMF.createEntityManager()
+            chkPP = em.find(PersonalProtocol.class, PP_ID)
+
+            assert chkPP.ndtDocuments.size() == 3
+            assert chkPP.weldPatterns.size() == 1
+            assert chkPP.weldPatterns[0].mark == '01'
+            assert chkPP.id != null
+            assert chkPP.number == '17/001'
+            assert chkPP.dateCertification == LocalDate.of(2017,6,1)
+            assert chkPP.theoryTest.rating == 'сдано'
+            assert chkPP.theoryTest.ticketNumber == '1, 2, 9'
+            assert "$chkPP.attestType" == "$AttestType.PRIMARY"
+
+            return em
+        }
+        callInTransaction(tx, find)
 
 
-        pp.weldPatterns.add(weldPattern)
-
-        em.persist(pp)
-        em.persist(weldPattern)
-        def PP_ID = pp.id
-        tx.commit()
-
-        tx.begin()
-        em = EMF.createEntityManager()
-        def chkPP = em.find(PersonalProtocol.class, PP_ID)
-        tx.commit()
-
-        assert chkPP.id != null
-        assert chkPP.number == '17/001'
-        assert chkPP.dateCertification == LocalDate.of(2017,6,1)
-        assert chkPP.theoryTest.rating == 'сдано'
-        assert chkPP.theoryTest.ticketNumber == '1, 2, 9'
-        assert chkPP.ndtDocuments.size() == 3
-        assert chkPP.weldPatterns.size() == 1
-        assert chkPP.weldPatterns.getAt(0).mark == '01'
-
-        assert "$pp.attestType" == "$AttestType.PRIMARY"
     }
 
     @Override
