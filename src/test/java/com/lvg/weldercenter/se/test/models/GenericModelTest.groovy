@@ -3,18 +3,28 @@ import com.lvg.weldercenter.se.models.*
 import com.lvg.weldercenter.se.test.utils.ConnectionManager
 import com.lvg.weldercenter.se.utils.TransactionManagerSetup
 
+import javax.persistence.EntityManager
 import javax.persistence.EntityManagerFactory
+import javax.transaction.Status
+import javax.transaction.UserTransaction
 import java.time.LocalDate
 
 abstract class GenericModelTest {
     protected static final TransactionManagerSetup TMS = ConnectionManager.transactionManagerSetup()
     protected static final EntityManagerFactory EMF = ConnectionManager.entityManagerFactory()
 
-    protected Organization getOragnization(){
+    abstract void insertItemTest()
+    abstract void updateItemTest()
+    abstract void deleteItemTest()
+    abstract void equalsHashCodeTest()
+    abstract void toStringTest()
+
+
+    protected static Organization getOragnization(){
         return new Organization(name: 'IBM', address: 'New-York', phone: '(0595)466-15-59')
     }
 
-    protected Welder getWelder(){
+    protected static Welder getWelder(){
         def welder = new Welder(name: 'Иван', surname: 'Иванов', secondName: 'Иванович')
         welder.birthday = LocalDate.of(1984,10,28)
         welder.dateBegin = LocalDate.of(2000,10,28)
@@ -27,23 +37,23 @@ abstract class GenericModelTest {
         return welder
     }
 
-    protected Education getEducation(){
+    protected static Education getEducation(){
         return new Education(education: 'среднее-специальное')
     }
 
-    protected Job getJob(){
+    protected static Job getJob(){
         return new Job(name: 'электросварщик')
     }
 
-    protected Qualification getQualification(){
+    protected static Qualification getQualification(){
         return new Qualification(type: 'электросварщик')
     }
 
-    protected WeldMethod getWeldMethod(){
+    protected static WeldMethod getWeldMethod(){
         return new WeldMethod(name: 'РДЭ', code: '111')
     }
 
-    protected Journal getJournal(){
+    protected static Journal getJournal(){
         def journal = new Journal()
         journal.number = '17/001'
         journal.dateBegin = LocalDate.of(2017, 05, 25)
@@ -55,7 +65,7 @@ abstract class GenericModelTest {
         return journal
     }
 
-    protected Set<Topic> getTopics(SectionType sectionType){
+    protected static Set<Topic> getTopics(SectionType sectionType){
         def topics = new LinkedHashSet<Topic>()
         if (sectionType == SectionType.WELDING) {
             topics.add(new Topic(orderIndex: 0, title: 'Введение в сварочное дело',
@@ -90,7 +100,7 @@ abstract class GenericModelTest {
         return topics
     }
 
-    protected Set<Section> getSections(){
+    protected static Set<Section> getSections(){
         Set<Section> sections = new HashSet<Section>()
         sections << new Section(orderIndex: 0, title: 'Дефекты металлопродукции',
            description:  'Введение в дефекты металлопродукции')
@@ -111,7 +121,7 @@ abstract class GenericModelTest {
         return sections
     }
 
-    protected Section getSingleSection(){
+    protected static Section getSingleSection(){
         def section = new Section(orderIndex: 1, title: 'Дефекты металлопродукции',
                 description:  'Введение в дефекты металлопродукции')
         section.topics.addAll(getTopics(SectionType.DEFECTS))
@@ -119,23 +129,23 @@ abstract class GenericModelTest {
         return section
     }
 
-    protected Curriculum getCurriculum(){
+    protected static Curriculum getCurriculum(){
         def curriculum = new Curriculum(title: 'Подготовка 20 часов',
                 description: 'Программа подготовки сварщиков перед аттестацией - 20 часов')
-        curriculum.sections.add(getSections().getAt(0))
-        curriculum.sections.add(getSections().getAt(1))
-        curriculum.sections.add(getSections().getAt(2))
+        curriculum.sections.add(getSections()[0])
+        curriculum.sections.add(getSections()[1])
+        curriculum.sections.add(getSections()[2])
 
         curriculum.sections.each {it.curriculum = curriculum}
 
         return curriculum
     }
 
-    protected Teacher getTeacher(){
+    protected static Teacher getTeacher(){
         return new Teacher(name: 'Амвросий', secondName: 'Федорович', surname: 'Кац')
     }
 
-    protected PersonalProtocol getPersonalProtocol(Welder welder, Journal journal ){
+    protected static PersonalProtocol getPersonalProtocol(Welder welder, Journal journal ){
         def pProtocol = new PersonalProtocol(welder, journal)
         pProtocol.attestType = AttestType.PRIMARY
         pProtocol.number = '17/001'
@@ -148,11 +158,7 @@ abstract class GenericModelTest {
         return pProtocol
     }
 
-    protected NDTDocument getNDTDocument(){
-        return new NDTDocument( code:  'ДБН В.2.5-20-2001', fullTitle: 'Газоснабжение')
-    }
-
-    protected Set<NDTDocument> getNDTDocuments(){
+    protected static Set<NDTDocument> getNDTDocuments(){
         def docs = new HashSet<NDTDocument>()
         docs << new NDTDocument( code:  'ДБН В.2.5-20-2001', fullTitle: 'Газоснабжение')
         docs << new NDTDocument( code:  'НПАОП 0.00-1.59-87', fullTitle: 'Правила устройства и безопасной эксплуатации сосудов, работающих под давлением')
@@ -161,44 +167,46 @@ abstract class GenericModelTest {
 
     }
 
-    protected Set<Teacher> getTeachers(){
+    protected static Set<Teacher> getTeachers(){
         def result = new HashSet<Teacher>()
         result << new Teacher(name: 'Амвросий', secondName: 'Федорович', surname: 'Кац')
         result << new Teacher(name: 'Феликс', secondName: 'Давидович', surname: 'Соберицкий')
         result << new Teacher(name: 'Израиль', secondName: 'Аскольдович', surname: 'Новировский')
     }
 
-    protected Electrode getElectrode(){
+    protected static Electrode getElectrode(){
         return new Electrode(type: 'АНО-21')
     }
 
-    protected WeldWire getWeldWire(){
+    protected static WeldWire getWeldWire(){
         return new WeldWire(type: 'св08Г2С')
     }
 
-    protected WeldGas getWeldGas(){
+    protected static WeldGas getWeldGas(){
         return new WeldGas(type: 'Аргон')
     }
 
-    protected SteelType getSteelType() {
+    protected static SteelType getSteelType() {
         new SteelType(type: 'сталь 20', steelGroup: SteelGroup.W01)
     }
 
-    protected RadiationTest getRadiationTest(){
+    protected static RadiationTest getRadiationTest(){
         new RadiationTest(protocolNumber: '17-001', defects: 'ДНО', sensitivity: 0.3)
     }
 
-    protected VisualTest getVisualTest(){
+    protected static VisualTest getVisualTest(){
         new VisualTest(protocolNumber: '17-001', defects: 'ДНО')
     }
 
-    protected MechanicalTest getMechanicalTest(){
+    protected static MechanicalTest getMechanicalTest(){
         new MechanicalTest(protocolNumber: '17-001', clearance: 9.0D)
     }
 
-    protected WeldPattern getWeldPattern(PersonalProtocol pp){
-        def wp = new WeldPattern(mark: '01', diametr: 89.0, thickness: 3.0)
-        wp.personalProtocol = pp
+    protected static WeldPattern getWeldPattern(PersonalProtocol pp){
+        def wp = new WeldPattern(pp)
+        wp.mark = '01'
+        wp.diametr = 89.0D
+        wp.thickness = 3.0D
         wp.electrode = getElectrode().type
         wp.radiationTest = getRadiationTest()
         wp.visualTest = getVisualTest()
@@ -217,11 +225,47 @@ abstract class GenericModelTest {
         return wp
     }
 
-    abstract void insertItemTest()
-    abstract void updateItemTest()
-    abstract void deleteItemTest()
-    abstract void equalsHashCodeTest()
-    abstract void toStringTest()
+    protected static CommissionCertification getCommissionCertification(){
+        def result = new CommissionCertification(getTeacher(),getTeacher(), getTeacher(), getTeacher())
+        return result
+    }
+
+
+    private static closeEntiyManager(EntityManager em){
+        if (em != null && em.isOpen())
+            em.close()
+    }
+
+    private static rollbackTransaction(UserTransaction tx){
+        try {
+            if (tx.getStatus() == Status.STATUS_ACTIVE ||
+                    tx.getStatus() == Status.STATUS_MARKED_ROLLBACK)
+                tx.rollback()
+        }catch (Exception rbEx){
+            System.err.println 'Exception during rollback'
+            rbEx.printStackTrace(System.err)
+        }
+    }
+
+    private static rollbackTransactionWithException(UserTransaction tx, Exception ex){
+        rollbackTransaction(tx)
+        throw new RuntimeException(ex)
+    }
+
+    protected static void callInTransaction(UserTransaction tx, Closure<EntityManager> closure) {
+        tx = TMS.getUserTransaction()
+        EntityManager em = null
+        try {
+            tx.begin()
+            em = closure.call()
+            tx.commit()
+
+        } catch (Exception ex) {
+            rollbackTransactionWithException(tx, ex)
+        } finally {
+            closeEntiyManager(em)
+        }
+    }
 
 
 }

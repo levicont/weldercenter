@@ -25,6 +25,7 @@
         <class>com.lvg.weldercenter.se.models.WeldWire</class>
         <class>com.lvg.weldercenter.se.models.WeldGas</class>
         <class>com.lvg.weldercenter.se.models.SteelType</class>
+        <class>com.lvg.weldercenter.se.models.CommissionCertification</class>
 
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
         <properties>
