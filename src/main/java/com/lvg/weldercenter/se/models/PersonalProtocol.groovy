@@ -62,7 +62,7 @@ class PersonalProtocol implements Serializable{
 
     protected PersonalProtocol(){}
 
-    public PersonalProtocol(Welder welder, Journal journal){
+    PersonalProtocol(Welder welder, Journal journal){
         if (welder.id == null) throw new IllegalArgumentException('Welder\'s id must be not null' )
         if (journal.id == null) throw new IllegalArgumentException('Journal\'s id must be not null' )
 

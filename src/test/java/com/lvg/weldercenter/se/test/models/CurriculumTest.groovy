@@ -1,112 +1,116 @@
 package com.lvg.weldercenter.se.test.models
+
 import com.lvg.weldercenter.se.models.Curriculum
 import com.lvg.weldercenter.se.models.Section
 import org.junit.Test
 
-import javax.persistence.EntityManager
-import javax.transaction.UserTransaction
-/**
- * Created by Victor on 09.10.2017.
- */
 class CurriculumTest extends GenericModelTest{
 
     @Override
     @Test
     void insertItemTest() {
-        UserTransaction tx = TMS.getUserTransaction()
-        tx.begin()
-        EntityManager em = EMF.createEntityManager()
-        Curriculum curriculum = getCurriculum()
-        em.persist(curriculum)
-        def CURRICULUM_ID = curriculum.id
-        tx.commit()
 
-        tx.begin()
-        em = EMF.createEntityManager()
-        def chkCurriculum = em.find(Curriculum.class, CURRICULUM_ID)
-        tx.commit()
+        def CURRICULUM_ID
 
-        assert chkCurriculum.id != null
-        assert chkCurriculum.title == 'Подготовка 20 часов'
-        assert chkCurriculum.description == 'Программа подготовки сварщиков перед аттестацией - 20 часов'
-        assert chkCurriculum.sections.size() == 3
-        assert chkCurriculum.sections.getAt(0).orderIndex == 0
-        assert chkCurriculum.sections.getAt(2).orderIndex == 2
+        callInTransaction {
+            def em = EMF.createEntityManager()
+            Curriculum curriculum = getCurriculum()
+            em.persist(curriculum)
+            CURRICULUM_ID = curriculum.id
+            return em
+        }
 
-        def topicOfFirstSection = curriculum.sections.getAt(0).topics
-        assert topicOfFirstSection.size() == 3
-        assert topicOfFirstSection.getAt(0).toString() == 'Введение в дефекты'
-        assert topicOfFirstSection.getAt(0).orderIndex == 0
-        assert topicOfFirstSection.getAt(2).orderIndex == 2
+        callInTransaction {
+            def em = EMF.createEntityManager()
+            Curriculum chkCurriculum = em.find(Curriculum.class, CURRICULUM_ID)
+            assert chkCurriculum.id != null
+            assert chkCurriculum.title == 'Подготовка 20 часов'
+            assert chkCurriculum.description == 'Программа подготовки сварщиков перед аттестацией - 20 часов'
+            assert chkCurriculum.sections.size() == 3
+            assert chkCurriculum.sections[0].orderIndex == 0
+            assert chkCurriculum.sections[2].orderIndex == 2
+            def topicOfFirstSection = curriculum.sections[0].topics
+            assert topicOfFirstSection.size() == 3
+            assert topicOfFirstSection[0].toString() == 'Введение в дефекты'
+            assert topicOfFirstSection[0].orderIndex == 0
+            assert topicOfFirstSection[2].orderIndex == 2
+            return em
+        }
+
 
     }
 
     @Override
     @Test
     void updateItemTest() {
-        UserTransaction tx = TMS.getUserTransaction()
-        tx.begin()
-        EntityManager em = EMF.createEntityManager()
-        Curriculum curriculum = getCurriculum()
-        em.persist(curriculum)
-        tx.commit()
+        def CURRICULUM_ID
 
-        assert curriculum.id != null
-        def CURRICULUM_ID = curriculum.id
-        tx.begin()
-        em = EMF.createEntityManager()
-        Curriculum curriculumUpd = em.find(Curriculum.class, CURRICULUM_ID)
-        curriculumUpd.title = 'Предаттестационная подготовка - 48 часов'
+        callInTransaction {
+            def em = EMF.createEntityManager()
+            Curriculum curriculum = getCurriculum()
+            em.persist(curriculum)
+            CURRICULUM_ID = curriculum.id
+            return em
+        }
+        assert CURRICULUM_ID != null
 
-        def section = curriculumUpd.sections.getAt(0)
-        section.title = 'Дефекты аргонодуговой сварки'
+        callInTransaction {
+            def em = EMF.createEntityManager()
+            Curriculum curriculumUpd = em.find(Curriculum.class, CURRICULUM_ID)
+            curriculumUpd.title = 'Предаттестационная подготовка - 48 часов'
 
-        def topic = section.topics.getAt(0)
-        topic.title = 'Аргон и его свойства'
+            def section = curriculumUpd.sections[0]
+            section.title = 'Дефекты аргонодуговой сварки'
 
-        em.persist(curriculumUpd)
-        tx.commit()
+            def topic = section.topics[0]
+            topic.title = 'Аргон и его свойства'
 
-        tx.begin()
-        em = EMF.createEntityManager()
-        Curriculum chkCurriculum = em.find(Curriculum.class, CURRICULUM_ID)
-        assert chkCurriculum.sections.getAt(0).title == 'Дефекты аргонодуговой сварки'
-        assert chkCurriculum.sections.getAt(0).topics.getAt(0).title == 'Аргон и его свойства'
-        assert chkCurriculum.title == 'Предаттестационная подготовка - 48 часов'
-        tx.commit()
+            em.persist(curriculumUpd)
+            return em
+        }
+
+        callInTransaction {
+            def em = EMF.createEntityManager()
+            Curriculum chkCurriculum = em.find(Curriculum.class, CURRICULUM_ID)
+            assert chkCurriculum.sections[0].title == 'Дефекты аргонодуговой сварки'
+            assert chkCurriculum.sections[0].topics[0].title == 'Аргон и его свойства'
+            assert chkCurriculum.title == 'Предаттестационная подготовка - 48 часов'
+            return em
+        }
+
     }
 
     @Override
     void deleteItemTest() {
-        UserTransaction tx = TMS.getUserTransaction()
-        tx.begin()
-        EntityManager em = EMF.createEntityManager()
-        Curriculum curriculum = getCurriculum()
-        em.persist(curriculum)
-        tx.commit()
+        def CURRICULUM_ID
 
-        assert curriculum.id != null
-        def CURRICULUM_ID = curriculum.id
+        callInTransaction {
+            def em = EMF.createEntityManager()
+            Curriculum curriculum = getCurriculum()
+            em.persist(curriculum)
+            CURRICULUM_ID = curriculum.id
+            return em
+        }
+        assert CURRICULUM_ID != null
 
-        tx.begin()
-        em = EMF.createEntityManager()
-        Curriculum curriculumUpd = em.find(Curriculum.class, CURRICULUM_ID)
+        def SECTION_ID
+        callInTransaction {
+            def em = EMF.createEntityManager()
+            Curriculum curriculumUpd = em.find(Curriculum.class, CURRICULUM_ID)
+            def section = curriculumUpd.sections[0]
+            SECTION_ID = section.id
+            em.remove(curriculumUpd)
+            return em
+        }
 
-        def section = curriculumUpd.sections.getAt(0)
-        def SECTION_ID = section.id
-
-        em.remove(curriculumUpd)
-        tx.commit()
-
-        tx.begin()
-        em = EMF.createEntityManager()
-        Curriculum chkCurriculum = em.find(Curriculum.class, CURRICULUM_ID)
-        assert chkCurriculum == null
-        Section chkSection = em.find(Section.class, SECTION_ID)
-        assert chkSection == null
-
-        tx.commit()
-
+        callInTransaction {
+            def em = EMF.createEntityManager()
+            Curriculum chkCurriculum = em.find(Curriculum.class, CURRICULUM_ID)
+            assert chkCurriculum == null
+            Section chkSection = em.find(Section.class, SECTION_ID)
+            assert chkSection == null
+            return em
+        }
     }
 
     @Override
@@ -126,7 +130,6 @@ class CurriculumTest extends GenericModelTest{
         list.add(curriculum2)
         curriculum1.id = 100
         list.add(curriculum1)
-
         assert list.size() == 1
 
     }
@@ -135,7 +138,6 @@ class CurriculumTest extends GenericModelTest{
     @Test
     void toStringTest() {
         def curriculum = getCurriculum()
-
         assert curriculum.toString() == "Подготовка 20 часов"
     }
 }

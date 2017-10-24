@@ -7,7 +7,6 @@ import com.lvg.weldercenter.se.models.Welder
 import org.junit.Test
 
 import javax.persistence.EntityManager
-import javax.transaction.UserTransaction
 import java.time.LocalDate
 
 class PersonalProtocolTest extends GenericModelTest{
@@ -15,11 +14,9 @@ class PersonalProtocolTest extends GenericModelTest{
     @Override
     @Test
     void insertItemTest() {
-        UserTransaction tx = TMS.getUserTransaction()
-        EntityManager em
         def PP_ID
-        def insert = {
-            em = EMF.createEntityManager()
+        callInTransaction {
+            def em = EMF.createEntityManager()
             Welder welder = getWelder()
             Journal journal = getJournal()
 
@@ -37,12 +34,11 @@ class PersonalProtocolTest extends GenericModelTest{
             PP_ID = pp.id
             return em
         }
-        callInTransaction(tx, insert)
         assert PP_ID != null
 
         def chkPP
-        def find = {
-            em = EMF.createEntityManager()
+        callInTransaction {
+            def em = EMF.createEntityManager()
             chkPP = em.find(PersonalProtocol.class, PP_ID)
 
             assert chkPP.ndtDocuments.size() == 3
@@ -57,7 +53,6 @@ class PersonalProtocolTest extends GenericModelTest{
 
             return em
         }
-        callInTransaction(tx, find)
 
 
     }
@@ -65,72 +60,77 @@ class PersonalProtocolTest extends GenericModelTest{
     @Override
     @Test
     void updateItemTest() {
-        UserTransaction tx = TMS.getUserTransaction()
-        tx.begin()
-        EntityManager em = EMF.createEntityManager()
-        Journal journal = getJournal()
-        Welder welder = getWelder()
-        em.persist(journal)
-        em.persist(welder)
+        def PERSONAL_PROTOCOL_ID
 
-        def pp = getPersonalProtocol(welder, journal)
-        pp.ndtDocuments.each {em.persist(it)}
-        em.persist(pp)
+        callInTransaction {
+            EntityManager em = EMF.createEntityManager()
+            Journal journal = getJournal()
+            Welder welder = getWelder()
+            em.persist(journal)
+            em.persist(welder)
 
-        tx.commit()
+            def pp = getPersonalProtocol(welder, journal)
+            pp.ndtDocuments.each {em.persist(it)}
+            em.persist(pp)
+            PERSONAL_PROTOCOL_ID = pp.id
 
-        assert journal.id != null
-        assert welder.id != null
-        assert pp.id != null
+            assert journal.id != null
+            assert welder.id != null
+            assert pp.id != null
 
-        def PERSONAL_PROTOCOL_ID = pp.id
 
-        tx.begin()
-        em = EMF.createEntityManager()
-        def ppUpd = em.find(PersonalProtocol.class, PERSONAL_PROTOCOL_ID)
-        ppUpd.number = '17/002'
+            return em
+        }
 
-        em.persist(ppUpd)
-        tx.commit()
+        callInTransaction {
+            def em = EMF.createEntityManager()
+            PersonalProtocol ppUpd = em.find(PersonalProtocol.class, PERSONAL_PROTOCOL_ID)
+            ppUpd.number = '17/002'
+            em.persist(ppUpd)
+            return em
+        }
 
-        tx.begin()
-        em = EMF.createEntityManager()
-        def chkPersonalProtocol = em.find(PersonalProtocol.class, PERSONAL_PROTOCOL_ID)
-        assert chkPersonalProtocol.number == '17/002'
-        tx.commit()
+        callInTransaction {
+            def em = EMF.createEntityManager()
+            def chkPersonalProtocol = em.find(PersonalProtocol.class, PERSONAL_PROTOCOL_ID)
+            assert chkPersonalProtocol.number == '17/002'
+            return em
+        }
     }
 
     @Override
     @Test
     void deleteItemTest() {
-        UserTransaction tx = TMS.getUserTransaction()
-        tx.begin()
-        EntityManager em = EMF.createEntityManager()
-        Journal journal = getJournal()
-        Welder welder = getWelder()
-        em.persist(journal)
-        em.persist(welder)
+        def PERSONAL_PROTOCOL_ID
+        callInTransaction {
+            def em = EMF.createEntityManager()
+            Journal journal = getJournal()
+            Welder welder = getWelder()
+            em.persist(journal)
+            em.persist(welder)
 
-        def pp = getPersonalProtocol(welder, journal)
-        pp.ndtDocuments.each {em.persist(it)}
-        em.persist(pp)
+            PersonalProtocol pp = getPersonalProtocol(welder, journal)
+            pp.ndtDocuments.each {em.persist(it)}
+            em.persist(pp)
+            PERSONAL_PROTOCOL_ID = pp.id
+            return em
+        }
+        assert PERSONAL_PROTOCOL_ID != null
 
-        tx.commit()
+        callInTransaction {
+            def em = EMF.createEntityManager()
+            def personalProtocolUpd = em.find(PersonalProtocol.class, PERSONAL_PROTOCOL_ID)
+            em.remove(personalProtocolUpd)
+            return em
+        }
 
-        assert pp.id != null
-        def PERSONAL_PROTOCOL_ID = pp.id
+        callInTransaction {
+            def em = EMF.createEntityManager()
+            def chkPersonalProtocol = em.find(PersonalProtocol.class, PERSONAL_PROTOCOL_ID)
+            assert chkPersonalProtocol == null
+            return em
+        }
 
-        tx.begin()
-        em = EMF.createEntityManager()
-        def personalProtocolUpd = em.find(PersonalProtocol.class, PERSONAL_PROTOCOL_ID)
-        em.remove(personalProtocolUpd)
-        tx.commit()
-
-        tx.begin()
-        em = EMF.createEntityManager()
-        def chkPersonalProtocol = em.find(PersonalProtocol.class, PERSONAL_PROTOCOL_ID)
-        assert chkPersonalProtocol == null
-        tx.commit()
     }
 
     @Override

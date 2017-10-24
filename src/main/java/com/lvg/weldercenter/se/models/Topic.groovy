@@ -10,16 +10,16 @@ import javax.persistence.Embeddable
 class Topic implements Serializable{
 
     @Column(name = 'ORDER_INDEX')
-    private Integer orderIndex;
+    Integer orderIndex
 
     @Column(name = 'TITLE', nullable = false)
-    private String title;
+    String title
 
     @Column(name= 'DESCRIPTION')
-    private String description;
+    String description
 
     @Column(name = 'TIME_LONG_HOURS')
-    private Double timeLongHours;
+    Double timeLongHours
 
     boolean equals(o) {
         if (this.is(o)) return true

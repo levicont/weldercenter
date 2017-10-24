@@ -3,86 +3,84 @@ package com.lvg.weldercenter.se.test.models
 import com.lvg.weldercenter.se.models.Job
 import org.junit.Test
 
-import javax.persistence.EntityManager
-import javax.transaction.UserTransaction
-
-/**
- * Created by Victor on 05.10.2017.
- */
 class JobTest extends GenericModelTest{
 
     @Override
     @Test
     void insertItemTest() {
-        UserTransaction tx = TMS.getUserTransaction()
-        tx.begin()
-        EntityManager em = EMF.createEntityManager()
-        Job job = getJob()
-        em.persist(job)
-        def JOB_ID = job.id
-        tx.commit()
+        def JOB_ID
+        callInTransaction {
+            def em = EMF.createEntityManager()
+            Job job = getJob()
+            em.persist(job)
+            JOB_ID = job.id
+            return em
+        }
 
-        tx.begin()
-        em = EMF.createEntityManager()
-        def chkJob = em.find(Job.class, JOB_ID)
-        tx.commit()
-
-        assert chkJob.id != null
-        assert chkJob.name == 'электросварщик'
-
+        callInTransaction {
+            def em = EMF.createEntityManager()
+            def chkJob = em.find(Job.class, JOB_ID)
+            assert chkJob.id != null
+            assert chkJob.name == 'электросварщик'
+            return em
+        }
     }
 
     @Override
     @Test
     void updateItemTest() {
-        UserTransaction tx = TMS.getUserTransaction()
-        tx.begin()
-        EntityManager em = EMF.createEntityManager()
-        Job job = getJob()
-        em.persist(job)
-        tx.commit()
+        def JOB_ID
+        callInTransaction {
+            def em = EMF.createEntityManager()
+            Job job = getJob()
+            em.persist(job)
+            JOB_ID = job.id
+            return em
+        }
+        assert JOB_ID != null
 
-        assert job.id != null
-        def JOB_ID = job.id
-        tx.begin()
-        em = EMF.createEntityManager()
-        Job jobUpd = em.find(Job.class, JOB_ID)
-        jobUpd.name = 'газосварщик'
-        em.persist(jobUpd)
-        tx.commit()
+        callInTransaction {
+            def em = EMF.createEntityManager()
+            Job jobUpd = em.find(Job.class, JOB_ID)
+            jobUpd.name = 'газосварщик'
+            em.persist(jobUpd)
+            return em
+        }
 
-        tx.begin()
-        em = EMF.createEntityManager()
-        Job chkJob = em.find(Job.class, JOB_ID)
-        assert chkJob.name == 'газосварщик'
-        tx.commit()
+        callInTransaction {
+            def em = EMF.createEntityManager()
+            Job chkJob = em.find(Job.class, JOB_ID)
+            assert chkJob.name == 'газосварщик'
+            return em
+        }
     }
 
     @Override
     @Test
     void deleteItemTest() {
-        UserTransaction tx = TMS.getUserTransaction()
-        tx.begin()
-        EntityManager em = EMF.createEntityManager()
-        Job job = getJob()
-        em.persist(job)
-        tx.commit()
+        def JOB_ID
 
-        assert job.id != null
-        def JOB_ID = job.id
+        callInTransaction {
+            def em = EMF.createEntityManager()
+            Job job = getJob()
+            em.persist(job)
+            JOB_ID = job.id
+            return em
+        }
 
-        tx.begin()
-        em = EMF.createEntityManager()
-        Job jobUpd = em.find(Job.class, JOB_ID)
-        em.remove(jobUpd)
-        tx.commit()
+        callInTransaction {
+            def em = EMF.createEntityManager()
+            Job jobUpd = em.find(Job.class, JOB_ID)
+            em.remove(jobUpd)
+            return em
+        }
 
-        tx.begin()
-        em = EMF.createEntityManager()
-        Job chkJob = em.find(Job.class, JOB_ID)
-        assert chkJob == null
-        tx.commit()
-
+        callInTransaction {
+            def em = EMF.createEntityManager()
+            Job chkJob = em.find(Job.class, JOB_ID)
+            assert chkJob == null
+            return em
+        }
     }
 
     @Override

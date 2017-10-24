@@ -3,84 +3,89 @@ package com.lvg.weldercenter.se.test.models
 import com.lvg.weldercenter.se.models.Electrode
 import org.junit.Test
 
-import javax.persistence.EntityManager
-import javax.transaction.UserTransaction
-
-
 class ElectrodeTest extends GenericModelTest{
 
     @Override
     @Test
     void insertItemTest() {
-        UserTransaction tx = TMS.getUserTransaction()
-        tx.begin()
-        EntityManager em = EMF.createEntityManager()
-        Electrode electrode = getElectrode()
-        em.persist(electrode)
-        def ELECTRODE_ID = electrode.id
-        tx.commit()
+        def ELECTRODE_ID
 
-        tx.begin()
-        em = EMF.createEntityManager()
-        def electrode1 = em.find(Electrode.class, ELECTRODE_ID)
-        tx.commit()
+        callInTransaction {
+            def em = EMF.createEntityManager()
+            Electrode electrode = getElectrode()
+            em.persist(electrode)
+            ELECTRODE_ID = electrode.id
+            return em
+        }
+        assert ELECTRODE_ID != null
+
+        callInTransaction {
+            def em = EMF.createEntityManager()
+            Electrode chkElectrode = em.find(Electrode.class, ELECTRODE_ID)
+            assert chkElectrode.id != null
+            assert chkElectrode.type == 'АНО-21'
+            return em
+        }
 
 
 
-        assert electrode1.id != null
-        assert electrode1.type == 'АНО-21'
     }
 
     @Override
     @Test
     void updateItemTest() {
-        UserTransaction tx = TMS.getUserTransaction()
-        tx.begin()
-        EntityManager em = EMF.createEntityManager()
-        Electrode electrode = getElectrode()
-        em.persist(electrode)
-        tx.commit()
+        def ELECTRODE_ID
+        callInTransaction {
+            def em = EMF.createEntityManager()
+            Electrode electrode = getElectrode()
+            em.persist(electrode)
+            ELECTRODE_ID = electrode.id
+            return em
+        }
+        assert ELECTRODE_ID != null
 
-        assert electrode.id != null
-        def ELECTRODE_ID = electrode.id
-        tx.begin()
-        em = EMF.createEntityManager()
-        Electrode electrodeUpd = em.find(Electrode.class, ELECTRODE_ID)
-        electrodeUpd.type = 'УОНИ'
-        em.persist(electrodeUpd)
-        tx.commit()
+        callInTransaction {
+            def em = EMF.createEntityManager()
+            Electrode electrodeUpd = em.find(Electrode.class, ELECTRODE_ID)
+            electrodeUpd.type = 'УОНИ'
+            em.persist(electrodeUpd)
+            return em
+        }
 
-        tx.begin()
-        em = EMF.createEntityManager()
-        Electrode chkElectrode = em.find(Electrode.class, ELECTRODE_ID)
-        assert chkElectrode.type == 'УОНИ'
-        tx.commit()
+        callInTransaction {
+            def em = EMF.createEntityManager()
+            Electrode chkElectrode = em.find(Electrode.class, ELECTRODE_ID)
+            assert chkElectrode.type == 'УОНИ'
+            return em
+        }
     }
 
     @Override
     @Test
     void deleteItemTest() {
-        UserTransaction tx = TMS.getUserTransaction()
-        tx.begin()
-        EntityManager em = EMF.createEntityManager()
-        Electrode electrode = getElectrode()
-        em.persist(electrode)
-        tx.commit()
+        def ELECTRODE_ID
+        callInTransaction {
+            def em = EMF.createEntityManager()
+            Electrode electrode = getElectrode()
+            em.persist(electrode)
+            ELECTRODE_ID = electrode.id
+            return em
+        }
+        assert ELECTRODE_ID != null
 
-        assert electrode.id != null
-        def ELECTRODE_ID = electrode.id
+        callInTransaction {
+            def em = EMF.createEntityManager()
+            Electrode electrodeUpd = em.find(Electrode.class, ELECTRODE_ID)
+            em.remove(electrodeUpd)
+            return em
+        }
 
-        tx.begin()
-        em = EMF.createEntityManager()
-        Electrode electrodeUpd = em.find(Electrode.class, ELECTRODE_ID)
-        em.remove(electrodeUpd)
-        tx.commit()
-
-        tx.begin()
-        em = EMF.createEntityManager()
-        Electrode chkElectrode = em.find(Electrode.class, ELECTRODE_ID)
-        assert chkElectrode == null
-        tx.commit()
+        callInTransaction {
+            def em = EMF.createEntityManager()
+            Electrode chkElectrode = em.find(Electrode.class, ELECTRODE_ID)
+            assert chkElectrode == null
+            return em
+        }
     }
 
     @Override

@@ -252,8 +252,8 @@ abstract class GenericModelTest {
         throw new RuntimeException(ex)
     }
 
-    protected static void callInTransaction(UserTransaction tx, Closure<EntityManager> closure) {
-        tx = TMS.getUserTransaction()
+    protected static void callInTransaction(Closure<EntityManager> closure) {
+        UserTransaction tx = TMS.getUserTransaction()
         EntityManager em = null
         try {
             tx.begin()
