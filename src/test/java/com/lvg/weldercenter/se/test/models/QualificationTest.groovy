@@ -3,85 +3,86 @@ package com.lvg.weldercenter.se.test.models
 import com.lvg.weldercenter.se.models.Qualification
 import org.junit.Test
 
-import javax.persistence.EntityManager
-import javax.transaction.UserTransaction
 
-/**
- * Created by Victor on 05.10.2017.
- */
 class QualificationTest extends GenericModelTest{
 
     @Override
     @Test
     void insertItemTest() {
-        UserTransaction tx = TMS.getUserTransaction()
-        tx.begin()
-        EntityManager em = EMF.createEntityManager()
-        Qualification qualification = getQualification()
-        em.persist(qualification)
-        def QUALIFICATION_ID = qualification.id
-        tx.commit()
+        def QUALIFICATION_ID
+        callInTransaction {
+            def em = EMF.createEntityManager()
+            Qualification qualification = getQualification()
+            em.persist(qualification)
+            QUALIFICATION_ID = qualification.id
+            return em
+        }
+        assert QUALIFICATION_ID != null
 
-        tx.begin()
-        em = EMF.createEntityManager()
-        def chkQualification = em.find(Qualification.class, QUALIFICATION_ID)
-        tx.commit()
-
-        assert chkQualification.id != null
-        assert chkQualification.type == 'электросварщик'
+        callInTransaction {
+            def em = EMF.createEntityManager()
+            Qualification chkQualification = em.find(Qualification.class, QUALIFICATION_ID)
+            assert chkQualification.id != null
+            assert chkQualification.type == 'электросварщик'
+            return em
+        }
     }
 
     @Override
     @Test
     void updateItemTest() {
-        UserTransaction tx = TMS.getUserTransaction()
-        tx.begin()
-        EntityManager em = EMF.createEntityManager()
-        Qualification qualification = getQualification()
-        em.persist(qualification)
-        tx.commit()
+        def QUALIFICATION_ID
+        callInTransaction {
+            def em = EMF.createEntityManager()
+            Qualification qualification = getQualification()
+            em.persist(qualification)
+            QUALIFICATION_ID = qualification.id
+            return em
+        }
+        assert QUALIFICATION_ID != null
 
-        assert qualification.id != null
-        def QUALIFICATION_ID = qualification.id
-        tx.begin()
-        em = EMF.createEntityManager()
-        Qualification qualificationUpd = em.find(Qualification.class, QUALIFICATION_ID)
-        qualificationUpd.type = 'газосварщик'
-        em.persist(qualificationUpd)
-        tx.commit()
+        callInTransaction {
+            def em = EMF.createEntityManager()
+            Qualification qualificationUpd = em.find(Qualification.class, QUALIFICATION_ID)
+            qualificationUpd.type = 'газосварщик'
+            em.persist(qualificationUpd)
+            return em
+        }
 
-        tx.begin()
-        em = EMF.createEntityManager()
-        Qualification chkQualification = em.find(Qualification.class, QUALIFICATION_ID)
-        assert chkQualification.type == 'газосварщик'
-        tx.commit()
+        callInTransaction {
+            def em = EMF.createEntityManager()
+            Qualification chkQualification = em.find(Qualification.class, QUALIFICATION_ID)
+            assert chkQualification.type == 'газосварщик'
+            return em
+        }
     }
 
     @Override
     @Test
     void deleteItemTest() {
-        UserTransaction tx = TMS.getUserTransaction()
-        tx.begin()
-        EntityManager em = EMF.createEntityManager()
-        Qualification qualification = getQualification()
-        em.persist(qualification)
-        tx.commit()
+        def QUALIFICATION_ID
+        callInTransaction {
+            def em = EMF.createEntityManager()
+            Qualification qualification = getQualification()
+            em.persist(qualification)
+            QUALIFICATION_ID = qualification.id
+            return em
+        }
+        assert QUALIFICATION_ID != null
 
-        assert qualification.id != null
-        def QUALIFICATION_ID = qualification.id
+        callInTransaction {
+            def em = EMF.createEntityManager()
+            Qualification qualificationUpd = em.find(Qualification.class, QUALIFICATION_ID)
+            em.remove(qualificationUpd)
+            return em
+        }
 
-        tx.begin()
-        em = EMF.createEntityManager()
-        Qualification qualificationUpd = em.find(Qualification.class, QUALIFICATION_ID)
-        em.remove(qualificationUpd)
-        tx.commit()
-
-        tx.begin()
-        em = EMF.createEntityManager()
-        Qualification chkQualification = em.find(Qualification.class, QUALIFICATION_ID)
-        assert chkQualification == null
-        tx.commit()
-
+        callInTransaction {
+            def em = EMF.createEntityManager()
+            Qualification chkQualification = em.find(Qualification.class, QUALIFICATION_ID)
+            assert chkQualification == null
+            return em
+        }
     }
 
     @Override

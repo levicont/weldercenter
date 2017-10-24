@@ -4,85 +4,88 @@ import com.lvg.weldercenter.se.models.SteelGroup
 import com.lvg.weldercenter.se.models.SteelType
 import org.junit.Test
 
-import javax.persistence.EntityManager
-import javax.transaction.UserTransaction
-
 
 class SteelTypeTest extends GenericModelTest{
 
     @Override
     @Test
     void insertItemTest() {
-        UserTransaction tx = TMS.getUserTransaction()
-        tx.begin()
-        EntityManager em = EMF.createEntityManager()
-        SteelType steelType = getSteelType()
-        em.persist(steelType)
-        def STEEL_TYPE_ID = steelType.id
-        tx.commit()
+        def STEEL_TYPE_ID
+        callInTransaction {
+            def em = EMF.createEntityManager()
+            SteelType steelType = getSteelType()
+            em.persist(steelType)
+            STEEL_TYPE_ID = steelType.id
+            return em
+        }
+        assert STEEL_TYPE_ID != null
 
-        tx.begin()
-        em = EMF.createEntityManager()
-        def steelType1 = em.find(SteelType.class, STEEL_TYPE_ID)
-        tx.commit()
-
-        assert steelType1.id != null
-        assert steelType1.type == 'сталь 20'
+        callInTransaction {
+            def em = EMF.createEntityManager()
+            SteelType steelType1 = em.find(SteelType.class, STEEL_TYPE_ID)
+            assert steelType1.id != null
+            assert steelType1.type == 'сталь 20'
+            return em
+        }
     }
 
     @Override
     @Test
     void updateItemTest() {
-        UserTransaction tx = TMS.getUserTransaction()
-        tx.begin()
-        EntityManager em = EMF.createEntityManager()
-        SteelType steelType = getSteelType()
-        em.persist(steelType)
-        tx.commit()
+        def STEEL_TYPE_ID
+        callInTransaction {
+            def em = EMF.createEntityManager()
+            SteelType steelType = getSteelType()
+            em.persist(steelType)
+            STEEL_TYPE_ID = steelType.id
+            return em
+        }
+        assert STEEL_TYPE_ID != null
 
-        assert steelType.id != null
-        def STEEL_TYPE_ID = steelType.id
-        tx.begin()
-        em = EMF.createEntityManager()
-        SteelType steelTypeUpd = em.find(SteelType.class, STEEL_TYPE_ID)
-        steelTypeUpd.type = 'сталь 40'
-        steelTypeUpd.steelGroup = SteelGroup.W02
-        em.persist(steelTypeUpd)
-        tx.commit()
+        callInTransaction {
+            def em = EMF.createEntityManager()
+            SteelType steelTypeUpd = em.find(SteelType.class, STEEL_TYPE_ID)
+            steelTypeUpd.type = 'сталь 40'
+            steelTypeUpd.steelGroup = SteelGroup.W02
+            em.persist(steelTypeUpd)
+            return em
+        }
 
-        tx.begin()
-        em = EMF.createEntityManager()
-        SteelType chkSteelType = em.find(SteelType.class, STEEL_TYPE_ID)
-        tx.commit()
-        assert chkSteelType.type == 'сталь 40'
-        assert chkSteelType.steelGroup == SteelGroup.W02
-
+        callInTransaction {
+            def em = EMF.createEntityManager()
+            SteelType chkSteelType = em.find(SteelType.class, STEEL_TYPE_ID)
+            assert chkSteelType.type == 'сталь 40'
+            assert chkSteelType.steelGroup == SteelGroup.W02
+            return em
+        }
     }
 
     @Override
     @Test
     void deleteItemTest() {
-        UserTransaction tx = TMS.getUserTransaction()
-        tx.begin()
-        EntityManager em = EMF.createEntityManager()
-        SteelType steelType = getSteelType()
-        em.persist(steelType)
-        tx.commit()
+        def STEEL_TYPE_ID
+        callInTransaction {
+            def em = EMF.createEntityManager()
+            SteelType steelType = getSteelType()
+            em.persist(steelType)
+            STEEL_TYPE_ID = steelType.id
+            return em
+        }
+        assert STEEL_TYPE_ID != null
 
-        assert steelType.id != null
-        def STEEL_TYPE_ID = steelType.id
+        callInTransaction {
+            def em = EMF.createEntityManager()
+            SteelType steelTypeUpd = em.find(SteelType.class, STEEL_TYPE_ID)
+            em.remove(steelTypeUpd)
+            return em
+        }
 
-        tx.begin()
-        em = EMF.createEntityManager()
-        SteelType steelTypeUpd = em.find(SteelType.class, STEEL_TYPE_ID)
-        em.remove(steelTypeUpd)
-        tx.commit()
-
-        tx.begin()
-        em = EMF.createEntityManager()
-        SteelType chkSteelType = em.find(SteelType.class, STEEL_TYPE_ID)
-        assert chkSteelType == null
-        tx.commit()
+        callInTransaction {
+            def em = EMF.createEntityManager()
+            SteelType chkSteelType = em.find(SteelType.class, STEEL_TYPE_ID)
+            assert chkSteelType == null
+            return em
+        }
     }
 
     @Override

@@ -4,84 +4,87 @@ import com.lvg.weldercenter.se.models.Teacher
 import org.junit.Assert
 import org.junit.Test
 
-import javax.persistence.EntityManager
-import javax.transaction.UserTransaction
-
 class TeacherTest extends GenericModelTest{
     @Override
     @Test
     void insertItemTest() {
-        UserTransaction tx = TMS.getUserTransaction()
-        tx.begin()
-        EntityManager em = EMF.createEntityManager()
-        Teacher teacher = getTeacher()
-        em.persist(teacher)
-        def TEACHER_ID = teacher.id
-        tx.commit()
+        def TEACHER_ID
+        callInTransaction {
+            def em = EMF.createEntityManager()
+            Teacher teacher = getTeacher()
+            em.persist(teacher)
+            TEACHER_ID = teacher.id
+            return em
+        }
+        assert TEACHER_ID != null
 
-        tx.begin()
-        em = EMF.createEntityManager()
-        Teacher teacherChk = em.find(Teacher.class, TEACHER_ID)
-        tx.commit()
-
-
-        assert teacherChk.id != null
-        assert teacherChk.name == 'Амвросий'
-        assert teacherChk.surname == 'Кац'
-        assert teacherChk.secondName == 'Федорович'
+        callInTransaction {
+            def em = EMF.createEntityManager()
+            Teacher teacherChk = em.find(Teacher.class, TEACHER_ID)
+            assert teacherChk.id != null
+            assert teacherChk.name == 'Амвросий'
+            assert teacherChk.surname == 'Кац'
+            assert teacherChk.secondName == 'Федорович'
+            return em
+        }
 
     }
 
     @Override
     @Test
     void updateItemTest() {
-        UserTransaction tx = TMS.getUserTransaction()
-        tx.begin()
-        EntityManager em = EMF.createEntityManager()
-        Teacher teacher = getTeacher()
-        em.persist(teacher)
-        tx.commit()
+        def TEACHER_ID
+        callInTransaction {
+            def em = EMF.createEntityManager()
+            Teacher teacher = getTeacher()
+            em.persist(teacher)
+            TEACHER_ID = teacher.id
+            return em
+        }
+        assert TEACHER_ID != null
 
-        assert teacher.id != null
-        def TEACHER_ID = teacher.id
-        tx.begin()
-        em = EMF.createEntityManager()
-        Teacher teacherUpd = em.find(Teacher.class, TEACHER_ID)
-        teacherUpd.surname = 'Петров'
-        em.persist(teacherUpd)
-        tx.commit()
+        callInTransaction {
+            def em = EMF.createEntityManager()
+            Teacher teacherUpd = em.find(Teacher.class, TEACHER_ID)
+            teacherUpd.surname = 'Петров'
+            em.persist(teacherUpd)
+            return em
+        }
 
-        tx.begin()
-        em = EMF.createEntityManager()
-        Teacher chkTeacher = em.find(Teacher.class, TEACHER_ID)
-        assert chkTeacher.surname == 'Петров'
-        tx.commit()
+        callInTransaction {
+            def em = EMF.createEntityManager()
+            Teacher chkTeacher = em.find(Teacher.class, TEACHER_ID)
+            assert chkTeacher.surname == 'Петров'
+            return em
+        }
     }
 
     @Override
     @Test
     void deleteItemTest() {
-        UserTransaction tx = TMS.getUserTransaction()
-        tx.begin()
-        EntityManager em = EMF.createEntityManager()
-        Teacher teacher = getTeacher()
-        em.persist(teacher)
-        tx.commit()
+        def TEACHER_ID
+        callInTransaction {
+            def em = EMF.createEntityManager()
+            Teacher teacher = getTeacher()
+            em.persist(teacher)
+            TEACHER_ID = teacher.id
+            return em
+        }
+        assert TEACHER_ID != null
 
-        assert teacher.id != null
-        def TEACHER_ID = teacher.id
+        callInTransaction {
+            def em = EMF.createEntityManager()
+            Teacher teacherUpd = em.find(Teacher.class, TEACHER_ID)
+            em.remove(teacherUpd)
+            return em
+        }
 
-        tx.begin()
-        em = EMF.createEntityManager()
-        Teacher teacherUpd = em.find(Teacher.class, TEACHER_ID)
-        em.remove(teacherUpd)
-        tx.commit()
-
-        tx.begin()
-        em = EMF.createEntityManager()
-        Teacher chkTeacher = em.find(Teacher.class, TEACHER_ID)
-        assert chkTeacher == null
-        tx.commit()
+        callInTransaction {
+            def em = EMF.createEntityManager()
+            Teacher chkTeacher = em.find(Teacher.class, TEACHER_ID)
+            assert chkTeacher == null
+            return em
+        }
     }
 
     @Override
