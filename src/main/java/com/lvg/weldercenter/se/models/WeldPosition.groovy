@@ -2,10 +2,12 @@ package com.lvg.weldercenter.se.models
 
 import javax.persistence.Column
 import javax.persistence.Embeddable
+import javax.validation.constraints.NotNull
 
 @Embeddable
 class WeldPosition implements Serializable{
 
+    @NotNull
     @Column(name = 'CODE', nullable = false)
     String code
 
@@ -14,9 +16,9 @@ class WeldPosition implements Serializable{
 
     protected WeldPosition(){}
 
-    WeldPosition(String code, String description){
-        this.code = code
-        this.description = description
+    WeldPosition(WeldPositionType weldPositionType){
+        this.code = weldPositionType.value.code
+        this.description = weldPositionType.value.description
     }
 
     boolean equals(o) {

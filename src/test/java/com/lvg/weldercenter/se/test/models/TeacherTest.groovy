@@ -1,7 +1,6 @@
 package com.lvg.weldercenter.se.test.models
 
 import com.lvg.weldercenter.se.models.Teacher
-import org.junit.Assert
 import org.junit.Test
 
 class TeacherTest extends GenericModelTest{

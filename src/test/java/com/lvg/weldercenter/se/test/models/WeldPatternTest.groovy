@@ -7,125 +7,128 @@ import com.lvg.weldercenter.se.models.WeldPattern
 import com.lvg.weldercenter.se.models.WeldPositionType
 import org.junit.Test
 
-import javax.persistence.EntityManager
-import javax.transaction.UserTransaction
-
 class WeldPatternTest extends GenericModelTest{
 
     @Override
     @Test
     void insertItemTest() {
-        UserTransaction tx = TMS.getUserTransaction()
-        tx.begin()
-        EntityManager em = EMF.createEntityManager()
-        def welder = getWelder()
-        def journal = getJournal()
-        em.persist(welder)
-        em.persist(journal)
-        def pp = getPersonalProtocol(welder, journal)
-        em.persist(pp)
-        def weldPattern = getWeldPattern(pp)
-        em.persist(weldPattern)
-        def WELD_PATTERN_ID = weldPattern.id
+        def WELD_PATTERN_ID
+        callInTransaction {
+            def em = EMF.createEntityManager()
+            def welder = getWelder()
+            def journal = getJournal()
+            em.persist(welder)
+            em.persist(journal)
+            def pp = getPersonalProtocol(welder, journal)
+            em.persist(pp)
+            def weldPattern = getWeldPattern(pp)
+            em.persist(weldPattern)
+            WELD_PATTERN_ID = weldPattern.id
+            return em
+        }
         assert WELD_PATTERN_ID != null
-        tx.commit()
 
-        tx.begin()
-        em = EMF.createEntityManager()
-        WeldPattern weldPattern1 = em.find(WeldPattern.class, WELD_PATTERN_ID)
-
-        tx.commit()
-        assert weldPattern1.id != null
-        assert weldPattern1.mark == '01'
-        assert weldPattern1.electrode == 'АНО-21'
-        assert weldPattern1.diametr == Double.valueOf(89.0)
-        assert weldPattern1.thickness == Double.valueOf(3.0)
-        assert !weldPattern1.isHeating
-        assert !weldPattern1.isHeatTreatment
-        assert weldPattern1.weldGas == 'Аргон'
-        assert weldPattern1.weldWire == 'св08Г2С'
-        assert weldPattern1.steelType == 'сталь 20'
-        assert weldPattern1.radiationTest.defects == 'ДНО'
-        assert weldPattern1.radiationTest.evaluation == Evaluation.E
-        assert weldPattern1.visualTest.defects == 'ДНО'
-        assert weldPattern1.visualTest.evaluation == Evaluation.E
-        assert weldPattern1.mechanicalTest.clearance == 9.0D
-        assert weldPattern1.visualTest.evaluation == Evaluation.E
-        assert weldPattern1.weldDetail == WeldDetailType.P.value
-        assert weldPattern1.weldJoins.contains(WeldJoinType.GG.value) && weldPattern1.weldJoins.contains(WeldJoinType.BS.value)
-        assert weldPattern1.weldPositions.contains(WeldPositionType.PA.value) &&
-                weldPattern1.weldPositions.contains(WeldPositionType.PB.value)
+        callInTransaction {
+            def em = EMF.createEntityManager()
+            WeldPattern weldPattern1 = em.find(WeldPattern.class, WELD_PATTERN_ID)
+            assert weldPattern1.id != null
+            assert weldPattern1.mark == '01'
+            assert weldPattern1.electrode == 'АНО-21'
+            assert weldPattern1.diametr == Double.valueOf(89.0)
+            assert weldPattern1.thickness == Double.valueOf(3.0)
+            assert !weldPattern1.isHeating
+            assert !weldPattern1.isHeatTreatment
+            assert weldPattern1.weldGas == 'Аргон'
+            assert weldPattern1.weldWire == 'св08Г2С'
+            assert weldPattern1.steelType == 'сталь 20'
+            assert weldPattern1.radiationTest.defects == 'ДНО'
+            assert weldPattern1.radiationTest.evaluation == Evaluation.E
+            assert weldPattern1.visualTest.defects == 'ДНО'
+            assert weldPattern1.visualTest.evaluation == Evaluation.E
+            assert weldPattern1.mechanicalTest.clearance == 9.0D
+            assert weldPattern1.visualTest.evaluation == Evaluation.E
+            assert weldPattern1.weldDetail == WeldDetailType.P.value
+            assert weldPattern1.weldJoins.contains(WeldJoinType.GG.value) && weldPattern1.weldJoins.contains(WeldJoinType.BS.value)
+            assert weldPattern1.weldPositions.contains(WeldPositionType.PA.value) &&
+                    weldPattern1.weldPositions.contains(WeldPositionType.PB.value)
+            return em
+        }
     }
 
     @Override
     @Test
     void updateItemTest() {
-        UserTransaction tx = TMS.getUserTransaction()
-        tx.begin()
-        EntityManager em = EMF.createEntityManager()
-        def welder = getWelder()
-        def journal = getJournal()
-        em.persist(welder)
-        em.persist(journal)
-        def pp = getPersonalProtocol(welder, journal)
-        em.persist(pp)
-        def weldPattern = getWeldPattern(pp)
-        em.persist(weldPattern)
-        tx.commit()
+        def WELD_PATTERN_ID
+        callInTransaction {
+            def em = EMF.createEntityManager()
+            def welder = getWelder()
+            def journal = getJournal()
+            em.persist(welder)
+            em.persist(journal)
+            def pp = getPersonalProtocol(welder, journal)
+            em.persist(pp)
+            def weldPattern = getWeldPattern(pp)
+            em.persist(weldPattern)
+            WELD_PATTERN_ID = weldPattern.id
+            return em
+        }
+        assert WELD_PATTERN_ID != null
 
-        assert weldPattern.id != null
-        def WELD_PATTERN_ID = weldPattern.id
-        tx.begin()
-        em = EMF.createEntityManager()
-        def weldPatternUpd = em.find(WeldPattern.class, WELD_PATTERN_ID)
-        weldPatternUpd.mark = '02'
-        weldPatternUpd.weldDetail = WeldDetailType.P.value
-        weldPatternUpd.diametr = 0.0
-        weldPatternUpd.isHeatTreatment = true
-        em.persist(weldPatternUpd)
-        tx.commit()
+        callInTransaction {
+            def em = EMF.createEntityManager()
+            def weldPatternUpd = em.find(WeldPattern.class, WELD_PATTERN_ID)
+            weldPatternUpd.mark = '02'
+            weldPatternUpd.weldDetail = WeldDetailType.P.value
+            weldPatternUpd.diametr = 0.0
+            weldPatternUpd.isHeatTreatment = true
+            em.persist(weldPatternUpd)
+            return em
+        }
 
-        tx.begin()
-        em = EMF.createEntityManager()
-        def chkWeldPattern = em.find(WeldPattern.class, WELD_PATTERN_ID)
-        assert chkWeldPattern.mark == '02'
-        assert chkWeldPattern.diametr == 0.0
-        assert chkWeldPattern.isHeatTreatment
-        assert chkWeldPattern.weldDetail == WeldDetailType.P.value
-        tx.commit()
+        callInTransaction {
+            def em = EMF.createEntityManager()
+            def chkWeldPattern = em.find(WeldPattern.class, WELD_PATTERN_ID)
+            assert chkWeldPattern.mark == '02'
+            assert chkWeldPattern.diametr == 0.0
+            assert chkWeldPattern.isHeatTreatment
+            assert chkWeldPattern.weldDetail == WeldDetailType.P.value
+            return em
+        }
 
     }
 
     @Override
     @Test
     void deleteItemTest() {
-        UserTransaction tx = TMS.getUserTransaction()
-        tx.begin()
-        EntityManager em = EMF.createEntityManager()
-        def welder = getWelder()
-        def journal = getJournal()
-        em.persist(welder)
-        em.persist(journal)
-        def pp = getPersonalProtocol(welder, journal)
-        em.persist(pp)
-        def wp = getWeldPattern(pp)
-        em.persist(wp)
-        tx.commit()
+        def WELD_PATTERN_ID
+        callInTransaction {
+            def em = EMF.createEntityManager()
+            def welder = getWelder()
+            def journal = getJournal()
+            em.persist(welder)
+            em.persist(journal)
+            def pp = getPersonalProtocol(welder, journal)
+            em.persist(pp)
+            def weldPattern = getWeldPattern(pp)
+            em.persist(weldPattern)
+            WELD_PATTERN_ID = weldPattern.id
+            return em
+        }
+        assert WELD_PATTERN_ID != null
 
-        assert wp.id != null
-        def WELD_PATTERN_ID = wp.id
+        callInTransaction {
+            def em = EMF.createEntityManager()
+            def weldPatternUpd = em.find(WeldPattern.class, WELD_PATTERN_ID)
+            em.remove(weldPatternUpd)
+            return em
+        }
 
-        tx.begin()
-        em = EMF.createEntityManager()
-        def weldPatternUpd = em.find(WeldPattern.class, WELD_PATTERN_ID)
-        em.remove(weldPatternUpd)
-        tx.commit()
-
-        tx.begin()
-        em = EMF.createEntityManager()
-        def chkWeldPattern = em.find(WeldPattern.class, WELD_PATTERN_ID)
-        assert chkWeldPattern == null
-        tx.commit()
+        callInTransaction {
+            def em = EMF.createEntityManager()
+            def chkWeldPattern = em.find(WeldPattern.class, WELD_PATTERN_ID)
+            assert chkWeldPattern == null
+            return em
+        }
 
     }
 

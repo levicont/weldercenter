@@ -3,84 +3,85 @@ package com.lvg.weldercenter.se.test.models
 import com.lvg.weldercenter.se.models.WeldGas
 import org.junit.Test
 
-import javax.persistence.EntityManager
-import javax.transaction.UserTransaction
-
 
 class WeldGasTest extends GenericModelTest{
 
     @Override
     @Test
     void insertItemTest() {
-        UserTransaction tx = TMS.getUserTransaction()
-        tx.begin()
-        EntityManager em = EMF.createEntityManager()
-        WeldGas weldGas = getWeldGas()
-        em.persist(weldGas)
-        def WELD_GAS_ID = weldGas.id
-        tx.commit()
-
-        tx.begin()
-        em = EMF.createEntityManager()
-        def weldGas1 = em.find(WeldGas.class, WELD_GAS_ID)
-        tx.commit()
-
-
-
-        assert weldGas1.id != null
-        assert weldGas1.type == 'Аргон'
+        def WELD_GAS_ID
+        callInTransaction {
+            def em = EMF.createEntityManager()
+            WeldGas weldGas = getWeldGas()
+            em.persist(weldGas)
+            WELD_GAS_ID = weldGas.id
+            return em
+        }
+        assert WELD_GAS_ID != null
+        callInTransaction {
+            def em = EMF.createEntityManager()
+            def weldGas1 = em.find(WeldGas.class, WELD_GAS_ID)
+            assert weldGas1.id != null
+            assert weldGas1.type == 'Аргон'
+            return em
+        }
     }
 
     @Override
     @Test
     void updateItemTest() {
-        UserTransaction tx = TMS.getUserTransaction()
-        tx.begin()
-        EntityManager em = EMF.createEntityManager()
-        WeldGas weldGas = getWeldGas()
-        em.persist(weldGas)
-        tx.commit()
+        def WELD_GAS_ID
+        callInTransaction {
+            def em = EMF.createEntityManager()
+            WeldGas weldGas = getWeldGas()
+            em.persist(weldGas)
+            WELD_GAS_ID = weldGas.id
+            return em
+        }
+        assert WELD_GAS_ID != null
 
-        assert weldGas.id != null
-        def WELD_GAS_ID = weldGas.id
-        tx.begin()
-        em = EMF.createEntityManager()
-        WeldGas weldGasUpd = em.find(WeldGas.class, WELD_GAS_ID)
-        weldGasUpd.type = 'CO2'
-        em.persist(weldGasUpd)
-        tx.commit()
+        callInTransaction {
+            def em = EMF.createEntityManager()
+            WeldGas weldGasUpd = em.find(WeldGas.class, WELD_GAS_ID)
+            weldGasUpd.type = 'CO2'
+            em.persist(weldGasUpd)
+            return em
+        }
 
-        tx.begin()
-        em = EMF.createEntityManager()
-        WeldGas chkWeldGas = em.find(WeldGas.class, WELD_GAS_ID)
-        assert chkWeldGas.type == 'CO2'
-        tx.commit()
+        callInTransaction {
+            def em = EMF.createEntityManager()
+            WeldGas chkWeldGas = em.find(WeldGas.class, WELD_GAS_ID)
+            assert chkWeldGas.type == 'CO2'
+            return em
+        }
     }
 
     @Override
     @Test
     void deleteItemTest() {
-        UserTransaction tx = TMS.getUserTransaction()
-        tx.begin()
-        EntityManager em = EMF.createEntityManager()
-        WeldGas weldGas = getWeldGas()
-        em.persist(weldGas)
-        tx.commit()
+        def WELD_GAS_ID
+        callInTransaction {
+            def em = EMF.createEntityManager()
+            WeldGas weldGas = getWeldGas()
+            em.persist(weldGas)
+            WELD_GAS_ID = weldGas.id
+            return em
+        }
+        assert WELD_GAS_ID != null
 
-        assert weldGas.id != null
-        def WELD_GAS_ID = weldGas.id
+        callInTransaction {
+            def em = EMF.createEntityManager()
+            WeldGas weldGasUpd = em.find(WeldGas.class, WELD_GAS_ID)
+            em.remove(weldGasUpd)
+            return em
+        }
 
-        tx.begin()
-        em = EMF.createEntityManager()
-        WeldGas weldGasUpd = em.find(WeldGas.class, WELD_GAS_ID)
-        em.remove(weldGasUpd)
-        tx.commit()
-
-        tx.begin()
-        em = EMF.createEntityManager()
-        WeldGas chkWeldGas = em.find(WeldGas.class, WELD_GAS_ID)
-        assert chkWeldGas == null
-        tx.commit()
+        callInTransaction {
+            def em = EMF.createEntityManager()
+            WeldGas chkWeldGas = em.find(WeldGas.class, WELD_GAS_ID)
+            assert chkWeldGas == null
+            return em
+        }
     }
 
     @Override

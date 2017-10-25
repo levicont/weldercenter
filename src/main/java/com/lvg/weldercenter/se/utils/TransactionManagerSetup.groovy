@@ -19,100 +19,100 @@ import javax.transaction.UserTransaction
  * JNDI context is bundled with and started by Bitronix.
  * </p>
  */
-public class TransactionManagerSetup {
+class TransactionManagerSetup {
 
-    public static final String DATASOURCE_NAME = "wcDS";
+    public static final String DATASOURCE_NAME = "wcDS"
 
     private static final Logger LOGGER =
-            Logger.getLogger(TransactionManagerSetup.class.getName());
+            Logger.getLogger(TransactionManagerSetup.class.getName())
 
-    protected final Context context = new InitialContext();
-    protected final PoolingDataSource datasource;
-    public final DatabaseProduct databaseProduct;
+    protected final Context context = new InitialContext()
+    protected final PoolingDataSource datasource
+    public final DatabaseProduct databaseProduct
 
-    public TransactionManagerSetup(DatabaseProduct databaseProduct) throws Exception {
-        this(databaseProduct, null);
+    TransactionManagerSetup(DatabaseProduct databaseProduct) throws Exception {
+        this(databaseProduct, null)
     }
 
-    public TransactionManagerSetup(DatabaseProduct databaseProduct,
-                                   String connectionURL) throws Exception {
+    TransactionManagerSetup(DatabaseProduct databaseProduct,
+                            String connectionURL) throws Exception {
 
-        LOGGER.info("Starting database connection pool");
+        LOGGER.info("Starting database connection pool")
 
-        LOGGER.info("Setting stable unique identifier for transaction recovery");
-        TransactionManagerServices.getConfiguration().setServerId("myServer1234");
+        LOGGER.info("Setting stable unique identifier for transaction recovery")
+        TransactionManagerServices.getConfiguration().setServerId("myServer1234")
 
-        LOGGER.info("Disabling JMX binding of manager in unit tests");
-        TransactionManagerServices.getConfiguration().setDisableJmx(true);
+        LOGGER.info("Disabling JMX binding of manager in unit tests")
+        TransactionManagerServices.getConfiguration().setDisableJmx(true)
 
-        LOGGER.info("Disabling transaction logging for unit tests");
-        TransactionManagerServices.getConfiguration().setJournal("null");
+        LOGGER.info("Disabling transaction logging for unit tests")
+        TransactionManagerServices.getConfiguration().setJournal("null")
 
-        LOGGER.info("Disabling warnings when the database isn't accessed in a transaction");
-        TransactionManagerServices.getConfiguration().setWarnAboutZeroResourceTransaction(false);
+        LOGGER.info("Disabling warnings when the database isn't accessed in a transaction")
+        TransactionManagerServices.getConfiguration().setWarnAboutZeroResourceTransaction(false)
 
-        LOGGER.info("Creating connection pool");
-        datasource = new PoolingDataSource();
-        datasource.setUniqueName(DATASOURCE_NAME);
-        datasource.setMinPoolSize(1);
-        datasource.setMaxPoolSize(5);
-        datasource.setPreparedStatementCacheSize(10);
+        LOGGER.info("Creating connection pool")
+        datasource = new PoolingDataSource()
+        datasource.setUniqueName(DATASOURCE_NAME)
+        datasource.setMinPoolSize(1)
+        datasource.setMaxPoolSize(5)
+        datasource.setPreparedStatementCacheSize(10)
 
         // Our locking/versioning tests assume READ COMMITTED transaction
         // isolation. This is not the default on MySQL InnoDB, so we set
         // it here explicitly.
-        datasource.setIsolationLevel("READ_COMMITTED");
+        datasource.setIsolationLevel("READ_COMMITTED")
 
         // Hibernate's SQL schema generator calls connection.setAutoCommit(true)
         // and we use auto-commit mode when the EntityManager is in suspended
         // mode and not joined with a transaction.
-        datasource.setAllowLocalTransactions(true);
+        datasource.setAllowLocalTransactions(true)
 
-        LOGGER.info("Setting up database connection: " + databaseProduct);
-        this.databaseProduct = databaseProduct;
-        databaseProduct.configuration.configure(datasource, connectionURL);
+        LOGGER.info("Setting up database connection: " + databaseProduct)
+        this.databaseProduct = databaseProduct
+        databaseProduct.configuration.configure(datasource, connectionURL)
 
-        LOGGER.info("Initializing transaction and resource management");
-        datasource.init();
+        LOGGER.info("Initializing transaction and resource management")
+        datasource.init()
     }
 
-    public Context getNamingContext() {
-        return context;
+    Context getNamingContext() {
+        return context
     }
 
-    public UserTransaction getUserTransaction() {
+    UserTransaction getUserTransaction() {
         try {
             return (UserTransaction) getNamingContext()
-                    .lookup("java:comp/UserTransaction");
+                    .lookup("java:comp/UserTransaction")
         } catch (Exception ex) {
-            throw new RuntimeException(ex);
+            throw new RuntimeException(ex)
         }
     }
 
-    public DataSource getDataSource() {
+    DataSource getDataSource() {
         try {
-            return (DataSource) getNamingContext().lookup(DATASOURCE_NAME);
+            return (DataSource) getNamingContext().lookup(DATASOURCE_NAME)
         } catch (Exception ex) {
-            throw new RuntimeException(ex);
+            throw new RuntimeException(ex)
         }
     }
 
-    public void rollback() {
-        UserTransaction tx = getUserTransaction();
+    void rollback() {
+        UserTransaction tx = getUserTransaction()
         try {
             if (tx.getStatus() == Status.STATUS_ACTIVE ||
                     tx.getStatus() == Status.STATUS_MARKED_ROLLBACK)
-                tx.rollback();
+                tx.rollback()
         } catch (Exception ex) {
-            System.err.println("Rollback of transaction failed, trace follows!");
-            ex.printStackTrace(System.err);
+            System.err.println("Rollback of transaction failed, trace follows!")
+            ex.printStackTrace(System.err)
         }
     }
 
-    public void stop() throws Exception {
-        LOGGER.info("Stopping database connection pool");
-        datasource.close();
-        TransactionManagerServices.getTransactionManager().shutdown();
+    void stop() throws Exception {
+        LOGGER.info("Stopping database connection pool")
+        datasource.close()
+        TransactionManagerServices.getTransactionManager().shutdown()
     }
 
 }

@@ -7,10 +7,6 @@ import javax.persistence.Entity
 import javax.persistence.GeneratedValue
 import javax.persistence.Id
 
-/**
- * Created by Victor on 05.10.2017.
- */
-
 @Entity
 class Job implements Serializable{
 

@@ -4,89 +4,87 @@ import com.lvg.weldercenter.se.models.WeldMethod
 import com.lvg.weldercenter.se.models.WeldMethodType
 import org.junit.Test
 
-import javax.persistence.EntityManager
-import javax.transaction.UserTransaction
-
-/**
- * Created by Victor on 06.10.2017.
- */
 class WeldMethodTest extends GenericModelTest{
 
     @Override
     @Test
     void insertItemTest() {
-        UserTransaction tx = TMS.getUserTransaction()
-        tx.begin()
-        EntityManager em = EMF.createEntityManager()
-        WeldMethod weldMethod = getWeldMethod()
-        em.persist(weldMethod)
-        def WELD_METHOD_ID = weldMethod.id
-        tx.commit()
+        def WELD_METHOD_ID
+        callInTransaction {
+            def em = EMF.createEntityManager()
+            WeldMethod weldMethod = getWeldMethod()
+            em.persist(weldMethod)
+            WELD_METHOD_ID = weldMethod.id
+            return em
+        }
+        assert WELD_METHOD_ID != null
 
-        tx.begin()
-        em = EMF.createEntityManager()
-        def chkWeldMethod = em.find(WeldMethod.class, WELD_METHOD_ID)
-        tx.commit()
-
-        assert chkWeldMethod != null
-
-
-        assert chkWeldMethod.id != null
-        assert chkWeldMethod.name == 'РДЭ'
-        assert chkWeldMethod.code == '111'
+        callInTransaction {
+            def em = EMF.createEntityManager()
+            def chkWeldMethod = em.find(WeldMethod.class, WELD_METHOD_ID)
+            assert chkWeldMethod != null
+            assert chkWeldMethod.id != null
+            assert chkWeldMethod.name == 'РДЭ'
+            assert chkWeldMethod.code == '111'
+            return em
+        }
     }
 
     @Override
     @Test
     void updateItemTest() {
-        UserTransaction tx = TMS.getUserTransaction()
-        tx.begin()
-        EntityManager em = EMF.createEntityManager()
-        WeldMethod weldMethod = getWeldMethod()
-        em.persist(weldMethod)
-        tx.commit()
+        def WELD_METHOD_ID
+        callInTransaction {
+            def em = EMF.createEntityManager()
+            WeldMethod weldMethod = getWeldMethod()
+            em.persist(weldMethod)
+            WELD_METHOD_ID = weldMethod.id
+            return em
+        }
+        assert WELD_METHOD_ID != null
 
-        assert weldMethod.id != null
-        def WELD_METHOD_ID = weldMethod.id
-        tx.begin()
-        em = EMF.createEntityManager()
-        WeldMethod weldMethodUpd = em.find(WeldMethod.class, WELD_METHOD_ID)
-        weldMethodUpd.name = 'ВИГ'
-        em.persist(weldMethodUpd)
-        tx.commit()
+        callInTransaction {
+            def em = EMF.createEntityManager()
+            WeldMethod weldMethodUpd = em.find(WeldMethod.class, WELD_METHOD_ID)
+            weldMethodUpd.name = 'ВИГ'
+            em.persist(weldMethodUpd)
+            return em
+        }
 
-        tx.begin()
-        em = EMF.createEntityManager()
-        WeldMethod chkWeldMethod = em.find(WeldMethod.class, WELD_METHOD_ID)
-        assert chkWeldMethod.name == 'ВИГ'
-        tx.commit()
+        callInTransaction {
+            def em = EMF.createEntityManager()
+            WeldMethod chkWeldMethod = em.find(WeldMethod.class, WELD_METHOD_ID)
+            assert chkWeldMethod.name == 'ВИГ'
+            return em
+        }
     }
 
     @Override
     @Test
     void deleteItemTest() {
-        UserTransaction tx = TMS.getUserTransaction()
-        tx.begin()
-        EntityManager em = EMF.createEntityManager()
-        WeldMethod weldMethod = getWeldMethod()
-        em.persist(weldMethod)
-        tx.commit()
+        def WELD_METHOD_ID
+        callInTransaction {
+            def em = EMF.createEntityManager()
+            WeldMethod weldMethod = getWeldMethod()
+            em.persist(weldMethod)
+            WELD_METHOD_ID = weldMethod.id
+            return em
+        }
+        assert WELD_METHOD_ID != null
 
-        assert weldMethod.id != null
-        def WELD_METHOD_ID = weldMethod.id
+        callInTransaction {
+            def em = EMF.createEntityManager()
+            WeldMethod weldMethodUpd = em.find(WeldMethod.class, WELD_METHOD_ID)
+            em.remove(weldMethodUpd)
+            return em
+        }
 
-        tx.begin()
-        em = EMF.createEntityManager()
-        WeldMethod weldMethodUpd = em.find(WeldMethod.class, WELD_METHOD_ID)
-        em.remove(weldMethodUpd)
-        tx.commit()
-
-        tx.begin()
-        em = EMF.createEntityManager()
-        WeldMethod chkWeldMethod = em.find(WeldMethod.class, WELD_METHOD_ID)
-        assert chkWeldMethod == null
-        tx.commit()
-
+        callInTransaction {
+            def em = EMF.createEntityManager()
+            WeldMethod chkWeldMethod = em.find(WeldMethod.class, WELD_METHOD_ID)
+            assert chkWeldMethod == null
+            return em
+        }
     }
 
     @Override

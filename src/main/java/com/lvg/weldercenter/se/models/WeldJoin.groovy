@@ -2,11 +2,12 @@ package com.lvg.weldercenter.se.models
 
 import javax.persistence.Column
 import javax.persistence.Embeddable
+import javax.validation.constraints.NotNull
 
 @Embeddable
 class WeldJoin implements Serializable{
 
-
+    @NotNull
     @Column(name = 'CODE',nullable = false)
     String code
     @Column(name = 'DESCRIPTION')

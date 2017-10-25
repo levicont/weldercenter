@@ -22,7 +22,7 @@ class Curriculum implements Serializable{
     String description
 
 
-    @OneToMany(mappedBy = 'curriculum', fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = 'curriculum', cascade = CascadeType.PERSIST)
     @OrderBy('orderIndex')
     Set<Section> sections = new LinkedHashSet<>()
 

@@ -3,84 +3,85 @@ package com.lvg.weldercenter.se.test.models
 import com.lvg.weldercenter.se.models.WeldWire
 import org.junit.Test
 
-import javax.persistence.EntityManager
-import javax.transaction.UserTransaction
-
-
 class WeldWireTest extends GenericModelTest{
 
     @Override
     @Test
     void insertItemTest() {
-        UserTransaction tx = TMS.getUserTransaction()
-        tx.begin()
-        EntityManager em = EMF.createEntityManager()
-        WeldWire weldWire = getWeldWire()
-        em.persist(weldWire)
-        def WELD_WIRE_ID = weldWire.id
-        tx.commit()
+        def WELD_WIRE_ID
+        callInTransaction {
+            def em = EMF.createEntityManager()
+            WeldWire weldWire = getWeldWire()
+            em.persist(weldWire)
+            WELD_WIRE_ID = weldWire.id
+            return em
+        }
+        assert WELD_WIRE_ID != null
 
-        tx.begin()
-        em = EMF.createEntityManager()
-        def weldWire1 = em.find(WeldWire.class, WELD_WIRE_ID)
-        tx.commit()
-
-
-
-        assert weldWire1.id != null
-        assert weldWire1.type == 'св08Г2С'
+        callInTransaction {
+            def em = EMF.createEntityManager()
+            def weldWire1 = em.find(WeldWire.class, WELD_WIRE_ID)
+            assert weldWire1.id != null
+            assert weldWire1.type == 'св08Г2С'
+            return em
+        }
     }
 
     @Override
     @Test
     void updateItemTest() {
-        UserTransaction tx = TMS.getUserTransaction()
-        tx.begin()
-        EntityManager em = EMF.createEntityManager()
-        WeldWire weldWire = getWeldWire()
-        em.persist(weldWire)
-        tx.commit()
+        def WELD_WIRE_ID
+        callInTransaction {
+            def em = EMF.createEntityManager()
+            WeldWire weldWire = getWeldWire()
+            em.persist(weldWire)
+            WELD_WIRE_ID = weldWire.id
+            return em
+        }
+        assert WELD_WIRE_ID != null
 
-        assert weldWire.id != null
-        def WELD_WIRE_ID = weldWire.id
-        tx.begin()
-        em = EMF.createEntityManager()
-        WeldWire weldWire1Upd = em.find(WeldWire.class, WELD_WIRE_ID)
-        weldWire1Upd.type = 'св08Г'
-        em.persist(weldWire1Upd)
-        tx.commit()
+        callInTransaction {
+            def em = EMF.createEntityManager()
+            WeldWire weldWire1Upd = em.find(WeldWire.class, WELD_WIRE_ID)
+            weldWire1Upd.type = 'св08Г'
+            em.persist(weldWire1Upd)
+            return em
+        }
 
-        tx.begin()
-        em = EMF.createEntityManager()
-        WeldWire chkWeldWire = em.find(WeldWire.class, WELD_WIRE_ID)
-        assert chkWeldWire.type == 'св08Г'
-        tx.commit()
+        callInTransaction {
+            def em = EMF.createEntityManager()
+            WeldWire chkWeldWire = em.find(WeldWire.class, WELD_WIRE_ID)
+            assert chkWeldWire.type == 'св08Г'
+            return em
+        }
     }
 
     @Override
     @Test
     void deleteItemTest() {
-        UserTransaction tx = TMS.getUserTransaction()
-        tx.begin()
-        EntityManager em = EMF.createEntityManager()
-        WeldWire weldWire = getWeldWire()
-        em.persist(weldWire)
-        tx.commit()
+        def WELD_WIRE_ID
+        callInTransaction {
+            def em = EMF.createEntityManager()
+            WeldWire weldWire = getWeldWire()
+            em.persist(weldWire)
+            WELD_WIRE_ID = weldWire.id
+            return em
+        }
+        assert WELD_WIRE_ID != null
 
-        assert weldWire.id != null
-        def WELD_WIRE_ID = weldWire.id
+        callInTransaction {
+            def em = EMF.createEntityManager()
+            WeldWire weldWireUpd = em.find(WeldWire.class, WELD_WIRE_ID)
+            em.remove(weldWireUpd)
+            return em
+        }
 
-        tx.begin()
-        em = EMF.createEntityManager()
-        WeldWire weldWireUpd = em.find(WeldWire.class, WELD_WIRE_ID)
-        em.remove(weldWireUpd)
-        tx.commit()
-
-        tx.begin()
-        em = EMF.createEntityManager()
-        WeldWire chkWeldWire = em.find(WeldWire.class, WELD_WIRE_ID)
-        assert chkWeldWire == null
-        tx.commit()
+        callInTransaction {
+            def em = EMF.createEntityManager()
+            WeldWire chkWeldWire = em.find(WeldWire.class, WELD_WIRE_ID)
+            assert chkWeldWire == null
+            return em
+        }
     }
 
     @Override

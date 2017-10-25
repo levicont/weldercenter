@@ -3,9 +3,6 @@ package com.lvg.weldercenter.se.models
 import javax.persistence.Column
 import javax.persistence.Embeddable
 
-/**
- * Created by Victor on 06.10.2017.
- */
 @Embeddable
 class Topic implements Serializable{
 

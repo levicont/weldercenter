@@ -4,6 +4,7 @@ import com.lvg.weldercenter.se.cfg.R
 
 import javax.persistence.Column
 import javax.persistence.Entity
+import javax.persistence.FetchType
 import javax.persistence.GeneratedValue
 import javax.persistence.Id
 import javax.persistence.JoinColumn
@@ -19,19 +20,19 @@ class CommissionCertification implements Serializable{
     @Column(name = 'ID')
     Long id
 
-    @ManyToOne(targetEntity = Teacher.class, optional = false)
+    @ManyToOne(targetEntity = Teacher.class, optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = 'HEAD_ID')
     Teacher head
 
-    @ManyToOne(targetEntity = Teacher.class, optional = false)
+    @ManyToOne(targetEntity = Teacher.class, optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = 'WELD_SPECIALIST_ID')
     Teacher weldSpecialist;
 
-    @ManyToOne(targetEntity = Teacher.class, optional = false)
+    @ManyToOne(targetEntity = Teacher.class, optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = 'NDT_SPECIALIST_ID')
     Teacher ndtSpecialist;
 
-    @ManyToOne(targetEntity = Teacher.class, optional = false)
+    @ManyToOne(targetEntity = Teacher.class, optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = 'SAFETY_SPECIALIST_ID')
     Teacher safetySpecialist;
 

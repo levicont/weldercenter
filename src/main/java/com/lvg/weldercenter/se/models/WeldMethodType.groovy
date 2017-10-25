@@ -1,8 +1,5 @@
 package com.lvg.weldercenter.se.models
 
-/**
- * Created by Victor on 06.10.2017.
- */
 enum WeldMethodType {
 
     MMA(new WeldMethod(name: 'РДЭ', code: '111')),
