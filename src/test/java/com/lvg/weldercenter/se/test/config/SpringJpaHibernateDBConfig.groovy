@@ -15,8 +15,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement
 
 import javax.sql.DataSource
 
-@Configuration
-@EnableTransactionManagement
 class SpringJpaHibernateDBConfig {
     /**
      * DataSource definition for database connection. Settings are read from
