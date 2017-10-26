@@ -1,44 +1,64 @@
 package com.lvg.weldercenter.se.test.services
 
+import com.lvg.weldercenter.se.models.Education
 import com.lvg.weldercenter.se.services.EducationService
-import com.lvg.weldercenter.se.test.models.ModelsGenerator
 import org.junit.Test
-import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.test.context.ActiveProfiles
-import org.springframework.test.context.TestPropertySource
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner
 
 import javax.transaction.Transactional
 
-@RunWith(SpringJUnit4ClassRunner)
-@TestPropertySource("classpath:test.properties")
-@ActiveProfiles("test")
-@SpringBootTest
-class EducationServiceTest extends ModelsGenerator{
+@Transactional
+class EducationServiceTest extends GenericServiceTest{
 
     @Autowired
     EducationService educationService
 
-    @Test(expected = RuntimeException.class)
-    @Transactional(rollbackOn = RuntimeException.class)
+    @Test
     void addEducationTest(){
         def education = getEducation()
         education = educationService.addEducation(education)
         assert education.id != null
-        throw new RuntimeException()
     }
 
     @Test
-    @Transactional
+    void findByIdEducationTest(){
+        def EDUCATION_ID
+        def education = getEducation()
+        education = educationService.addEducation(education)
+        EDUCATION_ID = education.id
+        assert EDUCATION_ID != null
+
+        Education chkEducation = educationService.findById(EDUCATION_ID)
+        assert chkEducation != null
+        assert chkEducation instanceof Education
+    }
+
+    @Test
     void getAllEducationTest(){
         def education = getEducation()
         education = educationService.addEducation(education)
         assert education.id != null
 
-        def set = educationService.getAll()
-        assert set instanceof Set
-        assert set.size() == 1
+        def list = educationService.getAll()
+        assert list instanceof List
+        assert list.size() == 1
+    }
+
+    @Test
+    void deleteEducationTest(){
+        def EDUCATION_ID
+        def education = getEducation()
+        education = educationService.addEducation(education)
+        EDUCATION_ID = education.id
+        assert EDUCATION_ID != null
+
+        Education delEducation = educationService.findById(EDUCATION_ID)
+        assert delEducation != null
+        assert delEducation instanceof Education
+
+        educationService.delete(delEducation)
+
+        Education chkEducation = educationService.findById(EDUCATION_ID)
+        assert chkEducation == null
     }
 }

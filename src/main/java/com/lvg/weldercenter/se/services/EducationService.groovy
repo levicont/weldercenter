@@ -5,6 +5,8 @@ import com.lvg.weldercenter.se.models.Education
 interface EducationService {
 
     Education addEducation(Education education)
-    Set<Education> getAll()
+    Education findById(Long id)
+    List<Education> getAll()
+    void delete(Education education)
 
 }

@@ -18,9 +18,17 @@ class EducationServiceImpl implements EducationService{
     }
 
     @Override
-    Set<Education> getAll() {
-        Set<Education> set = new HashSet<>()
-        set.addAll(educationRepository.findAll())
-        return set
+    Education findById(Long id) {
+        return educationRepository.findOne(id)
+    }
+
+    @Override
+    List<Education> getAll() {
+        return educationRepository.findAll()
+    }
+
+    @Override
+    void delete(Education education) {
+        educationRepository.delete(education)
     }
 }
