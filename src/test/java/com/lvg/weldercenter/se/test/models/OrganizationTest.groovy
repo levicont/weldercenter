@@ -11,7 +11,7 @@ class OrganizationTest extends GenericModelTest{
         def ORGANIZATION_ID
         callInTransaction {
             def em = EMF.createEntityManager()
-            Organization organization = getOragnization()
+            Organization organization = getOrganization()
             em.persist(organization)
             ORGANIZATION_ID = organization.id
             return em
@@ -37,7 +37,7 @@ class OrganizationTest extends GenericModelTest{
         def ORGANIZATION_ID
         callInTransaction {
             def em = EMF.createEntityManager()
-            Organization organization = getOragnization()
+            Organization organization = getOrganization()
             em.persist(organization)
             ORGANIZATION_ID = organization.id
             return em
@@ -66,7 +66,7 @@ class OrganizationTest extends GenericModelTest{
         def ORGANIZATION_ID
         callInTransaction {
             def em = EMF.createEntityManager()
-            Organization organization = getOragnization()
+            Organization organization = getOrganization()
             em.persist(organization)
             ORGANIZATION_ID = organization.id
             return em
@@ -90,8 +90,8 @@ class OrganizationTest extends GenericModelTest{
 
     @Test
     void equalsHashCodeTest(){
-        def org1 = getOragnization()
-        def org2 = getOragnization()
+        def org1 = getOrganization()
+        def org2 = getOrganization()
 
         assert org1 == org2
 
@@ -111,7 +111,7 @@ class OrganizationTest extends GenericModelTest{
 
     @Test
     void toStringTest(){
-        def org = getOragnization()
+        def org = getOrganization()
         assert org.toString() == 'IBM, New-York, (0595)466-15-59'
     }
 

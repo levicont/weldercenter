@@ -3,8 +3,8 @@ package com.lvg.weldercenter.se.test.services
 import com.lvg.weldercenter.se.models.Electrode
 import com.lvg.weldercenter.se.services.ElectrodeService
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.transaction.annotation.Transactional
 
-import javax.transaction.Transactional
 
 @Transactional
 class ElectrodeServiceTest extends GenericServiceTest{

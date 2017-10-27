@@ -33,7 +33,7 @@ import java.time.LocalDate
 
 class ModelsGenerator {
 
-    static Organization getOragnization(){
+    static Organization getOrganization(){
         return new Organization(name: 'IBM', address: 'New-York', phone: '(0595)466-15-59')
     }
 
@@ -46,7 +46,7 @@ class ModelsGenerator {
         welder.education = 'среднее-специальное'
         welder.qualification = 'электросварщик'
         welder.job = 'элекросварщик'
-        welder.organization = getOragnization()
+        welder.organization = getOrganization()
         return welder
     }
 
