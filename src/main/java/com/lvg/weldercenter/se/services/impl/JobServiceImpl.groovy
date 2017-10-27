@@ -13,12 +13,22 @@ class JobServiceImpl implements JobService{
     JobRepository jobRepository
 
     @Override
-    Job addJob(Job job) {
+    Job save(Job job) {
         return jobRepository.save(job)
     }
 
     @Override
     List<Job> getAll() {
         return jobRepository.findAll()
+    }
+
+    @Override
+    Job get(Long id) {
+        return jobRepository.findOne(id)
+    }
+
+    @Override
+    void delete(Job job) {
+        jobRepository.delete(job)
     }
 }

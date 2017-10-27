@@ -13,12 +13,12 @@ class EducationServiceImpl implements EducationService{
     EducationRepository educationRepository
 
     @Override
-    Education addEducation(Education education) {
+    Education save(Education education) {
         return educationRepository.save(education)
     }
 
     @Override
-    Education findById(Long id) {
+    Education get(Long id) {
         return educationRepository.findOne(id)
     }
 
@@ -31,4 +31,5 @@ class EducationServiceImpl implements EducationService{
     void delete(Education education) {
         educationRepository.delete(education)
     }
+
 }
