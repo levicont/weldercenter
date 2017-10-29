@@ -24,7 +24,7 @@ class OrganizationServiceTest extends GenericServiceTest {
         assert updOrganization != null
         assert updOrganization instanceof Organization
         updOrganization.name = 'Zipper'
-        organizationService.save(organization)
+        organizationService.save(updOrganization)
 
         Organization chkOrganization = organizationService.get(ORGANIZATION_ID)
         assert chkOrganization != null
@@ -44,7 +44,7 @@ class OrganizationServiceTest extends GenericServiceTest {
         Organization delOrganization = organizationService.get(ORGANIZATION_ID)
         assert delOrganization != null
         assert delOrganization instanceof Organization
-        organizationService.delete(organization)
+        organizationService.delete(delOrganization)
 
         Organization chkOrganization = organizationService.get(ORGANIZATION_ID)
         assert chkOrganization == null

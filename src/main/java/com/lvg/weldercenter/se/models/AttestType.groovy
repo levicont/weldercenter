@@ -3,7 +3,7 @@ package com.lvg.weldercenter.se.models
 enum AttestType {
     PRIMARY('Первичная'),
     ADDITIONAL('Дополнительная'),
-    PEREODICAL('Переодическая'),
+    PERIODICAL('Переодическая'),
     EXTRAORDINARY('Внеочередная')
 
     String value

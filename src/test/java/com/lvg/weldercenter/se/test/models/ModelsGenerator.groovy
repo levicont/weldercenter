@@ -33,14 +33,14 @@ import java.time.LocalDate
 
 abstract class ModelsGenerator {
 
-    static Organization getOrganization(){
+    static Organization getOrganization() {
         return new Organization(name: 'IBM', address: 'New-York', phone: '(0595)466-15-59')
     }
 
-    static Welder getWelder(){
+    static Welder getWelder() {
         def welder = new Welder(name: 'Иван', surname: 'Иванов', secondName: 'Иванович')
-        welder.birthday = LocalDate.of(1984,10,28)
-        welder.dateBegin = LocalDate.of(2000,10,28)
+        welder.birthday = LocalDate.of(1984, 10, 28)
+        welder.dateBegin = LocalDate.of(2000, 10, 28)
         welder.documentNumber = '17-033/17'
         welder.address = 'Michigan City 12066'
         welder.education = 'среднее-специальное'
@@ -50,35 +50,35 @@ abstract class ModelsGenerator {
         return welder
     }
 
-    static Education getEducation(){
+    static Education getEducation() {
         return new Education(education: 'среднее-специальное')
     }
 
-    static Job getJob(){
+    static Job getJob() {
         return new Job(name: 'электросварщик')
     }
 
-    static Qualification getQualification(){
+    static Qualification getQualification() {
         return new Qualification(type: 'электросварщик')
     }
 
-    static WeldMethod getWeldMethod(){
+    static WeldMethod getWeldMethod() {
         return new WeldMethod(name: 'РДЭ', code: '111')
     }
 
-    static Journal getJournal(){
+    static Journal getJournal() {
         def journal = new Journal()
         journal.number = '17/001'
         journal.dateBegin = LocalDate.of(2017, 05, 25)
         journal.dateEnd = journal.dateBegin.plusWeeks(1)
-        def curriculum = getCurriculum()
+        def curriculum = getCurriculumWithoutSections()
         def teachers = getTeachers()
         journal.curriculum = curriculum
         journal.teachers = teachers
         return journal
     }
 
-    static Set<Topic> getTopics(SectionType sectionType){
+    static Set<Topic> getTopics(SectionType sectionType) {
         def topics = new LinkedHashSet<Topic>()
         if (sectionType == SectionType.WELDING) {
             topics.add(new Topic(orderIndex: 0, title: 'Введение в сварочное дело',
@@ -89,8 +89,7 @@ abstract class ModelsGenerator {
 
             topics.add(new Topic(orderIndex: 2, title: 'Введение в положения сварки',
                     description: 'Общие вопросы положений сварки', timeLongHours: 5.0))
-        }
-        else if (sectionType == SectionType.DEFECTS){
+        } else if (sectionType == SectionType.DEFECTS) {
             topics.add(new Topic(orderIndex: 0, title: 'Введение в дефекты',
                     description: 'Общие вопросы дефектоскопии', timeLongHours: 1.0))
 
@@ -99,8 +98,7 @@ abstract class ModelsGenerator {
 
             topics.add(new Topic(orderIndex: 2, title: 'Введение в исправление дефектор сварки',
                     description: 'Общие вопросы методов исправления дефектов сварки', timeLongHours: 5.0))
-        }
-        else if (sectionType == SectionType.HEALTH){
+        } else if (sectionType == SectionType.HEALTH) {
             topics.add(new Topic(orderIndex: 0, title: 'Введение в охрану труда',
                     description: 'Общие вопросы охраны труда при сварке', timeLongHours: 2.0))
 
@@ -113,16 +111,32 @@ abstract class ModelsGenerator {
         return topics
     }
 
-    static Set<Section> getSections(){
+    static Set<Section> getSections(Curriculum curriculum) {
         Set<Section> sections = new HashSet<Section>()
-        sections << new Section(orderIndex: 0, title: 'Дефекты металлопродукции',
-                description:  'Введение в дефекты металлопродукции')
-        sections << new Section(orderIndex: 1, title: 'Сварка',
-                description:  'Введение в основы сварки')
-        sections << new Section(orderIndex: 2, title: 'Охрана труда',
-                description:  'Введение в охрану труда при сварке')
+        (0..2).each{
+            switch (it) {
+                case 0:
+                    def section = new Section(curriculum, 'Дефекты металлопродукции')
+                    section.orderIndex = it
+                    section.description = 'Введение в дефекты металлопродукции'
+                    sections.add(section)
+                    break
+                case 1:
+                    def section = new Section(curriculum, 'Сварка')
+                    section.orderIndex = it
+                    section.description = 'Введение в основы сварки'
+                    sections.add(section)
+                    break
+                case 2:
+                    def section = new Section(curriculum, 'Охрана труда')
+                    section.orderIndex = it
+                    section.description = 'Введение в охрану труда при сварке'
+                    sections.add(section)
+                    break
+            }
 
-        sections.each {section ->
+        }
+        sections.each { section ->
             if (section.orderIndex == 0)
                 section.topics.addAll(getTopics(SectionType.DEFECTS))
             if (section.orderIndex == 1)
@@ -134,31 +148,26 @@ abstract class ModelsGenerator {
         return sections
     }
 
-    static Section getSingleSection(){
-        def section = new Section(orderIndex: 1, title: 'Дефекты металлопродукции',
-                description:  'Введение в дефекты металлопродукции')
+    static Section getSection(Curriculum curriculum) {
+        def section = new Section(curriculum, 'Дефекты металлопродукции')
+        section.orderIndex = 1
+        section.description = 'Введение в дефекты металлопродукции'
         section.topics.addAll(getTopics(SectionType.DEFECTS))
 
         return section
     }
 
-    static Curriculum getCurriculum(){
+    static Curriculum getCurriculumWithoutSections() {
         def curriculum = new Curriculum(title: 'Подготовка 20 часов',
                 description: 'Программа подготовки сварщиков перед аттестацией - 20 часов')
-        curriculum.sections.add(getSections()[0])
-        curriculum.sections.add(getSections()[1])
-        curriculum.sections.add(getSections()[2])
-
-        curriculum.sections.each {it.curriculum = curriculum}
-
         return curriculum
     }
 
-    static Teacher getTeacher(){
+    static Teacher getTeacher() {
         return new Teacher(name: 'Амвросий', secondName: 'Федорович', surname: 'Кац')
     }
 
-    static PersonalProtocol getPersonalProtocol(Welder welder, Journal journal ){
+    static PersonalProtocol getPersonalProtocol(Welder welder, Journal journal) {
         def pProtocol = new PersonalProtocol(welder, journal)
         pProtocol.attestType = AttestType.PRIMARY
         pProtocol.number = '17/001'
@@ -171,35 +180,35 @@ abstract class ModelsGenerator {
         return pProtocol
     }
 
-    static Set<NDTDocument> getNDTDocuments(){
+    static Set<NDTDocument> getNDTDocuments() {
         def docs = new HashSet<NDTDocument>()
-        docs << new NDTDocument( code:  'ДБН В.2.5-20-2001', fullTitle: 'Газоснабжение')
-        docs << new NDTDocument( code:  'НПАОП 0.00-1.59-87', fullTitle: 'Правила устройства и безопасной эксплуатации сосудов, работающих под давлением')
-        docs << new NDTDocument( code:  'ДСТУ-Н Б В.2.5-66:2012', fullTitle: 'Тепловые сети')
+        docs << new NDTDocument(code: 'ДБН В.2.5-20-2001', fullTitle: 'Газоснабжение')
+        docs << new NDTDocument(code: 'НПАОП 0.00-1.59-87', fullTitle: 'Правила устройства и безопасной эксплуатации сосудов, работающих под давлением')
+        docs << new NDTDocument(code: 'ДСТУ-Н Б В.2.5-66:2012', fullTitle: 'Тепловые сети')
         return docs
 
     }
 
-    static NDTDocument getNDTDocument(){
+    static NDTDocument getNDTDocument() {
         getNDTDocuments()[0]
     }
 
-    static Set<Teacher> getTeachers(){
+    static Set<Teacher> getTeachers() {
         def result = new HashSet<Teacher>()
         result << new Teacher(name: 'Амвросий', secondName: 'Федорович', surname: 'Кац')
         result << new Teacher(name: 'Феликс', secondName: 'Давидович', surname: 'Соберицкий')
         result << new Teacher(name: 'Израиль', secondName: 'Аскольдович', surname: 'Новировский')
     }
 
-    static Electrode getElectrode(){
+    static Electrode getElectrode() {
         return new Electrode(type: 'АНО-21')
     }
 
-    static WeldWire getWeldWire(){
+    static WeldWire getWeldWire() {
         return new WeldWire(type: 'св08Г2С')
     }
 
-    static WeldGas getWeldGas(){
+    static WeldGas getWeldGas() {
         return new WeldGas(type: 'Аргон')
     }
 
@@ -207,22 +216,22 @@ abstract class ModelsGenerator {
         new SteelType(type: 'сталь 20', steelGroup: SteelGroup.W01)
     }
 
-    static RadiationTest getRadiationTest(){
+    static RadiationTest getRadiationTest() {
         new RadiationTest(protocolNumber: '17-001', defects: 'ДНО', sensitivity: 0.3)
     }
 
-    static VisualTest getVisualTest(){
+    static VisualTest getVisualTest() {
         new VisualTest(protocolNumber: '17-001', defects: 'ДНО')
     }
 
-    static MechanicalTest getMechanicalTest(){
+    static MechanicalTest getMechanicalTest() {
         new MechanicalTest(protocolNumber: '17-001', clearance: 9.0D)
     }
 
-    static WeldPattern getWeldPattern(PersonalProtocol pp){
+    static WeldPattern getWeldPattern(PersonalProtocol pp) {
         def wp = new WeldPattern(pp)
         wp.mark = '01'
-        wp.diametr = 89.0D
+        wp.diameter = 89.0D
         wp.thickness = 3.0D
         wp.electrode = getElectrode().type
         wp.radiationTest = getRadiationTest()
@@ -242,8 +251,8 @@ abstract class ModelsGenerator {
         return wp
     }
 
-    static CommissionCertification getCommissionCertification(){
-        def result = new CommissionCertification(getTeacher(),getTeacher(), getTeacher(), getTeacher())
+    static CommissionCertification getCommissionCertification(List<Teacher> teachers) {
+        def result = new CommissionCertification(teachers[0], teachers[1], teachers[2], teachers[3])
         return result
     }
 

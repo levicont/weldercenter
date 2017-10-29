@@ -25,7 +25,7 @@ class SteelTypeServiceTest extends GenericServiceTest{
         assert updSteelType instanceof SteelType
         updSteelType.type = 'ст2'
         updSteelType.steelGroup = SteelGroup.W02
-        steelTypeService.save(steelType)
+        steelTypeService.save(updSteelType)
 
         SteelType chkSteelType = steelTypeService.get(STEEL_TYPE_ID)
         assert chkSteelType != null
@@ -45,7 +45,7 @@ class SteelTypeServiceTest extends GenericServiceTest{
         SteelType delSteelType = steelTypeService.get(STEEL_TYPE_ID)
         assert delSteelType != null
         assert delSteelType instanceof SteelType
-        steelTypeService.delete(steelType)
+        steelTypeService.delete(delSteelType)
 
         SteelType chkSteelType = steelTypeService.get(STEEL_TYPE_ID)
         assert chkSteelType == null

@@ -19,6 +19,7 @@ import javax.transaction.UserTransaction
  * JNDI context is bundled with and started by Bitronix.
  * </p>
  */
+@SuppressWarnings("SpellCheckingInspection")
 class TransactionManagerSetup {
 
     public static final String DATASOURCE_NAME = "wcDS"

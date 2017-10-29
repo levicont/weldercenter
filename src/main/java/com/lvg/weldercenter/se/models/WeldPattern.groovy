@@ -1,6 +1,7 @@
 package com.lvg.weldercenter.se.models
 
 import com.lvg.weldercenter.se.cfg.R
+import com.lvg.weldercenter.se.exceptions.WelderCenterModelException
 
 import javax.persistence.*
 
@@ -16,8 +17,8 @@ class WeldPattern implements Serializable{
     @Column(name = 'THICKNESS')
     Double thickness
 
-    @Column(name = 'DIAMETR')
-    Double diametr
+    @Column(name = 'DIAMETER')
+    Double diameter
 
     @Column(name = 'MARK')
     String mark
@@ -69,6 +70,8 @@ class WeldPattern implements Serializable{
     }
 
     WeldPattern(PersonalProtocol personalProtocol){
+        if (personalProtocol== null || personalProtocol.id == null)
+            throw new WelderCenterModelException("PersonalProtocol id must be not null")
         this.personalProtocol = personalProtocol
     }
 

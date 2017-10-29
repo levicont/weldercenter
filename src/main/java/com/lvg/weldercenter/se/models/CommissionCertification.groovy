@@ -1,6 +1,7 @@
 package com.lvg.weldercenter.se.models
 
 import com.lvg.weldercenter.se.cfg.R
+import com.lvg.weldercenter.se.exceptions.WelderCenterModelException
 
 import javax.persistence.Column
 import javax.persistence.Entity
@@ -26,34 +27,34 @@ class CommissionCertification implements Serializable{
 
     @ManyToOne(targetEntity = Teacher.class, optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = 'WELD_SPECIALIST_ID')
-    Teacher weldSpecialist;
+    Teacher weldSpecialist
 
     @ManyToOne(targetEntity = Teacher.class, optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = 'NDT_SPECIALIST_ID')
-    Teacher ndtSpecialist;
+    Teacher ndtSpecialist
 
     @ManyToOne(targetEntity = Teacher.class, optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = 'SAFETY_SPECIALIST_ID')
-    Teacher safetySpecialist;
+    Teacher safetySpecialist
 
     protected CommissionCertification(){}
 
     CommissionCertification(Teacher head, Teacher weldSpecialist, Teacher ndtSpecialist, Teacher safetySpecialist){
 
-        if (head == null)
-            throw new IllegalArgumentException('head of CommissionCertification must be not null')
+        if (head == null || head.id == null)
+            throw new WelderCenterModelException('head of CommissionCertification must be not null')
         else this.head = head
 
-        if (weldSpecialist == null)
-            throw new IllegalArgumentException('weldSpecialist of CommissionCertification must be not null')
+        if (weldSpecialist == null || head.id == null)
+            throw new WelderCenterModelException('weldSpecialist of CommissionCertification must be not null')
         else this.weldSpecialist = weldSpecialist
 
-        if (ndtSpecialist == null)
-            throw new IllegalArgumentException('ndtSpecialist of CommissionCertification must be not null')
+        if (ndtSpecialist == null || head.id == null)
+            throw new WelderCenterModelException('ndtSpecialist of CommissionCertification must be not null')
         else this.ndtSpecialist  = ndtSpecialist
 
-        if (safetySpecialist == null)
-            throw new IllegalArgumentException('safetySpecialist of CommissionCertification must be not null')
+        if (safetySpecialist == null || head.id == null)
+            throw new WelderCenterModelException('safetySpecialist of CommissionCertification must be not null')
         else this.safetySpecialist = safetySpecialist
     }
 

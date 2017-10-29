@@ -24,7 +24,7 @@ class ElectrodeServiceTest extends GenericServiceTest{
         assert updElectrode != null
         assert updElectrode instanceof Electrode
         updElectrode.type = 'УОНИ'
-        electrodeService.save(electrode)
+        electrodeService.save(updElectrode)
 
         Electrode chkElectrode = electrodeService.get(ELECTRODE_ID)
         assert chkElectrode != null
@@ -43,7 +43,7 @@ class ElectrodeServiceTest extends GenericServiceTest{
         Electrode delElectrode = electrodeService.get(ELECTRODE_ID)
         assert delElectrode != null
         assert delElectrode instanceof Electrode
-        electrodeService.delete(electrode)
+        electrodeService.delete(delElectrode)
 
         Electrode chkElectrode = electrodeService.get(ELECTRODE_ID)
         assert chkElectrode == null

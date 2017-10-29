@@ -34,7 +34,7 @@ class WeldPatternTest extends GenericModelTest{
             assert weldPattern1.id != null
             assert weldPattern1.mark == '01'
             assert weldPattern1.electrode == 'АНО-21'
-            assert weldPattern1.diametr == Double.valueOf(89.0)
+            assert weldPattern1.diameter == Double.valueOf(89.0)
             assert weldPattern1.thickness == Double.valueOf(3.0)
             assert !weldPattern1.isHeating
             assert !weldPattern1.isHeatTreatment
@@ -79,7 +79,7 @@ class WeldPatternTest extends GenericModelTest{
             def weldPatternUpd = em.find(WeldPattern.class, WELD_PATTERN_ID)
             weldPatternUpd.mark = '02'
             weldPatternUpd.weldDetail = WeldDetailType.P.value
-            weldPatternUpd.diametr = 0.0
+            weldPatternUpd.diameter = 0.0
             weldPatternUpd.isHeatTreatment = true
             em.persist(weldPatternUpd)
             return em
@@ -89,7 +89,7 @@ class WeldPatternTest extends GenericModelTest{
             def em = EMF.createEntityManager()
             def chkWeldPattern = em.find(WeldPattern.class, WELD_PATTERN_ID)
             assert chkWeldPattern.mark == '02'
-            assert chkWeldPattern.diametr == 0.0
+            assert chkWeldPattern.diameter == 0.0
             assert chkWeldPattern.isHeatTreatment
             assert chkWeldPattern.weldDetail == WeldDetailType.P.value
             return em
@@ -140,7 +140,7 @@ class WeldPatternTest extends GenericModelTest{
         def journal = getJournal()
         journal.id = 100
         def pp = getPersonalProtocol(welder, journal)
-
+        pp.id = 100
         def wp1 = getWeldPattern(pp)
         def wp2 = getWeldPattern(pp)
 
@@ -167,6 +167,7 @@ class WeldPatternTest extends GenericModelTest{
         def journal = getJournal()
         journal.id = 100
         def pp = getPersonalProtocol(welder, journal)
+        pp.id = 100
         def weldPattern = getWeldPattern(pp)
         def wp = weldPattern
 

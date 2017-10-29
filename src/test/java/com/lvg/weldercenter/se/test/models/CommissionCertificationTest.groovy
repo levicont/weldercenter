@@ -1,6 +1,7 @@
 package com.lvg.weldercenter.se.test.models
 
 import com.lvg.weldercenter.se.models.CommissionCertification
+import com.lvg.weldercenter.se.models.Teacher
 import org.junit.Test
 
 class CommissionCertificationTest extends GenericModelTest {
@@ -11,11 +12,10 @@ class CommissionCertificationTest extends GenericModelTest {
         def COMMISSION_ID
         callInTransaction{
             def em = EMF.createEntityManager()
-            CommissionCertification commission = getCommissionCertification()
-            em.persist(commission.head)
-            em.persist(commission.weldSpecialist)
-            em.persist(commission.ndtSpecialist)
-            em.persist(commission.safetySpecialist)
+            def teachers = new ArrayList<Teacher>()
+            (1..4).each {teachers << getTeacher()}
+            teachers.each{em.persist(it)}
+            CommissionCertification commission = getCommissionCertification(teachers)
             em.persist(commission)
             COMMISSION_ID = commission.id
             return em
@@ -43,11 +43,10 @@ class CommissionCertificationTest extends GenericModelTest {
 
         callInTransaction {
             def em = EMF.createEntityManager()
-            CommissionCertification commission = getCommissionCertification()
-            em.persist(commission.head)
-            em.persist(commission.weldSpecialist)
-            em.persist(commission.ndtSpecialist)
-            em.persist(commission.safetySpecialist)
+            def teachers = new ArrayList<Teacher>()
+            (1..4).each {teachers << getTeacher()}
+            teachers.each{em.persist(it)}
+            CommissionCertification commission = getCommissionCertification(teachers)
             em.persist(commission)
             COMMISSION_ID = commission.id
             return em
@@ -82,36 +81,32 @@ class CommissionCertificationTest extends GenericModelTest {
     @Test
     void deleteItemTest() {
         def COMMISSION_ID
-        def insert  = {
+        callInTransaction{
             def em = EMF.createEntityManager()
-            CommissionCertification commission = getCommissionCertification()
-            em.persist(commission.head)
-            em.persist(commission.weldSpecialist)
-            em.persist(commission.ndtSpecialist)
-            em.persist(commission.safetySpecialist)
+            def teachers = new ArrayList<Teacher>()
+            (1..4).each {teachers << getTeacher()}
+            teachers.each{em.persist(it)}
+            CommissionCertification commission = getCommissionCertification(teachers)
             em.persist(commission)
             COMMISSION_ID = commission.id
             return em
         }
-        callInTransaction(insert)
         assert COMMISSION_ID != null
 
         def delCommission = null
-        def delete = {
+        callInTransaction{
             def em = EMF.createEntityManager()
             delCommission = em.find(CommissionCertification.class, COMMISSION_ID)
             em.remove(delCommission)
             return em
         }
-        callInTransaction(delete)
-        def chkComnission = null
-        def find = {
+        def chkCommission = null
+        callInTransaction{
             def em = EMF.createEntityManager()
-            chkComnission = em.find(CommissionCertification.class, COMMISSION_ID)
+            chkCommission = em.find(CommissionCertification.class, COMMISSION_ID)
             return em
         }
-        callInTransaction(find)
-        assert chkComnission == null
+        assert chkCommission == null
 
 
     }

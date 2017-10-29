@@ -22,7 +22,7 @@ class JobServiceTest extends GenericServiceTest{
         assert updJob != null
         assert updJob instanceof Job
         updJob.name = 'сварщик'
-        jobService.save(job)
+        jobService.save(updJob)
 
         Job chkJob = jobService.get(JOB_ID)
         assert chkJob != null

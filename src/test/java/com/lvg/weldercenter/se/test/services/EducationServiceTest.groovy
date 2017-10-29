@@ -23,7 +23,7 @@ class EducationServiceTest extends GenericServiceTest{
         assert updEducation != null
         assert updEducation instanceof Education
         updEducation.education = 'высшее'
-        educationService.save(education)
+        educationService.save(updEducation)
 
         Education chkEducation = educationService.get(EDUCATION_ID)
         assert chkEducation != null
@@ -63,7 +63,6 @@ class EducationServiceTest extends GenericServiceTest{
         Education delEducation = educationService.get(EDUCATION_ID)
         assert delEducation != null
         assert delEducation instanceof Education
-
         educationService.delete(delEducation)
 
         Education chkEducation = educationService.get(EDUCATION_ID)

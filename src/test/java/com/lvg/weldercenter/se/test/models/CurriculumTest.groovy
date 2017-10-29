@@ -14,8 +14,11 @@ class CurriculumTest extends GenericModelTest{
 
         callInTransaction {
             def em = EMF.createEntityManager()
-            Curriculum curriculum = getCurriculum()
+            Curriculum curriculum = getCurriculumWithoutSections()
             em.persist(curriculum)
+            def sections = getSections(curriculum)
+            curriculum.sections.addAll(sections)
+            curriculum.sections.each {em.persist(it)}
             CURRICULUM_ID = curriculum.id
             return em
         }
@@ -29,7 +32,7 @@ class CurriculumTest extends GenericModelTest{
             assert chkCurriculum.sections.size() == 3
             assert chkCurriculum.sections[0].orderIndex == 0
             assert chkCurriculum.sections[2].orderIndex == 2
-            def topicOfFirstSection = curriculum.sections[0].topics
+            def topicOfFirstSection = chkCurriculum.sections[0].topics
             assert topicOfFirstSection.size() == 3
             assert topicOfFirstSection[0].toString() == 'Введение в дефекты'
             assert topicOfFirstSection[0].orderIndex == 0
@@ -47,8 +50,11 @@ class CurriculumTest extends GenericModelTest{
 
         callInTransaction {
             def em = EMF.createEntityManager()
-            Curriculum curriculum = getCurriculum()
+            Curriculum curriculum = getCurriculumWithoutSections()
             em.persist(curriculum)
+            def sections = getSections(curriculum)
+            curriculum.sections.addAll(sections)
+            curriculum.sections.each {em.persist(it)}
             CURRICULUM_ID = curriculum.id
             return em
         }
@@ -86,8 +92,11 @@ class CurriculumTest extends GenericModelTest{
 
         callInTransaction {
             def em = EMF.createEntityManager()
-            Curriculum curriculum = getCurriculum()
+            Curriculum curriculum = getCurriculumWithoutSections()
             em.persist(curriculum)
+            def sections = getSections(curriculum)
+            curriculum.sections.addAll(sections)
+            curriculum.sections.each {em.persist(it)}
             CURRICULUM_ID = curriculum.id
             return em
         }
@@ -116,8 +125,8 @@ class CurriculumTest extends GenericModelTest{
     @Override
     @Test
     void equalsHashCodeTest() {
-        def curriculum2 = getCurriculum()
-        def curriculum1 = getCurriculum()
+        def curriculum2 = getCurriculumWithoutSections()
+        def curriculum1 = getCurriculumWithoutSections()
 
         assert curriculum2 == curriculum1
 
@@ -137,7 +146,7 @@ class CurriculumTest extends GenericModelTest{
     @Override
     @Test
     void toStringTest() {
-        def curriculum = getCurriculum()
+        def curriculum = getCurriculumWithoutSections()
         assert curriculum.toString() == "Подготовка 20 часов"
     }
 }

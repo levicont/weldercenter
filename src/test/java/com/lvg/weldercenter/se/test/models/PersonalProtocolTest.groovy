@@ -25,7 +25,7 @@ class PersonalProtocolTest extends GenericModelTest{
 
             PersonalProtocol pp = getPersonalProtocol(welder,journal)
             pp.ndtDocuments.each {em.persist(it)}
-
+            em.persist(pp)
             def weldPattern = getWeldPattern(pp)
             pp.weldPatterns.add(weldPattern)
 

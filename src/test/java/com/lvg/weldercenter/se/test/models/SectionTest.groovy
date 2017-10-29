@@ -22,8 +22,10 @@ class SectionTest extends GenericModelTest{
     @Override
     @Test
     void equalsHashCodeTest() {
-        def section2 = getSingleSection()
-        def section1 = getSingleSection()
+        def curriculum = getCurriculumWithoutSections()
+        curriculum.id = 100
+        def section2 = getSection(curriculum)
+        def section1 = getSection(curriculum)
 
         assert section2 == section1
 
@@ -42,7 +44,9 @@ class SectionTest extends GenericModelTest{
     @Override
     @Test
     void toStringTest() {
-        def section = getSingleSection()
+        def curriculum = getCurriculumWithoutSections()
+        curriculum.id = 100
+        def section = getSection(curriculum)
         assert section.toString() == "Дефекты металлопродукции"
     }
 }

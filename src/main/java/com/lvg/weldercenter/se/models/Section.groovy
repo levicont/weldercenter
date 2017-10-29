@@ -1,6 +1,7 @@
 package com.lvg.weldercenter.se.models
 
 import com.lvg.weldercenter.se.cfg.R
+import com.lvg.weldercenter.se.exceptions.WelderCenterModelException
 
 import javax.persistence.*
 
@@ -28,6 +29,18 @@ class Section implements Serializable{
     @ElementCollection
     @OrderBy('orderIndex')
     Set<Topic> topics = new LinkedHashSet<>()
+
+    protected Section(){}
+
+    Section(Curriculum curriculum, String title){
+        if (curriculum == null || curriculum.id == null)
+            throw new WelderCenterModelException("Curriculum or it's id must be not null")
+        if (title == null || title.isEmpty())
+            throw new WelderCenterModelException("Title of Section must be not null and not empty")
+
+        this.curriculum = curriculum
+        this.title = title
+    }
 
     boolean equals(o) {
         if (this.is(o)) return true

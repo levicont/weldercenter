@@ -24,7 +24,7 @@ class WeldMethodServiceTest extends GenericServiceTest{
         assert updWeldMethod != null
         assert updWeldMethod instanceof WeldMethod
         updWeldMethod.name = WeldMethodType.GW.weldMethod.name
-        weldMethodService.save(weldMethod)
+        weldMethodService.save(updWeldMethod)
 
         WeldMethod chkWeldMethod = weldMethodService.get(WELD_METHOD_ID)
         assert chkWeldMethod != null

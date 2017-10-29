@@ -23,7 +23,7 @@ class NDTDocumentServiceTest extends GenericServiceTest{
         assert updNDTDocument != null
         assert updNDTDocument instanceof NDTDocument
         updNDTDocument.code = 'НПАОП'
-        ndtDocumentService.save(ndtDocument)
+        ndtDocumentService.save(updNDTDocument)
 
         NDTDocument chkNDTDocument = ndtDocumentService.get(NDT_DOCUMENT_ID)
         assert chkNDTDocument != null
@@ -42,7 +42,7 @@ class NDTDocumentServiceTest extends GenericServiceTest{
         NDTDocument delNDTDocument = ndtDocumentService.get(NDT_DOCUMENT_ID)
         assert delNDTDocument != null
         assert delNDTDocument instanceof NDTDocument
-        ndtDocumentService.delete(ndtDocument)
+        ndtDocumentService.delete(delNDTDocument)
 
         NDTDocument chkNDTDocument = ndtDocumentService.get(NDT_DOCUMENT_ID)
         assert chkNDTDocument == null

@@ -2,6 +2,7 @@ package com.lvg.weldercenter.se.models
 
 import com.lvg.weldercenter.se.cfg.R
 import com.lvg.weldercenter.se.converters.LocalDateConverter
+import com.lvg.weldercenter.se.exceptions.WelderCenterModelException
 
 import javax.persistence.*
 import java.time.LocalDate
@@ -50,8 +51,10 @@ class PersonalProtocol implements Serializable{
     protected PersonalProtocol(){}
 
     PersonalProtocol(Welder welder, Journal journal){
-        if (welder.id == null) throw new IllegalArgumentException('Welder\'s id must be not null' )
-        if (journal.id == null) throw new IllegalArgumentException('Journal\'s id must be not null' )
+        if (welder == null || welder.id == null)
+            throw new WelderCenterModelException('Welder or it\'s id must be not null' )
+        if (journal == null || journal.id == null)
+            throw new WelderCenterModelException('Journal or it\'s id must be not null' )
 
         this.journal = journal
         this.welder = welder

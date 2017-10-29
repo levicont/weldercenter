@@ -43,7 +43,7 @@ class EducationTest extends GenericModelTest{
         callInTransaction {
             def em = EMF.createEntityManager()
             Education educationUpd = em.find(Education.class, EDUCATION_ID)
-            educationUpd.education = 'hight'
+            educationUpd.education = 'high'
             em.persist(educationUpd)
             return em
         }
@@ -51,7 +51,7 @@ class EducationTest extends GenericModelTest{
         callInTransaction {
             def em = EMF.createEntityManager()
             Education chkEducation = em.find(Education.class, EDUCATION_ID)
-            assert chkEducation.education == 'hight'
+            assert chkEducation.education == 'high'
             return em
         }
     }

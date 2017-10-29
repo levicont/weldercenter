@@ -24,7 +24,7 @@ class TeacherServiceTest extends GenericServiceTest{
         assert updTeacher != null
         assert updTeacher instanceof Teacher
         updTeacher.name = 'Петро'
-        teacherService.save(teacher)
+        teacherService.save(updTeacher)
 
         Teacher chkTeacher = teacherService.get(TEACHER_ID)
         assert chkTeacher != null
@@ -44,7 +44,7 @@ class TeacherServiceTest extends GenericServiceTest{
         Teacher delTeacher = teacherService.get(TEACHER_ID)
         assert delTeacher != null
         assert delTeacher instanceof Teacher
-        teacherService.delete(teacher)
+        teacherService.delete(delTeacher)
 
         Teacher chkTeacher = teacherService.get(TEACHER_ID)
         assert chkTeacher == null

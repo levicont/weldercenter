@@ -43,7 +43,7 @@ class WelderServiceTest extends GenericServiceTest{
         Welder delWelder = welderService.get(WELDER_ID)
         assert delWelder != null
         assert delWelder instanceof Welder
-        welderService.delete(welder)
+        welderService.delete(delWelder)
 
         Welder chkWelder = welderService.get(WELDER_ID)
         assert chkWelder == null

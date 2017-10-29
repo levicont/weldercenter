@@ -2,11 +2,12 @@ package com.lvg.weldercenter.se.services.impl
 
 import com.lvg.weldercenter.se.models.Organization
 import com.lvg.weldercenter.se.repositories.OrganizationRepository
+import com.lvg.weldercenter.se.services.OrganizationService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
 @Service
-class OrganizationServiceImpl implements com.lvg.weldercenter.se.services.OrganizationService {
+class OrganizationServiceImpl implements OrganizationService {
 
     @Autowired
     OrganizationRepository repository

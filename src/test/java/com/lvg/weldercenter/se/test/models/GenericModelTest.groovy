@@ -19,7 +19,7 @@ abstract class GenericModelTest extends ModelsGenerator{
     abstract void toStringTest()
 
 
-    private static closeEntiyManager(EntityManager em){
+    private static closeEntityManager(EntityManager em){
         if (em != null && em.isOpen())
             em.close()
     }
@@ -51,7 +51,7 @@ abstract class GenericModelTest extends ModelsGenerator{
         } catch (Exception ex) {
             rollbackTransactionWithException(tx, ex)
         } finally {
-            closeEntiyManager(em)
+            closeEntityManager(em)
         }
     }
 

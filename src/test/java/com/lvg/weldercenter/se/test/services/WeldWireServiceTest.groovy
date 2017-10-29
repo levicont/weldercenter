@@ -23,7 +23,7 @@ class WeldWireServiceTest extends GenericServiceTest{
         assert updWeldWire != null
         assert updWeldWire instanceof WeldWire
         updWeldWire.type = 'СВ08'
-        weldWireService.save(weldWire)
+        weldWireService.save(updWeldWire)
 
         WeldWire chkWeldWire = weldWireService.get(WELD_WIRE_ID)
         assert chkWeldWire != null
@@ -42,7 +42,7 @@ class WeldWireServiceTest extends GenericServiceTest{
         WeldWire delWeldWire = weldWireService.get(WELD_WIRE_ID)
         assert delWeldWire != null
         assert delWeldWire instanceof WeldWire
-        weldWireService.delete(weldWire)
+        weldWireService.delete(delWeldWire)
 
         WeldWire chkWeldWire = weldWireService.get(WELD_WIRE_ID)
         assert chkWeldWire == null

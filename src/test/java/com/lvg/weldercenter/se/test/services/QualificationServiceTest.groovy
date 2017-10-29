@@ -1,20 +1,20 @@
 package com.lvg.weldercenter.se.test.services
 
-import com.lvg.weldercenter.se.models.Qualification;
-import com.lvg.weldercenter.se.services.QualificationService;
-import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
+import com.lvg.weldercenter.se.models.Qualification
+import com.lvg.weldercenter.se.services.QualificationService
+import org.junit.Test
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.transaction.annotation.Transactional
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.*
 @Transactional
-public class QualificationServiceTest extends GenericServiceTest {
+class QualificationServiceTest extends GenericServiceTest {
 
     @Autowired
     QualificationService qualificationService
 
     @Override
-    public void saveTest() {
+    void saveTest() {
         def QUALIFICATION_ID
         def qualification = getQualification()
         qualification = qualificationService.save(qualification)
@@ -25,7 +25,7 @@ public class QualificationServiceTest extends GenericServiceTest {
         assert updQualification != null
         assert updQualification instanceof Qualification
         updQualification.type = 'сварщик'
-        qualificationService.save(qualification)
+        qualificationService.save(updQualification)
 
         Qualification chkQualification = qualificationService.get(QUALIFICATION_ID)
         assert chkQualification != null
@@ -34,7 +34,7 @@ public class QualificationServiceTest extends GenericServiceTest {
     }
 
     @Override
-    public void deleteTest() {
+    void deleteTest() {
         def QUALIFICATION_ID
         def qualification = getQualification()
         qualification = qualificationService.save(qualification)
@@ -44,7 +44,7 @@ public class QualificationServiceTest extends GenericServiceTest {
         Qualification delQualification = qualificationService.get(QUALIFICATION_ID)
         assert delQualification != null
         assert delQualification instanceof Qualification
-        qualificationService.delete(qualification)
+        qualificationService.delete(delQualification)
 
         Qualification chkQualification = qualificationService.get(QUALIFICATION_ID)
         assert chkQualification == null
@@ -52,7 +52,7 @@ public class QualificationServiceTest extends GenericServiceTest {
     }
 
     @Override
-    public void getTest() {
+    void getTest() {
         def QUALIFICATION_ID
         def qualification = getQualification()
         qualification = qualificationService.save(qualification)
@@ -65,7 +65,7 @@ public class QualificationServiceTest extends GenericServiceTest {
     }
 
     @Override
-    public void getAllTest() {
+    void getAllTest() {
         def QUALIFICATION_ID
         def qualification = getQualification()
         qualification = qualificationService.save(qualification)
