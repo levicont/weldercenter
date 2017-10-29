@@ -31,7 +31,7 @@ import com.lvg.weldercenter.se.models.Welder
 
 import java.time.LocalDate
 
-class ModelsGenerator {
+abstract class ModelsGenerator {
 
     static Organization getOrganization(){
         return new Organization(name: 'IBM', address: 'New-York', phone: '(0595)466-15-59')
@@ -178,6 +178,10 @@ class ModelsGenerator {
         docs << new NDTDocument( code:  'ДСТУ-Н Б В.2.5-66:2012', fullTitle: 'Тепловые сети')
         return docs
 
+    }
+
+    static NDTDocument getNDTDocument(){
+        getNDTDocuments()[0]
     }
 
     static Set<Teacher> getTeachers(){
