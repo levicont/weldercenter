@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="950.0" style="-fx-background-color: linear-gradient(to bottom, #aaccff, #cceeFF);" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.lvg.weldercenter.se.ui.controllers.MainFrameController">
+    <top>
+        <MenuBar id="mainMenuBar" BorderPane.alignment="CENTER">
+            <menus>
+                <Menu id="mmMainData" mnemonicParsing="false" text="Данные">
+                    <items>
+                        <MenuItem id="miWelders" fx:id="miWelders" mnemonicParsing="false"  text="Сварщики" />
+                        <MenuItem id="miJournals" mnemonicParsing="false" text="Журналы" />
+                        <MenuItem id="miProtocols" mnemonicParsing="false"  text="Протоколы" />
+                        <SeparatorMenuItem mnemonicParsing="false" />
+                        <MenuItem id="miExit" fx:id="miExit" mnemonicParsing="false" text="Выход" />
+                    </items>
+                </Menu>
+                <Menu id="mmCatalog" mnemonicParsing="false" text="Справочники">
+                    <items>
+                        <Menu id="menuWeldPattern" mnemonicParsing="false" text="Аттестационные образцы">
+                            <items>
+                                <MenuItem id="miWeldDetail" fx:id="miWeldDetails" mnemonicParsing="false" text="Типы образцов" />
+                                <MenuItem id="miPatternDiameter" fx:id="miDiameters" mnemonicParsing="false"  text="Диаметры" />
+                                <MenuItem id="miPatternThickness" fx:id="miThicknesses" mnemonicParsing="false"  text="Толщины" />
+                                <MenuItem id="miSteelType" fx:id="miSteelTypes" mnemonicParsing="false"  text="Типы сталей" />
+                            </items>
+                        </Menu>
+                        <Menu id="menuEducationAndEtc" mnemonicParsing="false" text="Образование и пр.">
+                            <items>
+                                <MenuItem id="miEducation" fx:id="miEducations" mnemonicParsing="false"  text="Образования" />
+                                <MenuItem id="miQualification" fx:id="miQualifications" mnemonicParsing="false"  text="Квалификации" />
+                                <MenuItem id="miJob" fx:id="miJobs" mnemonicParsing="false"  text="Должности" />
+                            </items>
+                        </Menu>
+                        <Menu id="menuWeld" mnemonicParsing="false" text="Сварка">
+                            <items>
+                                <MenuItem id="miWeldMethod" fx:id="miWeldMethods" mnemonicParsing="false"  text="Медоты сварки" />
+                                <MenuItem id="miElectrode" fx:id="miElectrodes" mnemonicParsing="false"  text="Электроды" />
+                                <MenuItem id="miWeldWire" fx:id="miWeldWires" mnemonicParsing="false"  text="Сварочная проволока" />
+                                <MenuItem id="miWeldGas" fx:id="miWeldGases" mnemonicParsing="false"  text="Сварочный газ" />
+                                <MenuItem id="miWeldPosition" fx:id="miWeldPositions" mnemonicParsing="false"  text="Положения при сварке" />
+                            </items>
+                        </Menu>
+                        <SeparatorMenuItem mnemonicParsing="false" />
+                        <MenuItem mnemonicParsing="false"  text="Организации" />
+                        <MenuItem id="miCommission" mnemonicParsing="false"  text="Комиссия" />
+                        <MenuItem id="miNDTDocument" mnemonicParsing="false"  text="Нормативные документы" />
+                        <MenuItem mnemonicParsing="false"  text="Программы подготовки" />
+                    </items>
+                </Menu>
+                <Menu id="mmHelp" mnemonicParsing="false" text="Помощь">
+                    <items>
+                        <MenuItem id="miAbout" mnemonicParsing="false" text="О программе" />
+                    </items>
+                </Menu>
+            </menus>
+        </MenuBar>
+    </top>
+    <center>
+        <BorderPane fx:id="logoPane" prefHeight="200.0" prefWidth="200.0">
+            <center>
+                <Label fx:id="lbAppTitle" opacity="0.4" style="-fx-background-color: #bbddff;" text="АТТЕСТАЦИОННЫЙ ЦЕНТР СВАРЩИКОВ" textAlignment="CENTER" BorderPane.alignment="CENTER">
+
+                </Label>
+            </center>
+        </BorderPane>
+    </center>
+</BorderPane>

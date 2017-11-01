@@ -1,10 +1,10 @@
 package com.lvg.weldercenter.se
 
+import com.lvg.weldercenter.se.ui.ApplicationFX
 import org.springframework.boot.CommandLineRunner
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.context.annotation.ComponentScan
-import org.springframework.transaction.annotation.Transactional
 
 @SpringBootApplication
 @ComponentScan(basePackages = 'com.lvg.weldercenter.se, com.lvg.weldercenter.se.test')
@@ -14,8 +14,8 @@ class Application implements CommandLineRunner{
         SpringApplication.run(Application.class, args)
     }
 
-    @Transactional
     @Override
     void run(String... strings) throws Exception {
+        javafx.application.Application.launch(ApplicationFX.class, strings)
     }
 }
