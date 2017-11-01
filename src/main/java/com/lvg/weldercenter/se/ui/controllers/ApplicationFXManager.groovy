@@ -42,6 +42,10 @@ class ApplicationFXManager {
     private static PropertiesController propertiesController
 
 
+    static getMainFrameFXMLLoader(){
+        MAIN_FRAME_LOADER
+    }
+
     static Parent getMainFrame() {
         if (mainFrameParent == null) {
             try {
