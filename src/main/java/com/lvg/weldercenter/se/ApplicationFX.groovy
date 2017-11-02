@@ -1,4 +1,4 @@
-package com.lvg.weldercenter.se.ui
+package com.lvg.weldercenter.se
 
 import com.lvg.weldercenter.se.ui.controllers.ApplicationFXManager
 import javafx.application.Application
