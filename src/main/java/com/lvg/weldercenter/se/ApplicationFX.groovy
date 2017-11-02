@@ -1,6 +1,8 @@
 package com.lvg.weldercenter.se
 
 import com.lvg.weldercenter.se.ui.controllers.ApplicationFXManager
+import com.lvg.weldercenter.se.ui.preloader.ApplicationPreloaderFX
+import com.sun.javafx.application.LauncherImpl
 import javafx.application.Application
 import javafx.scene.Parent
 import javafx.scene.Scene
@@ -20,7 +22,7 @@ class ApplicationFX extends Application{
     private Parent rootNode
 
     static void main(String[] args) {
-        launch(ApplicationFX.class, args)
+        LauncherImpl.launchApplication(ApplicationFX.class, ApplicationPreloaderFX.class, args)
     }
 
     @Override
