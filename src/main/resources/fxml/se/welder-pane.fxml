@@ -3,12 +3,12 @@
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<BorderPane fx:id="mainWelderPane" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.lvg.weldercenter.ui.control.WelderController">
+<BorderPane fx:id="mainWelderPane" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.lvg.weldercenter.se.ui.controllers.WelderController">
     <bottom>
         <HBox prefHeight="32.0" prefWidth="600.0" spacing="10.0" BorderPane.alignment="CENTER">
             <children>
-                <Button fx:id="btCloseWelderPane" mnemonicParsing="false" onAction="#closeWelderPane" text="Закрыть" />
-                <Button fx:id="btUpdate" mnemonicParsing="false" onAction="#refreshWelderTable" text="Обновить" />
+                <Button fx:id="btCloseWelderPane" mnemonicParsing="false"  text="Закрыть" />
+                <Button fx:id="btUpdate" mnemonicParsing="false"  text="Обновить" />
             </children>
             <padding>
                 <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
@@ -40,13 +40,13 @@
                             <children>
                                 <ToolBar prefHeight="30.0" prefWidth="200.0">
                                     <items>
-                                        <Button fx:id="btFirst" mnemonicParsing="false" onAction="#selectFirst" text="|&lt;" />
-                                        <Button fx:id="btPrev" mnemonicParsing="false" onAction="#selectPrev" text="&lt;&lt;" />
-                                        <Button fx:id="btNew" mnemonicParsing="false" onAction="#addNewWelder" text="&gt;*" />
-                                        <Button fx:id="btNext" mnemonicParsing="false" onAction="#selectNext" text="&gt;&gt;" />
-                                        <Button fx:id="btLast" mnemonicParsing="false" onAction="#selectLast" text="&gt;|" />
-                                        <Button mnemonicParsing="false" onAction="#copyWelder" text="копия" />
-                                        <ToggleButton fx:id="btShowSearchToolBar" mnemonicParsing="false" onAction="#initSearch" text="Поиск" />
+                                        <Button fx:id="btFirst" mnemonicParsing="false"  text="|&lt;" />
+                                        <Button fx:id="btPrev" mnemonicParsing="false"  text="&lt;&lt;" />
+                                        <Button fx:id="btNew" mnemonicParsing="false"  text="&gt;*" />
+                                        <Button fx:id="btNext" mnemonicParsing="false"  text="&gt;&gt;" />
+                                        <Button fx:id="btLast" mnemonicParsing="false"  text="&gt;|" />
+                                        <Button mnemonicParsing="false"  text="копия" />
+                                        <ToggleButton fx:id="btShowSearchToolBar" mnemonicParsing="false"  text="Поиск" />
                                     </items>
                                 </ToolBar>
                                 <ToolBar fx:id="toolBarSearch" prefHeight="40.0" prefWidth="200.0">
@@ -121,22 +121,22 @@
                                                 <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                             </GridPane.margin>
                                         </Label>
-                                        <TextField fx:id="txfSurname" onAction="#submitData" GridPane.columnIndex="1">
+                                        <TextField fx:id="txfSurname"  GridPane.columnIndex="1">
                                             <GridPane.margin>
                                                 <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                             </GridPane.margin>
                                         </TextField>
-                                        <TextField fx:id="txfName" onAction="#submitData" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                        <TextField fx:id="txfName"  GridPane.columnIndex="1" GridPane.rowIndex="1">
                                             <GridPane.margin>
                                                 <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                             </GridPane.margin>
                                         </TextField>
-                                        <TextField fx:id="txfSecname" onAction="#submitData" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                        <TextField fx:id="txfSecname"  GridPane.columnIndex="1" GridPane.rowIndex="2">
                                             <GridPane.margin>
                                                 <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                             </GridPane.margin>
                                         </TextField>
-                                        <DatePicker fx:id="dpBirthday" onAction="#onChangeWelderComponents" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                        <DatePicker fx:id="dpBirthday"  GridPane.columnIndex="1" GridPane.rowIndex="3">
                                             <GridPane.margin>
                                                 <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                             </GridPane.margin>
@@ -165,7 +165,7 @@
                                                 <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                             </GridPane.margin>
                                         </Label>
-                                        <TextField fx:id="txfDocNumber" onAction="#submitData" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                                        <TextField fx:id="txfDocNumber"  GridPane.columnIndex="1" GridPane.rowIndex="5">
                                             <GridPane.margin>
                                                 <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                             </GridPane.margin>
@@ -175,7 +175,7 @@
                                                 <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                             </GridPane.margin>
                                         </Label>
-                                        <DatePicker fx:id="dpDateBegin" onAction="#onChangeWelderComponents" GridPane.columnIndex="1" GridPane.rowIndex="6">
+                                        <DatePicker fx:id="dpDateBegin"  GridPane.columnIndex="1" GridPane.rowIndex="6">
                                             <GridPane.margin>
                                                 <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                             </GridPane.margin>
@@ -205,52 +205,52 @@
                                                 <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                             </GridPane.margin>
                                         </Label>
-                                        <ComboBox fx:id="cbEducation" onAction="#onChangeWelderComponents" prefWidth="165.0" GridPane.columnIndex="1" GridPane.rowIndex="7">
+                                        <ComboBox fx:id="cbEducation"  prefWidth="165.0" GridPane.columnIndex="1" GridPane.rowIndex="7">
                                             <GridPane.margin>
                                                 <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                             </GridPane.margin>
                                         </ComboBox>
-                                        <ComboBox fx:id="cbQualification" onAction="#onChangeWelderComponents" prefWidth="165.0" GridPane.columnIndex="1" GridPane.rowIndex="8">
+                                        <ComboBox fx:id="cbQualification"  prefWidth="165.0" GridPane.columnIndex="1" GridPane.rowIndex="8">
                                             <GridPane.margin>
                                                 <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                             </GridPane.margin>
                                         </ComboBox>
-                                        <ComboBox fx:id="cbOrganization" editable="true" onAction="#onChangeWelderComponents" prefWidth="195.0" GridPane.columnIndex="1" GridPane.rowIndex="9">
+                                        <ComboBox fx:id="cbOrganization" editable="true"  prefWidth="195.0" GridPane.columnIndex="1" GridPane.rowIndex="9">
                                             <GridPane.margin>
                                                 <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                             </GridPane.margin>
                                         </ComboBox>
-                                        <ComboBox fx:id="cbJob" onAction="#onChangeWelderComponents" prefWidth="165.0" GridPane.columnIndex="1" GridPane.rowIndex="10">
+                                        <ComboBox fx:id="cbJob"  prefWidth="165.0" GridPane.columnIndex="1" GridPane.rowIndex="10">
                                             <GridPane.margin>
                                                 <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                             </GridPane.margin>
                                         </ComboBox>
-                                        <TextField fx:id="txfAddress" onAction="#submitData" GridPane.columnIndex="1" GridPane.rowIndex="11">
+                                        <TextField fx:id="txfAddress"  GridPane.columnIndex="1" GridPane.rowIndex="11">
                                             <GridPane.margin>
                                                 <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                             </GridPane.margin>
                                         </TextField>
-                              <Button mnemonicParsing="false" onAction="#saveNewOrganization" text="+" GridPane.columnIndex="1" GridPane.rowIndex="9">
+                              <Button mnemonicParsing="false"  text="+" GridPane.columnIndex="1" GridPane.rowIndex="9">
                                  <GridPane.margin>
                                     <Insets bottom="8.0" left="203.0" top="8.0" />
                                  </GridPane.margin>
                               </Button>
-                              <TextField fx:id="txfEducation" onAction="#submitData" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="7">
+                              <TextField fx:id="txfEducation"  visible="false" GridPane.columnIndex="1" GridPane.rowIndex="7">
                                  <GridPane.margin>
                                     <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                  </GridPane.margin>
                               </TextField>
-                              <TextField fx:id="txfQualification" onAction="#submitData" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="8">
+                              <TextField fx:id="txfQualification"  visible="false" GridPane.columnIndex="1" GridPane.rowIndex="8">
                                  <GridPane.margin>
                                     <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                  </GridPane.margin>
                               </TextField>
-                              <TextField fx:id="txfOrganization" onAction="#submitData" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="9">
+                              <TextField fx:id="txfOrganization"  visible="false" GridPane.columnIndex="1" GridPane.rowIndex="9">
                                  <GridPane.margin>
                                     <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                  </GridPane.margin>
                               </TextField>
-                              <TextField fx:id="txfJob" onAction="#submitData" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="10">
+                              <TextField fx:id="txfJob"  visible="false" GridPane.columnIndex="1" GridPane.rowIndex="10">
                                  <GridPane.margin>
                                     <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                  </GridPane.margin>
@@ -270,15 +270,15 @@
     <right>
         <VBox spacing="10.0" BorderPane.alignment="CENTER">
             <children>
-                <Button fx:id="btAdd" mnemonicParsing="false" onAction="#addNewWelder" text="Добавить" />
+                <Button fx:id="btAdd" mnemonicParsing="false"  text="Добавить" />
                 <Button fx:id="btEdit" mnemonicParsing="false" text="Изменить" />
-                <Button fx:id="btDelete" mnemonicParsing="false" onAction="#deleteWelders" text="Удалить" />
+                <Button fx:id="btDelete" mnemonicParsing="false"  text="Удалить" />
                 <Separator>
                     <VBox.margin>
                         <Insets top="12.0" />
                     </VBox.margin>
                 </Separator>
-                <Button fx:id="btSave" contentDisplay="CENTER" mnemonicParsing="false" onAction="#saveWelder" text="Сохранить">
+                <Button fx:id="btSave" contentDisplay="CENTER" mnemonicParsing="false"  text="Сохранить">
                     <VBox.margin>
                         <Insets />
                     </VBox.margin>

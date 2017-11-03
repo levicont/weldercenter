@@ -1,9 +1,7 @@
 package com.lvg.weldercenter.se.ui.controllers
 
-class ProtocolController extends GenericFXController{
+import org.springframework.stereotype.Component
 
-    @Override
-    void initialize(URL location, ResourceBundle resources) {
-
-    }
+@Component
+class ProtocolController {
 }
