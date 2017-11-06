@@ -2,6 +2,7 @@ package com.lvg.weldercenter.se.test.services
 
 import com.lvg.weldercenter.se.models.Welder
 import com.lvg.weldercenter.se.services.WelderService
+import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.transaction.annotation.Transactional
 
@@ -74,5 +75,18 @@ class WelderServiceTest extends GenericServiceTest{
         assert list != null
         assert list instanceof List
         assert list.size() == 1
+    }
+
+    @Test
+    void countTest() {
+        def WELDER_ID
+        def welder = getWelder()
+        welder = welderService.save(welder)
+        WELDER_ID = welder.id
+        assert WELDER_ID != null
+
+        def count = welderService.count()
+        assert count != null
+        assert count == 1
     }
 }

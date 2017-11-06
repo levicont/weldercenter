@@ -1,5 +1,7 @@
 package com.lvg.weldercenter.se.ui.controllers
 
+import com.lvg.weldercenter.se.ui.services.LoadingWeldersService
+import com.lvg.weldercenter.se.ui.views.LoadingView
 import javafx.event.ActionEvent
 import javafx.fxml.FXML
 import javafx.fxml.FXMLLoader
@@ -7,11 +9,15 @@ import javafx.scene.Parent
 import javafx.scene.control.Label
 import javafx.scene.control.MenuItem
 import javafx.scene.layout.BorderPane
+import javafx.stage.Stage
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
 @Component
 class MainFrameController{
+
+    @Autowired
+    LoadingWeldersService loadingWeldersService
 
     @FXML
     private MenuItem miDiameters
@@ -67,11 +73,31 @@ class MainFrameController{
     @Autowired
     FXMLLoaderProvider fxmlLoaderProvider
 
+    private Stage loadingWeldersStage
+
     @FXML
     void showWelderPane(ActionEvent event) {
-        //TODO this have to occur in an other thread
         FXMLLoader loader = fxmlLoaderProvider.getFXMLLoader(FXMLLoaderProvider.WELDERS_PANE_FXML_PATH)
         Parent welderPane = loader.load()
         mainPane.center = welderPane
+        getLoadingWeldersStage()
+        startLoadingWeldersService()
+
+    }
+
+    private Stage getLoadingWeldersStage(){
+        if (loadingWeldersStage != null)
+            return loadingWeldersStage
+        loadingWeldersStage = new LoadingView(mainPane.getScene().getWindow(),loadingWeldersService)
+        return loadingWeldersStage
+    }
+
+    private void startLoadingWeldersService(){
+        if(loadingWeldersService.onceStarted){
+            loadingWeldersService.restart()
+        }else {
+            loadingWeldersService.onceStarted = true
+            loadingWeldersService.start()
+        }
     }
 }

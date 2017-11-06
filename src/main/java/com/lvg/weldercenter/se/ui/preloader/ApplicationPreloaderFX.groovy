@@ -1,15 +1,12 @@
 package com.lvg.weldercenter.se.ui.preloader
 
-import com.lvg.weldercenter.se.ui.controllers.PreloaderController
-import javafx.application.Preloader.StateChangeNotification.Type
 import javafx.application.Preloader
+import javafx.application.Preloader.StateChangeNotification.Type
 import javafx.fxml.FXMLLoader
 import javafx.scene.Scene
-import javafx.scene.control.ProgressBar
 import javafx.scene.layout.BorderPane
 import javafx.stage.Stage
 import javafx.stage.StageStyle
-
 
 class ApplicationPreloaderFX extends Preloader{
 

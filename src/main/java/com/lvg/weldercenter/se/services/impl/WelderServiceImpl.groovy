@@ -31,4 +31,9 @@ class WelderServiceImpl implements WelderService{
     void delete(Welder welder) {
         repository.delete(welder)
     }
+
+    @Override
+    long count() {
+        return repository.count()
+    }
 }
