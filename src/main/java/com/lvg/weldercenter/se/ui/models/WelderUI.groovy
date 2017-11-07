@@ -1,14 +1,10 @@
 package com.lvg.weldercenter.se.ui.models
 
 import com.lvg.weldercenter.se.models.Welder
-import javafx.beans.property.LongProperty
-import javafx.beans.property.ObjectProperty
-import javafx.beans.property.SimpleLongProperty
-import javafx.beans.property.SimpleObjectProperty
-import javafx.beans.property.SimpleStringProperty
-import javafx.beans.property.StringProperty
+import javafx.beans.property.*
 
 import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 class WelderUI extends GenericModelUI{
 
@@ -26,8 +22,6 @@ class WelderUI extends GenericModelUI{
     final StringProperty qualification = new SimpleStringProperty()
     final StringProperty job = new SimpleStringProperty()
     final ObjectProperty<OrganizationUI> organization = new SimpleObjectProperty<OrganizationUI>()
-    final StringProperty birthdayFormat = new SimpleStringProperty()
-    final StringProperty organizationName = new SimpleStringProperty()
 
 
     WelderUI(Welder welder){
@@ -44,8 +38,7 @@ class WelderUI extends GenericModelUI{
         this.qualification.set(welder.qualification)
         this.job.set(welder.job)
         this.organization.set(welder.organization != null ? new OrganizationUI(welder.organization) : null)
-        this.organizationName.bind(organization.asString())
-        this.birthdayFormat.bind(birthday.asString('dd.MM.yyyy'))
+
     }
 
     Welder getWelder(){
@@ -82,5 +75,62 @@ class WelderUI extends GenericModelUI{
     @Override
     String toString() {
         return getWelder().toString()
+    }
+
+    Long getId() {
+        return id.get()
+    }
+
+    String getName() {
+        return name.get()
+    }
+
+    String getSurname() {
+        return surname.get()
+    }
+
+    String getSecondName() {
+        return secondName.get()
+    }
+
+    LocalDate getBirthday() {
+        return birthday.get()
+    }
+
+    LocalDate getDateBegin() {
+        return dateBegin.get()
+    }
+
+    String getDocumentNumber() {
+        return documentNumber.get()
+    }
+
+    String getAddress() {
+        return address.get()
+    }
+
+    String getEducation() {
+        return education.get()
+    }
+
+    String getQualification() {
+        return qualification.get()
+    }
+
+    String getJob() {
+        return job.get()
+    }
+
+    OrganizationUI getOrganization() {
+        return organization.get()
+    }
+
+    String getBirthdayFormat() {
+        return birthday.get() == null ? '': birthday.get().format(DateTimeFormatter.ofPattern('dd.MM.yyyy'))
+    }
+
+    String getOrganizationName() {
+
+        return organization.get()==null? '':organization.get().name.get()
     }
 }

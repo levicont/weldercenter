@@ -94,4 +94,9 @@ class WelderTableController implements Initializable{
         welderTableView.itemsProperty().bindBidirectional(weldersRepository.allWelders)
 
     }
+
+    void refreshTable(){
+        initTable()
+        weldersRepository.updateWeldersList()
+    }
 }
