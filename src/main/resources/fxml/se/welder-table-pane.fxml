@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane id="welderTablePane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.lvg.weldercenter.se.ui.controllers.WelderTableController">
+    <center>
+        <TableView fx:id="welderTableView" BorderPane.alignment="CENTER">
+            <columns>
+                <TableColumn fx:id="id" prefWidth="40.0" text="id" visible="false" />
+                <TableColumn fx:id="surname" prefWidth="102.0" text="Фамилия" />
+                <TableColumn fx:id="name" prefWidth="100.0" text="Имя" />
+                <TableColumn fx:id="secname" prefWidth="110.0" text="Отчество" />
+                <TableColumn fx:id="birthdayFormat" minWidth="-Infinity" prefWidth="120.0" text="Дата рождения" />
+                <TableColumn fx:id="job" prefWidth="100.0" text="Должность" />
+            <TableColumn fx:id="organizationName" prefWidth="100.0" text="Организация" />
+            </columns>
+         <BorderPane.margin>
+            <Insets left="8.0" right="8.0" top="8.0" />
+         </BorderPane.margin>
+        </TableView>
+    </center>
+
+    <top>
+        <Label text="Сварщики" textFill="#f25300" BorderPane.alignment="CENTER">
+         <BorderPane.margin>
+            <Insets bottom="10.0" top="10.0" />
+         </BorderPane.margin></Label>
+    </top>
+    <bottom>
+        <VBox fx:id="vboxToolBars" BorderPane.alignment="CENTER">
+            <children>
+                <ToolBar prefHeight="30.0" prefWidth="200.0">
+                    <items>
+                        <Button fx:id="btFirst" mnemonicParsing="false" text="|&lt;" />
+                        <Button fx:id="btPrev" mnemonicParsing="false" text="&lt;&lt;" />
+                        <Button fx:id="btNew" mnemonicParsing="false" text="&gt;*" />
+                        <Button fx:id="btNext" mnemonicParsing="false" text="&gt;&gt;" />
+                        <Button fx:id="btLast" mnemonicParsing="false" text="&gt;|" />
+                        <Button mnemonicParsing="false" text="копия" />
+                        <ToggleButton fx:id="btShowSearchToolBar" mnemonicParsing="false" text="Поиск" />
+                    </items>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+                </ToolBar>
+                <ToolBar fx:id="toolBarSearch" prefHeight="30.0" prefWidth="200.0">
+                    <items>
+                        <TextField fx:id="txfSearch" prefHeight="25.0" prefWidth="230.0" />
+                        <Button mnemonicParsing="false" text="найти" />
+                    </items>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+                </ToolBar>
+            </children>
+        </VBox>
+    </bottom>
+</BorderPane>

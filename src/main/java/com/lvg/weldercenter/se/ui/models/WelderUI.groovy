@@ -26,6 +26,8 @@ class WelderUI extends GenericModelUI{
     final StringProperty qualification = new SimpleStringProperty()
     final StringProperty job = new SimpleStringProperty()
     final ObjectProperty<OrganizationUI> organization = new SimpleObjectProperty<OrganizationUI>()
+    final StringProperty birthdayFormat = new SimpleStringProperty()
+    final StringProperty organizationName = new SimpleStringProperty()
 
 
     WelderUI(Welder welder){
@@ -42,6 +44,8 @@ class WelderUI extends GenericModelUI{
         this.qualification.set(welder.qualification)
         this.job.set(welder.job)
         this.organization.set(welder.organization != null ? new OrganizationUI(welder.organization) : null)
+        this.organizationName.bind(organization.asString())
+        this.birthdayFormat.bind(birthday.asString('dd.MM.yyyy'))
     }
 
     Welder getWelder(){
