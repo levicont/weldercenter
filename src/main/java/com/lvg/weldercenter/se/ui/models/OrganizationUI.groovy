@@ -6,6 +6,8 @@ import javafx.beans.property.SimpleLongProperty
 import javafx.beans.property.SimpleStringProperty
 import javafx.beans.property.StringProperty
 
+import static com.lvg.weldercenter.se.ui.models.ModelsConstants.*
+
 class OrganizationUI {
 
     private final Organization organization
@@ -17,14 +19,14 @@ class OrganizationUI {
 
     OrganizationUI(Organization organization){
         this.organization = organization
-        this.id.set(organization.id)
+        this.id.set(organization.id == null ? NULL_ID_FIELD_DEFAULT : organization.id)
         this.name.set(organization.name)
         this.address.set(organization.address)
         this.phone.set(organization.phone)
     }
 
     Organization getOrganization() {
-        organization.name = this.name.get()
+        organization.name = this.name
         organization.address = this.address
         organization.phone = this.phone
 

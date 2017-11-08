@@ -2,18 +2,14 @@ package com.lvg.weldercenter.se.ui.repositories.impl
 
 import com.lvg.weldercenter.se.models.Organization
 import com.lvg.weldercenter.se.models.Welder
+import com.lvg.weldercenter.se.ui.listeners.welderspane.LoadWeldersChangeListener
 import com.lvg.weldercenter.se.ui.models.WelderUI
 import com.lvg.weldercenter.se.ui.repositories.WeldersRepository
 import com.lvg.weldercenter.se.ui.services.LoadingWeldersService
-import javafx.application.Platform
-import javafx.beans.Observable
 import javafx.beans.property.ObjectProperty
 import javafx.beans.property.SimpleObjectProperty
-import javafx.beans.value.ChangeListener
 import javafx.collections.FXCollections
 import javafx.collections.ObservableList
-import javafx.concurrent.Worker
-import javafx.util.Callback
 import org.apache.log4j.Logger
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
@@ -35,6 +31,9 @@ class WeldersReposotoryImpl implements WeldersRepository{
     @Autowired
     LoadingWeldersService loadingWeldersService
 
+    @Autowired
+    LoadWeldersChangeListener changeStateServiceListener
+
     WeldersReposotoryImpl(){
        allWelders.add(new WelderUI(getWelder()))
     }
@@ -53,17 +52,12 @@ class WeldersReposotoryImpl implements WeldersRepository{
             loadingWeldersService.start()
             loadingWeldersService.onceStarted = true
         }
-        loadingWeldersService.stateProperty().addListener((ChangeListener){observable, oldValue, newValue->
-            if (newValue == Worker.State.SUCCEEDED){
-                def list = loadingWeldersService.getValue()
-                LOGGER.debug("Welders list was updated - list: $list")
-                //TODO here we have a bug
-                //allWelders.addAll(list.findAll())
-                LOGGER.debug("Welders list was updated")
-            }
-        })
+        loadingWeldersService.stateProperty().addListener(changeStateServiceListener)
+    }
 
-
+    @Override
+    void updateWeldersList(ObservableList<WelderUI> newWelderList) {
+        this.allWelders.setAll(newWelderList)
     }
 
     ObservableList<WelderUI> showAllWelders(){

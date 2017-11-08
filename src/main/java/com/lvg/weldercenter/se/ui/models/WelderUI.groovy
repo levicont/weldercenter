@@ -6,6 +6,8 @@ import javafx.beans.property.*
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
+import static com.lvg.weldercenter.se.ui.models.ModelsConstants.*
+
 class WelderUI extends GenericModelUI{
 
     final Welder welder
@@ -26,7 +28,7 @@ class WelderUI extends GenericModelUI{
 
     WelderUI(Welder welder){
         this.welder = welder
-        this.id.set(welder.id)
+        this.id.set(welder.id == null ? NULL_ID_FIELD_DEFAULT : welder.id)
         this.name.set(welder.name)
         this.surname.set(welder.surname)
         this.secondName.set(welder.secondName)
@@ -43,16 +45,16 @@ class WelderUI extends GenericModelUI{
 
     Welder getWelder(){
         welder.id = id.get()
-        welder.name = name
-        welder.surname = surname
-        welder.secondName = secondName
+        welder.name = name.get()
+        welder.surname = surname.get()
+        welder.secondName = secondName.get()
         welder.birthday = birthday.get()
         welder.dateBegin = dateBegin.get()
-        welder.documentNumber = documentNumber
-        welder.address = welder.address
-        welder.education = welder.education
-        welder.qualification = welder.qualification
-        welder.job = welder.job
+        welder.documentNumber = documentNumber.get()
+        welder.address = address.get()
+        welder.education = education.get()
+        welder.qualification = qualification.get()
+        welder.job = job.get()
         welder.organization = (organization.get() != null ? organization.get().getOrganization() : null)
         return welder
     }
@@ -78,47 +80,47 @@ class WelderUI extends GenericModelUI{
     }
 
     Long getId() {
-        return id.get()
+        return getWelder().id
     }
 
     String getName() {
-        return name.get()
+        return getWelder().name
     }
 
     String getSurname() {
-        return surname.get()
+        return getWelder().surname
     }
 
     String getSecondName() {
-        return secondName.get()
+        return getWelder().secondName
     }
 
     LocalDate getBirthday() {
-        return birthday.get()
+        return getWelder().birthday
     }
 
     LocalDate getDateBegin() {
-        return dateBegin.get()
+        return getWelder().dateBegin
     }
 
     String getDocumentNumber() {
-        return documentNumber.get()
+        return getWelder().documentNumber
     }
 
     String getAddress() {
-        return address.get()
+        return getWelder().address
     }
 
     String getEducation() {
-        return education.get()
+        return getWelder().education
     }
 
     String getQualification() {
-        return qualification.get()
+        return getWelder().qualification
     }
 
     String getJob() {
-        return job.get()
+        return getWelder().job
     }
 
     OrganizationUI getOrganization() {
@@ -126,11 +128,72 @@ class WelderUI extends GenericModelUI{
     }
 
     String getBirthdayFormat() {
-        return birthday.get() == null ? '': birthday.get().format(DateTimeFormatter.ofPattern('dd.MM.yyyy'))
+        def birthday = getWelder().birthday
+        return birthday == null ? NULL_FIELD_PLACEHOLDER:
+                birthday.format(DateTimeFormatter.ofPattern(DATE_FORMAT_PATTERN))
+    }
+
+    String getDateBeginFormat(){
+        def dateBegin = getWelder().dateBegin
+        return dateBegin == null ? NULL_FIELD_PLACEHOLDER:
+                dateBegin.format(DateTimeFormatter.ofPattern(DATE_FORMAT_PATTERN))
     }
 
     String getOrganizationName() {
-
-        return organization.get()==null? '':organization.get().name.get()
+        return organization.get()==null? NULL_FIELD_PLACEHOLDER:
+                organization.get().name.get()
     }
+
+    void setName(String name){
+        this.name.set(name)
+        this.welder.name = name
+    }
+
+    void setSurname(String surname){
+        this.welder.surname = surname
+        this.surname.set(surname)
+    }
+
+
+    void setSecondName(String secondName){
+        this.welder.secondName = secondName
+        this.secondName.set(secondName)
+    }
+
+    void setBirthday(LocalDate birthday){
+        this.welder.birthday = birthday
+        this.birthday.set(birthday)
+    }
+
+    void setDateBegin(LocalDate dateBegin){
+        this.welder.dateBegin = dateBegin
+        this.dateBegin.set(dateBegin)
+    }
+
+    void setDocumentNumber(String documentNumber){
+        this.welder.documentNumber = documentNumber
+        this.documentNumber.set(documentNumber)
+    }
+
+    void setAddress(String address){
+        this.welder.address = address
+        this.address.set(address)
+    }
+
+    void setEducation(String education){
+        this.welder.education = education
+        this.education.set(education)
+    }
+
+    void setQualification(String qualification){
+        this.welder.qualification = qualification
+        this.qualification.set(qualification)
+    }
+
+    void setJob(String job){
+        this.welder.job = job
+        this.job.set(job)
+    }
+
+
 }
