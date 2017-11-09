@@ -1,4 +1,4 @@
-package com.lvg.weldercenter.se.ui.models
+package com.lvg.weldercenter.se.ui.dto
 
 interface ModelsConstants {
     String DATE_FORMAT_PATTERN = 'dd.MM.yyyy'

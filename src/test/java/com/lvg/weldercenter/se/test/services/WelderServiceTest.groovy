@@ -2,9 +2,12 @@ package com.lvg.weldercenter.se.test.services
 
 import com.lvg.weldercenter.se.models.Welder
 import com.lvg.weldercenter.se.services.WelderService
+import com.lvg.weldercenter.se.ui.dto.ModelsConstants
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.transaction.annotation.Transactional
+
+import java.time.format.DateTimeFormatter
 
 @Transactional
 class WelderServiceTest extends GenericServiceTest{
@@ -88,5 +91,49 @@ class WelderServiceTest extends GenericServiceTest{
         def count = welderService.count()
         assert count != null
         assert count == 1
+    }
+
+    @Test
+    void getWeldersForTableViewTest(){
+        def WELDER_ID
+        def welder = getWelder()
+        welder = welderService.save(welder)
+        WELDER_ID = welder.id
+        assert WELDER_ID != null
+
+        List list = welderService.getWeldersForTableView()
+        assert list != null
+        assert list.size() == 1
+        def chkWelderList = list[0]
+        assert chkWelderList != null
+        assert chkWelderList[0] != null && chkWelderList[0] == WELDER_ID
+        assert chkWelderList[1] != null && chkWelderList[1] == welder.name
+        assert chkWelderList[2] != null && chkWelderList[2] == welder.surname
+        assert chkWelderList[3] != null && chkWelderList[3] == welder.secondName
+        assert chkWelderList[4] != null && chkWelderList[4] == welder.birthday
+        assert chkWelderList[5] != null && chkWelderList[5] == welder.organization.name
+
+    }
+
+    @Test
+    void getAllWeldersTableViewDTOTest(){
+        def WELDER_ID
+        def welder = getWelder()
+        welder = welderService.save(welder)
+        WELDER_ID = welder.id
+        assert WELDER_ID != null
+
+        List list = welderService.getAllWeldersTableViewDTO()
+        assert list != null
+        assert list.size() == 1
+        def chkWelderList = list[0]
+        assert chkWelderList != null
+        assert chkWelderList.id.get() == WELDER_ID
+        assert chkWelderList.name.get() == welder.name
+        assert chkWelderList.surname.get()  == welder.surname
+        assert chkWelderList.secondName.get() == welder.secondName
+        assert chkWelderList.birthDay.get() == welder.birthday.format(DateTimeFormatter.ofPattern(ModelsConstants.DATE_FORMAT_PATTERN))
+        assert chkWelderList.organization.get() == welder.organization.name
+
     }
 }

@@ -23,11 +23,19 @@ class LoadingView extends Stage{
     private ProgressBar progressBar = new ProgressBar(-1)
 
 
-
     LoadingView(Window owner, Worker worker){
         this.owner = owner
         addUI()
         bindElements(worker)
+    }
+
+    void bindToWorker(Worker worker){
+        bindElements(worker)
+    }
+
+    void initUI(Window window){
+        this.owner = window
+        addUI()
     }
 
     private void addUI(){

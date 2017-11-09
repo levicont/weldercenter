@@ -1,4 +1,4 @@
-package com.lvg.weldercenter.se.ui.models
+package com.lvg.weldercenter.se.ui.dto
 
 import javafx.beans.property.LongProperty
 import javafx.beans.property.SimpleLongProperty

@@ -1,4 +1,4 @@
-package com.lvg.weldercenter.se.ui.models
+package com.lvg.weldercenter.se.ui.dto
 
 import com.lvg.weldercenter.se.models.Organization
 import javafx.beans.property.LongProperty
@@ -6,7 +6,7 @@ import javafx.beans.property.SimpleLongProperty
 import javafx.beans.property.SimpleStringProperty
 import javafx.beans.property.StringProperty
 
-import static com.lvg.weldercenter.se.ui.models.ModelsConstants.*
+import static com.lvg.weldercenter.se.ui.dto.ModelsConstants.*
 
 class OrganizationUI {
 

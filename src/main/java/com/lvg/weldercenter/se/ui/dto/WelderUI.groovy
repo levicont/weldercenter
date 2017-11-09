@@ -1,4 +1,4 @@
-package com.lvg.weldercenter.se.ui.models
+package com.lvg.weldercenter.se.ui.dto
 
 import com.lvg.weldercenter.se.models.Welder
 import javafx.beans.property.*
@@ -6,7 +6,7 @@ import javafx.beans.property.*
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
-import static com.lvg.weldercenter.se.ui.models.ModelsConstants.*
+import static com.lvg.weldercenter.se.ui.dto.ModelsConstants.*
 
 class WelderUI extends GenericModelUI<Welder> {
 

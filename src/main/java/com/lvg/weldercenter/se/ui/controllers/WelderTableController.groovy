@@ -1,6 +1,6 @@
 package com.lvg.weldercenter.se.ui.controllers
 
-import com.lvg.weldercenter.se.ui.models.WelderUI
+import com.lvg.weldercenter.se.ui.dto.WelderTableViewDTO
 import com.lvg.weldercenter.se.ui.repositories.WeldersRepository
 import javafx.fxml.FXML
 import javafx.fxml.Initializable
@@ -50,28 +50,25 @@ class WelderTableController implements Initializable{
 
 
     @FXML
-    private TableView<WelderUI> welderTableView
+    private TableView<WelderTableViewDTO> welderTableView
 
     @FXML
-    private TableColumn<WelderUI, Long> id
+    private TableColumn<WelderTableViewDTO, Long> id
 
     @FXML
-    private TableColumn<WelderUI, String> organizationName
+    private TableColumn<WelderTableViewDTO, String> organizationName
 
     @FXML
-    private TableColumn<WelderUI, String> surname
+    private TableColumn<WelderTableViewDTO, String> surname
 
     @FXML
-    private TableColumn<WelderUI, String> name
+    private TableColumn<WelderTableViewDTO, String> name
 
     @FXML
-    private TableColumn<WelderUI, String> job
+    private TableColumn<WelderTableViewDTO, String> birthdayFormat
 
     @FXML
-    private TableColumn<WelderUI, String> birthdayFormat
-
-    @FXML
-    private TableColumn<WelderUI, String> secname
+    private TableColumn<WelderTableViewDTO, String> secname
 
     @FXML
     private Button btFirst
@@ -83,20 +80,19 @@ class WelderTableController implements Initializable{
 
     void initTable(){
         LOGGER.debug("INITIALIZING WelderPane")
-        id.setCellValueFactory(new PropertyValueFactory<WelderUI,Long>('id'))
-        name.setCellValueFactory(new PropertyValueFactory<WelderUI,String>('name'))
-        surname.setCellValueFactory(new PropertyValueFactory<WelderUI,String>('surname'))
-        secname.setCellValueFactory(new PropertyValueFactory<WelderUI,String>('secondName'))
-        job.setCellValueFactory(new PropertyValueFactory<WelderUI,String>('job'))
-        birthdayFormat.setCellValueFactory(new PropertyValueFactory<WelderUI,String>('birthdayFormat'))
-        organizationName.setCellValueFactory(new PropertyValueFactory<WelderUI,String>('organizationName'))
-        welderTableView.setItems(weldersRepository.allWelders.get())
-        welderTableView.itemsProperty().bindBidirectional(weldersRepository.allWelders)
+        id.setCellValueFactory(new PropertyValueFactory<WelderTableViewDTO,Long>('id'))
+        name.setCellValueFactory(new PropertyValueFactory<WelderTableViewDTO,String>('name'))
+        surname.setCellValueFactory(new PropertyValueFactory<WelderTableViewDTO,String>('surname'))
+        secname.setCellValueFactory(new PropertyValueFactory<WelderTableViewDTO,String>('secondName'))
+        birthdayFormat.setCellValueFactory(new PropertyValueFactory<WelderTableViewDTO,String>('birthday'))
+        organizationName.setCellValueFactory(new PropertyValueFactory<WelderTableViewDTO,String>('organization'))
+        welderTableView.setItems(weldersRepository.allWeldersForTableView.get())
+       // welderTableView.itemsProperty().bindBidirectional(weldersRepository.allWelders)
 
     }
 
     void refreshTable(){
         initTable()
-        weldersRepository.updateWeldersList()
+        weldersRepository.updateWeldersListForTableView()
     }
 }

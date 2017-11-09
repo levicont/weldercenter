@@ -1,10 +1,17 @@
 package com.lvg.weldercenter.se.ui.controllers
 
+import com.lvg.weldercenter.se.ui.services.LoadingWeldersForTableViewService
 import com.lvg.weldercenter.se.ui.services.LoadingWeldersService
+import com.lvg.weldercenter.se.ui.services.OnceStartedFlag
 import com.lvg.weldercenter.se.ui.views.LoadingView
+import com.lvg.weldercenter.se.ui.views.LoadingViewFactory
+import javafx.application.Platform
+import javafx.concurrent.Service
+import javafx.concurrent.Worker
 import javafx.event.ActionEvent
 import javafx.fxml.FXML
 import javafx.fxml.FXMLLoader
+import javafx.fxml.Initializable
 import javafx.scene.Parent
 import javafx.scene.control.Label
 import javafx.scene.control.MenuItem
@@ -14,10 +21,14 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
 @Component
-class MainFrameController{
+class MainFrameController implements Initializable{
 
     @Autowired
     LoadingWeldersService loadingWeldersService
+    @Autowired
+    LoadingViewFactory loadingViewFactory
+    @Autowired
+    LoadingWeldersForTableViewService loadingWeldersForTableViewService
 
     @FXML
     private MenuItem miDiameters
@@ -73,31 +84,35 @@ class MainFrameController{
     @Autowired
     FXMLLoaderProvider fxmlLoaderProvider
 
-    private Stage loadingWeldersStage
+    private LoadingView loadingView
+
+    @Override
+    void initialize(URL location, ResourceBundle resources) {
+
+    }
 
     @FXML
     void showWelderPane(ActionEvent event) {
         FXMLLoader loader = fxmlLoaderProvider.getFXMLLoader(FXMLLoaderProvider.WELDERS_PANE_FXML_PATH)
         Parent welderPane = loader.load()
         mainPane.center = welderPane
-        getLoadingWeldersStage()
-        startLoadingWeldersService()
+        loadingViewInit(loadingWeldersForTableViewService)
+        startService(loadingWeldersForTableViewService)
 
     }
 
-    private Stage getLoadingWeldersStage(){
-        if (loadingWeldersStage != null)
-            return loadingWeldersStage
-        loadingWeldersStage = new LoadingView(mainPane.getScene().getWindow(),loadingWeldersService)
-        return loadingWeldersStage
+    Stage loadingViewInit(Worker worker){
+        loadingView = loadingViewFactory.getLoadingView(mainPane.getScene().getWindow(), worker)
+        return loadingView
     }
 
-    private void startLoadingWeldersService(){
-        if(loadingWeldersService.onceStarted){
-            loadingWeldersService.restart()
+    private static void startService(OnceStartedFlag service){
+        def s = (Service)service
+        if(service.isStartedOnce()){
+            s.restart()
         }else {
-            loadingWeldersService.onceStarted = true
-            loadingWeldersService.start()
+            service.setStartedOnceFlag(true)
+            s.start()
         }
     }
 }

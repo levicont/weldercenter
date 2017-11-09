@@ -1,8 +1,7 @@
 package com.lvg.weldercenter.se.ui.tasks.welders
 
-import com.lvg.weldercenter.se.models.Welder
 import com.lvg.weldercenter.se.services.WelderService
-import com.lvg.weldercenter.se.ui.dto.WelderUI
+import com.lvg.weldercenter.se.ui.dto.WelderTableViewDTO
 import javafx.collections.FXCollections
 import javafx.collections.ObservableList
 import javafx.concurrent.Task
@@ -11,15 +10,16 @@ import org.springframework.context.annotation.Scope
 import org.springframework.stereotype.Component
 
 @Component
-@Scope(value = 'prototype')
-class AllWelderTask extends Task<ObservableList<WelderUI>> implements TaskConstants{
+@Scope('prototype')
+class AllWeldersTableViewTask extends Task<ObservableList<WelderTableViewDTO>> implements TaskConstants{
 
     @Autowired
     WelderService welderService
 
+
     @Override
-    protected ObservableList<WelderUI> call() throws Exception {
-        ObservableList<WelderUI> results = FXCollections.observableArrayList()
+    protected ObservableList<WelderTableViewDTO> call() throws Exception {
+        ObservableList<WelderTableViewDTO> results = FXCollections.observableArrayList()
 
         long count = welderService.count()
         long counter = 0
@@ -27,22 +27,16 @@ class AllWelderTask extends Task<ObservableList<WelderUI>> implements TaskConsta
 
 
         updateTitle(ALL_WELDERS_TASK_TITLE_MESSAGE)
-        for(Welder welder : welderService.getAll()){
+        for(WelderTableViewDTO welder : welderService.getAllWeldersTableViewDTO()){
             if (this.isCancelled()){
                 break
             }
-            def welderUI = new WelderUI(welder)
-            results.add(welderUI)
+            results.add(welder)
             counter++
 
             updateMessage("Added $counter welders to the list")
             updateValue(FXCollections.unmodifiableObservableList(results))
             updateProgress(counter, count)
-        }
-        try {
-            Thread.sleep(5000)
-        }catch (InterruptedException ex){
-            ex.printStackTrace()
         }
         return results
     }
