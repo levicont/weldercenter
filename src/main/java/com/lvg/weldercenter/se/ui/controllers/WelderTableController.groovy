@@ -65,10 +65,10 @@ class WelderTableController implements Initializable{
     private TableColumn<WelderTableViewDTO, String> name
 
     @FXML
-    private TableColumn<WelderTableViewDTO, String> birthdayFormat
+    private TableColumn<WelderTableViewDTO, String> birthday
 
     @FXML
-    private TableColumn<WelderTableViewDTO, String> secname
+    private TableColumn<WelderTableViewDTO, String> secondName
 
     @FXML
     private Button btFirst
@@ -83,8 +83,8 @@ class WelderTableController implements Initializable{
         id.setCellValueFactory(new PropertyValueFactory<WelderTableViewDTO,Long>('id'))
         name.setCellValueFactory(new PropertyValueFactory<WelderTableViewDTO,String>('name'))
         surname.setCellValueFactory(new PropertyValueFactory<WelderTableViewDTO,String>('surname'))
-        secname.setCellValueFactory(new PropertyValueFactory<WelderTableViewDTO,String>('secondName'))
-        birthdayFormat.setCellValueFactory(new PropertyValueFactory<WelderTableViewDTO,String>('birthday'))
+        secondName.setCellValueFactory(new PropertyValueFactory<WelderTableViewDTO,String>('secondName'))
+        birthday.setCellValueFactory(new PropertyValueFactory<WelderTableViewDTO,String>('birthday'))
         organizationName.setCellValueFactory(new PropertyValueFactory<WelderTableViewDTO,String>('organization'))
         welderTableView.setItems(weldersRepository.allWeldersForTableView.get())
        // welderTableView.itemsProperty().bindBidirectional(weldersRepository.allWelders)

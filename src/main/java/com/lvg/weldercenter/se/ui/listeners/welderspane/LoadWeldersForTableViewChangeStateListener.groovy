@@ -23,11 +23,13 @@ class LoadWeldersForTableViewChangeStateListener implements ChangeListener<Worke
     @Override
     void changed(ObservableValue<? extends Worker.State> observable, Worker.State oldValue, Worker.State newValue) {
         if (newValue == Worker.State.SUCCEEDED){
+            LOGGER.debug("-----LISTENER-START----"+getClass().simpleName)
             def list = loadingService.getValue()
             LOGGER.debug("Welders list was updated - list: $list")
             weldersRepository.updateWeldersListForTableView(list)
             loadingService.stateProperty().removeListener(this)
             LOGGER.debug("Welders list was updated")
+            LOGGER.debug("-----LISTENER-END----"+getClass().simpleName)
         }
     }
 }

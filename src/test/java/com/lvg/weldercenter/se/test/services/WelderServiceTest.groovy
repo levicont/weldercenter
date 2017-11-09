@@ -132,7 +132,7 @@ class WelderServiceTest extends GenericServiceTest{
         assert chkWelderList.name.get() == welder.name
         assert chkWelderList.surname.get()  == welder.surname
         assert chkWelderList.secondName.get() == welder.secondName
-        assert chkWelderList.birthDay.get() == welder.birthday.format(DateTimeFormatter.ofPattern(ModelsConstants.DATE_FORMAT_PATTERN))
+        assert chkWelderList.birthday.get() == welder.birthday.format(DateTimeFormatter.ofPattern(ModelsConstants.DATE_FORMAT_PATTERN))
         assert chkWelderList.organization.get() == welder.organization.name
 
     }

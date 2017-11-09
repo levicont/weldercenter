@@ -28,6 +28,6 @@ class LoadingWeldersForTableViewService extends Service<ObservableList<WelderTab
 
     @Override
     void setStartedOnceFlag(boolean startedOnce) {
-        onceStarted - startedOnce
+        onceStarted = startedOnce
     }
 }
