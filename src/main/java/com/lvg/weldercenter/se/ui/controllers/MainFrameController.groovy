@@ -1,12 +1,10 @@
 package com.lvg.weldercenter.se.ui.controllers
 
+import com.lvg.weldercenter.se.ui.listeners.welderspane.LoadWeldersForTableViewChangeStateListener
 import com.lvg.weldercenter.se.ui.services.LoadingWeldersForTableViewService
-import com.lvg.weldercenter.se.ui.services.LoadingWeldersService
-import com.lvg.weldercenter.se.ui.services.OnceStartedFlag
+import com.lvg.weldercenter.se.ui.utils.ServiceUtils
 import com.lvg.weldercenter.se.ui.views.LoadingView
 import com.lvg.weldercenter.se.ui.views.LoadingViewFactory
-import javafx.application.Platform
-import javafx.concurrent.Service
 import javafx.concurrent.Worker
 import javafx.event.ActionEvent
 import javafx.fxml.FXML
@@ -24,11 +22,12 @@ import org.springframework.stereotype.Component
 class MainFrameController implements Initializable{
 
     @Autowired
-    LoadingWeldersService loadingWeldersService
-    @Autowired
     LoadingViewFactory loadingViewFactory
     @Autowired
     LoadingWeldersForTableViewService loadingWeldersForTableViewService
+    @Autowired
+    LoadWeldersForTableViewChangeStateListener loadWeldersForTableViewChangeStateListener
+
 
     @FXML
     private MenuItem miDiameters
@@ -97,22 +96,17 @@ class MainFrameController implements Initializable{
         Parent welderPane = loader.load()
         mainPane.center = welderPane
         loadingViewInit(loadingWeldersForTableViewService)
-        startService(loadingWeldersForTableViewService)
+        ServiceUtils.startService(loadingWeldersForTableViewService)
 
     }
 
     Stage loadingViewInit(Worker worker){
         loadingView = loadingViewFactory.getLoadingView(mainPane.getScene().getWindow(), worker)
+        worker.stateProperty().addListener(loadWeldersForTableViewChangeStateListener)
         return loadingView
     }
 
-    private static void startService(OnceStartedFlag service){
-        def s = (Service)service
-        if(service.isStartedOnce()){
-            s.restart()
-        }else {
-            service.setStartedOnceFlag(true)
-            s.start()
-        }
+    LoadingView getLoadingView(Worker worker) {
+        loadingViewFactory.getLoadingView(mainPane.getScene().getWindow(), worker)
     }
 }

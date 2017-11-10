@@ -50,18 +50,18 @@ class AllWelderTask extends Task<ObservableList<WelderUI>> implements TaskConsta
     @Override
     protected void succeeded() {
         super.succeeded()
-        updateMessage(ALL_WELDERS_TASK_SUCCESS_MESSAGE)
+        updateMessage(TASK_SUCCESS_MESSAGE)
     }
 
     @Override
     protected void cancelled() {
         super.cancelled()
-        updateMessage(ALL_WELDERS_TASK_CANCELED_MESSAGE)
+        updateMessage(TASK_CANCELED_MESSAGE)
     }
 
     @Override
     protected void failed() {
         super.failed()
-        updateMessage(ALL_WELDERS_TASK_FAIL_MESSAGE)
+        updateMessage(TASK_FAIL_MESSAGE)
     }
 }

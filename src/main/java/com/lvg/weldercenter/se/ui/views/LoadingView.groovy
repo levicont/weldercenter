@@ -70,19 +70,5 @@ class LoadingView extends Stage {
     private void bindElements(Worker worker) {
         lbLoadingMessage.textProperty().bind(worker.titleProperty())
         progressBar.progressProperty().bind(worker.progressProperty())
-        worker.stateProperty().addListener(new ChangeListener<Worker.State>() {
-            @Override
-            void changed(ObservableValue<? extends Worker.State> observable, Worker.State oldValue, Worker.State newValue) {
-                if (newValue == Worker.State.SUCCEEDED) {
-                    hide()
-                    LOGGER.debug("worker state is $newValue hidding stage")
-                } else if (newValue == Worker.State.RUNNING || newValue == Worker.State.SCHEDULED) {
-                    show()
-                    LOGGER.debug("worker state is $newValue showing stage")
-                }
-                LOGGER.debug("worker state is $newValue stage is showing: " + isShowing())
-
-            }
-        })
     }
 }

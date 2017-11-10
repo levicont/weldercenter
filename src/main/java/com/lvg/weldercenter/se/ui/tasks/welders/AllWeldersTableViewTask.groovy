@@ -25,7 +25,6 @@ class AllWeldersTableViewTask extends Task<ObservableList<WelderTableViewDTO>> i
         long counter = 0
 
 
-
         updateTitle(ALL_WELDERS_TASK_TITLE_MESSAGE)
         for(WelderTableViewDTO welder : welderService.getAllWeldersTableViewDTO()){
             if (this.isCancelled()){
@@ -44,18 +43,18 @@ class AllWeldersTableViewTask extends Task<ObservableList<WelderTableViewDTO>> i
     @Override
     protected void succeeded() {
         super.succeeded()
-        updateMessage(ALL_WELDERS_TASK_SUCCESS_MESSAGE)
+        updateMessage(TASK_SUCCESS_MESSAGE)
     }
 
     @Override
     protected void cancelled() {
         super.cancelled()
-        updateMessage(ALL_WELDERS_TASK_CANCELED_MESSAGE)
+        updateMessage(TASK_CANCELED_MESSAGE)
     }
 
     @Override
     protected void failed() {
         super.failed()
-        updateMessage(ALL_WELDERS_TASK_FAIL_MESSAGE)
+        updateMessage(TASK_FAIL_MESSAGE)
     }
 }

@@ -1,7 +1,12 @@
 package com.lvg.weldercenter.se.ui.controllers
 
 import com.lvg.weldercenter.se.ui.dto.WelderTableViewDTO
+import com.lvg.weldercenter.se.ui.dto.WelderUI
+import com.lvg.weldercenter.se.ui.factories.LineNumbersCellFactory
+import com.lvg.weldercenter.se.ui.listeners.welderspane.WeldersTableViewEventHandler
 import com.lvg.weldercenter.se.ui.repositories.WeldersRepository
+import javafx.event.Event
+import javafx.event.EventType
 import javafx.fxml.FXML
 import javafx.fxml.Initializable
 import javafx.scene.control.Button
@@ -23,6 +28,8 @@ class WelderTableController implements Initializable{
 
     @Autowired
     WeldersRepository weldersRepository
+    @Autowired
+    WeldersTableViewEventHandler weldersTableViewEventHandler
 
     @FXML
     private TextField txfSearch
@@ -56,6 +63,9 @@ class WelderTableController implements Initializable{
     private TableColumn<WelderTableViewDTO, Long> id
 
     @FXML
+    private TableColumn<WelderTableViewDTO, WelderTableViewDTO> lineNumber
+
+    @FXML
     private TableColumn<WelderTableViewDTO, String> organizationName
 
     @FXML
@@ -81,18 +91,23 @@ class WelderTableController implements Initializable{
     void initTable(){
         LOGGER.debug("INITIALIZING WelderPane")
         id.setCellValueFactory(new PropertyValueFactory<WelderTableViewDTO,Long>('id'))
+        lineNumber.setCellFactory(new LineNumbersCellFactory<WelderTableViewDTO, WelderTableViewDTO>())
         name.setCellValueFactory(new PropertyValueFactory<WelderTableViewDTO,String>('name'))
         surname.setCellValueFactory(new PropertyValueFactory<WelderTableViewDTO,String>('surname'))
         secondName.setCellValueFactory(new PropertyValueFactory<WelderTableViewDTO,String>('secondName'))
         birthday.setCellValueFactory(new PropertyValueFactory<WelderTableViewDTO,String>('birthday'))
         organizationName.setCellValueFactory(new PropertyValueFactory<WelderTableViewDTO,String>('organization'))
         welderTableView.setItems(weldersRepository.allWeldersForTableView.get())
-       // welderTableView.itemsProperty().bindBidirectional(weldersRepository.allWelders)
+        welderTableView.addEventHandler(Event.ANY, weldersTableViewEventHandler)
 
     }
 
     void refreshTable(){
         initTable()
         weldersRepository.updateWeldersListForTableView()
+    }
+
+    TableView<WelderTableViewDTO> getWeldersTableView(){
+        return welderTableView
     }
 }

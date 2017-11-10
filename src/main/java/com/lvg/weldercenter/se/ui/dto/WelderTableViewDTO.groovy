@@ -54,4 +54,9 @@ class WelderTableViewDTO {
     String getOrganization() {
         return organization.get()
     }
+
+    @Override
+    String toString() {
+        return "${id.get()} ${name.get()} ${secondName.get()} ${surname.get()}"
+    }
 }
