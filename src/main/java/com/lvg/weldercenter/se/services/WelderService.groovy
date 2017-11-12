@@ -7,4 +7,5 @@ interface WelderService extends GenericService<Welder>{
     long count()
     List<Object[]> getWeldersForTableView()
     List<WelderTableViewDTO> getAllWeldersTableViewDTO()
+    Welder getFull(Long id)
 }

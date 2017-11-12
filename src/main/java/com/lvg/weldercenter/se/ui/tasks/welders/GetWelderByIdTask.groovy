@@ -12,6 +12,7 @@ import org.hibernate.Hibernate
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Scope
 import org.springframework.stereotype.Component
+import org.springframework.transaction.annotation.Transactional
 
 @Component
 @Scope('prototype')
@@ -40,8 +41,8 @@ class GetWelderByIdTask extends Task<WelderUI>{
 
 
         updateTitle(GET_WELDER_BY_ID_TASK_TITLE_MESSAGE)
-        Welder welder = welderService.get(welderDTO.getId())
-        welder.organization = organizationService.get(welder.organization.id)
+        Welder welder = welderService.getFull(welderDTO.getId())
+        //welder.organization = organizationService.get(welder.organization.id)
         LOGGER.debug("---WELDER-FOUND: ${welder}")
         LOGGER.debug("---WELDER-HAS-ORGANIZATION: ${welder.organization}")
         WelderUI result = new WelderUI(welder)
