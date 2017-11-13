@@ -1,12 +1,10 @@
 package com.lvg.weldercenter.se.ui.controllers
 
 import com.lvg.weldercenter.se.ui.dto.WelderTableViewDTO
-import com.lvg.weldercenter.se.ui.dto.WelderUI
 import com.lvg.weldercenter.se.ui.factories.LineNumbersCellFactory
 import com.lvg.weldercenter.se.ui.listeners.welderspane.WeldersTableViewEventHandler
-import com.lvg.weldercenter.se.ui.repositories.WeldersRepository
+import com.lvg.weldercenter.se.ui.repositories.WelderDTORepository
 import javafx.event.Event
-import javafx.event.EventType
 import javafx.fxml.FXML
 import javafx.fxml.Initializable
 import javafx.scene.control.Button
@@ -27,7 +25,7 @@ class WelderTableController implements Initializable{
     private static final Logger LOGGER = Logger.getLogger(WelderTableController.class)
 
     @Autowired
-    WeldersRepository weldersRepository
+    WelderDTORepository weldersRepository
     @Autowired
     WeldersTableViewEventHandler weldersTableViewEventHandler
 

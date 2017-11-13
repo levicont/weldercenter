@@ -2,45 +2,35 @@ package com.lvg.weldercenter.se.ui.repositories.impl
 
 import com.lvg.weldercenter.se.models.Organization
 import com.lvg.weldercenter.se.models.Welder
+import com.lvg.weldercenter.se.ui.dto.WelderDTO
 import com.lvg.weldercenter.se.ui.dto.WelderTableViewDTO
-import com.lvg.weldercenter.se.ui.listeners.welderspane.LoadWeldersChangeListener
-import com.lvg.weldercenter.se.ui.dto.WelderUI
 import com.lvg.weldercenter.se.ui.listeners.welderspane.LoadWeldersForTableViewChangeStateListener
-import com.lvg.weldercenter.se.ui.repositories.WeldersRepository
+import com.lvg.weldercenter.se.ui.repositories.WelderDTORepository
 import com.lvg.weldercenter.se.ui.services.LoadingWeldersForTableViewService
-import com.lvg.weldercenter.se.ui.services.LoadingWeldersService
 import javafx.beans.property.ObjectProperty
 import javafx.beans.property.SimpleObjectProperty
 import javafx.collections.FXCollections
 import javafx.collections.ObservableList
-import org.apache.log4j.Logger
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
 import java.time.LocalDate
 
 @Component
-class WeldersReposotoryImpl implements WeldersRepository{
-    private static final Logger LOGGER = Logger.getLogger(WeldersReposotoryImpl.class)
+class WeldersReposotoryImpl implements WelderDTORepository{
 
-    private ObservableList<WelderUI> allWelders =
+    private ObservableList<WelderDTO> allWelders =
             FXCollections.observableArrayList()
     private ObservableList<WelderTableViewDTO> allWeldersTableViewDTO = FXCollections.observableArrayList()
 
     private final ObjectProperty<ObservableList<WelderTableViewDTO>> allWeldersTableViewDTOProperty =
             new SimpleObjectProperty<>(allWeldersTableViewDTO)
-    private final ObjectProperty<ObservableList<WelderUI>> allWeldersProperty =
-            new SimpleObjectProperty<ObservableList<WelderUI>>(allWelders)
+    private final ObjectProperty<ObservableList<WelderDTO>> allWeldersProperty =
+            new SimpleObjectProperty<ObservableList<WelderDTO>>(allWelders)
 
-
-
-    @Autowired
-    LoadingWeldersService loadingWeldersService
     @Autowired
     LoadingWeldersForTableViewService loadingWeldersForTableViewService
 
-    @Autowired
-    LoadWeldersChangeListener changeStateServiceListener
     @Autowired
     LoadWeldersForTableViewChangeStateListener loadWeldersForTableViewChangeStateListener
 
@@ -48,25 +38,8 @@ class WeldersReposotoryImpl implements WeldersRepository{
       allWeldersTableViewDTO.add(getWelderDTO())
     }
 
-
-
     @Override
-    ObjectProperty<ObservableList<WelderUI>> getAllWelders() {
-        return allWeldersProperty
-    }
-
-    void updateWeldersList(){
-        if (loadingWeldersService.isStartedOnce())
-            loadingWeldersService.restart()
-        else{
-            loadingWeldersService.start()
-            loadingWeldersService.setStartedOnceFlag(true)
-        }
-        loadingWeldersService.stateProperty().addListener(changeStateServiceListener)
-    }
-
-    @Override
-    void updateWeldersList(ObservableList<WelderUI> newWelderList) {
+    void updateWeldersList(ObservableList<WelderDTO> newWelderList) {
         this.allWelders.setAll(newWelderList)
     }
 
@@ -91,15 +64,15 @@ class WeldersReposotoryImpl implements WeldersRepository{
         this.allWeldersTableViewDTO.setAll(newWelderList)
     }
 
-    ObservableList<WelderUI> showAllWelders(){
+    ObservableList<WelderDTO> showAllWelders(){
         allWeldersProperty.set(allWelders)
     }
 
-    void addWelder(WelderUI welderUI){
+    void addWelder(WelderDTO welderUI){
         allWelders.add(welderUI)
     }
 
-    void removeWelder(WelderUI welderUI){
+    void removeWelder(WelderDTO welderUI){
         allWelders.remove(welderUI)
     }
 

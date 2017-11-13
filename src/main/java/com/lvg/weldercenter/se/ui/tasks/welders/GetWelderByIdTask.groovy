@@ -1,36 +1,32 @@
 package com.lvg.weldercenter.se.ui.tasks.welders
 
 import com.lvg.weldercenter.se.models.Welder
-import com.lvg.weldercenter.se.services.OrganizationService
 import com.lvg.weldercenter.se.services.WelderService
 import com.lvg.weldercenter.se.ui.controllers.WelderTableController
 import com.lvg.weldercenter.se.ui.dto.WelderTableViewDTO
-import com.lvg.weldercenter.se.ui.dto.WelderUI
+import com.lvg.weldercenter.se.ui.dto.WelderDTO
+import com.lvg.weldercenter.se.ui.tasks.TaskConstants
 import javafx.concurrent.Task
 import org.apache.log4j.Logger
-import org.hibernate.Hibernate
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Scope
 import org.springframework.stereotype.Component
-import org.springframework.transaction.annotation.Transactional
 
 @Component
 @Scope('prototype')
-class GetWelderByIdTask extends Task<WelderUI>{
+class GetWelderByIdTask extends Task<WelderDTO>{
     private static final Logger LOGGER = Logger.getLogger(GetWelderByIdTask.class)
     private static final String GET_WELDER_BY_ID_TASK_TITLE_MESSAGE = 'Получение сварщика из БД...'
 
     @Autowired
     WelderService welderService
-    @Autowired
-    OrganizationService organizationService
 
     @Autowired
     WelderTableController welderTableController
 
 
     @Override
-    protected WelderUI call() throws Exception {
+    protected WelderDTO call() throws Exception {
         LOGGER.debug("---TASK-STARTED---${getClass().getSimpleName()}")
         WelderTableViewDTO welderDTO = welderTableController.getWeldersTableView().getSelectionModel().getSelectedItem()
         if (welderDTO == null){
@@ -42,18 +38,11 @@ class GetWelderByIdTask extends Task<WelderUI>{
 
         updateTitle(GET_WELDER_BY_ID_TASK_TITLE_MESSAGE)
         Welder welder = welderService.getFull(welderDTO.getId())
-        //welder.organization = organizationService.get(welder.organization.id)
         LOGGER.debug("---WELDER-FOUND: ${welder}")
         LOGGER.debug("---WELDER-HAS-ORGANIZATION: ${welder.organization}")
-        WelderUI result = new WelderUI(welder)
+        WelderDTO result = new WelderDTO(welder)
         LOGGER.debug("---WELDER_UI-RECEIVED: ${result}")
         updateValue(result)
-
-        try {
-            Thread.sleep(500)
-        }catch (InterruptedException ex){
-            ex.printStackTrace()
-        }
         LOGGER.debug("---TASK-ENDED---${getClass().getSimpleName()}")
         return result
     }

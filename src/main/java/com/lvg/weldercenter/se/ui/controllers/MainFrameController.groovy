@@ -1,6 +1,8 @@
 package com.lvg.weldercenter.se.ui.controllers
 
+import com.lvg.weldercenter.se.ui.listeners.welderspane.LoadAllEducationsChangeStateListener
 import com.lvg.weldercenter.se.ui.listeners.welderspane.LoadWeldersForTableViewChangeStateListener
+import com.lvg.weldercenter.se.ui.services.LoadingAllEducationsService
 import com.lvg.weldercenter.se.ui.services.LoadingWeldersForTableViewService
 import com.lvg.weldercenter.se.ui.utils.ServiceUtils
 import com.lvg.weldercenter.se.ui.views.LoadingView
@@ -27,6 +29,11 @@ class MainFrameController implements Initializable{
     LoadingWeldersForTableViewService loadingWeldersForTableViewService
     @Autowired
     LoadWeldersForTableViewChangeStateListener loadWeldersForTableViewChangeStateListener
+    @Autowired
+    LoadingAllEducationsService loadingAllEducationsService
+    @Autowired
+    LoadAllEducationsChangeStateListener loadAllEducationsChangeStateListener
+
 
 
     @FXML
@@ -97,6 +104,7 @@ class MainFrameController implements Initializable{
         mainPane.center = welderPane
         loadingViewInit(loadingWeldersForTableViewService)
         ServiceUtils.startService(loadingWeldersForTableViewService)
+        loadEducations()
 
     }
 
@@ -108,5 +116,10 @@ class MainFrameController implements Initializable{
 
     LoadingView getLoadingView(Worker worker) {
         loadingViewFactory.getLoadingView(mainPane.getScene().getWindow(), worker)
+    }
+
+    private void loadEducations(){
+        loadingAllEducationsService.stateProperty().addListener(loadAllEducationsChangeStateListener)
+        ServiceUtils.startService(loadingAllEducationsService)
     }
 }

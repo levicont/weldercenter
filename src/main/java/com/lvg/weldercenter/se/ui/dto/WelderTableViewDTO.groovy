@@ -8,7 +8,7 @@ import javafx.beans.property.StringProperty
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
-import static com.lvg.weldercenter.se.ui.dto.ModelsConstants.*
+import static DTOConstants.*
 
 class WelderTableViewDTO {
 

@@ -1,27 +1,28 @@
 package com.lvg.weldercenter.se.ui.dto
 
 import com.lvg.weldercenter.se.models.Welder
-import javafx.beans.property.*
+import javafx.beans.property.ObjectProperty
+import javafx.beans.property.SimpleObjectProperty
 
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
-import static com.lvg.weldercenter.se.ui.dto.ModelsConstants.*
+import static com.lvg.weldercenter.se.ui.dto.DTOConstants.*
 
-class WelderUI extends GenericModelUI<Welder> {
-
+class WelderDTO extends GenericModelDTO<Welder> {
     final Welder welder
     final ObjectProperty<Welder> welderProperty = new SimpleObjectProperty<>()
-    final ObjectProperty<OrganizationUI> organization = new SimpleObjectProperty<OrganizationUI>()
+    final ObjectProperty<OrganizationDTO> organizationProperty = new SimpleObjectProperty<OrganizationDTO>()
 
-    WelderUI(Welder welder) {
+    WelderDTO(Welder welder) {
         welderProperty.set(welder)
         this.welder = welder
-        this.organization.set(welder.organization != null ? new OrganizationUI(welder.organization) : null)
+        validateModel(welder)
+        this.organizationProperty.set(welder.organization != null ? new OrganizationDTO(welder.organization) : null)
     }
 
     Welder getWelder() {
-        welder.organization = (organization.get() != null ? organization.get().getOrganization() : null)
+        welder.organization = (organizationProperty.get() != null ? organizationProperty.get().getOrganization() : null)
         return welder
     }
 
@@ -29,7 +30,7 @@ class WelderUI extends GenericModelUI<Welder> {
         if (this.is(o)) return true
         if (getClass() != o.class) return false
 
-        WelderUI welderUI = (WelderUI) o
+        WelderDTO welderUI = (WelderDTO) o
 
         if (welder != welderUI.welder) return false
 
@@ -90,8 +91,8 @@ class WelderUI extends GenericModelUI<Welder> {
         return welder.job
     }
 
-    OrganizationUI getOrganization() {
-        return organization.get()
+    OrganizationDTO getOrganizationDTO() {
+        return organizationProperty.get()
     }
 
     String getBirthdayFormat() {
@@ -107,8 +108,8 @@ class WelderUI extends GenericModelUI<Welder> {
     }
 
     String getOrganizationName() {
-        return organization.get() == null ? NULL_FIELD_PLACEHOLDER :
-                organization.get().name.get()
+        return organizationProperty.get() == null ? NULL_FIELD_PLACEHOLDER :
+                organizationProperty.get().name
     }
 
     void setName(String name) {

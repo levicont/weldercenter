@@ -1,21 +1,21 @@
 package com.lvg.weldercenter.se.test.ui.models
 
 
-import com.lvg.weldercenter.se.ui.dto.ModelsConstants
-import com.lvg.weldercenter.se.ui.dto.WelderUI
+import com.lvg.weldercenter.se.ui.dto.DTOConstants
+import com.lvg.weldercenter.se.ui.dto.WelderDTO
 import org.junit.Test
 
 import java.time.LocalDate
 
 import static com.lvg.weldercenter.se.test.models.ModelsGenerator.*
 
-class WelderUITest extends GenericModelUITest{
+class WelderDTOTest extends GenericModelDTOTest{
 
     @Override
     @Test
     void constructorTest() {
-        WelderUI welderUI = new WelderUI(getWelder())
-        assert welderUI.id == ModelsConstants.NULL_ID_FIELD_DEFAULT
+        WelderDTO welderUI = new WelderDTO(getWelder())
+        assert welderUI.id == DTOConstants.NULL_ID_FIELD_DEFAULT
         assert welderUI.name == 'Иван'
         assert welderUI.surname == 'Иванов'
         assert welderUI.secondName == 'Иванович'
@@ -26,7 +26,7 @@ class WelderUITest extends GenericModelUITest{
         assert welderUI.education == 'среднее-специальное'
         assert welderUI.qualification == 'электросварщик'
         assert welderUI.job == 'элекросварщик'
-        assert welderUI.organization.name.get() == 'IBM'
+        assert welderUI.organizationDTO.name == 'IBM'
         assert welderUI.organizationName == 'IBM'
         assert welderUI.birthdayFormat == '28.10.1984'
         assert welderUI.dateBeginFormat == '28.10.2000'
@@ -35,19 +35,19 @@ class WelderUITest extends GenericModelUITest{
 
     @Test(expected = ReadOnlyPropertyException.class)
     void checkUpdated(){
-        WelderUI welderUI = new WelderUI(getWelder())
+        WelderDTO welderUI = new WelderDTO(getWelder())
         //Exception
         welderUI.setProperty('id', 100l)
 
         def welder = welderUI.welder
-        assert welderUI.id == ModelsConstants.NULL_ID_FIELD_DEFAULT
+        assert welderUI.id == DTOConstants.NULL_ID_FIELD_DEFAULT
         welder.id == 100l
         assert welderUI.id == 100l
     }
 
     @Test
     void setterTest(){
-        WelderUI welderUI = new WelderUI(getWelder())
+        WelderDTO welderUI = new WelderDTO(getWelder())
         welderUI.name = 'Паша'
         welderUI.surname = ''
         welderUI.secondName = ''
@@ -59,7 +59,7 @@ class WelderUITest extends GenericModelUITest{
         welderUI.qualification = 'сварщик'
         welderUI.job = 'сварщик'
 
-        assert welderUI.id == ModelsConstants.NULL_ID_FIELD_DEFAULT
+        assert welderUI.id == DTOConstants.NULL_ID_FIELD_DEFAULT
         assert welderUI.name == 'Паша'
         assert welderUI.surname == ''
         assert welderUI.secondName == ''
@@ -71,6 +71,11 @@ class WelderUITest extends GenericModelUITest{
         assert welderUI.qualification == 'сварщик'
         assert welderUI.job == 'сварщик'
 
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    void nullTest(){
+        new WelderDTO(null)
     }
 
 }

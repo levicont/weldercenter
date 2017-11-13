@@ -1,6 +1,6 @@
 package com.lvg.weldercenter.se.ui.services
 
-import com.lvg.weldercenter.se.ui.dto.WelderUI
+import com.lvg.weldercenter.se.ui.dto.WelderDTO
 import com.lvg.weldercenter.se.ui.tasks.welders.AllWelderTask
 import javafx.collections.ObservableList
 import javafx.concurrent.Service
@@ -10,7 +10,7 @@ import org.springframework.context.ConfigurableApplicationContext
 import org.springframework.stereotype.Component
 
 @Component
-class LoadingWeldersService extends Service<ObservableList<WelderUI>> implements OnceStartedFlag{
+class LoadingWeldersService extends Service<ObservableList<WelderDTO>> implements OnceStartedFlag{
 
     @Autowired
     ConfigurableApplicationContext ctx
@@ -18,7 +18,7 @@ class LoadingWeldersService extends Service<ObservableList<WelderUI>> implements
     private boolean onceStarted = false
 
     @Override
-    protected Task<ObservableList<WelderUI>> createTask() {
+    protected Task<ObservableList<WelderDTO>> createTask() {
         return ctx.getBean(AllWelderTask.class)
     }
 

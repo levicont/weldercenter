@@ -2,7 +2,7 @@ package com.lvg.weldercenter.se.test.services
 
 import com.lvg.weldercenter.se.models.Welder
 import com.lvg.weldercenter.se.services.WelderService
-import com.lvg.weldercenter.se.ui.dto.ModelsConstants
+import com.lvg.weldercenter.se.ui.dto.DTOConstants
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.transaction.annotation.Transactional
@@ -132,7 +132,7 @@ class WelderServiceTest extends GenericServiceTest{
         assert chkWelderList.name.get() == welder.name
         assert chkWelderList.surname.get()  == welder.surname
         assert chkWelderList.secondName.get() == welder.secondName
-        assert chkWelderList.birthday.get() == welder.birthday.format(DateTimeFormatter.ofPattern(ModelsConstants.DATE_FORMAT_PATTERN))
+        assert chkWelderList.birthday.get() == welder.birthday.format(DateTimeFormatter.ofPattern(DTOConstants.DATE_FORMAT_PATTERN))
         assert chkWelderList.organization.get() == welder.organization.name
 
     }

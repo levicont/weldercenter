@@ -2,6 +2,7 @@ package com.lvg.weldercenter.se.ui.tasks.welders
 
 import com.lvg.weldercenter.se.services.WelderService
 import com.lvg.weldercenter.se.ui.dto.WelderTableViewDTO
+import com.lvg.weldercenter.se.ui.tasks.TaskConstants
 import javafx.collections.FXCollections
 import javafx.collections.ObservableList
 import javafx.concurrent.Task

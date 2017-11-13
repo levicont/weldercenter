@@ -32,4 +32,8 @@ class EducationServiceImpl implements EducationService{
         educationRepository.delete(education)
     }
 
+    @Override
+    Long count() {
+        return educationRepository.count()
+    }
 }

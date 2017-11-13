@@ -1,7 +1,7 @@
 package com.lvg.weldercenter.se.ui.listeners.welderspane
 
 import com.lvg.weldercenter.se.ui.controllers.MainFrameController
-import com.lvg.weldercenter.se.ui.repositories.WeldersRepository
+import com.lvg.weldercenter.se.ui.repositories.WelderDTORepository
 import javafx.beans.value.ChangeListener
 import javafx.concurrent.Worker
 import javafx.stage.Stage
@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired
 
 abstract class GenericServiceChangeStateListener implements ChangeListener<Worker.State>{
     @Autowired
-    protected WeldersRepository weldersRepository
+    protected WelderDTORepository weldersRepository
 
     @Autowired
     protected MainFrameController mainFrameController

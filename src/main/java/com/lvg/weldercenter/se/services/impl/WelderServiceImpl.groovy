@@ -63,10 +63,7 @@ class WelderServiceImpl implements WelderService{
     }
 
     @Override
-    @Transactional
     Welder getFull(Long id) {
-        Welder welder = repository.getOne(id)
-        welder.organization.id
-        return welder
+        return repository.getFull(id)
     }
 }
