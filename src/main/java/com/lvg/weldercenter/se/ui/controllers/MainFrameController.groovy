@@ -10,7 +10,6 @@ import com.lvg.weldercenter.se.ui.views.LoadingViewFactory
 import javafx.concurrent.Worker
 import javafx.event.ActionEvent
 import javafx.fxml.FXML
-import javafx.fxml.FXMLLoader
 import javafx.fxml.Initializable
 import javafx.scene.Parent
 import javafx.scene.control.Label
@@ -99,8 +98,7 @@ class MainFrameController implements Initializable{
 
     @FXML
     void showWelderPane(ActionEvent event) {
-        FXMLLoader loader = fxmlLoaderProvider.getFXMLLoader(FXMLLoaderProvider.WELDERS_PANE_FXML_PATH)
-        Parent welderPane = loader.load()
+        Parent welderPane = fxmlLoaderProvider.loadParent(FXMLLoaderProvider.PaneType.WELDER_PANE, true)
         mainPane.center = welderPane
         loadingViewInit(loadingWeldersForTableViewService)
         ServiceUtils.startService(loadingWeldersForTableViewService)

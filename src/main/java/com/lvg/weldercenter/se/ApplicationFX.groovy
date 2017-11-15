@@ -39,8 +39,7 @@ class ApplicationFX extends Application{
     void init() throws Exception {
         springContext = SpringApplication.run(ApplicationFX.class)
         FXMLLoaderProvider provider = springContext.getBean(FXMLLoaderProvider.class)
-        FXMLLoader loader  = provider.getFXMLLoader(FXMLLoaderProvider.MAIN_FRAME_FXML_PATH)
-        rootNode = loader.load()
+        rootNode = provider.loadParent(FXMLLoaderProvider.PaneType.MAIN_FRAME_PANE, false)
     }
 
     @Override
