@@ -1,4 +1,3 @@
-set names 'utf8';
 delete from welder;
 delete from organization;
 delete from education;

@@ -3,6 +3,7 @@ package com.lvg.weldercenter.se.ui.preloader
 import javafx.application.Preloader
 import javafx.application.Preloader.StateChangeNotification.Type
 import javafx.fxml.FXMLLoader
+import javafx.scene.Parent
 import javafx.scene.Scene
 import javafx.scene.layout.BorderPane
 import javafx.stage.Stage
@@ -11,7 +12,7 @@ import javafx.stage.StageStyle
 class ApplicationPreloaderFX extends Preloader{
 
     private Stage preloadStage
-    private BorderPane root
+    private Parent root
 
     @Override
     void start(Stage stage) throws Exception {

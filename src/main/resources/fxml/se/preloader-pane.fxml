@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 
-<BorderPane centerShape="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="266.0" prefWidth="600.0" scaleShape="false" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
-   <center>
-      <ImageView fitHeight="290.0" fitWidth="600.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="280.0" prefWidth="570.0" scaleShape="false" style="-fx-background-image: url('splash_background.png'); -fx-background-color: a;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <ImageView fitHeight="280.0" fitWidth="600.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true" AnchorPane.topAnchor="0.0">
          <image>
             <Image url="@../../img/splash_background.png" />
-         </image></ImageView>
-   </center>
-   <bottom>
-      <ProgressBar fx:id="progressPreloader" maxHeight="8.0" minHeight="8.0" opacity="0.7" prefHeight="8.0" prefWidth="280.0" progress="-Infinity" BorderPane.alignment="CENTER">
-         <BorderPane.margin>
-            <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
-         </BorderPane.margin>
-      </ProgressBar>
-   </bottom>
-</BorderPane>
+         </image>
+      </ImageView>
+      <ProgressBar fx:id="progressPreloader" layoutX="156.0" layoutY="263.0" maxHeight="8.0" minHeight="8.0" opacity="0.7" prefHeight="8.0" prefWidth="280.0" progress="-Infinity" />
+   </children>
+</AnchorPane>
