@@ -3,8 +3,8 @@ package com.lvg.weldercenter.se.ui.tasks.welders
 import com.lvg.weldercenter.se.models.Welder
 import com.lvg.weldercenter.se.services.WelderService
 import com.lvg.weldercenter.se.ui.controllers.WelderTableController
-import com.lvg.weldercenter.se.ui.dto.WelderTableViewDTO
 import com.lvg.weldercenter.se.ui.dto.WelderDTO
+import com.lvg.weldercenter.se.ui.dto.WelderTableViewDTO
 import com.lvg.weldercenter.se.ui.tasks.TaskConstants
 import javafx.concurrent.Task
 import org.apache.log4j.Logger
@@ -17,6 +17,7 @@ import org.springframework.stereotype.Component
 class GetWelderByIdTask extends Task<WelderDTO>{
     private static final Logger LOGGER = Logger.getLogger(GetWelderByIdTask.class)
     private static final String GET_WELDER_BY_ID_TASK_TITLE_MESSAGE = 'Получение сварщика из БД...'
+    private static final String GET_WELDER_BY_ID_TASK_NO_SELECTED_MESSAGE = 'No one welder is selected'
 
     @Autowired
     WelderService welderService
@@ -30,12 +31,14 @@ class GetWelderByIdTask extends Task<WelderDTO>{
         LOGGER.debug("---TASK-STARTED---${getClass().getSimpleName()}")
         WelderTableViewDTO welderDTO = welderTableController.getWeldersTableView().getSelectionModel().getSelectedItem()
         if (welderDTO == null){
-            LOGGER.warn('No one welder is selected')
+            LOGGER.warn(GET_WELDER_BY_ID_TASK_NO_SELECTED_MESSAGE)
+            LOGGER.warn("Current thread: ${Thread.currentThread().name}")
             //TODO fix problem
-            cancel()
+            updateValue(null)
+            this.cancel(true)
+            LOGGER.warn("Task State is: ${stateProperty().get()}")
+            return null
         }
-
-
         updateTitle(GET_WELDER_BY_ID_TASK_TITLE_MESSAGE)
         Welder welder = welderService.getFull(welderDTO.getId())
         LOGGER.debug("---WELDER-FOUND: ${welder}")
@@ -51,12 +54,14 @@ class GetWelderByIdTask extends Task<WelderDTO>{
     protected void succeeded() {
         super.succeeded()
         updateMessage(TaskConstants.TASK_SUCCESS_MESSAGE)
+        LOGGER.info(titleProperty().get())
     }
 
     @Override
     protected void cancelled() {
         super.cancelled()
         updateMessage(TaskConstants.TASK_CANCELED_MESSAGE)
+        LOGGER.info(titleProperty().get())
     }
 
     @Override
