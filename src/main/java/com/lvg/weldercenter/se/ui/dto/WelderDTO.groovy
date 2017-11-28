@@ -1,8 +1,12 @@
 package com.lvg.weldercenter.se.ui.dto
 
 import com.lvg.weldercenter.se.models.Welder
+import javafx.beans.property.LongProperty
 import javafx.beans.property.ObjectProperty
+import javafx.beans.property.SimpleLongProperty
 import javafx.beans.property.SimpleObjectProperty
+import javafx.beans.property.SimpleStringProperty
+import javafx.beans.property.StringProperty
 
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -14,10 +18,36 @@ class WelderDTO extends GenericModelDTO<Welder> {
     final ObjectProperty<Welder> welderProperty = new SimpleObjectProperty<>()
     final ObjectProperty<OrganizationDTO> organizationProperty = new SimpleObjectProperty<OrganizationDTO>()
 
+    final ObjectProperty<Long> idProperty = new SimpleObjectProperty<>()
+    final StringProperty nameProperty = new SimpleStringProperty()
+    final StringProperty surnameProperty = new SimpleStringProperty()
+    final StringProperty secondNameProperty = new SimpleStringProperty()
+    final StringProperty documentNumberProperty = new SimpleStringProperty()
+    final StringProperty addressProperty = new SimpleStringProperty()
+    final ObjectProperty<LocalDate> birthdayProperty = new SimpleObjectProperty<>()
+    final ObjectProperty<LocalDate> dateBeginProperty = new SimpleObjectProperty<>()
+    final StringProperty educationProperty = new SimpleStringProperty()
+    final StringProperty qualificationProperty = new SimpleStringProperty()
+    final StringProperty jobProperty = new SimpleStringProperty()
+
+
     WelderDTO(Welder welder) {
         welderProperty.set(welder)
         this.welder = welder
         validateModel(welder)
+
+        idProperty.set(welder.id == null ? NULL_ID_FIELD_DEFAULT : welder.id)
+        nameProperty.set(welder.name)
+        surnameProperty.set(welder.surname)
+        secondNameProperty.set(welder.secondName)
+        documentNumberProperty.set(welder.documentNumber)
+        addressProperty.set(welder.address)
+        birthdayProperty.set(welder.birthday)
+        dateBeginProperty.set(welder.dateBegin)
+        educationProperty.set(welder.education)
+        qualificationProperty.set(welder.qualification)
+        jobProperty.set(welder.job)
+
         this.organizationProperty.set(welder.organization != null ? new OrganizationDTO(welder.organization) : null)
     }
 
@@ -153,5 +183,47 @@ class WelderDTO extends GenericModelDTO<Welder> {
         this.welder.job = job
     }
 
+    ObjectProperty<Long> getIdProperty() {
+        return idProperty
+    }
 
+    StringProperty getNameProperty() {
+        return nameProperty
+    }
+
+    StringProperty getSurnameProperty() {
+        return surnameProperty
+    }
+
+    StringProperty getSecondNameProperty() {
+        return secondNameProperty
+    }
+
+    StringProperty getDocumentNumberProperty() {
+        return documentNumberProperty
+    }
+
+    StringProperty getAddressProperty() {
+        return addressProperty
+    }
+
+    ObjectProperty<LocalDate> getBirthdayProperty() {
+        return birthdayProperty
+    }
+
+    ObjectProperty<LocalDate> getDateBeginProperty() {
+        return dateBeginProperty
+    }
+
+    StringProperty getEducationProperty() {
+        return educationProperty
+    }
+
+    StringProperty getQualificationProperty() {
+        return qualificationProperty
+    }
+
+    StringProperty getJobProperty() {
+        return jobProperty
+    }
 }

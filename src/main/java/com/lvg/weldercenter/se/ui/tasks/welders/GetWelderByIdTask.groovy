@@ -17,7 +17,6 @@ import org.springframework.stereotype.Component
 class GetWelderByIdTask extends Task<WelderDTO>{
     private static final Logger LOGGER = Logger.getLogger(GetWelderByIdTask.class)
     private static final String GET_WELDER_BY_ID_TASK_TITLE_MESSAGE = 'Получение сварщика из БД...'
-    private static final String GET_WELDER_BY_ID_TASK_NO_SELECTED_MESSAGE = 'No one welder is selected'
 
     @Autowired
     WelderService welderService
@@ -30,15 +29,6 @@ class GetWelderByIdTask extends Task<WelderDTO>{
     protected WelderDTO call() throws Exception {
         LOGGER.debug("---TASK-STARTED---${getClass().getSimpleName()}")
         WelderTableViewDTO welderDTO = welderTableController.getWeldersTableView().getSelectionModel().getSelectedItem()
-        if (welderDTO == null){
-            LOGGER.warn(GET_WELDER_BY_ID_TASK_NO_SELECTED_MESSAGE)
-            LOGGER.warn("Current thread: ${Thread.currentThread().name}")
-            //TODO fix problem
-            updateValue(null)
-            this.cancel(true)
-            LOGGER.warn("Task State is: ${stateProperty().get()}")
-            return null
-        }
         updateTitle(GET_WELDER_BY_ID_TASK_TITLE_MESSAGE)
         Welder welder = welderService.getFull(welderDTO.getId())
         LOGGER.debug("---WELDER-FOUND: ${welder}")

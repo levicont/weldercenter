@@ -78,4 +78,32 @@ class WelderDTOTest extends GenericModelDTOTest{
         new WelderDTO(null)
     }
 
+    @Test
+    void propertiesTest(){
+        WelderDTO welderUI = new WelderDTO(getWelder())
+        welderUI.name = 'Паша'
+        welderUI.surname = ''
+        welderUI.secondName = ''
+        welderUI.birthday = LocalDate.of(1987, 10, 28)
+        welderUI.dateBegin = LocalDate.of(2002, 10, 28)
+        welderUI.documentNumber = '17-000'
+        welderUI.address = '12066'
+        welderUI.education = 'среднее'
+        welderUI.qualification = 'сварщик'
+        welderUI.job = 'сварщик'
+
+        assert welderUI.idProperty.get() == DTOConstants.NULL_ID_FIELD_DEFAULT
+        assert welderUI.nameProperty.get() == 'Паша'
+        assert welderUI.surnameProperty.get() == ''
+        assert welderUI.secondNameProperty.get() == ''
+        assert welderUI.birthdayProperty.get() == LocalDate.of(1987, 10, 28)
+        assert welderUI.dateBeginProperty.get() == LocalDate.of(2002, 10, 28)
+        assert welderUI.documentNumberProperty.get() == '17-000'
+        assert welderUI.addressProperty.get() == '12066'
+        assert welderUI.educationProperty.get() == 'среднее'
+        assert welderUI.qualificationProperty.get() == 'сварщик'
+        assert welderUI.jobProperty.get() == 'сварщик'
+
+    }
+
 }

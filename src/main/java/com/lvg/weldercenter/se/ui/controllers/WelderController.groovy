@@ -5,6 +5,9 @@ import com.lvg.weldercenter.se.ui.converters.EducationStringConverter
 import com.lvg.weldercenter.se.ui.dto.EducationDTO
 import com.lvg.weldercenter.se.ui.dto.WelderDTO
 import com.lvg.weldercenter.se.ui.repositories.EducationDTORepository
+import com.lvg.weldercenter.se.ui.utils.ControlFXUtils
+import javafx.beans.property.ObjectProperty
+import javafx.beans.property.SimpleObjectProperty
 import javafx.event.ActionEvent
 import javafx.fxml.FXML
 import javafx.fxml.Initializable
@@ -24,6 +27,8 @@ class WelderController implements Initializable{
     EducationDTORepository educationDTORepository
     @Autowired
     EducationStringConverter educationStringConverter
+
+    private final ObjectProperty<WelderDTO> welderDTOProperty = new SimpleObjectProperty<>()
 
     @FXML
     private TextField txfSurname
@@ -65,6 +70,7 @@ class WelderController implements Initializable{
     @FXML
     void refresh(ActionEvent event) {
         welderTableController.refreshTable()
+        refreshWelderPane()
     }
 
 
@@ -74,6 +80,8 @@ class WelderController implements Initializable{
             LOGGER.warn('Cannot load null welderUI')
             return
         }
+        welderDTOProperty.set(welderUI)
+        txfName.textProperty().bindBidirectional(welderUI.name)
         txfName.textProperty().set(welderUI.name)
         txfSecname.textProperty().set(welderUI.secondName)
         txfSurname.textProperty().set(welderUI.surname)
@@ -105,5 +113,17 @@ class WelderController implements Initializable{
 
 
     }
+
+
+    private void refreshWelderPane(){
+        init()
+        ControlFXUtils.clearTextFields(txfName, txfSurname, txfSecname, txfAddress, txfDocNumber)
+        dpBirthday.valueProperty().set(null)
+        dpDateBegin.valueProperty().set(null)
+        cbEducation.valueProperty().set(null)
+
+    }
+
+
 
 }
