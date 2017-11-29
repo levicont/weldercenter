@@ -1,6 +1,5 @@
 package com.lvg.weldercenter.se.ui.services
 
-import com.lvg.weldercenter.se.ui.dto.EducationDTO
 import com.lvg.weldercenter.se.ui.tasks.education.EducationsTask
 import javafx.collections.ObservableList
 import javafx.concurrent.Service
@@ -10,7 +9,7 @@ import org.springframework.context.ConfigurableApplicationContext
 import org.springframework.stereotype.Component
 
 @Component
-class LoadingAllEducationsService extends Service<ObservableList<EducationDTO>> implements OnceStartedFlag{
+class LoadingAllEducationsService extends Service<ObservableList<String>> implements OnceStartedFlag{
 
     @Autowired
     ConfigurableApplicationContext ctx
@@ -28,7 +27,7 @@ class LoadingAllEducationsService extends Service<ObservableList<EducationDTO>> 
     }
 
     @Override
-    protected Task<ObservableList<EducationDTO>> createTask() {
+    protected Task<ObservableList<String>> createTask() {
         return ctx.getBean(EducationsTask.class)
     }
 }

@@ -1,6 +1,5 @@
 package com.lvg.weldercenter.se.ui.repositories.impl
 
-import com.lvg.weldercenter.se.ui.dto.EducationDTO
 import com.lvg.weldercenter.se.ui.repositories.EducationDTORepository
 import javafx.beans.property.ObjectProperty
 import javafx.beans.property.SimpleObjectProperty
@@ -13,22 +12,22 @@ class EducationRepositoryImpl implements EducationDTORepository{
 
 
 
-    private ObservableList<EducationDTO> allEducations = FXCollections.observableArrayList()
-    private final ObjectProperty<ObservableList<EducationDTO>> allEducationsProperty =
-            new SimpleObjectProperty<ObservableList<EducationDTO>>(allEducations)
+    private ObservableList<String> allEducations = FXCollections.observableArrayList()
+    private final ObjectProperty<ObservableList<String>> allEducationsProperty =
+            new SimpleObjectProperty<ObservableList<String>>(allEducations)
 
     @Override
-    ObservableList<EducationDTO> getAllEducationDTO() {
+    ObservableList<String> getAllEducationDTO() {
        return allEducationsProperty.get()
     }
 
     @Override
-    ObjectProperty<ObservableList<EducationDTO>> getAllEducationProperty() {
+    ObjectProperty<ObservableList<String>> getAllEducationProperty() {
         return allEducationsProperty
     }
 
     @Override
-    void updateEducationDTOList(ObservableList<EducationDTO> list) {
+    void updateEducationDTOList(ObservableList<String> list) {
         allEducations.addAll(list)
     }
 }

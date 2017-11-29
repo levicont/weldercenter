@@ -2,7 +2,6 @@ package com.lvg.weldercenter.se.ui.tasks.education
 
 import com.lvg.weldercenter.se.models.Education
 import com.lvg.weldercenter.se.services.EducationService
-import com.lvg.weldercenter.se.ui.dto.EducationDTO
 import javafx.collections.FXCollections
 import javafx.collections.ObservableList
 import javafx.concurrent.Task
@@ -14,15 +13,15 @@ import static com.lvg.weldercenter.se.ui.tasks.TaskConstants.ALL_EDUCATIONS_TASK
 
 @Component
 @Scope('prototype')
-class EducationsTask extends Task<ObservableList<EducationDTO>>{
+class EducationsTask extends Task<ObservableList<String>>{
 
     @Autowired
     EducationService educationService
 
 
     @Override
-    protected ObservableList<EducationDTO> call() throws Exception {
-        ObservableList<EducationDTO> results = FXCollections.observableArrayList()
+    protected ObservableList<String> call() throws Exception {
+        ObservableList<String> results = FXCollections.observableArrayList()
 
         long count = educationService.count()
         long counter = 0
@@ -33,7 +32,7 @@ class EducationsTask extends Task<ObservableList<EducationDTO>>{
             if (this.isCancelled()){
                 break
             }
-            results.add(new EducationDTO(education))
+            results.add(education.education)
             counter++
 
             updateMessage("Added $counter education to the list")

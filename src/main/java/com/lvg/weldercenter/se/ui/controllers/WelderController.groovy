@@ -1,8 +1,6 @@
 package com.lvg.weldercenter.se.ui.controllers
 
-import com.lvg.weldercenter.se.models.Education
 import com.lvg.weldercenter.se.ui.converters.EducationStringConverter
-import com.lvg.weldercenter.se.ui.dto.EducationDTO
 import com.lvg.weldercenter.se.ui.dto.WelderDTO
 import com.lvg.weldercenter.se.ui.repositories.EducationDTORepository
 import com.lvg.weldercenter.se.ui.utils.ControlFXUtils
@@ -43,7 +41,7 @@ class WelderController implements Initializable{
     @FXML
     private DatePicker dpDateBegin
     @FXML
-    private ComboBox<EducationDTO> cbEducation
+    private ComboBox<String> cbEducation
     @FXML
     private ComboBox<String> cbQualification
     @FXML
@@ -64,7 +62,6 @@ class WelderController implements Initializable{
 
     private void initCbEducation(){
         cbEducation.itemsProperty().bind(educationDTORepository.allEducationProperty)
-        cbEducation.setConverter(educationStringConverter)
     }
 
     @FXML
@@ -81,33 +78,33 @@ class WelderController implements Initializable{
             return
         }
         welderDTOProperty.set(welderUI)
-        txfName.textProperty().bindBidirectional(welderUI.name)
-        txfName.textProperty().set(welderUI.name)
-        txfSecname.textProperty().set(welderUI.secondName)
-        txfSurname.textProperty().set(welderUI.surname)
-        dpBirthday.valueProperty().set(welderUI.birthday)
-        txfDocNumber.textProperty().set(welderUI.documentNumber)
-        dpDateBegin.valueProperty().set(welderUI.dateBegin)
+        txfName.textProperty().bindBidirectional(welderUI.nameProperty)
+        txfSecname.textProperty().bindBidirectional(welderUI.secondNameProperty)
+        txfSurname.textProperty().bindBidirectional(welderUI.surnameProperty)
+        dpBirthday.valueProperty().bindBidirectional(welderUI.birthdayProperty)
+        txfDocNumber.textProperty().bindBidirectional(welderUI.documentNumberProperty)
+        dpDateBegin.valueProperty().bindBidirectional(welderUI.dateBeginProperty)
         selectEducation(welderUI.education)
+        cbEducation.valueProperty().bindBidirectional(welderUI.educationProperty)
 
+        txfAddress.textProperty().bindBidirectional(welderUI.addressProperty)
 
-        txfAddress.textProperty().set(welderUI.address)
 
     }
 
     private void selectEducation(String education){
         if(education == null || education.isEmpty())
             return
-        EducationDTO selectedEducation = null
+        String selectedEducation = null
 
         cbEducation.items.each {edu ->
-            if(edu.education.education == education){
+            if(edu == education){
                 selectedEducation = edu
                 return
             }
         }
         if (selectedEducation == null){
-            selectedEducation = new EducationDTO(new Education(education: education))
+            selectedEducation = education
         }
         cbEducation.selectionModel.select(selectedEducation)
 

@@ -92,7 +92,7 @@ class WelderDTOTest extends GenericModelDTOTest{
         welderUI.qualification = 'сварщик'
         welderUI.job = 'сварщик'
 
-        assert welderUI.idProperty.get() == DTOConstants.NULL_ID_FIELD_DEFAULT
+        assert welderUI.id == DTOConstants.NULL_ID_FIELD_DEFAULT
         assert welderUI.nameProperty.get() == 'Паша'
         assert welderUI.surnameProperty.get() == ''
         assert welderUI.secondNameProperty.get() == ''

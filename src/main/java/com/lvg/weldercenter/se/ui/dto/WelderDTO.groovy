@@ -1,12 +1,11 @@
 package com.lvg.weldercenter.se.ui.dto
 
 import com.lvg.weldercenter.se.models.Welder
-import javafx.beans.property.LongProperty
 import javafx.beans.property.ObjectProperty
-import javafx.beans.property.SimpleLongProperty
 import javafx.beans.property.SimpleObjectProperty
 import javafx.beans.property.SimpleStringProperty
 import javafx.beans.property.StringProperty
+import javafx.beans.value.ChangeListener
 
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -18,7 +17,6 @@ class WelderDTO extends GenericModelDTO<Welder> {
     final ObjectProperty<Welder> welderProperty = new SimpleObjectProperty<>()
     final ObjectProperty<OrganizationDTO> organizationProperty = new SimpleObjectProperty<OrganizationDTO>()
 
-    final ObjectProperty<Long> idProperty = new SimpleObjectProperty<>()
     final StringProperty nameProperty = new SimpleStringProperty()
     final StringProperty surnameProperty = new SimpleStringProperty()
     final StringProperty secondNameProperty = new SimpleStringProperty()
@@ -49,10 +47,23 @@ class WelderDTO extends GenericModelDTO<Welder> {
         jobProperty.set(welder.job)
 
         this.organizationProperty.set(welder.organization != null ? new OrganizationDTO(welder.organization) : null)
+
+        initListeners()
     }
 
     Welder getWelder() {
         welder.organization = (organizationProperty.get() != null ? organizationProperty.get().getOrganization() : null)
+        welder.name = getName()
+        welder.surname = getSurname()
+        welder.secondName = getSecondName()
+        welder.birthday = getBirthday()
+        welder.dateBegin = getDateBegin()
+        welder.documentNumber = getDocumentNumber()
+        welder.address = getAddress()
+        welder.qualification = getQualification()
+        welder.education = getEducation()
+        welder.job = getJob()
+
         return welder
     }
 
@@ -78,47 +89,48 @@ class WelderDTO extends GenericModelDTO<Welder> {
 
     @Override
     Long getId() {
-        return welder.id == null ? NULL_ID_FIELD_DEFAULT : welder.id
+        def id = getWelder().id
+        return id == null ? NULL_ID_FIELD_DEFAULT : id
     }
 
     String getName() {
-        return welder.name
+        return nameProperty.get()
     }
 
     String getSurname() {
-        return welder.surname
+        return surnameProperty.get()
     }
 
     String getSecondName() {
-        return welder.secondName
+        return secondNameProperty.get()
     }
 
     LocalDate getBirthday() {
-        return welder.birthday
+        return birthdayProperty.get()
     }
 
     LocalDate getDateBegin() {
-        return welder.dateBegin
+        return dateBeginProperty.get()
     }
 
     String getDocumentNumber() {
-        return welder.documentNumber
+        return documentNumberProperty.get()
     }
 
     String getAddress() {
-        return welder.address
+        return addressProperty.get()
     }
 
     String getEducation() {
-        return welder.education
+        return educationProperty.get()
     }
 
     String getQualification() {
-        return welder.qualification
+        return qualificationProperty.get()
     }
 
     String getJob() {
-        return welder.job
+        return jobProperty.get()
     }
 
     OrganizationDTO getOrganizationDTO() {
@@ -126,13 +138,13 @@ class WelderDTO extends GenericModelDTO<Welder> {
     }
 
     String getBirthdayFormat() {
-        def birthday = welder.birthday
+        def birthday = getBirthday()
         return birthday == null ? NULL_FIELD_PLACEHOLDER :
                 birthday.format(DateTimeFormatter.ofPattern(DATE_FORMAT_PATTERN))
     }
 
     String getDateBeginFormat() {
-        def dateBegin = welder.dateBegin
+        def dateBegin = getDateBegin()
         return dateBegin == null ? NULL_FIELD_PLACEHOLDER :
                 dateBegin.format(DateTimeFormatter.ofPattern(DATE_FORMAT_PATTERN))
     }
@@ -143,48 +155,44 @@ class WelderDTO extends GenericModelDTO<Welder> {
     }
 
     void setName(String name) {
-        this.welder.name = name
+        nameProperty.set(name)
     }
 
     void setSurname(String surname) {
-        this.welder.surname = surname
+        surnameProperty.set(surname)
     }
 
 
     void setSecondName(String secondName) {
-        this.welder.secondName = secondName
+        secondNameProperty.set(secondName)
     }
 
     void setBirthday(LocalDate birthday) {
-        this.welder.birthday = birthday
+        birthdayProperty.set(birthday)
     }
 
     void setDateBegin(LocalDate dateBegin) {
-        this.welder.dateBegin = dateBegin
+        dateBeginProperty.set(dateBegin)
     }
 
     void setDocumentNumber(String documentNumber) {
-        this.welder.documentNumber = documentNumber
+        documentNumberProperty.set(documentNumber)
     }
 
     void setAddress(String address) {
-        this.welder.address = address
+        addressProperty.set(address)
     }
 
     void setEducation(String education) {
-        this.welder.education = education
+        educationProperty.set(education)
     }
 
     void setQualification(String qualification) {
-        this.welder.qualification = qualification
+        qualificationProperty.set(qualification)
     }
 
     void setJob(String job) {
-        this.welder.job = job
-    }
-
-    ObjectProperty<Long> getIdProperty() {
-        return idProperty
+        jobProperty.set(job)
     }
 
     StringProperty getNameProperty() {
@@ -225,5 +233,11 @@ class WelderDTO extends GenericModelDTO<Welder> {
 
     StringProperty getJobProperty() {
         return jobProperty
+    }
+
+    private void initListeners(){
+        nameProperty.addListener((ChangeListener<String>){ observableValue, oldValue, newValue ->
+            LOGGER.debug("nameProperty has been changed oldValue = ${oldValue} newValue = ${newValue}")
+        })
     }
 }
