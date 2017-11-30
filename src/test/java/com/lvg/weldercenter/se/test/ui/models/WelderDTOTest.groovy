@@ -106,4 +106,51 @@ class WelderDTOTest extends GenericModelDTOTest{
 
     }
 
+    @Test
+    void cloneTest(){
+        WelderDTO welderUI = new WelderDTO(getWelder())
+
+        assert welderUI.id == DTOConstants.NULL_ID_FIELD_DEFAULT
+        assert welderUI.name == 'Иван'
+        assert welderUI.surname == 'Иванов'
+        assert welderUI.secondName == 'Иванович'
+        assert welderUI.birthday == LocalDate.of(1984, 10, 28)
+        assert welderUI.dateBegin == LocalDate.of(2000, 10, 28)
+        assert welderUI.documentNumber == '17-033/17'
+        assert welderUI.address == 'Michigan City 12066'
+        assert welderUI.education == 'среднее-специальное'
+        assert welderUI.qualification == 'электросварщик'
+        assert welderUI.job == 'элекросварщик'
+        assert welderUI.organizationDTO.name == 'IBM'
+        assert welderUI.organizationName == 'IBM'
+        assert welderUI.birthdayFormat == '28.10.1984'
+        assert welderUI.dateBeginFormat == '28.10.2000'
+
+        WelderDTO clone = (WelderDTO)welderUI.clone()
+
+        clone.name = 'Паша'
+        clone.surname = ''
+        clone.secondName = ''
+        clone.birthday = LocalDate.of(1987, 10, 28)
+        clone.dateBegin = LocalDate.of(2002, 10, 28)
+        clone.documentNumber = '17-000'
+        clone.address = '12066'
+        clone.education = 'среднее'
+        clone.qualification = 'сварщик'
+        clone.job = 'сварщик'
+
+        assert clone.name != welderUI.name
+        assert clone.surname != welderUI.surname
+        assert clone.secondName != welderUI.secondName
+        assert clone.birthday != welderUI.birthday
+        assert clone.dateBegin != welderUI.dateBegin
+        assert clone.documentNumber != welderUI.documentNumber
+        assert clone.address != welderUI.address
+        assert clone.education != welderUI.education
+        assert clone.qualification != welderUI.qualification
+        assert clone.job != welderUI.job
+
+
+    }
+
 }

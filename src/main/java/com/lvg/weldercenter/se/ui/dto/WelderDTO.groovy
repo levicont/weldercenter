@@ -71,20 +71,47 @@ class WelderDTO extends GenericModelDTO<Welder> {
         if (this.is(o)) return true
         if (getClass() != o.class) return false
 
-        WelderDTO welderUI = (WelderDTO) o
+        WelderDTO welderDTO = (WelderDTO) o
 
-        if (welder != welderUI.welder) return false
+        if (getAddress() != welderDTO.getAddress()) return false
+        if (getBirthday() != welderDTO.getBirthday()) return false
+        if (getDateBegin() != welderDTO.getDateBegin()) return false
+        if (getDocumentNumber() != welderDTO.getDocumentNumber()) return false
+        if (getEducation() != welderDTO.getEducation()) return false
+        if (getJob() != welderDTO.getJob()) return false
+        if (getName() != welderDTO.getName()) return false
+        if (getOrganizationName() != welderDTO.getOrganizationName()) return false
+        if (getQualification() != welderDTO.getQualification()) return false
+        if (getSecondName() != welderDTO.getSecondName()) return false
+        if (getSurname() != welderDTO.getSurname()) return false
 
         return true
     }
 
     int hashCode() {
-        return welder.hashCode()
+        int result
+        result = (getOrganizationName() != null ? getOrganizationName().hashCode() : 0)
+        result = 31 * result + (getName() != null ? getName().hashCode() : 0)
+        result = 31 * result + (getSurname() != null ? getSurname().hashCode() : 0)
+        result = 31 * result + (getSecondName() != null ? getSecondName().hashCode() : 0)
+        result = 31 * result + (getDocumentNumber() != null ? getDocumentNumber().hashCode() : 0)
+        result = 31 * result + (getAddress() != null ? getAddress().hashCode() : 0)
+        result = 31 * result + (getBirthday() != null ? getBirthday().hashCode() : 0)
+        result = 31 * result + (getDateBegin() != null ? getDateBegin().hashCode() : 0)
+        result = 31 * result + (getEducation() != null ? getEducation().hashCode() : 0)
+        result = 31 * result + (getQualification() != null ? getQualification().hashCode() : 0)
+        result = 31 * result + (getJob() != null ? getJob().hashCode() : 0)
+        return result
     }
 
     @Override
     String toString() {
         return getWelder().toString()
+    }
+
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        return new WelderDTO(welder)
     }
 
     @Override
@@ -239,5 +266,6 @@ class WelderDTO extends GenericModelDTO<Welder> {
         nameProperty.addListener((ChangeListener<String>){ observableValue, oldValue, newValue ->
             LOGGER.debug("nameProperty has been changed oldValue = ${oldValue} newValue = ${newValue}")
         })
+
     }
 }
