@@ -1,5 +1,6 @@
 package com.lvg.weldercenter.se.ui.listeners.welderspane
 
+import com.lvg.weldercenter.se.ui.controllers.WelderController
 import com.lvg.weldercenter.se.ui.controllers.WelderTableController
 import com.lvg.weldercenter.se.ui.services.LoadingWelderByIdService
 import com.lvg.weldercenter.se.ui.utils.ControlFXUtils
@@ -21,6 +22,9 @@ class WeldersTableViewEventHandler implements EventHandler<Event> {
     @Autowired
     WelderTableController welderTableController
 
+    @Autowired
+    WelderController welderController
+
     @Override
     void handle(Event event) {
         if (ControlFXUtils.isEventIsSelectedKeyOnList(event) ||
@@ -33,6 +37,8 @@ class WeldersTableViewEventHandler implements EventHandler<Event> {
         if (welderTableController.getWeldersTableView().selectionModel.getSelectedItem() != null) {
             loadingWelderByIdService.stateProperty().addListener(listener)
             ServiceUtils.startService(loadingWelderByIdService)
+        }else {
+            welderController.welderDTOProperty().set(null)
         }
     }
 

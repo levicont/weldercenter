@@ -9,6 +9,6 @@ interface WelderDTORepository {
     void updateWeldersList(ObservableList<WelderDTO> newWelderList)
 
     ObjectProperty<ObservableList<WelderTableViewDTO>> getAllWeldersForTableView()
-    void updateWeldersListForTableView()
     void updateWeldersListForTableView(ObservableList<WelderTableViewDTO> newWelderList)
+    void reloadWelders()
 }

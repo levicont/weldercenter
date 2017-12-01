@@ -1,6 +1,5 @@
 package com.lvg.weldercenter.se.ui.listeners.welderspane
 
-import com.lvg.weldercenter.se.ui.controllers.WelderController
 import com.lvg.weldercenter.se.ui.repositories.EducationDTORepository
 import com.lvg.weldercenter.se.ui.services.LoadingAllEducationsService
 import javafx.beans.value.ObservableValue
@@ -19,9 +18,6 @@ class LoadAllEducationsChangeStateListener extends GenericServiceChangeStateList
     @Autowired
     EducationDTORepository educationDTORepository
 
-    @Autowired
-    WelderController welderController
-
 
     @Override
     void changed(ObservableValue<? extends Worker.State> observable, Worker.State oldValue, Worker.State newValue) {
@@ -30,7 +26,6 @@ class LoadAllEducationsChangeStateListener extends GenericServiceChangeStateList
             def list = loadingAllEducationsService.getValue()
             LOGGER.debug("Education list was updated - list: $list")
             educationDTORepository.updateEducationDTOList(list)
-            //welderController.updateEducations()
             loadingAllEducationsService.stateProperty().removeListener(this)
             LOGGER.debug("Education list was updated")
             LOGGER.debug("-----LISTENER-END----")

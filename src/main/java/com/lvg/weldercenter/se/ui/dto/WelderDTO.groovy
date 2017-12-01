@@ -264,7 +264,8 @@ class WelderDTO extends GenericModelDTO<Welder> {
 
     private void initListeners(){
         nameProperty.addListener((ChangeListener<String>){ observableValue, oldValue, newValue ->
-            LOGGER.debug("nameProperty has been changed oldValue = ${oldValue} newValue = ${newValue}")
+            LOGGER.debug("nameProperty has been changed oldValue = ${oldValue} newValue = ${newValue} \n " +
+                    "listener: ${getClass().toString()} WelderDTO: ${super.toString()}")
         })
 
     }

@@ -44,19 +44,20 @@ class GetWelderByIdTask extends Task<WelderDTO>{
     protected void succeeded() {
         super.succeeded()
         updateMessage(TaskConstants.TASK_SUCCESS_MESSAGE)
-        LOGGER.info(titleProperty().get())
+        LOGGER.info(TaskConstants.TASK_SUCCESS_MESSAGE)
     }
 
     @Override
     protected void cancelled() {
         super.cancelled()
         updateMessage(TaskConstants.TASK_CANCELED_MESSAGE)
-        LOGGER.info(titleProperty().get())
+        LOGGER.info(TaskConstants.TASK_CANCELED_MESSAGE)
     }
 
     @Override
     protected void failed() {
         super.failed()
         updateMessage(TaskConstants.TASK_FAIL_MESSAGE)
+        LOGGER.warn(TaskConstants.TASK_FAIL_MESSAGE)
     }
 }

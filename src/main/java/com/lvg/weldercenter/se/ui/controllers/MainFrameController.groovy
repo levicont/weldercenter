@@ -1,10 +1,7 @@
 package com.lvg.weldercenter.se.ui.controllers
 
-import com.lvg.weldercenter.se.ui.listeners.welderspane.LoadAllEducationsChangeStateListener
 import com.lvg.weldercenter.se.ui.listeners.welderspane.LoadWeldersForTableViewChangeStateListener
-import com.lvg.weldercenter.se.ui.services.LoadingAllEducationsService
 import com.lvg.weldercenter.se.ui.services.LoadingWeldersForTableViewService
-import com.lvg.weldercenter.se.ui.utils.ServiceUtils
 import com.lvg.weldercenter.se.ui.views.LoadingView
 import com.lvg.weldercenter.se.ui.views.LoadingViewFactory
 import javafx.concurrent.Worker
@@ -25,13 +22,7 @@ class MainFrameController implements Initializable{
     @Autowired
     LoadingViewFactory loadingViewFactory
     @Autowired
-    LoadingWeldersForTableViewService loadingWeldersForTableViewService
-    @Autowired
     LoadWeldersForTableViewChangeStateListener loadWeldersForTableViewChangeStateListener
-    @Autowired
-    LoadingAllEducationsService loadingAllEducationsService
-    @Autowired
-    LoadAllEducationsChangeStateListener loadAllEducationsChangeStateListener
 
 
 
@@ -100,10 +91,7 @@ class MainFrameController implements Initializable{
     void showWelderPane(ActionEvent event) {
         Parent welderPane = fxmlLoaderProvider.loadParent(FXMLLoaderProvider.PaneType.WELDER_PANE, true)
         mainPane.center = welderPane
-        loadingViewInit(loadingWeldersForTableViewService)
-        ServiceUtils.startService(loadingWeldersForTableViewService)
-        loadEducations()
-
+        welderPane.setVisible(true)
     }
 
     Stage loadingViewInit(Worker worker){
@@ -114,10 +102,5 @@ class MainFrameController implements Initializable{
 
     LoadingView getLoadingView(Worker worker) {
         loadingViewFactory.getLoadingView(mainPane.getScene().getWindow(), worker)
-    }
-
-    private void loadEducations(){
-        loadingAllEducationsService.stateProperty().addListener(loadAllEducationsChangeStateListener)
-        ServiceUtils.startService(loadingAllEducationsService)
     }
 }

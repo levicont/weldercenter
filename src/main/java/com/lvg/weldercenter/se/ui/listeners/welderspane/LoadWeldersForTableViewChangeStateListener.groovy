@@ -28,9 +28,8 @@ class LoadWeldersForTableViewChangeStateListener extends GenericServiceChangeSta
             loadingView.hide()
             LOGGER.debug("Welders list was updated")
             LOGGER.debug("-----LISTENER-END----"+getClass().simpleName)
+            return
         }
-        if (isShowingState(newValue)){
-            loadingView.show()
-        }
+        isShowingState(newValue)? loadingView.show() : loadingView.hide()
     }
 }

@@ -102,7 +102,7 @@ class WelderTableController implements Initializable{
 
     void refreshTable(){
         initTable()
-        weldersRepository.updateWeldersListForTableView()
+        weldersRepository.reloadWelders()
     }
 
     TableView<WelderTableViewDTO> getWeldersTableView(){

@@ -12,6 +12,8 @@ import javafx.fxml.Initializable
 import javafx.scene.control.ComboBox
 import javafx.scene.control.DatePicker
 import javafx.scene.control.TextField
+import javafx.scene.layout.BorderPane
+import javafx.scene.layout.GridPane
 import org.apache.log4j.Logger
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
@@ -51,6 +53,13 @@ class WelderController implements Initializable{
     @FXML
     private TextField txfAddress
 
+    @FXML
+    BorderPane mainWelderPane
+    @FXML
+    private GridPane welderDetailsPane
+
+    private WelderDTO bufferedWelderDTO
+
     @Override
     void initialize(URL location, ResourceBundle resources) {
         init()
@@ -58,9 +67,12 @@ class WelderController implements Initializable{
 
     private void init(){
         initCbEducation()
+        welderDetailsPane.disableProperty().bind(welderDTOProperty.isNull())
+
     }
 
     private void initCbEducation(){
+        educationDTORepository.loadEducations()
         cbEducation.itemsProperty().bind(educationDTORepository.allEducationProperty)
     }
 
@@ -114,11 +126,21 @@ class WelderController implements Initializable{
 
     private void refreshWelderPane(){
         init()
+        welderDTOProperty.set(null)
         ControlFXUtils.clearTextFields(txfName, txfSurname, txfSecname, txfAddress, txfDocNumber)
         dpBirthday.valueProperty().set(null)
         dpDateBegin.valueProperty().set(null)
         cbEducation.valueProperty().set(null)
 
+    }
+
+    ObjectProperty<WelderDTO> welderDTOProperty(){
+        return welderDTOProperty
+    }
+
+    @FXML
+    void closeWelderPane(ActionEvent event) {
+        mainWelderPane.setVisible(false)
     }
 
 

@@ -10,4 +10,5 @@ interface EducationDTORepository {
     ObservableList<String> getAllEducationDTO()
     ObjectProperty<ObservableList<String>> getAllEducationProperty()
     void updateEducationDTOList(ObservableList<String> list)
+    void loadEducations()
 }
