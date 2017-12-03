@@ -128,12 +128,12 @@ class WelderServiceTest extends GenericServiceTest{
         assert list.size() == 1
         def chkWelderList = list[0]
         assert chkWelderList != null
-        assert chkWelderList.id.get() == WELDER_ID
-        assert chkWelderList.name.get() == welder.name
-        assert chkWelderList.surname.get()  == welder.surname
-        assert chkWelderList.secondName.get() == welder.secondName
-        assert chkWelderList.birthday.get() == welder.birthday.format(DateTimeFormatter.ofPattern(DTOConstants.DATE_FORMAT_PATTERN))
-        assert chkWelderList.organization.get() == welder.organization.name
+        assert chkWelderList.id == WELDER_ID
+        assert chkWelderList.name == welder.name
+        assert chkWelderList.surname  == welder.surname
+        assert chkWelderList.secondName == welder.secondName
+        assert chkWelderList.birthday == welder.birthday.format(DateTimeFormatter.ofPattern(DTOConstants.DATE_FORMAT_PATTERN))
+        assert chkWelderList.organization == welder.organization.name
 
     }
 }

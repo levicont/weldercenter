@@ -3,6 +3,7 @@ package com.lvg.weldercenter.se
 import com.lvg.weldercenter.se.ui.controllers.FXMLLoaderProvider
 import com.lvg.weldercenter.se.ui.controllers.PaneType
 import com.lvg.weldercenter.se.ui.preloader.ApplicationPreloaderFX
+import com.lvg.weldercenter.se.ui.utils.ControlFXUtils
 import com.sun.javafx.application.LauncherImpl
 import javafx.application.Application
 import javafx.scene.Parent
@@ -32,6 +33,10 @@ class ApplicationFX extends Application{
         primaryStage.setScene(new Scene(rootNode))
         primaryStage.setTitle(APPLICATION_TITLE)
         primaryStage.getIcons().add(new Image(getClass().getResourceAsStream(LOGO_ICON_PATH)))
+        primaryStage.setOnCloseRequest({event ->
+            ControlFXUtils.closeApplication()
+            event.consume()
+        })
         primaryStage.show()
     }
 

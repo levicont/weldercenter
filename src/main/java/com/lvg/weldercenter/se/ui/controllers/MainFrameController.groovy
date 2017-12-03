@@ -1,5 +1,6 @@
 package com.lvg.weldercenter.se.ui.controllers
 
+import com.lvg.weldercenter.se.ui.utils.ControlFXUtils
 import com.lvg.weldercenter.se.ui.views.LoadingView
 import com.lvg.weldercenter.se.ui.views.LoadingViewFactory
 import javafx.concurrent.Worker
@@ -100,6 +101,18 @@ class MainFrameController implements Initializable{
         mainPane.center = logoPane
         logoPane.setVisible(true)
     }
+
+    @FXML
+    void shutdown(ActionEvent event){
+        LOGGER.debug("ActionEvent performed ${event.eventType} on ${event.source.class.name}")
+        ControlFXUtils.closeApplication()
+    }
+
+
+
+
+
+
 
 
 }

@@ -2,18 +2,22 @@ package com.lvg.weldercenter.se.ui.utils
 
 import com.lvg.weldercenter.config.R
 import com.lvg.weldercenter.ui.util.EventFXUtil
+import javafx.application.Platform
 import javafx.event.Event
 import javafx.scene.control.*
 import javafx.scene.input.KeyCode
 import javafx.scene.input.KeyEvent
 import javafx.scene.input.MouseEvent
 import javafx.scene.layout.Pane
+import org.apache.log4j.Logger
 
 import java.util.Optional
 
 
 class ControlFXUtils {
 
+
+    private static final Logger LOGGER = Logger.getLogger(ControlFXUtils.class)
 
     static void selectFirstTableRecord(TableView tableView){
         tableView.getSelectionModel().clearSelection()
@@ -96,11 +100,19 @@ class ControlFXUtils {
     static Optional<ButtonType> getResponseCloseApplication(){
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION)
         alert.setTitle("Закрытие приложения")
-        alert.setHeaderText("Производиться попытка закрыть приложение")
-        alert.setContentText("Вы уверены, что хотите завершить программу")
+        alert.setHeaderText("Произошла попытка закрыть приложение")
+        alert.setContentText("Вы уверены, что хотите завершить программу?")
 
         Optional<ButtonType> result = alert.showAndWait()
         return result
+    }
+
+    static void closeApplication(){
+        Optional<ButtonType> closingResponse = getResponseCloseApplication()
+        if (closingResponse.get() == ButtonType.OK){
+            LOGGER.info("Application is shutting down")
+            Platform.exit()
+        }
     }
 
     static void showWarningDialog(String message){

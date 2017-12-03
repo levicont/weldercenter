@@ -1,8 +1,8 @@
 package com.lvg.weldercenter.se.ui.controllers
 
-import com.lvg.weldercenter.se.ui.converters.EducationStringConverter
 import com.lvg.weldercenter.se.ui.dto.WelderDTO
 import com.lvg.weldercenter.se.ui.repositories.EducationDTORepository
+import com.lvg.weldercenter.se.ui.repositories.QualificationRepository
 import com.lvg.weldercenter.se.ui.utils.ControlFXUtils
 import javafx.beans.property.ObjectProperty
 import javafx.beans.property.SimpleObjectProperty
@@ -29,7 +29,7 @@ class WelderController implements Initializable{
     @Autowired
     EducationDTORepository educationDTORepository
     @Autowired
-    EducationStringConverter educationStringConverter
+    QualificationRepository qualificationRepository
 
     private final ObjectProperty<WelderDTO> welderDTOProperty = new SimpleObjectProperty<>()
 
@@ -70,6 +70,7 @@ class WelderController implements Initializable{
 
     private void init(){
         initCbEducation()
+        initCbQualification()
         welderDetailsPane.disableProperty().bind(welderDTOProperty.isNull())
 
     }
@@ -79,8 +80,14 @@ class WelderController implements Initializable{
         cbEducation.itemsProperty().bind(educationDTORepository.allEducationProperty)
     }
 
+    private void initCbQualification(){
+        qualificationRepository.loadQualifications()
+        cbQualification.itemsProperty().bind(qualificationRepository.qualificationsProperty())
+    }
+
     @FXML
     void refresh(ActionEvent event) {
+        LOGGER.debug("ActionEvent performed ${event.eventType} on ${event.source.class.name}")
         welderTableController.refreshTable()
         refreshWelderPane()
     }
@@ -99,31 +106,30 @@ class WelderController implements Initializable{
         dpBirthday.valueProperty().bindBidirectional(welderUI.birthdayProperty)
         txfDocNumber.textProperty().bindBidirectional(welderUI.documentNumberProperty)
         dpDateBegin.valueProperty().bindBidirectional(welderUI.dateBeginProperty)
-        selectEducation(welderUI.education)
+        selectItemInCombo(welderUI.education, cbEducation)
         cbEducation.valueProperty().bindBidirectional(welderUI.educationProperty)
+        selectItemInCombo(welderUI.qualification, cbQualification)
+        cbQualification.valueProperty().bindBidirectional(welderUI.qualificationProperty)
 
         txfAddress.textProperty().bindBidirectional(welderUI.addressProperty)
 
 
     }
 
-    private void selectEducation(String education){
-        if(education == null || education.isEmpty())
+    private <T> void selectItemInCombo(T item, ComboBox<T> comboBox){
+        if (item == null)
             return
-        String selectedEducation = null
-
-        cbEducation.items.each {edu ->
-            if(edu == education){
-                selectedEducation = edu
+        def selectedItem = null
+        comboBox.items.each {i ->
+            if(i == item){
+                selectedItem = i
                 return
             }
         }
-        if (selectedEducation == null){
-            selectedEducation = education
+        if (selectedItem == null){
+            selectedItem = item
         }
-        cbEducation.selectionModel.select(selectedEducation)
-
-
+        comboBox.selectionModel.select(selectedItem)
     }
 
 
@@ -134,6 +140,7 @@ class WelderController implements Initializable{
         dpBirthday.valueProperty().set(null)
         dpDateBegin.valueProperty().set(null)
         cbEducation.valueProperty().set(null)
+        cbQualification.valueProperty().set(null)
 
     }
 
@@ -143,6 +150,7 @@ class WelderController implements Initializable{
 
     @FXML
     void closeWelderPane(ActionEvent event) {
+        LOGGER.debug("ActionEvent performed ${event.eventType} on ${event.source.class.name}")
         mainFrameController.closePane(PaneType.WELDER_PANE)
     }
 

@@ -5,5 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository
 
 interface QualificationRepository extends JpaRepository<Qualification, Long> {
     void delete(Qualification qualification)
+    long count()
 
 }

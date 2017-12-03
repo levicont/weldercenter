@@ -6,4 +6,5 @@ interface TaskConstants {
     String TASK_FAIL_MESSAGE = 'Task failed'
     String ALL_WELDERS_TASK_TITLE_MESSAGE = 'Получение данных...'
     String ALL_EDUCATIONS_TASK_TITLE_MESSAGE = 'Получение списка образований...'
+    String ALL_QUALIFICATIONS_TASK_TITLE_MESSAGE = 'Получение списка квалификаций...'
 }

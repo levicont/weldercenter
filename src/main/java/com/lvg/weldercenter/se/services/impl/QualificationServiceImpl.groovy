@@ -31,4 +31,9 @@ class QualificationServiceImpl implements QualificationService {
     void delete(Qualification qualification) {
         repository.delete(qualification)
     }
+
+    @Override
+    Long count() {
+        return repository.count()
+    }
 }

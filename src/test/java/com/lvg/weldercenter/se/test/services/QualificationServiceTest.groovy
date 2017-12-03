@@ -6,7 +6,6 @@ import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.transaction.annotation.Transactional
 
-import static org.junit.Assert.*
 @Transactional
 class QualificationServiceTest extends GenericServiceTest {
 
@@ -76,5 +75,18 @@ class QualificationServiceTest extends GenericServiceTest {
         assert list != null
         assert list instanceof List
         assert list.size() == 1
+    }
+
+    @Test
+    void countTest() {
+        def QUALIFICATION_ID
+        def qualification = getQualification()
+        qualification = qualificationService.save(qualification)
+        QUALIFICATION_ID = qualification.id
+        assert QUALIFICATION_ID != null
+
+        def count = qualificationService.count()
+        assert count != null
+        assert count == 1
     }
 }
