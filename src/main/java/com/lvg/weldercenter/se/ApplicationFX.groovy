@@ -1,10 +1,10 @@
 package com.lvg.weldercenter.se
 
 import com.lvg.weldercenter.se.ui.controllers.FXMLLoaderProvider
+import com.lvg.weldercenter.se.ui.controllers.PaneType
 import com.lvg.weldercenter.se.ui.preloader.ApplicationPreloaderFX
 import com.sun.javafx.application.LauncherImpl
 import javafx.application.Application
-import javafx.fxml.FXMLLoader
 import javafx.scene.Parent
 import javafx.scene.Scene
 import javafx.scene.image.Image
@@ -39,7 +39,7 @@ class ApplicationFX extends Application{
     void init() throws Exception {
         springContext = SpringApplication.run(ApplicationFX.class)
         FXMLLoaderProvider provider = springContext.getBean(FXMLLoaderProvider.class)
-        rootNode = provider.loadParent(FXMLLoaderProvider.PaneType.MAIN_FRAME_PANE, false)
+        rootNode = provider.loadParent(PaneType.MAIN_FRAME_PANE, false)
     }
 
     @Override

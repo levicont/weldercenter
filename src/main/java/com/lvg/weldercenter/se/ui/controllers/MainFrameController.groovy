@@ -1,7 +1,5 @@
 package com.lvg.weldercenter.se.ui.controllers
 
-import com.lvg.weldercenter.se.ui.listeners.welderspane.LoadWeldersForTableViewChangeStateListener
-import com.lvg.weldercenter.se.ui.services.LoadingWeldersForTableViewService
 import com.lvg.weldercenter.se.ui.views.LoadingView
 import com.lvg.weldercenter.se.ui.views.LoadingViewFactory
 import javafx.concurrent.Worker
@@ -12,17 +10,16 @@ import javafx.scene.Parent
 import javafx.scene.control.Label
 import javafx.scene.control.MenuItem
 import javafx.scene.layout.BorderPane
-import javafx.stage.Stage
+import org.apache.log4j.Logger
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
 @Component
 class MainFrameController implements Initializable{
+    private static final Logger LOGGER = Logger.getLogger(MainFrameController.class)
 
     @Autowired
     LoadingViewFactory loadingViewFactory
-    @Autowired
-    LoadWeldersForTableViewChangeStateListener loadWeldersForTableViewChangeStateListener
 
 
 
@@ -80,8 +77,6 @@ class MainFrameController implements Initializable{
     @Autowired
     FXMLLoaderProvider fxmlLoaderProvider
 
-    private LoadingView loadingView
-
     @Override
     void initialize(URL location, ResourceBundle resources) {
 
@@ -89,18 +84,22 @@ class MainFrameController implements Initializable{
 
     @FXML
     void showWelderPane(ActionEvent event) {
-        Parent welderPane = fxmlLoaderProvider.loadParent(FXMLLoaderProvider.PaneType.WELDER_PANE, true)
+        Parent welderPane = fxmlLoaderProvider.loadParent(PaneType.WELDER_PANE, true)
         mainPane.center = welderPane
         welderPane.setVisible(true)
-    }
-
-    Stage loadingViewInit(Worker worker){
-        loadingView = loadingViewFactory.getLoadingView(mainPane.getScene().getWindow(), worker)
-        worker.stateProperty().addListener(loadWeldersForTableViewChangeStateListener)
-        return loadingView
+        LOGGER.debug("ActionEvent performed ${event.eventType} on ${event.source.class.name}")
     }
 
     LoadingView getLoadingView(Worker worker) {
         loadingViewFactory.getLoadingView(mainPane.getScene().getWindow(), worker)
     }
+
+    void closePane(PaneType paneType){
+        Parent pane = fxmlLoaderProvider.loadParent(paneType, true)
+        pane.setVisible(false)
+        mainPane.center = logoPane
+        logoPane.setVisible(true)
+    }
+
+
 }

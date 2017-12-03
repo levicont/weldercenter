@@ -22,6 +22,9 @@ import org.springframework.stereotype.Component
 class WelderController implements Initializable{
     private static final Logger LOGGER = Logger.getLogger(WelderController.class)
     @Autowired
+    MainFrameController mainFrameController
+
+    @Autowired
     WelderTableController welderTableController
     @Autowired
     EducationDTORepository educationDTORepository
@@ -140,7 +143,7 @@ class WelderController implements Initializable{
 
     @FXML
     void closeWelderPane(ActionEvent event) {
-        mainWelderPane.setVisible(false)
+        mainFrameController.closePane(PaneType.WELDER_PANE)
     }
 
 
