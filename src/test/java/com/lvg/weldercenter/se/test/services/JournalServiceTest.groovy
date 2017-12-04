@@ -78,4 +78,18 @@ class JournalServiceTest extends GenericServiceTest{
         assert list instanceof List
         assert list.size() == 1
     }
+
+    @Override
+    void countTest() {
+        def JOURNAL_ID
+        def journal = getJournal()
+        journal = journalService.save(journal)
+        JOURNAL_ID = journal.id
+        assert JOURNAL_ID != null
+
+        def count = journalService.count()
+        assert count != null
+        assert count instanceof Long
+        assert count == 1
+    }
 }

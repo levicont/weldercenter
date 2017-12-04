@@ -90,6 +90,7 @@ class WelderServiceTest extends GenericServiceTest{
 
         def count = welderService.count()
         assert count != null
+        assert count instanceof Long
         assert count == 1
     }
 

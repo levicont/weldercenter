@@ -22,6 +22,8 @@ abstract class GenericServiceTest extends ModelsGenerator{
     abstract void getTest()
     @Test
     abstract void getAllTest()
+    @Test
+    abstract void countTest()
 
 
 }

@@ -87,6 +87,7 @@ class QualificationServiceTest extends GenericServiceTest {
 
         def count = qualificationService.count()
         assert count != null
+        assert count instanceof Long
         assert count == 1
     }
 }

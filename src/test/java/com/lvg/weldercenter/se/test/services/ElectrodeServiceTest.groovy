@@ -75,4 +75,18 @@ class ElectrodeServiceTest extends GenericServiceTest{
         assert list instanceof List
         assert list.size() == 1
     }
+
+    @Override
+    void countTest() {
+        def ELECTRODE_ID
+        def electrode = getElectrode()
+        electrode = electrodeService.save(electrode)
+        ELECTRODE_ID = electrode.id
+        assert ELECTRODE_ID != null
+
+        def count = electrodeService.count()
+        assert count != null
+        assert count instanceof Long
+        assert count == 1
+    }
 }

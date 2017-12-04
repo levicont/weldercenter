@@ -34,6 +34,6 @@ class JournalServiceImpl implements JournalService{
 
     @Override
     Long count() {
-        return repository
+        return repository.count()
     }
 }

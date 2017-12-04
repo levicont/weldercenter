@@ -95,4 +95,21 @@ class WeldPatternServiceTest extends GenericServiceTest{
         assert list instanceof List
         assert list.size() == 1
     }
+
+    @Override
+    void countTest() {
+        def WELD_PATTERN_ID
+        def welder = welderService.save(getWelder())
+        def journal = journalService.save(getJournal())
+        def pp = personalProtocolService.save(getPersonalProtocol(welder, journal))
+        def weldPattern = getWeldPattern(pp)
+        weldPattern = weldPatternService.save(weldPattern)
+        WELD_PATTERN_ID = weldPattern.id
+        assert WELD_PATTERN_ID != null
+
+        def count = weldPatternService.count()
+        assert count != null
+        assert count instanceof Long
+        assert count == 1
+    }
 }

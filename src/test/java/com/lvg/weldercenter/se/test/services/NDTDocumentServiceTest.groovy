@@ -74,4 +74,18 @@ class NDTDocumentServiceTest extends GenericServiceTest{
         assert list instanceof List
         assert list.size() == 1
     }
+
+    @Override
+    void countTest() {
+        def NDT_DOCUMENT_ID
+        def ndtDocument = getNDTDocument()
+        ndtDocument = ndtDocumentService.save(ndtDocument)
+        NDT_DOCUMENT_ID = ndtDocument.id
+        assert NDT_DOCUMENT_ID != null
+
+        def count = ndtDocumentService.count()
+        assert count != null
+        assert count instanceof Long
+        assert count == 1
+    }
 }

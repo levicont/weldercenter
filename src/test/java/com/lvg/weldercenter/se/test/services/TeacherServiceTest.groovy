@@ -77,4 +77,18 @@ class TeacherServiceTest extends GenericServiceTest{
         assert list instanceof List
         assert list.size() == 1
     }
+
+    @Override
+    void countTest() {
+        def TEACHER_ID
+        def teacher = getTeacher()
+        teacher = teacherService.save(teacher)
+        TEACHER_ID = teacher.id
+        assert TEACHER_ID != null
+
+        def count = teacherService.count()
+        assert count != null
+        assert count instanceof Long
+        assert count == 1
+    }
 }

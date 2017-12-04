@@ -77,4 +77,18 @@ class OrganizationServiceTest extends GenericServiceTest {
         assert list.size() == 1
 
     }
+
+    @Override
+    void countTest() {
+        def ORGANIZATION_ID
+        def organization = getOrganization()
+        organization = organizationService.save(organization)
+        ORGANIZATION_ID = organization.id
+        assert ORGANIZATION_ID != null
+
+        def count = organizationService.count()
+        assert count != null
+        assert count instanceof Long
+        assert count == 1
+    }
 }

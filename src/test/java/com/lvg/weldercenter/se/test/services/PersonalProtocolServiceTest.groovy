@@ -89,4 +89,20 @@ class PersonalProtocolServiceTest extends GenericServiceTest{
         assert list instanceof List
         assert list.size() == 1
     }
+
+    @Override
+    void countTest() {
+        def PERSONAL_PROTOCOL_ID
+        def welder = welderService.save(getWelder())
+        def journal = journalService.save(getJournal())
+        def personalProtocol = getPersonalProtocol(welder, journal)
+        personalProtocol = personalProtocolService.save(personalProtocol)
+        PERSONAL_PROTOCOL_ID = personalProtocol.id
+        assert PERSONAL_PROTOCOL_ID != null
+
+        def count = personalProtocolService.count()
+        assert count != null
+        assert count instanceof Long
+        assert count == 1
+    }
 }

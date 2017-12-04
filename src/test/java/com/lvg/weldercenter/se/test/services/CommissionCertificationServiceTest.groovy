@@ -90,4 +90,21 @@ class CommissionCertificationServiceTest extends GenericServiceTest{
         assert list instanceof List
         assert list.size() == 1
     }
+
+
+    void countTest() {
+        def COMMISSION_ID
+        def teachers = new ArrayList<Teacher>()
+        (1..4).each {teachers << getTeacher()}
+        teachers.each{teacherService.save(it)}
+        def commissionCertification = getCommissionCertification(teachers)
+        commissionCertification = commissionCertificationService.save(commissionCertification)
+        COMMISSION_ID = commissionCertification.id
+        assert COMMISSION_ID != null
+
+        def count = commissionCertificationService.count()
+        assert count != null
+        assert count instanceof Long
+        assert count == 1
+    }
 }

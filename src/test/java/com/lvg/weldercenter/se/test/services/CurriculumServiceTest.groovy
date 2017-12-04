@@ -74,4 +74,18 @@ class CurriculumServiceTest extends GenericServiceTest{
         assert list instanceof List
         assert list.size() == 1
     }
+
+    @Override
+    void countTest() {
+        def CURRICULUM_ID
+        def curriculum = getCurriculumWithoutSections()
+        curriculum = curriculumService.save(curriculum)
+        CURRICULUM_ID = curriculum.id
+        assert CURRICULUM_ID != null
+
+        def count = curriculumService.count()
+        assert count != null
+        assert count instanceof Long
+        assert count == 1
+    }
 }

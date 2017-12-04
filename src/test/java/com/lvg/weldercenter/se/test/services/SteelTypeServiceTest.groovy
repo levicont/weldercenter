@@ -78,4 +78,18 @@ class SteelTypeServiceTest extends GenericServiceTest{
         assert list instanceof List
         assert list.size() == 1
     }
+
+    @Override
+    void countTest() {
+        def STEEL_TYPE_ID
+        def steelType = getSteelType()
+        steelType = steelTypeService.save(steelType)
+        STEEL_TYPE_ID = steelType.id
+        assert STEEL_TYPE_ID != null
+
+        def count = steelTypeService.count()
+        assert count != null
+        assert count instanceof Long
+        assert count == 1
+    }
 }

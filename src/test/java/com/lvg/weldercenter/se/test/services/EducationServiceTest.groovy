@@ -53,6 +53,17 @@ class EducationServiceTest extends GenericServiceTest{
         assert list.size() == 1
     }
 
+    @Override
+    void countTest() {
+        def education = getEducation()
+        education = educationService.save(education)
+        assert education.id != null
+
+        def count = educationService.count()
+        assert count instanceof Long
+        assert count == 1
+    }
+
     void deleteTest(){
         def EDUCATION_ID
         def education = getEducation()

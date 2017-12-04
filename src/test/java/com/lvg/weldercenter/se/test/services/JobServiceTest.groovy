@@ -42,6 +42,17 @@ class JobServiceTest extends GenericServiceTest{
     }
 
     @Override
+    void countTest() {
+        def job = getJob()
+        job = jobService.save(job)
+        assert job.id != null
+
+        def count = jobService.count()
+        assert count instanceof Long
+        assert count == 1
+    }
+
+    @Override
     void deleteTest() {
         def JOB_ID
         def job = getJob()

@@ -75,4 +75,18 @@ class WeldMethodServiceTest extends GenericServiceTest{
         assert list instanceof List
         assert list.size() == 1
     }
+
+    @Override
+    void countTest() {
+        def WELD_METHOD_ID
+        def weldMethod = getWeldMethod()
+        weldMethod = weldMethodService.save(weldMethod)
+        WELD_METHOD_ID = weldMethod.id
+        assert WELD_METHOD_ID != null
+
+        def count = weldMethodService.count()
+        assert count != null
+        assert count instanceof Long
+        assert count == 1
+    }
 }
