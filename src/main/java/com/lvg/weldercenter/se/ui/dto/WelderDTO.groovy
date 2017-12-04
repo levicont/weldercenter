@@ -30,9 +30,10 @@ class WelderDTO extends GenericModelDTO<Welder> {
 
 
     WelderDTO(Welder welder) {
+        validateModel(welder)
         welderProperty.set(welder)
         this.welder = welder
-        validateModel(welder)
+
 
         idProperty.set(welder.id == null ? NULL_ID_FIELD_DEFAULT : welder.id)
         nameProperty.set(welder.name)

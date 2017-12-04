@@ -31,4 +31,9 @@ class JournalServiceImpl implements JournalService{
     void delete(Journal journal) {
         repository.delete(journal)
     }
+
+    @Override
+    Long count() {
+        return repository
+    }
 }

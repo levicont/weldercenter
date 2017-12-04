@@ -31,4 +31,9 @@ class CurriculumServiceImpl implements CurriculumService{
     void delete(Curriculum curriculum) {
         repository.delete(curriculum)
     }
+
+    @Override
+    Long count() {
+        return repository.count()
+    }
 }

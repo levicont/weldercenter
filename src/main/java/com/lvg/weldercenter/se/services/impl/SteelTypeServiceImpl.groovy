@@ -31,4 +31,9 @@ class SteelTypeServiceImpl implements SteelTypeService {
     void delete(SteelType steelType) {
         repository.delete(steelType)
     }
+
+    @Override
+    Long count() {
+        return repository.count()
+    }
 }

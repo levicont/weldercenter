@@ -31,4 +31,9 @@ class OrganizationServiceImpl implements OrganizationService {
     void delete(Organization organization) {
         repository.delete(organization)
     }
+
+    @Override
+    Long count() {
+        return repository.count()
+    }
 }

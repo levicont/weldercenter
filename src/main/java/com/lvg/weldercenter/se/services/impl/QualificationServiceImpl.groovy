@@ -36,4 +36,6 @@ class QualificationServiceImpl implements QualificationService {
     Long count() {
         return repository.count()
     }
+
+
 }

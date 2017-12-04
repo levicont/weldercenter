@@ -31,4 +31,9 @@ class PersonalProtocolServiceImpl implements PersonalProtocolService{
     void delete(PersonalProtocol personalProtocol) {
         repository.delete(personalProtocol)
     }
+
+    @Override
+    Long count() {
+        return repository.count()
+    }
 }

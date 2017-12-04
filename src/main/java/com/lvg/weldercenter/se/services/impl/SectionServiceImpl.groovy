@@ -31,4 +31,9 @@ class SectionServiceImpl implements SectionService{
     void delete(Section section) {
         repository.delete(section)
     }
+
+    @Override
+    Long count() {
+        return repository.count()
+    }
 }

@@ -31,4 +31,9 @@ class NDTDocumentServiceImpl implements NDTDocumentService{
     void delete(NDTDocument ndtDocument) {
         repository.delete(ndtDocument)
     }
+
+    @Override
+    Long count() {
+        return repository.count()
+    }
 }

@@ -31,4 +31,9 @@ class CommissionCertificationServiceImpl implements CommissionCertificationServi
     void delete(CommissionCertification commissionCertification) {
         repository.delete(commissionCertification)
     }
+
+    @Override
+    Long count() {
+        return repository.count()
+    }
 }

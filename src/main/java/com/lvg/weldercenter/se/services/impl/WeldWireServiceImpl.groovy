@@ -31,4 +31,9 @@ class WeldWireServiceImpl implements WeldWireService{
     void delete(WeldWire weldWire) {
         repository.delete(weldWire)
     }
+
+    @Override
+    Long count() {
+        return repository.count()
+    }
 }

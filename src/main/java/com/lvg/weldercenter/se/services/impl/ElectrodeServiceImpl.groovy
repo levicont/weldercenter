@@ -32,4 +32,9 @@ class ElectrodeServiceImpl implements ElectrodeService {
     void delete(Electrode electrode) {
         repository.delete(electrode)
     }
+
+    @Override
+    Long count() {
+        return repository.count()
+    }
 }

@@ -5,4 +5,5 @@ interface GenericService<T extends Serializable> {
     T get(Long id)
     List<T> getAll()
     void delete(T entity)
+    Long count()
 }

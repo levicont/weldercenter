@@ -31,4 +31,9 @@ class WeldMethodServiceImpl implements WeldMethodService{
     void delete(WeldMethod weldMethod) {
         repository.delete(weldMethod)
     }
+
+    @Override
+    Long count() {
+        return repository.count()
+    }
 }

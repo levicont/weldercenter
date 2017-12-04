@@ -1,6 +1,6 @@
 package com.lvg.weldercenter.se.ui.listeners.welderspane
 
-import com.lvg.weldercenter.se.ui.repositories.QualificationRepository
+import com.lvg.weldercenter.se.ui.repositories.QualificationDTORepository
 import com.lvg.weldercenter.se.ui.services.LoadingAllQualificationsService
 import javafx.beans.value.ObservableValue
 import javafx.concurrent.Worker
@@ -16,7 +16,7 @@ class LoadAllQualificationsChangeStateListener extends GenericServiceChangeState
     LoadingAllQualificationsService loadingAllQualificationsService
 
     @Autowired
-    QualificationRepository qualificationRepository
+    QualificationDTORepository qualificationRepository
 
     @Override
     void changed(ObservableValue<? extends Worker.State> observable, Worker.State oldValue, Worker.State newValue) {

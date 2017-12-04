@@ -31,4 +31,9 @@ class TeacherServiceImpl implements TeacherService{
     void delete(Teacher teacher) {
         repository.delete(teacher)
     }
+
+    @Override
+    Long count() {
+        return repository.count()
+    }
 }

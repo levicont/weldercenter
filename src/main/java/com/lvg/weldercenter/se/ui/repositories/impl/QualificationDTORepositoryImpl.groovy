@@ -1,7 +1,7 @@
 package com.lvg.weldercenter.se.ui.repositories.impl
 
 import com.lvg.weldercenter.se.ui.listeners.welderspane.LoadAllQualificationsChangeStateListener
-import com.lvg.weldercenter.se.ui.repositories.QualificationRepository
+import com.lvg.weldercenter.se.ui.repositories.QualificationDTORepository
 import com.lvg.weldercenter.se.ui.services.LoadingAllQualificationsService
 import com.lvg.weldercenter.se.ui.utils.ServiceUtils
 import javafx.beans.property.ListProperty
@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
 @Component
-class QualificationRepositoryImpl implements QualificationRepository{
+class QualificationDTORepositoryImpl implements QualificationDTORepository{
 
     @Autowired
     LoadingAllQualificationsService loadingAllQualificationsService

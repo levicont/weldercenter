@@ -1,13 +1,11 @@
 package com.lvg.weldercenter.se.services.impl
 
-import com.lvg.weldercenter.se.models.Organization
 import com.lvg.weldercenter.se.models.Welder
 import com.lvg.weldercenter.se.repositories.WelderRepository
 import com.lvg.weldercenter.se.services.WelderService
 import com.lvg.weldercenter.se.ui.dto.WelderTableViewDTO
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import org.springframework.transaction.annotation.Transactional
 
 import java.time.LocalDate
 
@@ -38,7 +36,7 @@ class WelderServiceImpl implements WelderService{
     }
 
     @Override
-    long count() {
+    Long count() {
         return repository.count()
     }
 

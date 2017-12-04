@@ -2,6 +2,13 @@ delete from welder;
 delete from organization;
 delete from education;
 delete from qualification;
+delete from job;
+
+insert into job(id, name)
+						 values(100, 'электросварщик'),
+						 		 (101, 'газосварщик'),
+						 		 (102, 'электро-газосварщик');
+
 
 insert into qualification(id, type)
 						 values(100, 'электросварщик'),

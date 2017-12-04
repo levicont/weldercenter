@@ -2,7 +2,8 @@ package com.lvg.weldercenter.se.ui.controllers
 
 import com.lvg.weldercenter.se.ui.dto.WelderDTO
 import com.lvg.weldercenter.se.ui.repositories.EducationDTORepository
-import com.lvg.weldercenter.se.ui.repositories.QualificationRepository
+import com.lvg.weldercenter.se.ui.repositories.JobDTORepository
+import com.lvg.weldercenter.se.ui.repositories.QualificationDTORepository
 import com.lvg.weldercenter.se.ui.utils.ControlFXUtils
 import javafx.beans.property.ObjectProperty
 import javafx.beans.property.SimpleObjectProperty
@@ -29,7 +30,9 @@ class WelderController implements Initializable{
     @Autowired
     EducationDTORepository educationDTORepository
     @Autowired
-    QualificationRepository qualificationRepository
+    QualificationDTORepository qualificationRepository
+    @Autowired
+    JobDTORepository jobDTORepository
 
     private final ObjectProperty<WelderDTO> welderDTOProperty = new SimpleObjectProperty<>()
 
@@ -71,6 +74,7 @@ class WelderController implements Initializable{
     private void init(){
         initCbEducation()
         initCbQualification()
+        initCbJob()
         welderDetailsPane.disableProperty().bind(welderDTOProperty.isNull())
 
     }
@@ -83,6 +87,11 @@ class WelderController implements Initializable{
     private void initCbQualification(){
         qualificationRepository.loadQualifications()
         cbQualification.itemsProperty().bind(qualificationRepository.qualificationsProperty())
+    }
+
+    private void initCbJob(){
+        jobDTORepository.loadAllDTO()
+        cbJob.itemsProperty().bind(jobDTORepository.jobsNameListProperty())
     }
 
     @FXML
@@ -110,7 +119,8 @@ class WelderController implements Initializable{
         cbEducation.valueProperty().bindBidirectional(welderUI.educationProperty)
         selectItemInCombo(welderUI.qualification, cbQualification)
         cbQualification.valueProperty().bindBidirectional(welderUI.qualificationProperty)
-
+        selectItemInCombo(welderUI.job, cbJob)
+        cbJob.valueProperty().bindBidirectional(welderUI.jobProperty)
         txfAddress.textProperty().bindBidirectional(welderUI.addressProperty)
 
 
@@ -141,6 +151,7 @@ class WelderController implements Initializable{
         dpDateBegin.valueProperty().set(null)
         cbEducation.valueProperty().set(null)
         cbQualification.valueProperty().set(null)
+        cbJob.valueProperty().set(null)
 
     }
 

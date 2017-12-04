@@ -31,4 +31,9 @@ class WeldPatternServiceImpl implements WeldPatternService{
     void delete(WeldPattern weldPattern) {
         repository.delete(weldPattern)
     }
+
+    @Override
+    Long count() {
+        return repository.count()
+    }
 }

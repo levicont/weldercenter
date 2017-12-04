@@ -31,4 +31,9 @@ class JobServiceImpl implements JobService{
     void delete(Job job) {
         jobRepository.delete(job)
     }
+
+    @Override
+    Long count() {
+        return jobRepository.count()
+    }
 }
