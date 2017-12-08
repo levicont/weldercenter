@@ -8,4 +8,5 @@ interface TaskConstants {
     String ALL_EDUCATIONS_TASK_TITLE_MESSAGE = 'Получение списка образований...'
     String ALL_QUALIFICATIONS_TASK_TITLE_MESSAGE = 'Получение списка квалификаций...'
     String ALL_JOBS_TASK_TITLE_MESSAGE = 'Получение списка профессий...'
+    String ALL_ORGANIZATIONS_TASK_TITLE_MESSAGE = 'Получение списка организаций...'
 }
