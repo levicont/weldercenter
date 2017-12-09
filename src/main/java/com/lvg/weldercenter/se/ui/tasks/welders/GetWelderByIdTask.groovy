@@ -28,8 +28,8 @@ class GetWelderByIdTask extends Task<WelderDTO>{
     @Override
     protected WelderDTO call() throws Exception {
         LOGGER.debug("---TASK-STARTED---${getClass().getSimpleName()}")
-        WelderTableViewDTO welderDTO = welderTableController.getWeldersTableView().getSelectionModel().getSelectedItem()
         updateTitle(GET_WELDER_BY_ID_TASK_TITLE_MESSAGE)
+        WelderTableViewDTO welderDTO = welderTableController.getWeldersTableView().getSelectionModel().getSelectedItem()
         Welder welder = welderService.getFull(welderDTO.getId())
         LOGGER.debug("---WELDER-FOUND: ${welder}")
         LOGGER.debug("---WELDER-HAS-ORGANIZATION: ${welder.organization}")

@@ -5,7 +5,6 @@ import javafx.beans.property.ObjectProperty
 import javafx.beans.property.SimpleObjectProperty
 import javafx.beans.property.SimpleStringProperty
 import javafx.beans.property.StringProperty
-import javafx.beans.value.ChangeListener
 
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -49,7 +48,6 @@ class WelderDTO extends GenericModelDTO<Welder> {
 
         this.organizationProperty.set(welder.organization != null ? new OrganizationDTO(welder.organization) : null)
 
-        initListeners()
     }
 
     Welder getWelder() {
@@ -74,6 +72,7 @@ class WelderDTO extends GenericModelDTO<Welder> {
 
         WelderDTO welderDTO = (WelderDTO) o
 
+        if (organizationProperty != welderDTO.organizationProperty()) return false
         if (getAddress() != welderDTO.getAddress()) return false
         if (getBirthday() != welderDTO.getBirthday()) return false
         if (getDateBegin() != welderDTO.getDateBegin()) return false
@@ -81,7 +80,6 @@ class WelderDTO extends GenericModelDTO<Welder> {
         if (getEducation() != welderDTO.getEducation()) return false
         if (getJob() != welderDTO.getJob()) return false
         if (getName() != welderDTO.getName()) return false
-        if (getOrganizationName() != welderDTO.getOrganizationName()) return false
         if (getQualification() != welderDTO.getQualification()) return false
         if (getSecondName() != welderDTO.getSecondName()) return false
         if (getSurname() != welderDTO.getSurname()) return false
@@ -91,7 +89,7 @@ class WelderDTO extends GenericModelDTO<Welder> {
 
     int hashCode() {
         int result
-        result = (getOrganizationName() != null ? getOrganizationName().hashCode() : 0)
+        result = (organizationProperty() != null ? organizationProperty.hashCode() : 0)
         result = 31 * result + (getName() != null ? getName().hashCode() : 0)
         result = 31 * result + (getSurname() != null ? getSurname().hashCode() : 0)
         result = 31 * result + (getSecondName() != null ? getSecondName().hashCode() : 0)
@@ -263,11 +261,9 @@ class WelderDTO extends GenericModelDTO<Welder> {
         return jobProperty
     }
 
-    private void initListeners(){
-        nameProperty.addListener((ChangeListener<String>){ observableValue, oldValue, newValue ->
-            LOGGER.debug("nameProperty has been changed oldValue = ${oldValue} newValue = ${newValue} \n " +
-                    "listener: ${getClass().toString()} WelderDTO: ${super.toString()}")
-        })
-
+    ObjectProperty<OrganizationDTO> organizationProperty(){
+        return organizationProperty
     }
+
+
 }

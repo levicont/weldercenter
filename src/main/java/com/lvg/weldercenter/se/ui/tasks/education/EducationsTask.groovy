@@ -22,12 +22,12 @@ class EducationsTask extends Task<ObservableList<String>>{
     @Override
     protected ObservableList<String> call() throws Exception {
         ObservableList<String> results = FXCollections.observableArrayList()
+        updateTitle(ALL_EDUCATIONS_TASK_TITLE_MESSAGE)
 
         long count = educationService.count()
         long counter = 0
 
 
-        updateTitle(ALL_EDUCATIONS_TASK_TITLE_MESSAGE)
         for(Education education : educationService.getAll()){
             if (this.isCancelled()){
                 break

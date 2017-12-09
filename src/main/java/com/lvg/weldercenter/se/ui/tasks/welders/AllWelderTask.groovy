@@ -21,13 +21,13 @@ class AllWelderTask extends Task<ObservableList<WelderDTO>> implements TaskConst
     @Override
     protected ObservableList<WelderDTO> call() throws Exception {
         ObservableList<WelderDTO> results = FXCollections.observableArrayList()
+        updateTitle(ALL_WELDERS_TASK_TITLE_MESSAGE)
 
         long count = welderService.count()
         long counter = 0
 
 
 
-        updateTitle(ALL_WELDERS_TASK_TITLE_MESSAGE)
         for(Welder welder : welderService.getAll()){
             if (this.isCancelled()){
                 break

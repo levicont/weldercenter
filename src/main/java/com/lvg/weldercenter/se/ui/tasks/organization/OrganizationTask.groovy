@@ -23,11 +23,11 @@ class OrganizationTask extends Task<ObservableList<OrganizationDTO>>{
     @Override
     protected ObservableList<OrganizationDTO> call() throws Exception {
         ObservableList<OrganizationDTO> results = FXCollections.observableArrayList()
+        updateTitle(TaskConstants.ALL_ORGANIZATIONS_TASK_TITLE_MESSAGE)
 
         long count = organizationService.count()
         long counter = 0
 
-        updateTitle(TaskConstants.ALL_ORGANIZATIONS_TASK_TITLE_MESSAGE)
         for(Organization organization : organizationService.getAll()){
             if (this.isCancelled()){
                 break

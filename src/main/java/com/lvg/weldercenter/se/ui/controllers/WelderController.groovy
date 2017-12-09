@@ -1,8 +1,10 @@
 package com.lvg.weldercenter.se.ui.controllers
 
+import com.lvg.weldercenter.se.ui.dto.OrganizationDTO
 import com.lvg.weldercenter.se.ui.dto.WelderDTO
 import com.lvg.weldercenter.se.ui.repositories.EducationDTORepository
 import com.lvg.weldercenter.se.ui.repositories.JobDTORepository
+import com.lvg.weldercenter.se.ui.repositories.OrganizationDTORepository
 import com.lvg.weldercenter.se.ui.repositories.QualificationDTORepository
 import com.lvg.weldercenter.se.ui.utils.ControlFXUtils
 import javafx.beans.property.ObjectProperty
@@ -33,6 +35,8 @@ class WelderController implements Initializable{
     QualificationDTORepository qualificationRepository
     @Autowired
     JobDTORepository jobDTORepository
+    @Autowired
+    OrganizationDTORepository organizationDTORepository
 
     private final ObjectProperty<WelderDTO> welderDTOProperty = new SimpleObjectProperty<>()
 
@@ -53,7 +57,7 @@ class WelderController implements Initializable{
     @FXML
     private ComboBox<String> cbQualification
     @FXML
-    private ComboBox<String> cbOrganization
+    private ComboBox<OrganizationDTO> cbOrganization
     @FXML
     private ComboBox<String> cbJob
     @FXML
@@ -75,6 +79,7 @@ class WelderController implements Initializable{
         initCbEducation()
         initCbQualification()
         initCbJob()
+        initCbOrganization()
         welderDetailsPane.disableProperty().bind(welderDTOProperty.isNull())
 
     }
@@ -92,6 +97,11 @@ class WelderController implements Initializable{
     private void initCbJob(){
         jobDTORepository.loadAllDTO()
         cbJob.itemsProperty().bind(jobDTORepository.jobsNameListProperty())
+    }
+
+    private void initCbOrganization(){
+        organizationDTORepository.loadAllDTO()
+        cbOrganization.itemsProperty().bind(organizationDTORepository.allDTO)
     }
 
     @FXML
@@ -121,6 +131,8 @@ class WelderController implements Initializable{
         cbQualification.valueProperty().bindBidirectional(welderUI.qualificationProperty)
         selectItemInCombo(welderUI.job, cbJob)
         cbJob.valueProperty().bindBidirectional(welderUI.jobProperty)
+        selectItemInCombo(welderUI.organizationDTO, cbOrganization)
+        cbOrganization.valueProperty().bindBidirectional(welderUI.organizationProperty)
         txfAddress.textProperty().bindBidirectional(welderUI.addressProperty)
 
 
@@ -152,7 +164,7 @@ class WelderController implements Initializable{
         cbEducation.valueProperty().set(null)
         cbQualification.valueProperty().set(null)
         cbJob.valueProperty().set(null)
-
+        cbOrganization.valueProperty().set(null)
     }
 
     ObjectProperty<WelderDTO> welderDTOProperty(){

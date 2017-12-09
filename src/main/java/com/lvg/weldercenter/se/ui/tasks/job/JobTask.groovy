@@ -21,11 +21,11 @@ class JobTask extends Task<ObservableList<JobDTO>>{
     @Override
     protected ObservableList<JobDTO> call() throws Exception {
         ObservableList<JobDTO> results = FXCollections.observableArrayList()
+        updateTitle(TaskConstants.ALL_JOBS_TASK_TITLE_MESSAGE)
 
         long count = jobService.count()
         long counter = 0
 
-        updateTitle(TaskConstants.ALL_JOBS_TASK_TITLE_MESSAGE)
         for(Job job : jobService.getAll()){
             if (this.isCancelled()){
                 break

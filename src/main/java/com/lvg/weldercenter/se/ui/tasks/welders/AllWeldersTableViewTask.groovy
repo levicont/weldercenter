@@ -21,12 +21,12 @@ class AllWeldersTableViewTask extends Task<ObservableList<WelderTableViewDTO>> i
     @Override
     protected ObservableList<WelderTableViewDTO> call() throws Exception {
         ObservableList<WelderTableViewDTO> results = FXCollections.observableArrayList()
+        updateTitle(ALL_WELDERS_TASK_TITLE_MESSAGE)
 
         long count = welderService.count()
         long counter = 0
 
 
-        updateTitle(ALL_WELDERS_TASK_TITLE_MESSAGE)
         for(WelderTableViewDTO welder : welderService.getAllWeldersTableViewDTO()){
             if (this.isCancelled()){
                 break
