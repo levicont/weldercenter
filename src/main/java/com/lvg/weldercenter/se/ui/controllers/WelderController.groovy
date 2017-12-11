@@ -98,7 +98,7 @@ class WelderController implements Initializable{
     }
 
     private void initCRUDButtons(){
-        btSave.disableProperty().bind(isWelderChangedProperty)
+        btSave.disableProperty().bind((isWelderChangedProperty.not()) | welderDTOProperty.isNull())
     }
 
     private void initCbEducation(){
@@ -140,8 +140,9 @@ class WelderController implements Initializable{
         bufferedWelderDTOProperty.set(welderUI)
         txfName.textProperty().bindBidirectional(welderUI.nameProperty)
         //TODO check change listener
+        isWelderChangedProperty.set(false)
         txfName.textProperty().addListener((ChangeListener<String>){obs, old, newVal ->
-            isWelderChangedProperty.set(newVal == welderDTOProperty.get().originalWelderProperty().get().name)
+            isWelderChangedProperty.set(newVal != welderDTOProperty.get().originalWelderProperty().get().name)
         })
         txfSecname.textProperty().bindBidirectional(welderUI.secondNameProperty)
         txfSurname.textProperty().bindBidirectional(welderUI.surnameProperty)
