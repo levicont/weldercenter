@@ -4,6 +4,7 @@ import com.lvg.weldercenter.se.models.Organization
 import javafx.beans.property.SimpleStringProperty
 import javafx.beans.property.StringProperty
 
+import static com.lvg.weldercenter.se.ui.dto.DTOConstants.NULL_FIELD_PLACEHOLDER
 import static com.lvg.weldercenter.se.ui.dto.DTOConstants.NULL_ID_FIELD_DEFAULT
 
 class OrganizationDTO extends GenericModelDTO<Organization>{
@@ -19,8 +20,8 @@ class OrganizationDTO extends GenericModelDTO<Organization>{
 
         idProperty.set(organization.id == null ? NULL_ID_FIELD_DEFAULT: organization.id)
         nameProperty.set(organization.name)
-        addressProperty.set(organization.address)
-        phoneProperty.set(organization.phone)
+        addressProperty.set(organization.address == null ? NULL_FIELD_PLACEHOLDER : organization.address)
+        phoneProperty.set(organization.phone == null ? NULL_FIELD_PLACEHOLDER : organization.phone)
     }
 
     Organization getOrganization() {

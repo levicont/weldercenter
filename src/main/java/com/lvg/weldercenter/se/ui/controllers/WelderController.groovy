@@ -1,5 +1,6 @@
 package com.lvg.weldercenter.se.ui.controllers
 
+import com.lvg.weldercenter.se.ui.converters.OrganizationDTOStringConverter
 import com.lvg.weldercenter.se.ui.dto.OrganizationDTO
 import com.lvg.weldercenter.se.ui.dto.WelderDTO
 import com.lvg.weldercenter.se.ui.repositories.EducationDTORepository
@@ -7,11 +8,15 @@ import com.lvg.weldercenter.se.ui.repositories.JobDTORepository
 import com.lvg.weldercenter.se.ui.repositories.OrganizationDTORepository
 import com.lvg.weldercenter.se.ui.repositories.QualificationDTORepository
 import com.lvg.weldercenter.se.ui.utils.ControlFXUtils
+import javafx.beans.property.BooleanProperty
 import javafx.beans.property.ObjectProperty
+import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleObjectProperty
+import javafx.beans.value.ChangeListener
 import javafx.event.ActionEvent
 import javafx.fxml.FXML
 import javafx.fxml.Initializable
+import javafx.scene.control.Button
 import javafx.scene.control.ComboBox
 import javafx.scene.control.DatePicker
 import javafx.scene.control.TextField
@@ -26,6 +31,9 @@ class WelderController implements Initializable{
     private static final Logger LOGGER = Logger.getLogger(WelderController.class)
     @Autowired
     MainFrameController mainFrameController
+
+    @Autowired
+    OrganizationDTOStringConverter organizationDTOStringConverter
 
     @Autowired
     WelderTableController welderTableController
@@ -64,11 +72,15 @@ class WelderController implements Initializable{
     private TextField txfAddress
 
     @FXML
+    private Button btSave
+
+    @FXML
     BorderPane mainWelderPane
     @FXML
     private GridPane welderDetailsPane
 
-    private WelderDTO bufferedWelderDTO
+    private ObjectProperty<WelderDTO> bufferedWelderDTOProperty = new SimpleObjectProperty<>()
+    private BooleanProperty isWelderChangedProperty = new SimpleBooleanProperty(false)
 
     @Override
     void initialize(URL location, ResourceBundle resources) {
@@ -80,8 +92,13 @@ class WelderController implements Initializable{
         initCbQualification()
         initCbJob()
         initCbOrganization()
+        initCRUDButtons()
         welderDetailsPane.disableProperty().bind(welderDTOProperty.isNull())
 
+    }
+
+    private void initCRUDButtons(){
+        btSave.disableProperty().bind(isWelderChangedProperty)
     }
 
     private void initCbEducation(){
@@ -101,6 +118,7 @@ class WelderController implements Initializable{
 
     private void initCbOrganization(){
         organizationDTORepository.loadAllDTO()
+        cbOrganization.converterProperty().set(organizationDTOStringConverter)
         cbOrganization.itemsProperty().bind(organizationDTORepository.allDTO)
     }
 
@@ -119,7 +137,12 @@ class WelderController implements Initializable{
             return
         }
         welderDTOProperty.set(welderUI)
+        bufferedWelderDTOProperty.set(welderUI)
         txfName.textProperty().bindBidirectional(welderUI.nameProperty)
+        //TODO check change listener
+        txfName.textProperty().addListener((ChangeListener<String>){obs, old, newVal ->
+            isWelderChangedProperty.set(newVal == welderDTOProperty.get().originalWelderProperty().get().name)
+        })
         txfSecname.textProperty().bindBidirectional(welderUI.secondNameProperty)
         txfSurname.textProperty().bindBidirectional(welderUI.surnameProperty)
         dpBirthday.valueProperty().bindBidirectional(welderUI.birthdayProperty)

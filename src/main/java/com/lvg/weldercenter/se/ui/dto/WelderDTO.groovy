@@ -1,7 +1,10 @@
 package com.lvg.weldercenter.se.ui.dto
 
 import com.lvg.weldercenter.se.models.Welder
+import javafx.beans.InvalidationListener
+import javafx.beans.property.BooleanProperty
 import javafx.beans.property.ObjectProperty
+import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleObjectProperty
 import javafx.beans.property.SimpleStringProperty
 import javafx.beans.property.StringProperty
@@ -12,10 +15,11 @@ import java.time.format.DateTimeFormatter
 import static com.lvg.weldercenter.se.ui.dto.DTOConstants.*
 
 class WelderDTO extends GenericModelDTO<Welder> {
-    final Welder welder
-    final ObjectProperty<Welder> welderProperty = new SimpleObjectProperty<>()
-    final ObjectProperty<OrganizationDTO> organizationProperty = new SimpleObjectProperty<OrganizationDTO>()
 
+    final Welder welder
+    final ObjectProperty<Welder> originalWelderProperty = new SimpleObjectProperty<>()
+    final ObjectProperty<OrganizationDTO> organizationProperty = new SimpleObjectProperty<OrganizationDTO>()
+    final BooleanProperty invalidateProperty = new SimpleBooleanProperty(false)
     final StringProperty nameProperty = new SimpleStringProperty()
     final StringProperty surnameProperty = new SimpleStringProperty()
     final StringProperty secondNameProperty = new SimpleStringProperty()
@@ -30,7 +34,7 @@ class WelderDTO extends GenericModelDTO<Welder> {
 
     WelderDTO(Welder welder) {
         validateModel(welder)
-        welderProperty.set(welder)
+        originalWelderProperty.set(welder)
         this.welder = welder
 
 
@@ -263,6 +267,10 @@ class WelderDTO extends GenericModelDTO<Welder> {
 
     ObjectProperty<OrganizationDTO> organizationProperty(){
         return organizationProperty
+    }
+
+    ObjectProperty<Welder> originalWelderProperty(){
+        return originalWelderProperty
     }
 
 
