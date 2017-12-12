@@ -78,6 +78,8 @@ class WelderController implements Initializable{
 
     @FXML
     private Button btSave
+    @FXML
+    private Button btDelete
 
     @FXML
     BorderPane mainWelderPane
@@ -109,6 +111,7 @@ class WelderController implements Initializable{
 
     private void initCRUDButtons(){
         btSave.disableProperty().bind((isWelderChangedProperty.not()) | welderDTOProperty.isNull())
+        btDelete.disableProperty().bind(welderDTOProperty.isNull())
     }
 
     private void initCbEducation(){
