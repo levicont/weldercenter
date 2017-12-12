@@ -3,6 +3,7 @@ package com.lvg.weldercenter.se.ui.utils
 import com.lvg.weldercenter.config.R
 import com.lvg.weldercenter.ui.util.EventFXUtil
 import javafx.application.Platform
+import javafx.beans.value.ChangeListener
 import javafx.event.Event
 import javafx.scene.control.*
 import javafx.scene.input.KeyCode
@@ -11,6 +12,7 @@ import javafx.scene.input.MouseEvent
 import javafx.scene.layout.Pane
 import org.apache.log4j.Logger
 
+import java.time.LocalDate
 import java.util.Optional
 
 
@@ -56,6 +58,22 @@ class ControlFXUtils {
         tableView.getSelectionModel().select(selectedItem)
         tableView.fireEvent(EventFXUtil.getMouseClickEvent())
         tableView.requestFocus()
+    }
+
+    static  <T> void selectItemInCombo(T item, ComboBox<T> comboBox) {
+        if (item == null)
+            return
+        def selectedItem = null
+        comboBox.items.each { i ->
+            if (i == item) {
+                selectedItem = i
+                return
+            }
+        }
+        if (selectedItem == null) {
+            selectedItem = item
+        }
+        comboBox.selectionModel.select(selectedItem)
     }
 
     static void setDisabledTitlePane(boolean disabled, TitledPane titledPane){
@@ -113,6 +131,30 @@ class ControlFXUtils {
             LOGGER.info("Application is shutting down")
             Platform.exit()
         }
+    }
+
+    static void addChangeListenerToTextFields(ChangeListener<String> listener, TextField ... textFields){
+        textFields.each {textField -> textField.textProperty().addListener(listener)}
+    }
+
+    static void addChangeListenerToDatePickers(ChangeListener<LocalDate> listener, DatePicker ... datePickers){
+        datePickers.each {datePicker -> datePicker.valueProperty().addListener(listener)}
+    }
+
+    static <T>void addChangeListenerToComboBoxes(ChangeListener<T> listener, ComboBox<T> ... comboBoxes){
+        comboBoxes.each {comboBox -> comboBox.valueProperty().addListener(listener)}
+    }
+
+    static <T>void removeChangeListenerFromComboBoxes(ChangeListener<T> listener, ComboBox<T> ... comboBoxes){
+        comboBoxes.each {comboBox -> comboBox.valueProperty().removeListener(listener)}
+    }
+
+    static void removeChangeListenerFromDatePickers(ChangeListener<LocalDate> listener, DatePicker ... datePickers){
+        datePickers.each {datePicker -> datePicker.valueProperty().removeListener(listener)}
+    }
+
+    static void removeChangeListenerFromTextFields(ChangeListener<String> listener, TextField ... textFields){
+        textFields.each {textField -> textField.textProperty().removeListener(listener)}
     }
 
     static void showWarningDialog(String message){
