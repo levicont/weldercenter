@@ -17,6 +17,10 @@ import java.util.Optional
 
 
 class ControlFXUtils {
+    static final String SAVE_DIALOG_BUTTON_TEXT = 'Сохранить'
+    static final String OK_DIALOG_BUTTON_TEXT = 'OK'
+    static final String CANCEL_DIALOG_BUTTON_TEXT = 'Отмена'
+
 
 
     private static final Logger LOGGER = Logger.getLogger(ControlFXUtils.class)

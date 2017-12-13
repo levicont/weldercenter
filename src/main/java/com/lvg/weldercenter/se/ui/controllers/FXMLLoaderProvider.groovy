@@ -10,30 +10,34 @@ import static com.lvg.weldercenter.se.ui.controllers.PaneType.*
 
 @Component
 class FXMLLoaderProvider {
-    static
+    private static
     final String MAIN_FRAME_FXML_PATH = '/fxml/se/main-frame-pane.fxml'
 
-    static
+    private static
     final String WELDERS_PANE_FXML_PATH = '/fxml/se/welder-pane.fxml'
 
-    static
+    private static
     final String JOURNAL_PANE_FXML_PATH = '/fxml/se/journal-pane.fxml'
 
-    static
+    private static
     final String PROTOCOL_PANE_FXML_PATH = '/fxml/se/protocol-pane.fxml'
 
-    static
+    private static
     final String REPORT_VIEW_PANE_FXML_PATH = '/fxml/se/report-view-pane.fxml'
 
-    static
+    private static
     final String PROPERTIES_PANE_FXML_PATH = '/fxml/se/properties-pane.fxml'
+
+    private static
+    final String ORGANIZATION_DIALOG_FXML_PANE = '/fxml/se/organization-dialog-pane.fxml'
 
     private static final  fxmlLocations = [(MAIN_FRAME_PANE):MAIN_FRAME_FXML_PATH,
                                            (WELDER_PANE)    : WELDERS_PANE_FXML_PATH,
                                            (JOURNAL_PANE): JOURNAL_PANE_FXML_PATH,
                                            (PROTOCOL_PANE): PROTOCOL_PANE_FXML_PATH,
                                            (PROPERTIES_PANE): PROPERTIES_PANE_FXML_PATH,
-                                           (REPORT_PANE):REPORT_VIEW_PANE_FXML_PATH]
+                                           (REPORT_PANE):REPORT_VIEW_PANE_FXML_PATH,
+                                           (ORGANIZATION_DIALOG_PANE):ORGANIZATION_DIALOG_FXML_PANE]
 
     private final Map<PaneType, Parent> paneCash = [:]
 
