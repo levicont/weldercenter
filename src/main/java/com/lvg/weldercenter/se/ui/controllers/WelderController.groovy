@@ -1,7 +1,6 @@
 package com.lvg.weldercenter.se.ui.controllers
 
 import com.lvg.weldercenter.se.ui.converters.OrganizationDTOStringConverter
-import com.lvg.weldercenter.se.ui.dto.DTOConstants
 import com.lvg.weldercenter.se.ui.dto.OrganizationDTO
 import com.lvg.weldercenter.se.ui.dto.WelderDTO
 import com.lvg.weldercenter.se.ui.repositories.EducationDTORepository
@@ -18,6 +17,7 @@ import javafx.scene.Parent
 import javafx.scene.control.*
 import javafx.scene.layout.BorderPane
 import javafx.scene.layout.GridPane
+import javafx.util.Callback
 import org.apache.log4j.Logger
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
@@ -129,6 +129,25 @@ class WelderController implements Initializable{
     }
 
     private void initCbOrganization(){
+        cbOrganization.cellFactoryProperty().set(new Callback<ListView<OrganizationDTO>, ListCell<OrganizationDTO>>() {
+            @Override
+            ListCell<OrganizationDTO> call(ListView<OrganizationDTO> param) {
+                return new OrganizationDTOListCell()
+            }
+
+            private class OrganizationDTOListCell extends ListCell<OrganizationDTO>{
+                @Override
+                protected void updateItem(OrganizationDTO item, boolean empty) {
+                    super.updateItem(item, empty)
+                    if (empty){
+                        setText('none')
+                    }else{
+                        setText(item.name)
+                    }
+                }
+
+            }
+        })
         organizationDTORepository.loadAllDTO()
         cbOrganization.converterProperty().set(organizationDTOStringConverter)
         cbOrganization.itemsProperty().bind(organizationDTORepository.allDTO)
@@ -202,28 +221,35 @@ class WelderController implements Initializable{
 
     @FXML
     void saveOrganization(ActionEvent event){
-        OrganizationDialog dialog = new OrganizationDialog(cbOrganization.getValue())
+        //Show organization dialog
+        OrganizationDialog dialog = new OrganizationDialog(cbOrganization.valueProperty().getValue())
         Optional<ButtonType> optional = dialog.showAndWait()
-        //TODO correct adding organization to combo box
-        if(optional.get().buttonData == ButtonBar.ButtonData.OK_DONE ){
-            LOGGER.debug(" --- saveOrganization option: SAVE chosen \n" +
-                    "\t Organization: ${dialog.organizationDTOObjectProperty().getValue()}\n")
-            OrganizationDTO newValue = dialog.organizationDTOObjectProperty().getValue()
-            OrganizationDTO oldValue = null
-            organizationDTORepository.allDTO.get().forEach({org ->
-                if (org.getId() == newValue.getId())
-                    oldValue = org
-            })
+        //TODO correct adding organization to combo box when changed another
+        //TODO field insted name Save button not enabled;
+        switch(optional.get().buttonData){
+            case ButtonBar.ButtonData.OK_DONE :
+                LOGGER.debug(" --- saveOrganization option: SAVE chosen \n" +
+                        "\t Organization: ${dialog.organizationDTOObjectProperty().getValue()}\n")
 
-            oldValue == null ? organizationDTORepository.allDTO.add(newValue):{
-                organizationDTORepository.allDTO.get().remove(oldValue)
-                organizationDTORepository.allDTO.get().add(newValue)
-                cbOrganization.valueProperty().set(newValue)
-                cbOrganization.selectionModel.select(newValue)
-            }
-            return
+                OrganizationDTO organizationDTO = dialog.organizationDTOObjectProperty().getValue()
+                LOGGER.debug("Received organizationDTO: ${organizationDTO} with id: ${organizationDTO.getId()} " +
+                        "hash:${organizationDTO.hashCode()}\n" +
+                        "old organizationDTO: ${welderDTOProperty.get().organizationDTO} " +
+                        "hash: ${welderDTOProperty.get().organizationDTO.hashCode()}")
+                cbOrganization.editor.text = organizationDTO.name
+                // If updated or new organizationDTO
+                if(organizationDTORepository.allDTO.indexOf(organizationDTO) > -1)
+                    organizationDTORepository.allDTO.set(organizationDTORepository.allDTO.indexOf(organizationDTO), organizationDTO)
+                else {
+                    // Make new selected organizationDTO first in the list
+                    organizationDTORepository.allDTO.add(0, organizationDTO)
+                    cbOrganization.selectionModel.select(0)
+                }
+                break
+            case ButtonBar.ButtonData.CANCEL_CLOSE :
+                LOGGER.debug("--- saveOrganization option: CANCEL chosen")
+                break
         }
-        LOGGER.debug("--- saveOrganization option: CANCEL chosen")
     }
 
     private void addListeners(){
