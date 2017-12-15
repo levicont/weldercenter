@@ -236,15 +236,12 @@ class WelderController implements Initializable{
                         "hash:${organizationDTO.hashCode()}\n" +
                         "old organizationDTO: ${welderDTOProperty.get().organizationDTO} " +
                         "hash: ${welderDTOProperty.get().organizationDTO.hashCode()}")
+
                 cbOrganization.editor.text = organizationDTO.name
-                // If updated or new organizationDTO
-                if(organizationDTORepository.allDTO.indexOf(organizationDTO) > -1)
-                    organizationDTORepository.allDTO.set(organizationDTORepository.allDTO.indexOf(organizationDTO), organizationDTO)
-                else {
-                    // Make new selected organizationDTO first in the list
-                    organizationDTORepository.allDTO.add(0, organizationDTO)
-                    cbOrganization.selectionModel.select(0)
-                }
+                welderDTOProperty.value.organizationProperty().set(organizationDTO)
+
+                LOGGER.debug("OrganizationDTO added to combo box. value: ${cbOrganization.value} " +
+                        "id:${cbOrganization.value.getId()}")
                 break
             case ButtonBar.ButtonData.CANCEL_CLOSE :
                 LOGGER.debug("--- saveOrganization option: CANCEL chosen")
@@ -261,6 +258,8 @@ class WelderController implements Initializable{
         cbJob, cbQualification, cbEducation)
         ControlFXUtils.addChangeListenerToComboBoxes((ChangeListener<OrganizationDTO>)comboBoxChangeOrganizationListener,
         cbOrganization)
+        ControlFXUtils.addChangeListenerToTextFields((ChangeListener<String>)comboBoxChangeEditorOrganizationListener,
+        cbOrganization.editor)
     }
 
     private void removeListeners(){
@@ -272,6 +271,8 @@ class WelderController implements Initializable{
                 cbJob, cbQualification, cbEducation)
         ControlFXUtils.removeChangeListenerFromComboBoxes((ChangeListener<OrganizationDTO>)comboBoxChangeOrganizationListener,
                 cbOrganization)
+        ControlFXUtils.removeChangeListenerFromTextFields((ChangeListener<String>)comboBoxChangeEditorOrganizationListener,
+                cbOrganization.editor)
     }
 
     //Listeners
@@ -345,9 +346,15 @@ class WelderController implements Initializable{
         }
     }
 
+    private final def comboBoxChangeEditorOrganizationListener = {StringProperty textProperty,
+                                                                   String oldValue, String newValue ->
+        if(newValue == null) return
+        LOGGER.debug("ChangeListener source: ${textProperty.class.simpleName} oldValue: ${oldValue} newValue: ${newValue}")
+    }
+
 
     private class OrganizationDialog extends Dialog<ButtonType>{
-        private final ButtonType SAVE_BUTTON_TYPE = new ButtonType(ControlFXUtils.SAVE_DIALOG_BUTTON_TEXT,
+        private final ButtonType SAVE_BUTTON_TYPE = new ButtonType(ControlFXUtils.OK_DIALOG_BUTTON_TEXT,
                 ButtonBar.ButtonData.OK_DONE)
         private final ButtonType CANCEL_BUTTON_TYPE = new ButtonType(ControlFXUtils.CANCEL_DIALOG_BUTTON_TEXT,
                 ButtonBar.ButtonData.CANCEL_CLOSE)
