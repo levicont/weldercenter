@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
@@ -7,11 +12,11 @@
 <?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.layout.BorderPane?>
 
-<BorderPane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="950.0" style="-fx-background-color: linear-gradient(to bottom, #aaccff, #cceeFF);" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.lvg.weldercenter.se.ui.controllers.MainFrameController">
+<BorderPane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="950.0" style="-fx-background-color: linear-gradient(to bottom, #aaccff, #cceeFF);" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.lvg.weldercenter.se.ui.controllers.MainFrameController">
     <top>
-        <MenuBar id="mainMenuBar" BorderPane.alignment="CENTER">
+        <MenuBar id="mainMenuBar" fx:id="mainMenu" BorderPane.alignment="CENTER">
             <menus>
-                <Menu id="mmMainData" mnemonicParsing="false" text="Данные">
+                <Menu id="mmMainData" fx:id="menuData" mnemonicParsing="false" text="Данные">
                     <items>
                         <MenuItem id="miWelders" fx:id="miWelders" mnemonicParsing="false" onAction="#showWelderPane" text="Сварщики" />
                         <MenuItem id="miJournals" mnemonicParsing="false" text="Журналы" />
@@ -68,6 +73,33 @@
 
                 </Label>
             </center>
+         <left>
+            <VBox alignment="TOP_CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="120.0" spacing="8.0" style="-fx-border-color: #ffffff;" BorderPane.alignment="CENTER">
+               <children>
+                  <Button fx:id="btShowWelders" mnemonicParsing="false" onAction="#showWelderPane" prefHeight="100.0" prefWidth="100.0" text="Сварщики" textFill="#000000ab">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="btShowJournals" mnemonicParsing="false" prefHeight="100.0" prefWidth="100.0" text="Журналы" textFill="#000000ab">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="btShowProtocols" mnemonicParsing="false" prefHeight="100.0" prefWidth="100.0" text="Протоколы" textFill="#000000ab">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Button>
+               </children>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <padding>
+                  <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+               </padding>
+            </VBox>
+         </left>
         </BorderPane>
     </center>
 </BorderPane>
