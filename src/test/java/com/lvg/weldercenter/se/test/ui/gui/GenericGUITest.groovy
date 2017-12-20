@@ -6,18 +6,20 @@ import javafx.scene.input.KeyCode
 import javafx.scene.input.MouseButton
 import javafx.stage.Stage
 import org.junit.After
+import org.junit.AfterClass
 import org.junit.BeforeClass
 import org.testfx.api.FxToolkit
 import org.testfx.framework.junit.ApplicationTest
 
-abstract class GenericGUITest extends ApplicationTest{
+abstract class GenericGUITest extends ApplicationTest implements GUIConstants{
 
     @BeforeClass
     static void setupClass(){
             System.setProperty("testfx.robot", "glass")
             System.setProperty('testfx.setup.timeout', '100000')
             System.setProperty("java.awt.headless", "true")
-        launch(ApplicationFX.class)
+        if (!FxToolkit.isFXApplicationThreadRunning())
+            launch(ApplicationFX.class)
     }
 
     @Override
