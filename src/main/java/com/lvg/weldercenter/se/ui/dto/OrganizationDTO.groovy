@@ -80,20 +80,20 @@ class OrganizationDTO extends GenericModelDTO<Organization>{
 
         OrganizationDTO that = (OrganizationDTO) o
 
-        if (idProperty != that.idProperty) return false
-        if (addressProperty != that.addressProperty) return false
-        if (nameProperty != that.nameProperty) return false
-        if (phoneProperty != that.phoneProperty) return false
+        if (idProperty.value != that.idProperty.value) return false
+        if (addressProperty.value != that.addressProperty.value) return false
+        if (nameProperty.value != that.nameProperty.value) return false
+        if (phoneProperty.value != that.phoneProperty.value) return false
 
         return true
     }
 
     int hashCode() {
         int result
-        result = nameProperty.hashCode()
-        result = 31 * result + addressProperty.hashCode()
-        result = 31 * result + phoneProperty.hashCode()
-        result = 31 * result + idProperty.hashCode()
+        result = nameProperty.value.hashCode()
+        result = 31 * result + addressProperty.value.hashCode()
+        result = 31 * result + phoneProperty.value.hashCode()
+        result = 31 * result + idProperty.value.hashCode()
         return result
     }
 

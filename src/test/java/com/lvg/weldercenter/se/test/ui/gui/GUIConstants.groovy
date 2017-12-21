@@ -24,7 +24,12 @@ interface GUIConstants {
     String WELDER_PANE_TXF_WELDER_ADDRESS_ID = '#txfAddress'
     String WELDER_PANE_TXF_WELDER_DOCUMENT_NUMBER_ID = '#txfDocNumber'
     String WELDER_PANE_DP_WELDER_BIRTHDAY_ID = '#dpBirthday'
-    String WELDER_PANE_DP_WELDER__DATE_BEGIN_ID = '#dpDateBegin'
+    String WELDER_PANE_DP_WELDER_DATE_BEGIN_ID = '#dpDateBegin'
+    String WELDER_PANE_CB_JOB_ID = '#cbJob'
+    String WELDER_PANE_CB_QUALIFICATION_ID = '#cbQualification'
+    String WELDER_PANE_CB_EDUCATION_ID = '#cbEducation'
+    String WELDER_PANE_CB_ORGANIZATION_ID = '#cbOrganization'
+
 
 
     String WELDER_PANE_BUTTON_SAVE_ID =  '#btSave'
