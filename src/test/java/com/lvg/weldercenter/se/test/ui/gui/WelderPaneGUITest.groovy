@@ -3,17 +3,14 @@ package com.lvg.weldercenter.se.test.ui.gui
 import com.lvg.weldercenter.se.models.Organization
 import com.lvg.weldercenter.se.ui.dto.OrganizationDTO
 import com.lvg.weldercenter.se.ui.dto.WelderTableViewDTO
-import javafx.scene.control.Button
-import javafx.scene.control.ComboBox
-import javafx.scene.control.DatePicker
-import javafx.scene.control.TableView
-import javafx.scene.control.TextField
+import javafx.scene.control.*
+import org.apache.log4j.Logger
 import org.junit.Test
 
 import java.time.LocalDate
 
 class WelderPaneGUITest extends GenericGUITest {
-
+    private static final Logger LOGGER = Logger.getLogger(WelderPaneGUITest.class)
 
     @Test
     void selectWelderTest(){
@@ -47,16 +44,13 @@ class WelderPaneGUITest extends GenericGUITest {
         assert dpDateBegin.value == LocalDate.of(2000,1,1)
         assert cbEducation.value == 'среднее-специальное'
         assert cbQualification.value == 'электросварщик'
-        assert cbJob.value == 'сварщик'
-        assert cbOrganization.value == new OrganizationDTO(new Organization(id: 100,
-                                                            name: 'IBM',
-                                                            address: 'Michigan city',
-                                                            phone: '100-123-456'))
+        assert cbJob.value == 'электросварщик'
+        assert cbOrganization.value == getTestOrganizationDTO()
 
         Button btSave = (Button)find(WELDER_PANE_BUTTON_SAVE_ID)
         testSaveButtonBehavior(btSave, txfName, txfSurname, txfSecname, txfDocNumber, txfAddress)
         testSaveButtonBehaviorDatePickers(btSave, dpBirthday, dpDateBegin)
-        testSaveButtonBehaviorComboBoxes(btSave, cbJob, cbQualification, cbEducation)
+        testSaveButtonBehaviorComboBoxes(btSave, cbJob,  cbEducation, cbQualification)
         testSaveButtonBehaviorComboBoxes(btSave, cbOrganization)
    }
 
@@ -87,16 +81,49 @@ class WelderPaneGUITest extends GenericGUITest {
     }
 
     private static <T>void testSaveButtonBehaviorComboBoxes(Button saveButton, ComboBox<T>... comboBoxes){
-        T changedData = (T)(T.class == OrganizationDTO.class ? new OrganizationDTO(new Organization()): "Changed")
         comboBoxes.each {ComboBox<T> comboBox ->
-            def unchanged = comboBox.value
-            assert saveButton != null
-            assert saveButton.isDisabled()
-            comboBox.value = changedData
-            assert !saveButton.isDisabled()
-            comboBox.value = unchanged
-            assert saveButton.isDisabled()
+            switch(T.class){
+                case String.class :
+                    testSaveButtonBehaviorStringComboBox(saveButton,(ComboBox<String>)comboBox)
+                    break
+                case OrganizationDTO.class :
+                    testSaveButtonBehaviorOrganizationDTOComboBox(saveButton, (ComboBox<OrganizationDTO>) comboBox)
+                    break
+            }
+
         }
+    }
+
+    private static void testSaveButtonBehaviorStringComboBox(Button saveButton, ComboBox<String> comboBox){
+        String changedData = 'Changed'
+        def unchanged = comboBox.value
+        LOGGER.debug("---- Testing combo box id: ${comboBox.id} ----")
+        assert saveButton != null
+        assert saveButton.isDisabled()
+        comboBox.value = changedData
+        assert !saveButton.isDisabled()
+        comboBox.value = unchanged
+        assert saveButton.isDisabled()
+    }
+
+    private static void testSaveButtonBehaviorOrganizationDTOComboBox(Button saveButton, ComboBox<OrganizationDTO> comboBox){
+        OrganizationDTO  changedData = getTestOrganizationDTO().setName('Changed')
+        def unchanged = comboBox.value
+        LOGGER.debug("---- Testing combo box id: ${comboBox.id} ----")
+        assert saveButton != null
+        assert saveButton.isDisabled()
+        comboBox.value = changedData
+        assert !saveButton.isDisabled()
+        comboBox.value = unchanged
+        assert saveButton.isDisabled()
+    }
+
+
+    private static OrganizationDTO getTestOrganizationDTO(){
+        return new OrganizationDTO(new Organization(id: 100,
+                name: 'IBM',
+                address: 'Michigan city',
+                phone: '100-123-456'))
     }
 
 }
