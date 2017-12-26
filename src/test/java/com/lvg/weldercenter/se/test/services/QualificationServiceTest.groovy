@@ -74,7 +74,7 @@ class QualificationServiceTest extends GenericServiceTest {
         def list = qualificationService.getAll()
         assert list != null
         assert list instanceof List
-        assert list.size() == 1
+        assert list.size() == 4
     }
 
     @Test
@@ -88,6 +88,6 @@ class QualificationServiceTest extends GenericServiceTest {
         def count = qualificationService.count()
         assert count != null
         assert count instanceof Long
-        assert count == 1
+        assert count == 4
     }
 }

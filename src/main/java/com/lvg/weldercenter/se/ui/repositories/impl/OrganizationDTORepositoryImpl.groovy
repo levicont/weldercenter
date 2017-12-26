@@ -10,6 +10,7 @@ import javafx.beans.property.ListProperty
 import javafx.beans.property.SimpleListProperty
 import javafx.collections.FXCollections
 import javafx.collections.ObservableList
+import javafx.collections.transformation.FilteredList
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
@@ -22,14 +23,16 @@ class OrganizationDTORepositoryImpl implements OrganizationDTORepository{
     LoadingAllOrganizationsService service
 
     private ObservableList<OrganizationDTO> allOrganizations = FXCollections.observableArrayList()
+    private FilteredList<OrganizationDTO> allOrganizationsFiltered = new FilteredList<>(allOrganizations,
+            {org -> true})
     private final ListProperty<OrganizationDTO> allOrganizationListProperty =
-            new SimpleListProperty<>(allOrganizations)
+            new SimpleListProperty<>(allOrganizationsFiltered)
     private final ListProperty<String> allOrganizationNamesListProperty =
             new SimpleListProperty<>(FXCollections.observableArrayList())
 
 
     OrganizationDTORepositoryImpl(){
-        initListaners()
+        initListeners()
     }
 
     @Override
@@ -59,7 +62,7 @@ class OrganizationDTORepositoryImpl implements OrganizationDTORepository{
         return allOrganizationNamesListProperty
     }
 
-    private initListaners(){
+    private initListeners(){
         allOrganizationListProperty.addListener((InvalidationListener){
             allOrganizationNamesListProperty.get().clear()
             allOrganizationListProperty.get().each { organizationDTO ->

@@ -37,7 +37,7 @@ class JobServiceTest extends GenericServiceTest{
 
         def list = jobService.getAll()
         assert list instanceof List
-        assert list.size() == 1
+        assert list.size() == 4
 
     }
 
@@ -49,7 +49,7 @@ class JobServiceTest extends GenericServiceTest{
 
         def count = jobService.count()
         assert count instanceof Long
-        assert count == 1
+        assert count == 4
     }
 
     @Override

@@ -35,17 +35,23 @@ class PersonalProtocol implements Serializable{
     Set<WeldPattern> weldPatterns = new HashSet<>()
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = 'WELDER_ID', nullable = false)
+    @JoinColumn(name = 'WELDER_ID',
+            foreignKey = @ForeignKey(name = 'FK_PERSONAL_PROTOCOL_WELDER'),
+            nullable = false)
     Welder welder
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = 'JOURNAL_ID', nullable = false)
+    @JoinColumn(name = 'JOURNAL_ID',
+            foreignKey = @ForeignKey(name = 'FK_PERSONAL_PROTOCOL_JOURNAL'),
+            nullable = false)
     Journal journal
 
     @ManyToMany(targetEntity = NDTDocument.class, cascade = CascadeType.PERSIST)
     @JoinTable(name = 'personal_protocol_ndt_document',
-        joinColumns = @JoinColumn(name = 'PERSONAL_PROTOCOL_ID'),
-        inverseJoinColumns = @JoinColumn(name = 'NDT_DOCUMENT_ID'))
+        joinColumns = @JoinColumn(  name = 'PERSONAL_PROTOCOL_ID',
+                                    foreignKey = @ForeignKey(name = 'FK_PERSONAL_PROTOCOL_NDT_DOC')),
+        inverseJoinColumns = @JoinColumn(name = 'NDT_DOCUMENT_ID',
+                                        foreignKey = @ForeignKey(name = 'FK_NDT_DOC_PERSONAL_PROTOCOL_INV')))
     Set<NDTDocument> ndtDocuments = new HashSet<>()
 
     protected PersonalProtocol(){}

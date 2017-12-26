@@ -23,7 +23,9 @@ class Section implements Serializable{
     String description
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = 'CURRICULUM_ID', nullable = false)
+    @JoinColumn(name = 'CURRICULUM_ID',
+            foreignKey = @ForeignKey(name = 'FK_SECTION_CURRICULUM'),
+            nullable = false)
     Curriculum curriculum
 
     @ElementCollection

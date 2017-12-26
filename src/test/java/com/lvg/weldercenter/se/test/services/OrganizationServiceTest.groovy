@@ -74,7 +74,7 @@ class OrganizationServiceTest extends GenericServiceTest {
         def list = organizationService.getAll()
         assert list != null
         assert list instanceof List
-        assert list.size() == 1
+        assert list.size() == 3
 
     }
 
@@ -89,6 +89,6 @@ class OrganizationServiceTest extends GenericServiceTest {
         def count = organizationService.count()
         assert count != null
         assert count instanceof Long
-        assert count == 1
+        assert count == 3
     }
 }

@@ -29,10 +29,15 @@ interface GUIConstants {
     String WELDER_PANE_CB_QUALIFICATION_ID = '#cbQualification'
     String WELDER_PANE_CB_EDUCATION_ID = '#cbEducation'
     String WELDER_PANE_CB_ORGANIZATION_ID = '#cbOrganization'
-
-
+    String WELDER_PANE_BT_SAVE_ORGANIZATION_ID = '#btSaveOrganization'
 
     String WELDER_PANE_BUTTON_SAVE_ID =  '#btSave'
+
+    //Organization save dialog
+    String ORGANIZATION_DIALOG_PANE_ID = '#mainGridPane'
+    String ORGANIZATION_DIALOG_TXF_NAME_ID = '#txfName'
+    String ORGANIZATION_DIALOG_TXF_ADDRESS_ID = '#txfAddress'
+    String ORGANIZATION_DIALOG_TXF_PHONE_ID ='#txfPhone'
 
 
 

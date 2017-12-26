@@ -10,6 +10,7 @@ import com.lvg.weldercenter.se.ui.repositories.QualificationDTORepository
 import com.lvg.weldercenter.se.ui.utils.ControlFXUtils
 import javafx.beans.property.*
 import javafx.beans.value.ChangeListener
+import javafx.collections.transformation.FilteredList
 import javafx.event.ActionEvent
 import javafx.fxml.FXML
 import javafx.fxml.Initializable
@@ -344,6 +345,20 @@ class WelderController implements Initializable{
         if (orgDTOObjectProperty == cbOrganization.valueProperty()) {
             isWelderChangedProperty.set(newValue.organization != welderDTOProperty.get().originalWelderProperty().get().organization)
         }
+
+
+        FilteredList<OrganizationDTO> filteredData = (FilteredList<OrganizationDTO>)organizationDTORepository.allDTO.value
+        filteredData.setPredicate({org ->
+            if (org == null || org.name == null || org.name.isEmpty())
+                return true
+            String filteredValue = newValue.name.toLowerCase()
+
+            if (org.name.toLowerCase().contains(filteredValue))
+                return true
+
+            return false
+        })
+
     }
 
     private final def comboBoxChangeEditorOrganizationListener = {StringProperty textProperty,

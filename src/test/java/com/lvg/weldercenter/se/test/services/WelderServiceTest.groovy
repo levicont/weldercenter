@@ -3,6 +3,7 @@ package com.lvg.weldercenter.se.test.services
 import com.lvg.weldercenter.se.models.Welder
 import com.lvg.weldercenter.se.services.WelderService
 import com.lvg.weldercenter.se.ui.dto.DTOConstants
+import com.lvg.weldercenter.se.ui.dto.WelderTableViewDTO
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.transaction.annotation.Transactional
@@ -77,7 +78,7 @@ class WelderServiceTest extends GenericServiceTest{
         def list = welderService.getAll()
         assert list != null
         assert list instanceof List
-        assert list.size() == 1
+        assert list.size() == 5
     }
 
     @Test
@@ -91,7 +92,7 @@ class WelderServiceTest extends GenericServiceTest{
         def count = welderService.count()
         assert count != null
         assert count instanceof Long
-        assert count == 1
+        assert count == 5
     }
 
     @Test
@@ -104,8 +105,13 @@ class WelderServiceTest extends GenericServiceTest{
 
         List list = welderService.getWeldersForTableView()
         assert list != null
-        assert list.size() == 1
-        def chkWelderList = list[0]
+        assert list.size() == 5
+        def chkWelderList
+        list.forEach({ Object[] weldersDTO ->
+            if (weldersDTO[0] == WELDER_ID){
+                chkWelderList = weldersDTO
+            }
+        })
         assert chkWelderList != null
         assert chkWelderList[0] != null && chkWelderList[0] == WELDER_ID
         assert chkWelderList[1] != null && chkWelderList[1] == welder.name
@@ -126,8 +132,13 @@ class WelderServiceTest extends GenericServiceTest{
 
         List list = welderService.getAllWeldersTableViewDTO()
         assert list != null
-        assert list.size() == 1
-        def chkWelderList = list[0]
+        assert list.size() == 5
+        def chkWelderList
+        list.forEach({ WelderTableViewDTO welderDTO ->
+            if (welderDTO.id == WELDER_ID){
+                chkWelderList = welderDTO
+            }
+        })
         assert chkWelderList != null
         assert chkWelderList.id == WELDER_ID
         assert chkWelderList.name == welder.name

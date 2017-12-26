@@ -52,7 +52,7 @@ class Welder implements Serializable{
     String job
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-    @JoinColumn(name = 'ORGANIZATION_ID')
+    @JoinColumn(name = 'ORGANIZATION_ID', foreignKey = @ForeignKey(name = 'FK_WELDER_ORGANIZATION'))
     Organization organization
 
     boolean equals(o) {

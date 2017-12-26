@@ -50,7 +50,7 @@ class EducationServiceTest extends GenericServiceTest{
 
         def list = educationService.getAll()
         assert list instanceof List
-        assert list.size() == 1
+        assert list.size() == 5
     }
 
     @Override
@@ -61,7 +61,7 @@ class EducationServiceTest extends GenericServiceTest{
 
         def count = educationService.count()
         assert count instanceof Long
-        assert count == 1
+        assert count == 5
     }
 
     void deleteTest(){

@@ -26,13 +26,14 @@ class Journal implements Serializable{
     LocalDate dateEnd
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-    @JoinColumn(name = 'CURRICULUM_ID')
+    @JoinColumn(name = 'CURRICULUM_ID',
+            foreignKey = @ForeignKey(name = 'FK_JOURNAL_CURRICULUM'))
     Curriculum curriculum
 
     @ManyToMany(targetEntity = Teacher.class, cascade = CascadeType.PERSIST)
     @JoinTable(name = 'journal_teacher',
-        joinColumns = @JoinColumn(name = 'JOURNAL_ID'),
-        inverseJoinColumns = @JoinColumn(name = 'TEACHER_ID'))
+        joinColumns = @JoinColumn(name = 'JOURNAL_ID', foreignKey = @ForeignKey(name = 'FK_JOURNAL_TEACHER') ),
+        inverseJoinColumns = @JoinColumn(name = 'TEACHER_ID', foreignKey = @ForeignKey(name = 'FK_TEACHER_JOURNAL_INV')))
     Set<Teacher> teachers = new HashSet<>()
 
     boolean equals(o) {

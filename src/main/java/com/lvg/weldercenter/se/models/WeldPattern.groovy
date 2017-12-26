@@ -42,6 +42,7 @@ class WeldPattern implements Serializable{
     String weldGas
 
     @ManyToOne(optional = false)
+    @JoinColumn(name = 'PERSONAL_PROTOCOL_ID', foreignKey = @ForeignKey(name = 'FK_WELD_PATTERN_PERSONAL_PROTOCOL'))
     PersonalProtocol personalProtocol
 
     WeldDetail weldDetail
@@ -57,13 +58,13 @@ class WeldPattern implements Serializable{
 
 
     @ElementCollection
-    @CollectionTable(name = 'w_pattern_w_join',
-            joinColumns = @JoinColumn(name = 'w_pattern_id'))
+    @CollectionTable(name = 'WELD_PATTERN_WELD_JOIN',
+            joinColumns = @JoinColumn(name = 'WELD_PATTERN_ID'))
     Set<WeldJoin> weldJoins = new HashSet<>()
 
     @ElementCollection
-    @CollectionTable(name = 'w_pattern_w_position',
-            joinColumns = @JoinColumn(name = 'w_pattern_id'))
+    @CollectionTable(name = 'WELD_PATTERN_WELD_POSITION',
+            joinColumns = @JoinColumn(name = 'WELD_PATTERN_ID'))
     Set<WeldPosition> weldPositions = new HashSet<>()
 
     protected WeldPattern() {

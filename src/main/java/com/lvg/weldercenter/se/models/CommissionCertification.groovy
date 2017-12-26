@@ -6,6 +6,7 @@ import com.lvg.weldercenter.se.exceptions.WelderCenterModelException
 import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.FetchType
+import javax.persistence.ForeignKey
 import javax.persistence.GeneratedValue
 import javax.persistence.Id
 import javax.persistence.JoinColumn
@@ -22,19 +23,23 @@ class CommissionCertification implements Serializable{
     Long id
 
     @ManyToOne(targetEntity = Teacher.class, optional = false, fetch = FetchType.LAZY)
-    @JoinColumn(name = 'HEAD_ID')
+    @JoinColumn(name = 'HEAD_ID',
+            foreignKey = @ForeignKey(name = 'FK_COMMISSION_CERTIFICATION_TEACHER_HEAD'))
     Teacher head
 
     @ManyToOne(targetEntity = Teacher.class, optional = false, fetch = FetchType.LAZY)
-    @JoinColumn(name = 'WELD_SPECIALIST_ID')
+    @JoinColumn(name = 'WELD_SPECIALIST_ID',
+            foreignKey = @ForeignKey(name = 'FK_COMMISSION_CERTIFICATION_TEACHER_WELD_SPEC'))
     Teacher weldSpecialist
 
     @ManyToOne(targetEntity = Teacher.class, optional = false, fetch = FetchType.LAZY)
-    @JoinColumn(name = 'NDT_SPECIALIST_ID')
+    @JoinColumn(name = 'NDT_SPECIALIST_ID',
+            foreignKey = @ForeignKey(name = 'FK_COMMISSION_CERTIFICATION_TEACHER_NDT_SPEC'))
     Teacher ndtSpecialist
 
     @ManyToOne(targetEntity = Teacher.class, optional = false, fetch = FetchType.LAZY)
-    @JoinColumn(name = 'SAFETY_SPECIALIST_ID')
+    @JoinColumn(name = 'SAFETY_SPECIALIST_ID',
+            foreignKey = @ForeignKey(name = 'FK_COMMISSION_CERTIFICATION_TEACHER_SAFETY_SPEC'))
     Teacher safetySpecialist
 
     protected CommissionCertification(){}
