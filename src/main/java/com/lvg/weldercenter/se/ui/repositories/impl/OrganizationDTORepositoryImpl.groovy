@@ -10,23 +10,22 @@ import javafx.beans.property.ListProperty
 import javafx.beans.property.SimpleListProperty
 import javafx.collections.FXCollections
 import javafx.collections.ObservableList
-import javafx.collections.transformation.FilteredList
+import org.apache.log4j.Logger
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
 @Component
 class OrganizationDTORepositoryImpl implements OrganizationDTORepository{
+    private static final Logger LOGGER = Logger.getLogger(OrganizationDTORepositoryImpl.class)
 
     @Autowired
     LoadAllOrganizationsChangeStateListener listener
     @Autowired
     LoadingAllOrganizationsService service
 
-    private ObservableList<OrganizationDTO> allOrganizations = FXCollections.observableArrayList()
-    private FilteredList<OrganizationDTO> allOrganizationsFiltered = new FilteredList<>(allOrganizations,
-            {org -> true})
+    private ObservableList<OrganizationDTO> allData = FXCollections.observableArrayList()
     private final ListProperty<OrganizationDTO> allOrganizationListProperty =
-            new SimpleListProperty<>(allOrganizationsFiltered)
+            new SimpleListProperty<>(allData)
     private final ListProperty<String> allOrganizationNamesListProperty =
             new SimpleListProperty<>(FXCollections.observableArrayList())
 
@@ -42,8 +41,11 @@ class OrganizationDTORepositoryImpl implements OrganizationDTORepository{
 
     @Override
     void refreshAllDTO(ObservableList<OrganizationDTO> list) {
-        allOrganizations.clear()
-        allOrganizations.addAll(list)
+        LOGGER.debug("-- Refreshing OrganizationDTO allDTO Before cleaning list has size: ${allData.size()}")
+        allData.clear()
+        LOGGER.debug("-- Refreshing OrganizationDTO allDTO After cleaning list has size: ${allData.size()}")
+        allData.addAll(list)
+        LOGGER.debug("-- Refreshing OrganizationDTO allDTO After refreshing list has size: ${allData.size()}")
     }
 
     @Override
