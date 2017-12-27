@@ -12,7 +12,6 @@ import javafx.beans.property.*
 import javafx.beans.value.ChangeListener
 import javafx.collections.FXCollections
 import javafx.collections.ObservableList
-import javafx.collections.transformation.FilteredList
 import javafx.event.ActionEvent
 import javafx.fxml.FXML
 import javafx.fxml.Initializable
@@ -20,7 +19,6 @@ import javafx.scene.Parent
 import javafx.scene.control.*
 import javafx.scene.layout.BorderPane
 import javafx.scene.layout.GridPane
-import javafx.util.Callback
 import org.apache.log4j.Logger
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
@@ -91,7 +89,7 @@ class WelderController implements Initializable {
     private DatePicker[] allDatePickers
     private ObjectProperty<WelderDTO> bufferedWelderDTOProperty = new SimpleObjectProperty<>()
     private BooleanProperty isWelderChangedProperty = new SimpleBooleanProperty(false)
-
+    private ObservableList<OrganizationDTO> allOrganizations = FXCollections.observableArrayList()
 
     @Override
     void initialize(URL location, ResourceBundle resources) {
@@ -150,9 +148,14 @@ class WelderController implements Initializable {
 
             }
         })*/
+
         organizationDTORepository.loadAllDTO()
         cbOrganization.converterProperty().set(organizationDTOStringConverter)
-        cbOrganization.setItems(organizationDTORepository.allDTO)
+        LOGGER.debug("--- INIT ORGANIZATION DTO COMBO BOX: allOrganization size: ${organizationDTORepository.allDTO.value.size()}")
+
+        cbOrganization.setItems(allOrganizations)
+
+        //cbOrganization.setItems(organizationDTORepository.allDTO)
         //cbOrganization.itemsProperty().bind(organizationDTORepository.allDTO)
     }
 
@@ -276,7 +279,7 @@ class WelderController implements Initializable {
     }
 
     //Listeners
-    private final def textFieldChangeListener = { StringProperty stringProperty, String oldValue, String newValue ->
+    private final textFieldChangeListener = { StringProperty stringProperty, String oldValue, String newValue ->
         LOGGER.debug("ChangeListener source: ${stringProperty.class.simpleName} oldValue: ${oldValue} newValue: ${newValue}")
         if (welderDTOProperty.getValue() == null) return
         String trimedNewValue = newValue.trim()
@@ -302,7 +305,7 @@ class WelderController implements Initializable {
         }
     }
 
-    private final def datePickerChangeListener = { ObjectProperty<LocalDate> dateObjectProperty, oldValue, newValue ->
+    private final datePickerChangeListener = { ObjectProperty<LocalDate> dateObjectProperty, oldValue, newValue ->
         LOGGER.debug("ChangeListener source: ${dateObjectProperty.class.simpleName} oldValue: ${oldValue}" +
                 " newValue: ${newValue}")
         if (welderDTOProperty.getValue() == null) return
@@ -317,8 +320,8 @@ class WelderController implements Initializable {
         }
     }
 
-    private final def comboBoxChangeStringListener = { ObjectProperty<String> stringObjectProperty,
-                                                       String oldValue, String newValue ->
+    private final comboBoxChangeStringListener = { ObjectProperty<String> stringObjectProperty,
+                                                   String oldValue, String newValue ->
         LOGGER.debug("ChangeListener source: ${stringObjectProperty.class.simpleName} oldValue: ${oldValue} newValue: ${newValue}")
         if (welderDTOProperty.getValue() == null) return
 
@@ -336,8 +339,8 @@ class WelderController implements Initializable {
         }
     }
 
-    private final def comboBoxChangeOrganizationListener = { ObjectProperty<OrganizationDTO> orgDTOObjectProperty,
-                                                             OrganizationDTO oldValue, OrganizationDTO newValue ->
+    private final comboBoxChangeOrganizationListener = { ObjectProperty<OrganizationDTO> orgDTOObjectProperty,
+                                                         OrganizationDTO oldValue, OrganizationDTO newValue ->
         LOGGER.debug("ChangeListener source: ${orgDTOObjectProperty.class.simpleName} oldValue: ${oldValue} newValue: ${newValue}")
         if (welderDTOProperty.getValue() == null) return
         if (newValue == null) return
@@ -348,8 +351,8 @@ class WelderController implements Initializable {
 
 
     }
-    private final def comboBoxChangeEditorOrganizationListener = { StringProperty textProperty,
-                                                                   String oldValue, String newValue ->
+    private final comboBoxChangeEditorOrganizationListener = { StringProperty textProperty,
+                                                               String oldValue, String newValue ->
         if (!cbOrganization.isFocused()) return
         LOGGER.debug("ChangeListener source: ${textProperty.class.simpleName} oldValue: ${oldValue} newValue: ${newValue}")
 
@@ -359,20 +362,12 @@ class WelderController implements Initializable {
 
         cbOrganization.itemsProperty().unbind()
         if (newValue == null || newValue.isEmpty()) {
-            cbOrganization.itemsProperty().set(organizationDTORepository.getAllDTO())
+            cbOrganization.setItems(allOrganizations)
             return
         }
 
-        FilteredList<OrganizationDTO> filteredData =
-                new FilteredList<>(FXCollections.observableArrayList(organizationDTORepository.allDTO.value),
-                        { org ->
-                    String filteredValue = newValue.toLowerCase()
-                    if (org.name.toLowerCase().contains(filteredValue))
-                        return true
-                    return false
-                })
         ObservableList<OrganizationDTO> filteredList = FXCollections.observableArrayList()
-        organizationDTORepository.allDTO.value.forEach({org ->
+        allOrganizations.forEach({org ->
             String filteredValue = newValue.toLowerCase()
             if (org.name == filteredValue || org.name.toLowerCase().contains(filteredValue))
                 filteredList.add(org)
