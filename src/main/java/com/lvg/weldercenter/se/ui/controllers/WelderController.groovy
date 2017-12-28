@@ -153,7 +153,7 @@ class WelderController implements Initializable {
         cbOrganization.converterProperty().set(organizationDTOStringConverter)
         LOGGER.debug("--- INIT ORGANIZATION DTO COMBO BOX: allOrganization size: ${organizationDTORepository.allDTO.value.size()}")
 
-        cbOrganization.setItems(allOrganizations)
+        cbOrganization.setItems(organizationDTORepository.allDTO)
 
         //cbOrganization.setItems(organizationDTORepository.allDTO)
         //cbOrganization.itemsProperty().bind(organizationDTORepository.allDTO)
@@ -282,25 +282,25 @@ class WelderController implements Initializable {
     private final textFieldChangeListener = { StringProperty stringProperty, String oldValue, String newValue ->
         LOGGER.debug("ChangeListener source: ${stringProperty.class.simpleName} oldValue: ${oldValue} newValue: ${newValue}")
         if (welderDTOProperty.getValue() == null) return
-        String trimedNewValue = newValue.trim()
+        String trimmedNewValue = newValue.trim()
         if (stringProperty == txfName.textProperty()) {
-            isWelderChangedProperty.set(trimedNewValue != welderDTOProperty.get().originalWelderProperty().get().name)
+            isWelderChangedProperty.set(trimmedNewValue != welderDTOProperty.get().originalWelderProperty().get().name)
             return
         }
         if (stringProperty == txfSurname.textProperty()) {
-            isWelderChangedProperty.set(trimedNewValue != welderDTOProperty.get().originalWelderProperty().get().surname)
+            isWelderChangedProperty.set(trimmedNewValue != welderDTOProperty.get().originalWelderProperty().get().surname)
             return
         }
         if (stringProperty == txfSecname.textProperty()) {
-            isWelderChangedProperty.set(trimedNewValue != welderDTOProperty.get().originalWelderProperty().get().secondName)
+            isWelderChangedProperty.set(trimmedNewValue != welderDTOProperty.get().originalWelderProperty().get().secondName)
             return
         }
         if (stringProperty == txfDocNumber.textProperty()) {
-            isWelderChangedProperty.set(trimedNewValue != welderDTOProperty.get().originalWelderProperty().get().documentNumber)
+            isWelderChangedProperty.set(trimmedNewValue != welderDTOProperty.get().originalWelderProperty().get().documentNumber)
             return
         }
         if (stringProperty == txfAddress.textProperty()) {
-            isWelderChangedProperty.set(trimedNewValue != welderDTOProperty.get().originalWelderProperty().get().address)
+            isWelderChangedProperty.set(trimmedNewValue != welderDTOProperty.get().originalWelderProperty().get().address)
             return
         }
     }
@@ -362,12 +362,12 @@ class WelderController implements Initializable {
 
         cbOrganization.itemsProperty().unbind()
         if (newValue == null || newValue.isEmpty()) {
-            cbOrganization.setItems(allOrganizations)
+            //cbOrganization.setItems(organizationDTORepository.allDTO)
             return
         }
 
         ObservableList<OrganizationDTO> filteredList = FXCollections.observableArrayList()
-        allOrganizations.forEach({org ->
+        organizationDTORepository.allDTO.value.forEach({org ->
             String filteredValue = newValue.toLowerCase()
             if (org.name == filteredValue || org.name.toLowerCase().contains(filteredValue))
                 filteredList.add(org)
