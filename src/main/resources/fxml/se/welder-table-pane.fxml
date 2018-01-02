@@ -14,6 +14,7 @@
 <?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
 
 <BorderPane id="welderTablePane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.lvg.weldercenter.se.ui.controllers.WelderTableController">
     <center>
@@ -44,13 +45,30 @@
             <children>
                 <ToolBar prefHeight="30.0" prefWidth="200.0">
                     <items>
-                        <Button fx:id="btFirst" mnemonicParsing="false" text="|&lt;" />
-                        <Button fx:id="btPrev" mnemonicParsing="false" text="&lt;&lt;" />
-                        <Button fx:id="btNew" mnemonicParsing="false" text="&gt;*" />
-                        <Button fx:id="btNext" mnemonicParsing="false" text="&gt;&gt;" />
-                        <Button fx:id="btLast" mnemonicParsing="false" text="&gt;|" />
-                        <Button mnemonicParsing="false" text="копия" />
-                        <ToggleButton fx:id="btShowSearchToolBar" mnemonicParsing="false" text="Поиск" />
+                        <Button fx:id="btFirst" mnemonicParsing="false">
+                            <graphic><FontIcon iconLiteral="fa-step-backward" iconSize="16"/></graphic>
+                        </Button>
+
+                        <Button fx:id="btPrev" mnemonicParsing="false">
+                            <graphic><FontIcon iconLiteral="fa-angle-double-left" iconSize="16"/></graphic>
+                        </Button>
+
+                        <Button fx:id="btNew" mnemonicParsing="false" >
+                            <graphic><FontIcon iconLiteral="fa-plus-square" iconSize="16"/></graphic>
+                        </Button>
+
+                        <Button fx:id="btNext" mnemonicParsing="false">
+                            <graphic><FontIcon iconLiteral="fa-angle-double-right" iconSize="16"/></graphic>
+                        </Button>
+                        <Button fx:id="btLast" mnemonicParsing="false" >
+                            <graphic><FontIcon iconLiteral="fa-step-forward" iconSize="16"/></graphic>
+                        </Button>
+                        <Button mnemonicParsing="false" text="Копия" >
+                            <graphic><FontIcon iconLiteral="fa-files-o" iconSize="16"/></graphic>
+                        </Button>
+                        <ToggleButton fx:id="btShowSearchToolBar" mnemonicParsing="false" text="Поиск" >
+                            <graphic><FontIcon iconLiteral="fa-search" iconSize="16"/></graphic>
+                        </ToggleButton>
                     </items>
                <VBox.margin>
                   <Insets />

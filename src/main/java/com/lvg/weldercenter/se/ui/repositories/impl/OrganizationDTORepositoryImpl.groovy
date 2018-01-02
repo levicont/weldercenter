@@ -10,9 +10,12 @@ import javafx.beans.property.ListProperty
 import javafx.beans.property.SimpleListProperty
 import javafx.collections.FXCollections
 import javafx.collections.ObservableList
+import javafx.collections.transformation.FilteredList
 import org.apache.log4j.Logger
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
+
+import java.util.function.Predicate
 
 @Component
 class OrganizationDTORepositoryImpl implements OrganizationDTORepository{
@@ -24,10 +27,13 @@ class OrganizationDTORepositoryImpl implements OrganizationDTORepository{
     LoadingAllOrganizationsService service
 
     private ObservableList<OrganizationDTO> allData = FXCollections.observableArrayList()
+    private final FilteredList<OrganizationDTO> filteredData =
+            new FilteredList<>(allData, {e -> true})
     private final ListProperty<OrganizationDTO> allOrganizationListProperty =
-            new SimpleListProperty<>(allData)
+            new SimpleListProperty<>(filteredData)
     private final ListProperty<String> allOrganizationNamesListProperty =
             new SimpleListProperty<>(FXCollections.observableArrayList())
+
 
 
     OrganizationDTORepositoryImpl(){
@@ -54,6 +60,10 @@ class OrganizationDTORepositoryImpl implements OrganizationDTORepository{
         ServiceUtils.startService(service)
     }
 
+    void setFilterPredicate(Predicate<? super OrganizationDTO> predicate){
+        filteredData.setPredicate(predicate)
+    }
+
     @Override
     ObservableList<String> organizationNameList() {
         return allOrganizationNamesListProperty.get()
@@ -70,5 +80,7 @@ class OrganizationDTORepositoryImpl implements OrganizationDTORepository{
             allOrganizationListProperty.get().each { organizationDTO ->
                 allOrganizationNamesListProperty.get().add(organizationDTO.name)}
         })
+
+
     }
 }

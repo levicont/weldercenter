@@ -12,6 +12,7 @@ import javafx.beans.property.*
 import javafx.beans.value.ChangeListener
 import javafx.collections.FXCollections
 import javafx.collections.ObservableList
+import javafx.collections.transformation.FilteredList
 import javafx.event.ActionEvent
 import javafx.fxml.FXML
 import javafx.fxml.Initializable
@@ -19,6 +20,7 @@ import javafx.scene.Parent
 import javafx.scene.control.*
 import javafx.scene.layout.BorderPane
 import javafx.scene.layout.GridPane
+import javafx.util.Callback
 import org.apache.log4j.Logger
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
@@ -89,7 +91,6 @@ class WelderController implements Initializable {
     private DatePicker[] allDatePickers
     private ObjectProperty<WelderDTO> bufferedWelderDTOProperty = new SimpleObjectProperty<>()
     private BooleanProperty isWelderChangedProperty = new SimpleBooleanProperty(false)
-    private ObservableList<OrganizationDTO> allOrganizations = FXCollections.observableArrayList()
 
     @Override
     void initialize(URL location, ResourceBundle resources) {
@@ -129,33 +130,10 @@ class WelderController implements Initializable {
     }
 
     private void initCbOrganization() {
-     /*   cbOrganization.cellFactoryProperty().set(new Callback<ListView<OrganizationDTO>, ListCell<OrganizationDTO>>() {
-            @Override
-            ListCell<OrganizationDTO> call(ListView<OrganizationDTO> param) {
-                return new OrganizationDTOListCell()
-            }
-
-            private class OrganizationDTOListCell extends ListCell<OrganizationDTO> {
-                @Override
-                protected void updateItem(OrganizationDTO item, boolean empty) {
-                    super.updateItem(item, empty)
-                    if (empty) {
-                        setText('')
-                    } else {
-                        setText(item.name)
-                    }
-                }
-
-            }
-        })*/
-
         organizationDTORepository.loadAllDTO()
         cbOrganization.converterProperty().set(organizationDTOStringConverter)
         LOGGER.debug("--- INIT ORGANIZATION DTO COMBO BOX: allOrganization size: ${organizationDTORepository.allDTO.value.size()}")
-
         cbOrganization.setItems(organizationDTORepository.allDTO)
-
-        //cbOrganization.setItems(organizationDTORepository.allDTO)
         //cbOrganization.itemsProperty().bind(organizationDTORepository.allDTO)
     }
 
@@ -192,7 +170,7 @@ class WelderController implements Initializable {
         cbJob.valueProperty().bindBidirectional(welderUI.jobProperty)
         ControlFXUtils.selectItemInCombo(welderUI.organizationDTO, cbOrganization)
         //TODO is it really has to be bound bidirectional
-        //cbOrganization.valueProperty().bindBidirectional(welderUI.organizationProperty)
+        cbOrganization.valueProperty().bindBidirectional(welderUI.organizationProperty)
         txfAddress.textProperty().bindBidirectional(welderUI.addressProperty)
 
 
@@ -259,8 +237,8 @@ class WelderController implements Initializable {
                 allDatePickers)
         ControlFXUtils.addChangeListenerToComboBoxes((ChangeListener<String>) comboBoxChangeStringListener,
                 cbJob, cbQualification, cbEducation)
-//        ControlFXUtils.addChangeListenerToComboBoxes((ChangeListener<OrganizationDTO>) comboBoxChangeOrganizationListener,
-//                cbOrganization)
+        ControlFXUtils.addChangeListenerToComboBoxes((ChangeListener<OrganizationDTO>) comboBoxChangeOrganizationListener,
+                cbOrganization)
         ControlFXUtils.addChangeListenerToTextFields((ChangeListener<String>) comboBoxChangeEditorOrganizationListener,
                 cbOrganization.editor)
     }
@@ -272,8 +250,8 @@ class WelderController implements Initializable {
                 allDatePickers)
         ControlFXUtils.removeChangeListenerFromComboBoxes((ChangeListener<String>) comboBoxChangeStringListener,
                 cbJob, cbQualification, cbEducation)
-//        ControlFXUtils.removeChangeListenerFromComboBoxes((ChangeListener<OrganizationDTO>) comboBoxChangeOrganizationListener,
-//                cbOrganization)
+        ControlFXUtils.removeChangeListenerFromComboBoxes((ChangeListener<OrganizationDTO>) comboBoxChangeOrganizationListener,
+                cbOrganization)
         ControlFXUtils.removeChangeListenerFromTextFields((ChangeListener<String>) comboBoxChangeEditorOrganizationListener,
                 cbOrganization.editor)
     }
@@ -356,24 +334,27 @@ class WelderController implements Initializable {
         if (!cbOrganization.isFocused()) return
         LOGGER.debug("ChangeListener source: ${textProperty.class.simpleName} oldValue: ${oldValue} newValue: ${newValue}")
 
-        if (!cbOrganization.isShowing()) {
-            cbOrganization.show()
-        }
-
-        cbOrganization.itemsProperty().unbind()
-        if (newValue == null || newValue.isEmpty()) {
-            //cbOrganization.setItems(organizationDTORepository.allDTO)
+        if (newValue == null || newValue.isEmpty() ) {
+            organizationDTORepository.setFilterPredicate({e -> true})
             return
         }
 
-        ObservableList<OrganizationDTO> filteredList = FXCollections.observableArrayList()
-        organizationDTORepository.allDTO.value.forEach({org ->
-            String filteredValue = newValue.toLowerCase()
-            if (org.name == filteredValue || org.name.toLowerCase().contains(filteredValue))
-                filteredList.add(org)
+        organizationDTORepository.setFilterPredicate({org ->
+            if (org == null || org.name.isEmpty())
+                return true
+            String lowerCaseName = newValue.toLowerCase()
+            if (org.name.toLowerCase() == lowerCaseName )
+                return true
+            if (org.name.toLowerCase().contains(lowerCaseName))
+                return true
+
+            return false
         })
-        LOGGER.debug("ChangeListener Organization editor change listener filteredList: ${filteredList}")
-        cbOrganization.setItems(filteredList)
+        LOGGER.debug(" --comboBoxChangeEditorOrganizationListener filteredList: ${organizationDTORepository.allDTO}")
+
+        if (!cbOrganization.isShowing()) {
+            cbOrganization.show()
+        }
 
     }
 
