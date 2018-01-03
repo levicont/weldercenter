@@ -2,6 +2,8 @@ package com.lvg.weldercenter.se.ui.listeners.welderspane
 
 import com.lvg.weldercenter.se.ui.controllers.WelderController
 import com.lvg.weldercenter.se.ui.controllers.WelderTableController
+import com.lvg.weldercenter.se.ui.dto.DTOConstants
+import com.lvg.weldercenter.se.ui.dto.WelderTableViewDTO
 import com.lvg.weldercenter.se.ui.services.LoadingWelderByIdService
 import com.lvg.weldercenter.se.ui.utils.ControlFXUtils
 import com.lvg.weldercenter.se.ui.utils.ServiceUtils
@@ -34,12 +36,18 @@ class WeldersTableViewEventHandler implements EventHandler<Event> {
     }
 
     private void doSelectWelder() {
-        if (welderTableController.getWeldersTableView().selectionModel.getSelectedItem() != null) {
-            loadingWelderByIdService.stateProperty().addListener(listener)
-            ServiceUtils.startService(loadingWelderByIdService)
-        }else {
+        WelderTableViewDTO selectedWelder = welderTableController.getWeldersTableView()
+                .selectionModel.getSelectedItem()
+        if (selectedWelder == null) {
             welderController.welderDTOProperty().set(null)
+            return
         }
+        if (selectedWelder.id == DTOConstants.NULL_ID_FIELD_DEFAULT)  {
+            //TODO must be some logic
+            return
+        }
+        loadingWelderByIdService.stateProperty().addListener(listener)
+        ServiceUtils.startService(loadingWelderByIdService)
     }
 
 

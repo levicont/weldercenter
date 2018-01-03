@@ -61,14 +61,27 @@ class WeldersReposotoryImpl implements WelderDTORepository{
     @Override
     WelderDTO addNewWelderDTO() {
         def welderDTO = getDefaultWelderDTO()
-        allWelders.add(welderDTO)
-        allWeldersTableViewDTO.add(new WelderTableViewDTO(DTOConstants.NULL_ID_FIELD_DEFAULT, '', '',
-                '', LocalDate.of(2017,02,15),''))
+        if (!allWelders.contains(welderDTO))
+            allWelders.add(welderDTO)
+
+        def welderTableViewDTO = getDefaultWelderTableViewDTO()
+        if (!allWeldersTableViewDTO.contains(welderTableViewDTO))
+            allWeldersTableViewDTO.add(welderTableViewDTO)
+
         return welderDTO
     }
 
     private WelderDTO getDefaultWelderDTO(){
         WelderDTO result = new WelderDTO(new Welder())
         return result
+    }
+
+    private WelderTableViewDTO getDefaultWelderTableViewDTO(){
+        new WelderTableViewDTO(DTOConstants.NULL_ID_FIELD_DEFAULT,
+                DTOConstants.NULL_FIELD_PLACEHOLDER,
+                DTOConstants.NULL_FIELD_PLACEHOLDER,
+                DTOConstants.NULL_FIELD_PLACEHOLDER,
+                LocalDate.of(2017,02,15),
+                DTOConstants.NULL_FIELD_PLACEHOLDER)
     }
 }

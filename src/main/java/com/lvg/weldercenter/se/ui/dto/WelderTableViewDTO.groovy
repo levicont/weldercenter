@@ -59,4 +59,19 @@ class WelderTableViewDTO {
     String toString() {
         return "${id.get()} ${name.get()} ${secondName.get()} ${surname.get()}"
     }
+
+    boolean equals(o) {
+        if (this.is(o)) return true
+        if (getClass() != o.class) return false
+
+        WelderTableViewDTO that = (WelderTableViewDTO) o
+
+        if (id.value != that.id.value) return false
+
+        return true
+    }
+
+    int hashCode() {
+        return (id != null ? id.hashCode() : 0)
+    }
 }
