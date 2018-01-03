@@ -1,18 +1,15 @@
 package com.lvg.weldercenter.se.ui.controllers
 
+import com.lvg.weldercenter.se.ui.dto.WelderDTO
 import com.lvg.weldercenter.se.ui.dto.WelderTableViewDTO
 import com.lvg.weldercenter.se.ui.factories.LineNumbersCellFactory
 import com.lvg.weldercenter.se.ui.listeners.welderspane.WeldersTableViewEventHandler
 import com.lvg.weldercenter.se.ui.repositories.WelderDTORepository
+import com.lvg.weldercenter.se.ui.utils.ControlFXUtils
 import javafx.event.Event
 import javafx.fxml.FXML
 import javafx.fxml.Initializable
-import javafx.scene.control.Button
-import javafx.scene.control.TableColumn
-import javafx.scene.control.TableView
-import javafx.scene.control.TextField
-import javafx.scene.control.ToggleButton
-import javafx.scene.control.ToolBar
+import javafx.scene.control.*
 import javafx.scene.control.cell.PropertyValueFactory
 import javafx.scene.layout.VBox
 import org.apache.log4j.Logger
@@ -34,9 +31,6 @@ class WelderTableController implements Initializable{
 
     @FXML
     private VBox vboxToolBars
-
-    @FXML
-    private ToggleButton btShowSearchToolBar
 
     @FXML
     private ToolBar toolBarSearch
@@ -108,5 +102,41 @@ class WelderTableController implements Initializable{
 
     TableView<WelderTableViewDTO> getWeldersTableView(){
         return welderTableView
+    }
+
+    @FXML
+    void selectFirst(){
+        LOGGER.debug("SELECT FIRST RECORD in weldersTableView")
+        ControlFXUtils.selectFirstTableRecord(welderTableView)
+
+    }
+
+    @FXML
+    void selectLast(){
+        LOGGER.debug("SELECT LAST RECORD in weldersTableView")
+        ControlFXUtils.selectLastTableRecord(welderTableView)
+    }
+
+    @FXML
+    void selectPrevious(){
+        LOGGER.debug("SELECT PREVIOUS RECORD in weldersTableView")
+        ControlFXUtils.selectPrevTableRecord(welderTableView)
+    }
+
+    @FXML
+    void selectNext(){
+        LOGGER.debug("SELECT NEXT RECORD in weldersTableView")
+        ControlFXUtils.selectNextTableRecord(welderTableView)
+    }
+
+    @FXML
+    void addNew(){
+        WelderDTO newWelder = weldersRepository.addNewWelderDTO()
+
+    }
+
+    @FXML
+    void addCopy(){
+
     }
 }

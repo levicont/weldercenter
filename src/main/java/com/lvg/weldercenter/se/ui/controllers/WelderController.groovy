@@ -7,6 +7,7 @@ import com.lvg.weldercenter.se.ui.repositories.EducationDTORepository
 import com.lvg.weldercenter.se.ui.repositories.JobDTORepository
 import com.lvg.weldercenter.se.ui.repositories.OrganizationDTORepository
 import com.lvg.weldercenter.se.ui.repositories.QualificationDTORepository
+import com.lvg.weldercenter.se.ui.repositories.WelderDTORepository
 import com.lvg.weldercenter.se.ui.utils.ControlFXUtils
 import javafx.beans.property.*
 import javafx.beans.value.ChangeListener
@@ -38,6 +39,8 @@ class WelderController implements Initializable {
     @Autowired
     OrganizationDTOStringConverter organizationDTOStringConverter
 
+    @Autowired
+    WelderDTORepository welderDTORepository
     @Autowired
     WelderTableController welderTableController
     @Autowired
@@ -134,7 +137,6 @@ class WelderController implements Initializable {
         cbOrganization.converterProperty().set(organizationDTOStringConverter)
         LOGGER.debug("--- INIT ORGANIZATION DTO COMBO BOX: allOrganization size: ${organizationDTORepository.allDTO.value.size()}")
         cbOrganization.setItems(organizationDTORepository.allDTO)
-        //cbOrganization.itemsProperty().bind(organizationDTORepository.allDTO)
     }
 
 
@@ -228,6 +230,11 @@ class WelderController implements Initializable {
                 LOGGER.debug("--- saveOrganization option: CANCEL chosen")
                 break
         }
+    }
+
+    void addNewWelder(){
+        WelderDTO newWelder = welderDTORepository.addNewWelderDTO()
+        loadWelder(newWelder)
     }
 
     private void addListeners() {
