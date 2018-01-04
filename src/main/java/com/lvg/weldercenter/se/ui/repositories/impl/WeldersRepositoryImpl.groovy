@@ -1,6 +1,5 @@
 package com.lvg.weldercenter.se.ui.repositories.impl
 
-import com.lvg.weldercenter.se.models.Welder
 import com.lvg.weldercenter.se.ui.dto.DTOConstants
 import com.lvg.weldercenter.se.ui.dto.WelderDTO
 import com.lvg.weldercenter.se.ui.dto.WelderTableViewDTO
@@ -16,15 +15,13 @@ import org.apache.log4j.Logger
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
-import java.time.LocalDate
-
 @Component
-class WeldersReposotoryImpl implements WelderDTORepository{
+class WeldersRepositoryImpl implements WelderDTORepository {
 
     private ObservableList<WelderDTO> allWelders =
             FXCollections.observableArrayList()
     private ObservableList<WelderTableViewDTO> allWeldersTableViewDTO = FXCollections.observableArrayList()
-
+    private final ObjectProperty<WelderDTO> welderDTOProperty = new SimpleObjectProperty<>()
     private final ObjectProperty<ObservableList<WelderTableViewDTO>> allWeldersTableViewDTOProperty =
             new SimpleObjectProperty<>(allWeldersTableViewDTO)
 
@@ -33,7 +30,7 @@ class WeldersReposotoryImpl implements WelderDTORepository{
 
     @Autowired
     LoadWeldersForTableViewChangeStateListener loadWeldersForTableViewChangeStateListener
-    private static final Logger LOGGER = Logger.getLogger(WeldersReposotoryImpl.class)
+    private static final Logger LOGGER = Logger.getLogger(WeldersRepositoryImpl.class)
 
     @Override
     void updateWeldersList(ObservableList<WelderDTO> newWelderList) {
@@ -51,37 +48,39 @@ class WeldersReposotoryImpl implements WelderDTORepository{
     }
 
     @Override
-    void reloadWelders(){
+    void reloadWelders() {
         loadingWeldersForTableViewService.stateProperty().addListener(loadWeldersForTableViewChangeStateListener)
         ServiceUtils.startService(loadingWeldersForTableViewService)
         LOGGER.debug("Load welders performed")
     }
 
-    //TODO method has to correct load new welder
     @Override
-    WelderDTO addNewWelderDTO() {
-        def welderDTO = getDefaultWelderDTO()
-        if (!allWelders.contains(welderDTO))
-            allWelders.add(welderDTO)
-
+    WelderDTO getNewWelderDTO() {
         def welderTableViewDTO = getDefaultWelderTableViewDTO()
-        if (!allWeldersTableViewDTO.contains(welderTableViewDTO))
+        if (!allWeldersTableViewDTO.contains(welderTableViewDTO)) {
             allWeldersTableViewDTO.add(welderTableViewDTO)
-
-        return welderDTO
+        }
+        return welderDTOProperty.get()
     }
 
-    private WelderDTO getDefaultWelderDTO(){
-        WelderDTO result = new WelderDTO(new Welder())
-        return result
+    void clearWelderTableViewDTOList(){
+        Optional<WelderTableViewDTO> emptyWelderTableViewDTO = allWeldersForTableView.get()
+                .stream()
+                .filter({welder -> welder.id==DTOConstants.NULL_ID_FIELD_DEFAULT})
+                .findFirst()
+        if(emptyWelderTableViewDTO.isPresent()){
+            allWeldersForTableView.get().remove(emptyWelderTableViewDTO.get())
+        }
     }
 
-    private WelderTableViewDTO getDefaultWelderTableViewDTO(){
+    private static WelderTableViewDTO getDefaultWelderTableViewDTO() {
         new WelderTableViewDTO(DTOConstants.NULL_ID_FIELD_DEFAULT,
                 DTOConstants.NULL_FIELD_PLACEHOLDER,
                 DTOConstants.NULL_FIELD_PLACEHOLDER,
                 DTOConstants.NULL_FIELD_PLACEHOLDER,
-                LocalDate.of(2017,02,15),
+                DTOConstants.DEFAULT_BIRTHDAY_PLACEHOLDER,
                 DTOConstants.NULL_FIELD_PLACEHOLDER)
     }
+
+
 }

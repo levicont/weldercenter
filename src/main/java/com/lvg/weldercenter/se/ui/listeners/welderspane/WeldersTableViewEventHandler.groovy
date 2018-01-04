@@ -3,6 +3,7 @@ package com.lvg.weldercenter.se.ui.listeners.welderspane
 import com.lvg.weldercenter.se.ui.controllers.WelderController
 import com.lvg.weldercenter.se.ui.controllers.WelderTableController
 import com.lvg.weldercenter.se.ui.dto.DTOConstants
+import com.lvg.weldercenter.se.ui.dto.WelderDTO
 import com.lvg.weldercenter.se.ui.dto.WelderTableViewDTO
 import com.lvg.weldercenter.se.ui.services.LoadingWelderByIdService
 import com.lvg.weldercenter.se.ui.utils.ControlFXUtils
@@ -43,12 +44,13 @@ class WeldersTableViewEventHandler implements EventHandler<Event> {
             return
         }
         if (selectedWelder.id == DTOConstants.NULL_ID_FIELD_DEFAULT)  {
-            //TODO must be some logic
+            welderController.loadWelder(WelderDTO.defaultWelderDTO())
             return
         }
+        //If we have an empty welder than we are deleting it from TableView
+        welderController.welderDTORepository.clearWelderTableViewDTOList()
+
         loadingWelderByIdService.stateProperty().addListener(listener)
         ServiceUtils.startService(loadingWelderByIdService)
     }
-
-
 }

@@ -55,6 +55,30 @@ class WelderTableViewDTO {
         return organization.get()
     }
 
+    LongProperty getIdProperty(){
+        return id
+    }
+
+    StringProperty getNameProperty(){
+        return name
+    }
+
+    StringProperty getSurnameProperty(){
+        return surname
+    }
+
+    StringProperty getSecondNameProperty(){
+        return secondName
+    }
+
+    StringProperty getBirthdayProperty(){
+        return birthday
+    }
+
+    StringProperty getOrganizationProperty(){
+        return organization
+    }
+
     @Override
     String toString() {
         return "${id.get()} ${name.get()} ${secondName.get()} ${surname.get()}"

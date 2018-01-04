@@ -1,6 +1,5 @@
 package com.lvg.weldercenter.se.ui.controllers
 
-import com.lvg.weldercenter.se.ui.dto.WelderDTO
 import com.lvg.weldercenter.se.ui.dto.WelderTableViewDTO
 import com.lvg.weldercenter.se.ui.factories.LineNumbersCellFactory
 import com.lvg.weldercenter.se.ui.listeners.welderspane.WeldersTableViewEventHandler
@@ -131,8 +130,8 @@ class WelderTableController implements Initializable{
 
     @FXML
     void addNew(){
-        WelderDTO newWelder = weldersRepository.addNewWelderDTO()
-
+        weldersRepository.getNewWelderDTO()
+        selectLast()
     }
 
     @FXML

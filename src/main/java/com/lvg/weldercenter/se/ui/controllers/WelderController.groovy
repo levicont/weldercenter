@@ -3,17 +3,10 @@ package com.lvg.weldercenter.se.ui.controllers
 import com.lvg.weldercenter.se.ui.converters.OrganizationDTOStringConverter
 import com.lvg.weldercenter.se.ui.dto.OrganizationDTO
 import com.lvg.weldercenter.se.ui.dto.WelderDTO
-import com.lvg.weldercenter.se.ui.repositories.EducationDTORepository
-import com.lvg.weldercenter.se.ui.repositories.JobDTORepository
-import com.lvg.weldercenter.se.ui.repositories.OrganizationDTORepository
-import com.lvg.weldercenter.se.ui.repositories.QualificationDTORepository
-import com.lvg.weldercenter.se.ui.repositories.WelderDTORepository
+import com.lvg.weldercenter.se.ui.repositories.*
 import com.lvg.weldercenter.se.ui.utils.ControlFXUtils
 import javafx.beans.property.*
 import javafx.beans.value.ChangeListener
-import javafx.collections.FXCollections
-import javafx.collections.ObservableList
-import javafx.collections.transformation.FilteredList
 import javafx.event.ActionEvent
 import javafx.fxml.FXML
 import javafx.fxml.Initializable
@@ -21,7 +14,6 @@ import javafx.scene.Parent
 import javafx.scene.control.*
 import javafx.scene.layout.BorderPane
 import javafx.scene.layout.GridPane
-import javafx.util.Callback
 import org.apache.log4j.Logger
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
@@ -175,7 +167,6 @@ class WelderController implements Initializable {
         cbOrganization.valueProperty().bindBidirectional(welderUI.organizationProperty)
         txfAddress.textProperty().bindBidirectional(welderUI.addressProperty)
 
-
     }
 
 
@@ -232,9 +223,9 @@ class WelderController implements Initializable {
         }
     }
 
+    @FXML
     void addNewWelder(){
-        WelderDTO newWelder = welderDTORepository.addNewWelderDTO()
-        loadWelder(newWelder)
+       welderTableController.addNew()
     }
 
     private void addListeners() {
