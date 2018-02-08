@@ -47,7 +47,7 @@ class WeldersTableViewEventHandler implements EventHandler<Event> {
             welderController.loadWelder(WelderDTO.defaultWelderDTO())
             return
         }
-        //If we have an empty welder than we are deleting it from TableView
+        //If we have an empty welder then we are deleting it from TableView
         welderController.welderDTORepository.clearWelderTableViewDTOList()
 
         loadingWelderByIdService.stateProperty().addListener(listener)

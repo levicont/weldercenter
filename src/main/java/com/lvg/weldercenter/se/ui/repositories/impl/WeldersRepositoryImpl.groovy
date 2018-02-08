@@ -7,7 +7,9 @@ import com.lvg.weldercenter.se.ui.listeners.welderspane.LoadWeldersForTableViewC
 import com.lvg.weldercenter.se.ui.repositories.WelderDTORepository
 import com.lvg.weldercenter.se.ui.services.LoadingWeldersForTableViewService
 import com.lvg.weldercenter.se.ui.utils.ServiceUtils
+import javafx.beans.property.ListProperty
 import javafx.beans.property.ObjectProperty
+import javafx.beans.property.SimpleListProperty
 import javafx.beans.property.SimpleObjectProperty
 import javafx.collections.FXCollections
 import javafx.collections.ObservableList
@@ -20,10 +22,9 @@ class WeldersRepositoryImpl implements WelderDTORepository {
 
     private ObservableList<WelderDTO> allWelders =
             FXCollections.observableArrayList()
-    private ObservableList<WelderTableViewDTO> allWeldersTableViewDTO = FXCollections.observableArrayList()
     private final ObjectProperty<WelderDTO> welderDTOProperty = new SimpleObjectProperty<>()
-    private final ObjectProperty<ObservableList<WelderTableViewDTO>> allWeldersTableViewDTOProperty =
-            new SimpleObjectProperty<>(allWeldersTableViewDTO)
+    private final ListProperty<WelderTableViewDTO> welderTableViewDTOListProperty =
+            new SimpleListProperty<>(FXCollections.observableArrayList())
 
     @Autowired
     LoadingWeldersForTableViewService loadingWeldersForTableViewService
@@ -38,13 +39,14 @@ class WeldersRepositoryImpl implements WelderDTORepository {
     }
 
     @Override
-    ObjectProperty<ObservableList<WelderTableViewDTO>> getAllWeldersForTableView() {
-        return allWeldersTableViewDTOProperty
+    ListProperty<WelderTableViewDTO> welderTableViewDTOListProperty() {
+        return welderTableViewDTOListProperty
     }
 
     @Override
     void updateWeldersListForTableView(ObservableList<WelderTableViewDTO> newWelderList) {
-        this.allWeldersTableViewDTO.setAll(newWelderList)
+        welderTableViewDTOListProperty.clear()
+        welderTableViewDTOListProperty.addAll(newWelderList)
     }
 
     @Override
@@ -57,19 +59,19 @@ class WeldersRepositoryImpl implements WelderDTORepository {
     @Override
     WelderDTO getNewWelderDTO() {
         def welderTableViewDTO = getDefaultWelderTableViewDTO()
-        if (!allWeldersTableViewDTO.contains(welderTableViewDTO)) {
-            allWeldersTableViewDTO.add(welderTableViewDTO)
+        if (!welderTableViewDTOListProperty.contains(welderTableViewDTO)) {
+            welderTableViewDTOListProperty.add(welderTableViewDTO)
         }
         return welderDTOProperty.get()
     }
 
     void clearWelderTableViewDTOList(){
-        Optional<WelderTableViewDTO> emptyWelderTableViewDTO = allWeldersForTableView.get()
+        Optional<WelderTableViewDTO> emptyWelderTableViewDTO = welderTableViewDTOListProperty.get()
                 .stream()
                 .filter({welder -> welder.id==DTOConstants.NULL_ID_FIELD_DEFAULT})
                 .findFirst()
         if(emptyWelderTableViewDTO.isPresent()){
-            allWeldersForTableView.get().remove(emptyWelderTableViewDTO.get())
+            welderTableViewDTOListProperty.get().remove(emptyWelderTableViewDTO.get())
         }
     }
 

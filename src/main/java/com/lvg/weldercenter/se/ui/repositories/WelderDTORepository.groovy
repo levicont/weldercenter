@@ -9,7 +9,7 @@ import javafx.collections.ObservableList
 interface WelderDTORepository {
     void updateWeldersList(ObservableList<WelderDTO> newWelderList)
 
-    ObjectProperty<ObservableList<WelderTableViewDTO>> getAllWeldersForTableView()
+    ListProperty<WelderTableViewDTO> welderTableViewDTOListProperty()
     WelderDTO getNewWelderDTO()
     void updateWeldersListForTableView(ObservableList<WelderTableViewDTO> newWelderList)
     void reloadWelders()
