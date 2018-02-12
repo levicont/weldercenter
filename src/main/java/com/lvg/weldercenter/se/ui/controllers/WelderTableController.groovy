@@ -89,13 +89,12 @@ class WelderTableController implements Initializable{
         birthday.setCellValueFactory(new PropertyValueFactory<WelderTableViewDTO,String>('birthday'))
         organizationName.setCellValueFactory(new PropertyValueFactory<WelderTableViewDTO,String>('organization'))
         weldersRepository.reloadWelders()
-        welderTableView.setItems(weldersRepository.welderTableViewDTOListProperty().get())
+        welderTableView.setItems(weldersRepository.welderTableViewDTOListProperty())
         welderTableView.addEventHandler(Event.ANY, weldersTableViewEventHandler)
 
     }
 
     void refreshTable(){
-        //initTable()
         weldersRepository.reloadWelders()
     }
 

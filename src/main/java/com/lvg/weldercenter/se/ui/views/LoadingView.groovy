@@ -7,6 +7,8 @@ import javafx.geometry.Pos
 import javafx.scene.Scene
 import javafx.scene.control.Label
 import javafx.scene.control.ProgressBar
+import javafx.scene.layout.Border
+import javafx.scene.layout.BorderStroke
 import javafx.scene.layout.VBox
 import javafx.stage.Modality
 import javafx.stage.Stage
@@ -41,6 +43,7 @@ class LoadingView extends Stage {
 
     private void addUI() {
         if (!initializedOnce) {
+            root.setStyle("-fx-border-width: 1px; -fx-border-color: #8A8A8A; -fx-border-style: solid;")
             root.setAlignment(Pos.CENTER)
 
             root.setPrefHeight(100)

@@ -44,7 +44,9 @@ class WelderController implements Initializable {
     @Autowired
     OrganizationDTORepository organizationDTORepository
 
-    private final ObjectProperty<WelderDTO> welderDTOProperty = new SimpleObjectProperty<>()
+    private WelderDTO welderDTO
+    private final ObjectProperty<WelderDTO> welderDTOProperty = new SimpleObjectProperty<>(welderDTO)
+
 
 
     @FXML
@@ -140,32 +142,37 @@ class WelderController implements Initializable {
     }
 
 
-    void loadWelder(WelderDTO welderUI) {
+    void loadWelder(WelderDTO welderDTO) {
         removeListeners()
-        if (welderUI == null) {
+        if (welderDTO == null) {
             LOGGER.warn('Cannot load null welderUI')
             return
         }
-        welderDTOProperty.set(welderUI)
-        bufferedWelderDTOProperty.set(welderUI)
+        welderDTOProperty.set(welderDTO)
+        bufferedWelderDTOProperty.set(welderDTO)
         addListeners()
-        txfName.textProperty().bindBidirectional(welderUI.nameProperty)
+        bindWelderDTO()
+    }
+
+    private void bindWelderDTO(){
+        WelderDTO welderDTO = welderDTOProperty.get()
         isWelderChangedProperty.set(false)
-        txfSecname.textProperty().bindBidirectional(welderUI.secondNameProperty)
-        txfSurname.textProperty().bindBidirectional(welderUI.surnameProperty)
-        dpBirthday.valueProperty().bindBidirectional(welderUI.birthdayProperty)
-        txfDocNumber.textProperty().bindBidirectional(welderUI.documentNumberProperty)
-        dpDateBegin.valueProperty().bindBidirectional(welderUI.dateBeginProperty)
-        ControlFXUtils.selectItemInCombo(welderUI.education, cbEducation)
-        cbEducation.valueProperty().bindBidirectional(welderUI.educationProperty)
-        ControlFXUtils.selectItemInCombo(welderUI.qualification, cbQualification)
-        cbQualification.valueProperty().bindBidirectional(welderUI.qualificationProperty)
-        ControlFXUtils.selectItemInCombo(welderUI.job, cbJob)
-        cbJob.valueProperty().bindBidirectional(welderUI.jobProperty)
-        ControlFXUtils.selectItemInCombo(welderUI.organizationDTO, cbOrganization)
+        txfName.textProperty().bindBidirectional(welderDTO.nameProperty)
+        txfSecname.textProperty().bindBidirectional(welderDTO.secondNameProperty)
+        txfSurname.textProperty().bindBidirectional(welderDTO.surnameProperty)
+        dpBirthday.valueProperty().bindBidirectional(welderDTO.birthdayProperty)
+        txfDocNumber.textProperty().bindBidirectional(welderDTO.documentNumberProperty)
+        dpDateBegin.valueProperty().bindBidirectional(welderDTO.dateBeginProperty)
+        ControlFXUtils.selectItemInCombo(welderDTO.education, cbEducation)
+        cbEducation.valueProperty().bindBidirectional(welderDTO.educationProperty)
+        ControlFXUtils.selectItemInCombo(welderDTO.qualification, cbQualification)
+        cbQualification.valueProperty().bindBidirectional(welderDTO.qualificationProperty)
+        ControlFXUtils.selectItemInCombo(welderDTO.job, cbJob)
+        cbJob.valueProperty().bindBidirectional(welderDTO.jobProperty)
+        ControlFXUtils.selectItemInCombo(welderDTO.organizationDTO, cbOrganization)
         //TODO is it really has to be bound bidirectional
-        cbOrganization.valueProperty().bindBidirectional(welderUI.organizationProperty)
-        txfAddress.textProperty().bindBidirectional(welderUI.addressProperty)
+        cbOrganization.valueProperty().bindBidirectional(welderDTO.organizationProperty)
+        txfAddress.textProperty().bindBidirectional(welderDTO.addressProperty)
 
     }
 
