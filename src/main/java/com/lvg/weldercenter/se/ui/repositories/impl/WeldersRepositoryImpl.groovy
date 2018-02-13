@@ -45,8 +45,9 @@ class WeldersRepositoryImpl implements WelderDTORepository {
 
     @Override
     void updateWeldersListForTableView(ObservableList<WelderTableViewDTO> newWelderList) {
-        welderTableViewDTOListProperty.clear()
-        welderTableViewDTOListProperty.addAll(newWelderList)
+        //TODO binding of table properties must be reviewed
+        //welderTableViewDTOListProperty.clear()
+        newWelderList.forEach {welderTableViewDTO -> welderTableViewDTOListProperty().add(welderTableViewDTO)}
     }
 
     @Override

@@ -3,6 +3,7 @@ package com.lvg.weldercenter.se.ui.controllers
 import com.lvg.weldercenter.se.ui.converters.OrganizationDTOStringConverter
 import com.lvg.weldercenter.se.ui.dto.OrganizationDTO
 import com.lvg.weldercenter.se.ui.dto.WelderDTO
+import com.lvg.weldercenter.se.ui.dto.WelderTableViewDTO
 import com.lvg.weldercenter.se.ui.repositories.*
 import com.lvg.weldercenter.se.ui.utils.ControlFXUtils
 import javafx.beans.property.*
@@ -173,6 +174,28 @@ class WelderController implements Initializable {
         //TODO is it really has to be bound bidirectional
         cbOrganization.valueProperty().bindBidirectional(welderDTO.organizationProperty)
         txfAddress.textProperty().bindBidirectional(welderDTO.addressProperty)
+        bindWelderDTOandTableView(welderDTO, welderTableController.getWeldersTableView())
+    }
+
+    private void bindWelderDTOandTableView(WelderDTO welderDTO, TableView<WelderTableViewDTO> table){
+        LOGGER.debug("---- BEGIN BINDING WELDER TABLE TO WELDER DTO ----")
+        WelderTableViewDTO welderTableViewDTO = table.getSelectionModel().getSelectedItem()
+        if (welderTableViewDTO == null)return
+        LOGGER.debug("Selected welderTableViewDTO ${welderTableViewDTO} ")
+        LOGGER.debug("Selected welderDTO ${welderDTO.id} ${welderDTO} ")
+        welderTableViewDTO.nameProperty.unbind()
+        welderTableViewDTO.secondNameProperty.unbind()
+        welderTableViewDTO.surnameProperty.unbind()
+        welderTableViewDTO.birthdayProperty.unbind()
+        welderTableViewDTO.organizationProperty.unbind()
+
+        welderTableViewDTO.nameProperty.bind(welderDTO.nameProperty)
+        welderTableViewDTO.secondNameProperty.bind(welderDTO.secondNameProperty)
+        welderTableViewDTO.surnameProperty.bind(txfSurname.textProperty())
+        welderTableViewDTO.birthdayProperty.bind(welderDTO.birthdayFormatProperty)
+        welderTableViewDTO.organizationProperty.bind(welderDTO.organizationNameProperty)
+
+        LOGGER.debug("---- END BINDING WELDER TABLE TO WELDER DTO ----")
 
     }
 
