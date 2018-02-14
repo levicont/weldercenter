@@ -13,18 +13,22 @@ import javafx.beans.property.SimpleListProperty
 import javafx.beans.property.SimpleObjectProperty
 import javafx.collections.FXCollections
 import javafx.collections.ObservableList
+import javafx.collections.ObservableMap
 import org.apache.log4j.Logger
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
+import java.util.stream.Collectors
+
 @Component
 class WeldersRepositoryImpl implements WelderDTORepository {
-
-    private ObservableList<WelderDTO> allWelders =
-            FXCollections.observableArrayList()
+    //TODO Have to implement welderDTO buffer
+    private final ObservableMap<Long, WelderDTO> welderDTOBuffer =
+            FXCollections.observableHashMap()
+    private final ObservableList<WelderTableViewDTO> welderTableViewDTOObservableList = FXCollections.observableArrayList()
     private final ObjectProperty<WelderDTO> welderDTOProperty = new SimpleObjectProperty<>()
     private final ListProperty<WelderTableViewDTO> welderTableViewDTOListProperty =
-            new SimpleListProperty<>(FXCollections.observableArrayList())
+            new SimpleListProperty<>(welderTableViewDTOObservableList)
 
     @Autowired
     LoadingWeldersForTableViewService loadingWeldersForTableViewService
@@ -34,24 +38,19 @@ class WeldersRepositoryImpl implements WelderDTORepository {
     private static final Logger LOGGER = Logger.getLogger(WeldersRepositoryImpl.class)
 
     @Override
-    void updateWeldersList(ObservableList<WelderDTO> newWelderList) {
-        this.allWelders.setAll(newWelderList)
-    }
-
-    @Override
     ListProperty<WelderTableViewDTO> welderTableViewDTOListProperty() {
         return welderTableViewDTOListProperty
     }
 
     @Override
     void updateWeldersListForTableView(ObservableList<WelderTableViewDTO> newWelderList) {
-        //TODO binding of table properties must be reviewed
-        //welderTableViewDTOListProperty.clear()
-        newWelderList.forEach {welderTableViewDTO -> welderTableViewDTOListProperty().add(welderTableViewDTO)}
+        welderTableViewDTOListProperty.clear()
+        welderTableViewDTOListProperty.addAll(newWelderList)
     }
 
     @Override
     void reloadWelders() {
+        removeUnsavedItems()
         loadingWeldersForTableViewService.stateProperty().addListener(loadWeldersForTableViewChangeStateListener)
         ServiceUtils.startService(loadingWeldersForTableViewService)
         LOGGER.debug("Load welders performed")
@@ -66,14 +65,11 @@ class WeldersRepositoryImpl implements WelderDTORepository {
         return welderDTOProperty.get()
     }
 
-    void clearWelderTableViewDTOList(){
-        Optional<WelderTableViewDTO> emptyWelderTableViewDTO = welderTableViewDTOListProperty.get()
-                .stream()
-                .filter({welder -> welder.id==DTOConstants.NULL_ID_FIELD_DEFAULT})
-                .findFirst()
-        if(emptyWelderTableViewDTO.isPresent()){
-            welderTableViewDTOListProperty.get().remove(emptyWelderTableViewDTO.get())
-        }
+    void removeUnsavedItems(){
+        ArrayList<WelderTableViewDTO> removedList = welderTableViewDTOListProperty.stream()
+            .filter({welderTableViewDTO -> welderTableViewDTO.id == DTOConstants.NULL_ID_FIELD_DEFAULT})
+            .collect(Collectors.toList())
+        welderTableViewDTOListProperty.removeAll(removedList)
     }
 
     private static WelderTableViewDTO getDefaultWelderTableViewDTO() {

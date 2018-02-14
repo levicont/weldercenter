@@ -7,11 +7,10 @@ import javafx.beans.property.ObjectProperty
 import javafx.collections.ObservableList
 
 interface WelderDTORepository {
-    void updateWeldersList(ObservableList<WelderDTO> newWelderList)
 
     ListProperty<WelderTableViewDTO> welderTableViewDTOListProperty()
     WelderDTO getNewWelderDTO()
     void updateWeldersListForTableView(ObservableList<WelderTableViewDTO> newWelderList)
     void reloadWelders()
-    void clearWelderTableViewDTOList()
+    void removeUnsavedItems()
 }

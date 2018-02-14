@@ -233,7 +233,7 @@
                         <Insets top="12.0" />
                     </VBox.margin>
                 </Separator>
-                <Button fx:id="btSave" mnemonicParsing="false" text="Сохранить">
+                <Button fx:id="btSave" mnemonicParsing="false" onAction="#saveWelder" text="Сохранить">
                     <graphic><FontIcon iconLiteral="fa-floppy-o" iconSize="16" /></graphic>
                 </Button>
             </children>

@@ -23,7 +23,7 @@ class LoadWeldersChangeListener extends GenericServiceChangeStateListener {
             LOGGER.debug("-----LISTENER-START----"+getClass().simpleName)
             def list = loadingWeldersService.getValue()
             LOGGER.debug("Welders list was updated - list: $list")
-            weldersRepository.updateWeldersList(list)
+            //TODO Here have to be updating weldersList code
             loadingWeldersService.stateProperty().removeListener(this)
             loadingView.hide()
             LOGGER.debug("Welders list was updated")

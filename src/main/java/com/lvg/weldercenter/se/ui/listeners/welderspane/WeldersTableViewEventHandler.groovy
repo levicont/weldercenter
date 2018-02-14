@@ -43,14 +43,23 @@ class WeldersTableViewEventHandler implements EventHandler<Event> {
             welderController.welderDTOProperty().set(null)
             return
         }
+        unbind(selectedWelder)
         if (selectedWelder.id == DTOConstants.NULL_ID_FIELD_DEFAULT)  {
             welderController.loadWelder(WelderDTO.defaultWelderDTO())
             return
         }
         //If we have an empty welder then we are deleting it from TableView
-        welderController.welderDTORepository.clearWelderTableViewDTOList()
+        welderController.welderDTORepository.removeUnsavedItems()
 
         loadingWelderByIdService.stateProperty().addListener(listener)
         ServiceUtils.startService(loadingWelderByIdService)
+    }
+
+    private void unbind(WelderTableViewDTO welderTableViewDTO){
+        welderTableViewDTO.nameProperty.unbind()
+        welderTableViewDTO.secondNameProperty.unbind()
+        welderTableViewDTO.surnameProperty.unbind()
+        welderTableViewDTO.birthdayProperty.unbind()
+        welderTableViewDTO.organizationProperty.unbind()
     }
 }

@@ -174,7 +174,7 @@ class WelderController implements Initializable {
         //TODO is it really has to be bound bidirectional
         cbOrganization.valueProperty().bindBidirectional(welderDTO.organizationProperty)
         txfAddress.textProperty().bindBidirectional(welderDTO.addressProperty)
-        bindWelderDTOandTableView(welderDTO, welderTableController.getWeldersTableView())
+       // bindWelderDTOandTableView(welderDTO, welderTableController.getWeldersTableView())
     }
 
     private void bindWelderDTOandTableView(WelderDTO welderDTO, TableView<WelderTableViewDTO> table){
@@ -183,11 +183,11 @@ class WelderController implements Initializable {
         if (welderTableViewDTO == null)return
         LOGGER.debug("Selected welderTableViewDTO ${welderTableViewDTO} ")
         LOGGER.debug("Selected welderDTO ${welderDTO.id} ${welderDTO} ")
-        welderTableViewDTO.nameProperty.unbind()
-        welderTableViewDTO.secondNameProperty.unbind()
-        welderTableViewDTO.surnameProperty.unbind()
-        welderTableViewDTO.birthdayProperty.unbind()
-        welderTableViewDTO.organizationProperty.unbind()
+//        welderTableViewDTO.nameProperty.unbind()
+//        welderTableViewDTO.secondNameProperty.unbind()
+//        welderTableViewDTO.surnameProperty.unbind()
+//        welderTableViewDTO.birthdayProperty.unbind()
+//        welderTableViewDTO.organizationProperty.unbind()
 
         welderTableViewDTO.nameProperty.bind(welderDTO.nameProperty)
         welderTableViewDTO.secondNameProperty.bind(welderDTO.secondNameProperty)
@@ -256,6 +256,25 @@ class WelderController implements Initializable {
     @FXML
     void addNewWelder(){
        welderTableController.addNew()
+    }
+
+    @FXML
+    void saveWelder(){
+        LOGGER.debug("--- BEGIN SAVE WELDER ---")
+        LOGGER.debug("Welder:\n " +
+                "\tid:             ${welderDTOProperty.get().id}\n" +
+                "\tname:           ${welderDTOProperty.get().name}\n" +
+                "\tsecondName:     ${welderDTOProperty.get().secondName}\n" +
+                "\tsurname:        ${welderDTOProperty.get().surname}\n" +
+                "\tbirthday:       ${welderDTOProperty.get().birthdayFormat}\n" +
+                "\taddress:        ${welderDTOProperty.get().address}\n" +
+                "\tdateBegin:      ${welderDTOProperty.get().dateBeginFormat}\n" +
+                "\tdocumentNumber: ${welderDTOProperty.get().documentNumber}\n" +
+                "\teducation:      ${welderDTOProperty.get().education}\n" +
+                "\tqualification:  ${welderDTOProperty.get().qualification}\n" +
+                "\tjob:            ${welderDTOProperty.get().job}\n" +
+                "\torganization:   ${welderDTOProperty.get().organizationName}\n")
+        LOGGER.debug("--- END SAVE WELDER ---")
     }
 
     private void addListeners() {
