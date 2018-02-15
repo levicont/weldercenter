@@ -7,7 +7,7 @@ import javafx.beans.property.StringProperty
 import static com.lvg.weldercenter.se.ui.dto.DTOConstants.NULL_FIELD_PLACEHOLDER
 import static com.lvg.weldercenter.se.ui.dto.DTOConstants.NULL_ID_FIELD_DEFAULT
 
-class OrganizationDTO extends GenericModelDTO<Organization>{
+class OrganizationDTO extends GenericModelDTO<Organization> implements ModelDTO{
     private final Organization organization
 
     private final StringProperty nameProperty = new SimpleStringProperty()

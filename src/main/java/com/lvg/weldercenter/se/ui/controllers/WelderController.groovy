@@ -6,6 +6,7 @@ import com.lvg.weldercenter.se.ui.dto.WelderDTO
 import com.lvg.weldercenter.se.ui.dto.WelderTableViewDTO
 import com.lvg.weldercenter.se.ui.repositories.*
 import com.lvg.weldercenter.se.ui.utils.ControlFXUtils
+import com.lvg.weldercenter.se.ui.utils.Printer
 import javafx.beans.property.*
 import javafx.beans.value.ChangeListener
 import javafx.event.ActionEvent
@@ -144,11 +145,14 @@ class WelderController implements Initializable {
 
 
     void loadWelder(WelderDTO welderDTO) {
+        LOGGER.debug("--- BEGIN loadWelder ---")
         removeListeners()
         if (welderDTO == null) {
-            LOGGER.warn('Cannot load null welderUI')
+            LOGGER.warn('Cannot load null welderDTO')
             return
         }
+        LOGGER.debug("welderDTO has already loaded")
+        Printer.logDTO(WelderDTO.class, welderDTO)
         welderDTOProperty.set(welderDTO)
         bufferedWelderDTOProperty.set(welderDTO)
         addListeners()
@@ -156,6 +160,7 @@ class WelderController implements Initializable {
     }
 
     private void bindWelderDTO(){
+        LOGGER.debug("Trying to bind welderDTO to UI")
         WelderDTO welderDTO = welderDTOProperty.get()
         isWelderChangedProperty.set(false)
         txfName.textProperty().bindBidirectional(welderDTO.nameProperty)
@@ -174,29 +179,28 @@ class WelderController implements Initializable {
         //TODO is it really has to be bound bidirectional
         cbOrganization.valueProperty().bindBidirectional(welderDTO.organizationProperty)
         txfAddress.textProperty().bindBidirectional(welderDTO.addressProperty)
-       // bindWelderDTOandTableView(welderDTO, welderTableController.getWeldersTableView())
+        LOGGER.debug("Trying to bind welderDTO to WelderTableViewDTO")
+        //bindWelderDTOandTableView(welderDTO, welderTableController.getWeldersTableView())
     }
 
     private void bindWelderDTOandTableView(WelderDTO welderDTO, TableView<WelderTableViewDTO> table){
         LOGGER.debug("---- BEGIN BINDING WELDER TABLE TO WELDER DTO ----")
         WelderTableViewDTO welderTableViewDTO = table.getSelectionModel().getSelectedItem()
         if (welderTableViewDTO == null)return
-        LOGGER.debug("Selected welderTableViewDTO ${welderTableViewDTO} ")
-        LOGGER.debug("Selected welderDTO ${welderDTO.id} ${welderDTO} ")
-//        welderTableViewDTO.nameProperty.unbind()
-//        welderTableViewDTO.secondNameProperty.unbind()
-//        welderTableViewDTO.surnameProperty.unbind()
-//        welderTableViewDTO.birthdayProperty.unbind()
-//        welderTableViewDTO.organizationProperty.unbind()
-
+        Printer.logDTO(WelderTableViewDTO.class, welderTableViewDTO)
+        welderTableController.getWeldersTableView().getItems().stream().forEach({item ->
+            item.nameProperty.unbind()
+            item.secondNameProperty.unbind()
+            item.surnameProperty.unbind()
+            item.birthdayProperty.unbind()
+            item.organizationProperty.unbind()
+        })
         welderTableViewDTO.nameProperty.bind(welderDTO.nameProperty)
         welderTableViewDTO.secondNameProperty.bind(welderDTO.secondNameProperty)
-        welderTableViewDTO.surnameProperty.bind(txfSurname.textProperty())
+        welderTableViewDTO.surnameProperty.bind(welderDTO.surnameProperty)
         welderTableViewDTO.birthdayProperty.bind(welderDTO.birthdayFormatProperty)
         welderTableViewDTO.organizationProperty.bind(welderDTO.organizationNameProperty)
-
         LOGGER.debug("---- END BINDING WELDER TABLE TO WELDER DTO ----")
-
     }
 
 
@@ -261,19 +265,7 @@ class WelderController implements Initializable {
     @FXML
     void saveWelder(){
         LOGGER.debug("--- BEGIN SAVE WELDER ---")
-        LOGGER.debug("Welder:\n " +
-                "\tid:             ${welderDTOProperty.get().id}\n" +
-                "\tname:           ${welderDTOProperty.get().name}\n" +
-                "\tsecondName:     ${welderDTOProperty.get().secondName}\n" +
-                "\tsurname:        ${welderDTOProperty.get().surname}\n" +
-                "\tbirthday:       ${welderDTOProperty.get().birthdayFormat}\n" +
-                "\taddress:        ${welderDTOProperty.get().address}\n" +
-                "\tdateBegin:      ${welderDTOProperty.get().dateBeginFormat}\n" +
-                "\tdocumentNumber: ${welderDTOProperty.get().documentNumber}\n" +
-                "\teducation:      ${welderDTOProperty.get().education}\n" +
-                "\tqualification:  ${welderDTOProperty.get().qualification}\n" +
-                "\tjob:            ${welderDTOProperty.get().job}\n" +
-                "\torganization:   ${welderDTOProperty.get().organizationName}\n")
+        Printer.logDTO(WelderDTO.class, welderDTOProperty.get())
         LOGGER.debug("--- END SAVE WELDER ---")
     }
 
@@ -308,6 +300,7 @@ class WelderController implements Initializable {
         LOGGER.debug("ChangeListener source: ${stringProperty.class.simpleName} oldValue: ${oldValue} newValue: ${newValue}")
         if (welderDTOProperty.getValue() == null) return
         String trimmedNewValue = newValue.trim()
+        ControlFXUtils.refreshTable(welderTableController.getWeldersTableView())
         if (stringProperty == txfName.textProperty()) {
             isWelderChangedProperty.set(trimmedNewValue != welderDTOProperty.get().originalWelderProperty().get().name)
             return
@@ -334,7 +327,7 @@ class WelderController implements Initializable {
         LOGGER.debug("ChangeListener source: ${dateObjectProperty.class.simpleName} oldValue: ${oldValue}" +
                 " newValue: ${newValue}")
         if (welderDTOProperty.getValue() == null) return
-
+        ControlFXUtils.refreshTable(welderTableController.getWeldersTableView())
         if (dateObjectProperty == dpBirthday.valueProperty()) {
             isWelderChangedProperty.set(newValue != welderDTOProperty.get().originalWelderProperty().get().birthday)
             return
@@ -349,7 +342,7 @@ class WelderController implements Initializable {
                                                    String oldValue, String newValue ->
         LOGGER.debug("ChangeListener source: ${stringObjectProperty.class.simpleName} oldValue: ${oldValue} newValue: ${newValue}")
         if (welderDTOProperty.getValue() == null) return
-
+        ControlFXUtils.refreshTable(welderTableController.getWeldersTableView())
         if (stringObjectProperty == cbEducation.valueProperty()) {
             isWelderChangedProperty.set(newValue != welderDTOProperty.get().originalWelderProperty().get().education)
             return
@@ -402,7 +395,7 @@ class WelderController implements Initializable {
         if (!cbOrganization.isShowing()) {
             cbOrganization.show()
         }
-
+        ControlFXUtils.refreshTable(welderTableController.getWeldersTableView())
     }
 
 

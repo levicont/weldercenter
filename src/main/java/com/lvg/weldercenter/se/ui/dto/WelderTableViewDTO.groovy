@@ -1,5 +1,6 @@
 package com.lvg.weldercenter.se.ui.dto
 
+import com.lvg.weldercenter.se.models.Welder
 import javafx.beans.property.LongProperty
 import javafx.beans.property.SimpleLongProperty
 import javafx.beans.property.SimpleStringProperty
@@ -10,7 +11,7 @@ import java.time.format.DateTimeFormatter
 
 import static DTOConstants.*
 
-class WelderTableViewDTO {
+class WelderTableViewDTO implements ModelDTO{
 
     final LongProperty id = new SimpleLongProperty()
     final StringProperty name = new SimpleStringProperty()

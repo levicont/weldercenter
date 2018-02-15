@@ -1,6 +1,8 @@
 package com.lvg.weldercenter.se.ui.dto
 
 import com.lvg.weldercenter.se.models.Welder
+import javafx.beans.binding.StringBinding
+import javafx.beans.binding.When
 import javafx.beans.property.*
 
 import java.time.LocalDate
@@ -8,7 +10,7 @@ import java.time.format.DateTimeFormatter
 
 import static com.lvg.weldercenter.se.ui.dto.DTOConstants.*
 
-class WelderDTO extends GenericModelDTO<Welder> {
+class WelderDTO extends GenericModelDTO<Welder> implements ModelDTO{
 
     final Welder welder
     final LongProperty idProperty = new SimpleLongProperty(super.idProperty.get())
@@ -46,6 +48,14 @@ class WelderDTO extends GenericModelDTO<Welder> {
         qualificationProperty.set(welder.qualification)
         jobProperty.set(welder.job)
         this.organizationProperty.set(welder.organization != null ? new OrganizationDTO(welder.organization) : null)
+        StringBinding orgNameBinding = new When(organizationProperty.isNull())
+                .then("")
+                .otherwise(organizationProperty.get().name)
+        StringBinding birthdayBinding = new When(birthdayProperty.isNull())
+                .then('')
+                .otherwise(birthdayProperty.get().format(DateTimeFormatter.ofPattern(DATE_FORMAT_PATTERN)))
+        organizationNameProperty.bind(orgNameBinding)
+        birthdayFormatProperty.bind(birthdayBinding)
     }
 
     Welder getWelder() {
@@ -107,7 +117,7 @@ class WelderDTO extends GenericModelDTO<Welder> {
     }
 
     @Override
-    protected Object clone() throws CloneNotSupportedException {
+    Object clone() throws CloneNotSupportedException {
         return new WelderDTO(welder)
     }
 
@@ -273,12 +283,10 @@ class WelderDTO extends GenericModelDTO<Welder> {
     }
 
     StringProperty getBirthdayFormatProperty(){
-        birthdayFormatProperty.set(getBirthdayFormat())
         return birthdayFormatProperty
     }
 
     StringProperty getOrganizationNameProperty(){
-        organizationNameProperty.set(getOrganizationName())
         return organizationNameProperty
     }
 

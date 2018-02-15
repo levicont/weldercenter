@@ -64,6 +64,14 @@ class ControlFXUtils {
         tableView.requestFocus()
     }
 
+    static void refreshTable(TableView tableView){
+        tableView.getColumns().stream().forEach({column ->
+            boolean isVisible = column.isVisible()
+            column.setVisible(false)
+            column.setVisible(isVisible)
+        })
+    }
+
     static  <T> void selectItemInCombo(T item, ComboBox<T> comboBox) {
         if (item == null)
             return
