@@ -290,6 +290,23 @@ class WelderDTO extends GenericModelDTO<Welder> implements ModelDTO{
         return organizationNameProperty
     }
 
+    BooleanProperty isWelderDTOChanged(){
+        Boolean result =   nameProperty.get() == originalWelderProperty.get().name &&
+                secondNameProperty.get() == originalWelderProperty.get().secondName &&
+                surnameProperty.get() == originalWelderProperty.get().surname &&
+                birthdayProperty.get() == originalWelderProperty.get().birthday &&
+                documentNumberProperty.get() == originalWelderProperty.get().documentNumber &&
+                dateBeginProperty.get() == originalWelderProperty.get().dateBegin &&
+                addressProperty.get() == originalWelderProperty.get().address &&
+                educationProperty.get() == originalWelderProperty.get().education &&
+                qualificationProperty.get() == originalWelderProperty.get().qualification &&
+                jobProperty.get() == originalWelderProperty.get().job &&
+                organizationProperty.get().organization == originalWelderProperty.get().organization
+        return new SimpleBooleanProperty(result)
+
+
+    }
+
     static WelderDTO defaultWelderDTO(){
         WelderDTO result = new WelderDTO(getDefaultWelder())
         return result

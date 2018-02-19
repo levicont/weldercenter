@@ -48,7 +48,7 @@ class WeldersTableViewEventHandler implements EventHandler<Event> {
             LOGGER.debug("selectedWelder is null")
             return
         }
-        unbind(selectedWelder)
+//        unbind(selectedWelder)
         if (selectedWelder.id == DTOConstants.NULL_ID_FIELD_DEFAULT)  {
             welderController.loadWelder(WelderDTO.defaultWelderDTO())
             LOGGER.debug("selectedWelder is unsaved it has id: ${selectedWelder.id}")

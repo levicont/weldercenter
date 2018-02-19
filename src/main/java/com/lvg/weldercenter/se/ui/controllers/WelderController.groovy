@@ -1,6 +1,7 @@
 package com.lvg.weldercenter.se.ui.controllers
 
 import com.lvg.weldercenter.se.ui.converters.OrganizationDTOStringConverter
+import com.lvg.weldercenter.se.ui.dto.DTOConstants
 import com.lvg.weldercenter.se.ui.dto.OrganizationDTO
 import com.lvg.weldercenter.se.ui.dto.WelderDTO
 import com.lvg.weldercenter.se.ui.dto.WelderTableViewDTO
@@ -21,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
 import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 @Component
 class WelderController implements Initializable {
@@ -180,27 +182,7 @@ class WelderController implements Initializable {
         cbOrganization.valueProperty().bindBidirectional(welderDTO.organizationProperty)
         txfAddress.textProperty().bindBidirectional(welderDTO.addressProperty)
         LOGGER.debug("Trying to bind welderDTO to WelderTableViewDTO")
-        //bindWelderDTOandTableView(welderDTO, welderTableController.getWeldersTableView())
-    }
 
-    private void bindWelderDTOandTableView(WelderDTO welderDTO, TableView<WelderTableViewDTO> table){
-        LOGGER.debug("---- BEGIN BINDING WELDER TABLE TO WELDER DTO ----")
-        WelderTableViewDTO welderTableViewDTO = table.getSelectionModel().getSelectedItem()
-        if (welderTableViewDTO == null)return
-        Printer.logDTO(WelderTableViewDTO.class, welderTableViewDTO)
-        welderTableController.getWeldersTableView().getItems().stream().forEach({item ->
-            item.nameProperty.unbind()
-            item.secondNameProperty.unbind()
-            item.surnameProperty.unbind()
-            item.birthdayProperty.unbind()
-            item.organizationProperty.unbind()
-        })
-        welderTableViewDTO.nameProperty.bind(welderDTO.nameProperty)
-        welderTableViewDTO.secondNameProperty.bind(welderDTO.secondNameProperty)
-        welderTableViewDTO.surnameProperty.bind(welderDTO.surnameProperty)
-        welderTableViewDTO.birthdayProperty.bind(welderDTO.birthdayFormatProperty)
-        welderTableViewDTO.organizationProperty.bind(welderDTO.organizationNameProperty)
-        LOGGER.debug("---- END BINDING WELDER TABLE TO WELDER DTO ----")
     }
 
 
@@ -302,14 +284,17 @@ class WelderController implements Initializable {
         String trimmedNewValue = newValue.trim()
         ControlFXUtils.refreshTable(welderTableController.getWeldersTableView())
         if (stringProperty == txfName.textProperty()) {
+            changeStringPropertyOfSelectedItem(welderTableController.getWeldersTableView(), "name", newValue)
             isWelderChangedProperty.set(trimmedNewValue != welderDTOProperty.get().originalWelderProperty().get().name)
             return
         }
         if (stringProperty == txfSurname.textProperty()) {
+            changeStringPropertyOfSelectedItem(welderTableController.getWeldersTableView(), "surname", newValue)
             isWelderChangedProperty.set(trimmedNewValue != welderDTOProperty.get().originalWelderProperty().get().surname)
             return
         }
         if (stringProperty == txfSecname.textProperty()) {
+            changeStringPropertyOfSelectedItem(welderTableController.getWeldersTableView(), "secondName", newValue)
             isWelderChangedProperty.set(trimmedNewValue != welderDTOProperty.get().originalWelderProperty().get().secondName)
             return
         }
@@ -323,12 +308,35 @@ class WelderController implements Initializable {
         }
     }
 
-    private final datePickerChangeListener = { ObjectProperty<LocalDate> dateObjectProperty, oldValue, newValue ->
+    private static void changeStringPropertyOfSelectedItem(TableView<WelderTableViewDTO> tableView, String propertyName, String value){
+        if (tableView == null) {
+            LOGGER.debug("changeStringPropertyOfSelectedItem: TableView is ${tableView}")
+            return}
+        if (propertyName == null ) {
+            LOGGER.debug("changeStringPropertyOfSelectedItem: propertyName is ${propertyName}")
+            return
+        }
+        WelderTableViewDTO selectedItem = tableView.getSelectionModel().getSelectedItem()
+        if (selectedItem == null) {
+            LOGGER.debug("changeStringPropertyOfSelectedItem: selectedItem is ${selectedItem}")
+            return
+        }
+        StringProperty property = selectedItem.getStringProperty(propertyName)
+        LOGGER.debug("changeStringPropertyOfSelectedItem: property is ${property}; property class is ${property.class}")
+        property.set(value)
+        LOGGER.debug("changeStringPropertyOfSelectedItem: StringPropetryhas changed by value: ${value}. It is ${property}")
+        ControlFXUtils.refreshTable(tableView)
+    }
+
+    private final datePickerChangeListener = { ObjectProperty<LocalDate> dateObjectProperty, oldValue, LocalDate newValue ->
         LOGGER.debug("ChangeListener source: ${dateObjectProperty.class.simpleName} oldValue: ${oldValue}" +
                 " newValue: ${newValue}")
         if (welderDTOProperty.getValue() == null) return
         ControlFXUtils.refreshTable(welderTableController.getWeldersTableView())
+        DateTimeFormatter df = DateTimeFormatter.ofPattern(DTOConstants.DATE_FORMAT_PATTERN)
         if (dateObjectProperty == dpBirthday.valueProperty()) {
+            changeStringPropertyOfSelectedItem(welderTableController.getWeldersTableView(),
+                    'birthday', newValue.format(df))
             isWelderChangedProperty.set(newValue != welderDTOProperty.get().originalWelderProperty().get().birthday)
             return
         }
@@ -364,6 +372,7 @@ class WelderController implements Initializable {
         if (newValue == null) return
 
         if (orgDTOObjectProperty == cbOrganization.valueProperty()) {
+            changeStringPropertyOfSelectedItem(welderTableController.getWeldersTableView(), "organization", newValue.name)
             isWelderChangedProperty.set(newValue.organization != welderDTOProperty.get().originalWelderProperty().get().organization)
         }
 

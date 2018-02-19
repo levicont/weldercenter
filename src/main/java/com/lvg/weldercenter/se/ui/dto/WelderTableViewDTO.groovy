@@ -1,7 +1,9 @@
 package com.lvg.weldercenter.se.ui.dto
 
 import com.lvg.weldercenter.se.models.Welder
+import javafx.beans.Observable
 import javafx.beans.property.LongProperty
+import javafx.beans.property.ObjectProperty
 import javafx.beans.property.SimpleLongProperty
 import javafx.beans.property.SimpleStringProperty
 import javafx.beans.property.StringProperty
@@ -19,6 +21,12 @@ class WelderTableViewDTO implements ModelDTO{
     final StringProperty secondName = new SimpleStringProperty()
     final StringProperty birthday = new SimpleStringProperty()
     final StringProperty organization = new SimpleStringProperty()
+    final Map<String, Object> PROPERTIES = ['id':id,
+                                            'name':name,
+                                            'surname':surname,
+                                            'secondName':secondName,
+                                            'birthday':birthday,
+                                            'organization':organization]
 
     WelderTableViewDTO(Long id, String name, String surname,
                        String secondName, LocalDate birthday, String organization){
@@ -30,6 +38,23 @@ class WelderTableViewDTO implements ModelDTO{
                             : birthday.format(DateTimeFormatter.ofPattern(DATE_FORMAT_PATTERN)) )
         this.organization.set(organization)
 
+    }
+
+    Object getPropertyByName(String propertyName){
+        return PROPERTIES.get(propertyName)
+    }
+
+    StringProperty getStringProperty(String propertyName){
+        if (propertyName == 'name') return name
+        if (propertyName == 'secondName') return secondName
+        if (propertyName == 'surname') return surname
+        if (propertyName == 'organization') return organization
+        if (propertyName == 'birthday') return birthday
+        throw new IllegalArgumentException("Property name: ${propertyName} is invalid")
+    }
+
+    Map<String, Object> getProperties(){
+        return PROPERTIES
     }
 
     Long getId() {
