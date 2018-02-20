@@ -3,13 +3,16 @@ package com.lvg.weldercenter.se.test.ui.models
 
 import com.lvg.weldercenter.se.ui.dto.DTOConstants
 import com.lvg.weldercenter.se.ui.dto.WelderDTO
+import org.apache.log4j.Logger
 import org.junit.Test
+
 
 import java.time.LocalDate
 
 import static com.lvg.weldercenter.se.test.models.ModelsGenerator.*
 
 class WelderDTOTest extends GenericModelDTOTest{
+    private static final Logger LOGGER = Logger.getLogger(WelderDTOTest.class)
 
     @Override
     @Test
@@ -36,13 +39,36 @@ class WelderDTOTest extends GenericModelDTOTest{
     @Test(expected = ReadOnlyPropertyException.class)
     void checkUpdated(){
         WelderDTO welderUI = new WelderDTO(getWelder())
+
+
+        def welder = welderUI.welder
+        assert !welderUI.isWelderDTOChangedProperty.get()
+        assert welderUI.id == DTOConstants.NULL_ID_FIELD_DEFAULT
+
+        welder.id == 100l
+        assert welderUI.id != 100l
+        assert !welderUI.isWelderDTOChangedProperty.get()
+
+        welderUI.nameProperty.set("George")
+        assert welderUI.nameProperty.get() != welderUI.originalWelderProperty().get().name
+        assert welderUI.isWelderDTOChangedProperty.get()
+        welderUI.nameProperty.set("Иван")
+        LOGGER.debug("isWelderDTOChangedProperty: ${welderUI.isWelderDTOChangedProperty}")
+        assert !welderUI.isWelderDTOChangedProperty.get()
+
+        welderUI.nameProperty.set("George")
+        assert welderUI.isWelderDTOChangedProperty.get()
+        welderUI.surnameProperty.set("Johnson")
+        assert welderUI.isWelderDTOChangedProperty.get()
+        welderUI.nameProperty.set("Иван")
+        assert welderUI.isWelderDTOChangedProperty.get()
+        welderUI.surnameProperty.set("Иванов")
+        assert !welderUI.isWelderDTOChangedProperty.get()
+
         //Exception
         welderUI.setProperty('id', 100l)
 
-        def welder = welderUI.welder
-        assert welderUI.id == DTOConstants.NULL_ID_FIELD_DEFAULT
-        welder.id == 100l
-        assert welderUI.id == 100l
+
     }
 
     @Test

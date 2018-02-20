@@ -283,27 +283,33 @@ class WelderController implements Initializable {
         if (welderDTOProperty.getValue() == null) return
         String trimmedNewValue = newValue.trim()
         ControlFXUtils.refreshTable(welderTableController.getWeldersTableView())
+
         if (stringProperty == txfName.textProperty()) {
             changeStringPropertyOfSelectedItem(welderTableController.getWeldersTableView(), "name", newValue)
-            isWelderChangedProperty.set(trimmedNewValue != welderDTOProperty.get().originalWelderProperty().get().name)
+            isWelderChangedProperty.set(welderDTOProperty.get().isWelderDTOChangedProperty().get())
+            //isWelderChangedProperty.set(trimmedNewValue != welderDTOProperty.get().originalWelderProperty().get().name)
             return
         }
         if (stringProperty == txfSurname.textProperty()) {
             changeStringPropertyOfSelectedItem(welderTableController.getWeldersTableView(), "surname", newValue)
-            isWelderChangedProperty.set(trimmedNewValue != welderDTOProperty.get().originalWelderProperty().get().surname)
+            isWelderChangedProperty.set(welderDTOProperty.get().isWelderDTOChangedProperty().get())
+            //isWelderChangedProperty.set(trimmedNewValue != welderDTOProperty.get().originalWelderProperty().get().surname)
             return
         }
         if (stringProperty == txfSecname.textProperty()) {
             changeStringPropertyOfSelectedItem(welderTableController.getWeldersTableView(), "secondName", newValue)
-            isWelderChangedProperty.set(trimmedNewValue != welderDTOProperty.get().originalWelderProperty().get().secondName)
+            isWelderChangedProperty.set(welderDTOProperty.get().isWelderDTOChangedProperty().get())
+            //isWelderChangedProperty.set(trimmedNewValue != welderDTOProperty.get().originalWelderProperty().get().secondName)
             return
         }
         if (stringProperty == txfDocNumber.textProperty()) {
-            isWelderChangedProperty.set(trimmedNewValue != welderDTOProperty.get().originalWelderProperty().get().documentNumber)
+            isWelderChangedProperty.set(welderDTOProperty.get().isWelderDTOChangedProperty().get())
+            //isWelderChangedProperty.set(trimmedNewValue != welderDTOProperty.get().originalWelderProperty().get().documentNumber)
             return
         }
         if (stringProperty == txfAddress.textProperty()) {
-            isWelderChangedProperty.set(trimmedNewValue != welderDTOProperty.get().originalWelderProperty().get().address)
+            isWelderChangedProperty.set(welderDTOProperty.get().isWelderDTOChangedProperty().get())
+            //isWelderChangedProperty.set(trimmedNewValue != welderDTOProperty.get().originalWelderProperty().get().address)
             return
         }
     }
@@ -337,11 +343,13 @@ class WelderController implements Initializable {
         if (dateObjectProperty == dpBirthday.valueProperty()) {
             changeStringPropertyOfSelectedItem(welderTableController.getWeldersTableView(),
                     'birthday', newValue.format(df))
-            isWelderChangedProperty.set(newValue != welderDTOProperty.get().originalWelderProperty().get().birthday)
+            //isWelderChangedProperty.set(newValue != welderDTOProperty.get().originalWelderProperty().get().birthday)
+            isWelderChangedProperty.set(welderDTOProperty.get().isWelderDTOChangedProperty().get())
             return
         }
         if (dateObjectProperty == dpDateBegin.valueProperty()) {
-            isWelderChangedProperty.set(newValue != welderDTOProperty.get().originalWelderProperty().get().dateBegin)
+            //isWelderChangedProperty.set(newValue != welderDTOProperty.get().originalWelderProperty().get().dateBegin)
+            isWelderChangedProperty.set(welderDTOProperty.get().isWelderDTOChangedProperty().get())
             return
         }
     }
@@ -352,15 +360,18 @@ class WelderController implements Initializable {
         if (welderDTOProperty.getValue() == null) return
         ControlFXUtils.refreshTable(welderTableController.getWeldersTableView())
         if (stringObjectProperty == cbEducation.valueProperty()) {
-            isWelderChangedProperty.set(newValue != welderDTOProperty.get().originalWelderProperty().get().education)
+            //isWelderChangedProperty.set(newValue != welderDTOProperty.get().originalWelderProperty().get().education)
+            isWelderChangedProperty.set(welderDTOProperty.get().isWelderDTOChangedProperty().get())
             return
         }
         if (stringObjectProperty == cbQualification.valueProperty()) {
-            isWelderChangedProperty.set(newValue != welderDTOProperty.get().originalWelderProperty().get().qualification)
+            //isWelderChangedProperty.set(newValue != welderDTOProperty.get().originalWelderProperty().get().qualification)
+            isWelderChangedProperty.set(welderDTOProperty.get().isWelderDTOChangedProperty().get())
             return
         }
         if (stringObjectProperty == cbJob.valueProperty()) {
-            isWelderChangedProperty.set(newValue != welderDTOProperty.get().originalWelderProperty().get().job)
+            //isWelderChangedProperty.set(newValue != welderDTOProperty.get().originalWelderProperty().get().job)
+            isWelderChangedProperty.set(welderDTOProperty.get().isWelderDTOChangedProperty().get())
             return
         }
     }

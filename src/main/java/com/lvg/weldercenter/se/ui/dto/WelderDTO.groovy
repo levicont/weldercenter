@@ -1,6 +1,8 @@
 package com.lvg.weldercenter.se.ui.dto
 
 import com.lvg.weldercenter.se.models.Welder
+import javafx.beans.binding.Bindings
+import javafx.beans.binding.BooleanBinding
 import javafx.beans.binding.StringBinding
 import javafx.beans.binding.When
 import javafx.beans.property.*
@@ -10,7 +12,7 @@ import java.time.format.DateTimeFormatter
 
 import static com.lvg.weldercenter.se.ui.dto.DTOConstants.*
 
-class WelderDTO extends GenericModelDTO<Welder> implements ModelDTO{
+class WelderDTO extends GenericModelDTO<Welder> implements ModelDTO {
 
     final Welder welder
     final LongProperty idProperty = new SimpleLongProperty(super.idProperty.get())
@@ -28,6 +30,7 @@ class WelderDTO extends GenericModelDTO<Welder> implements ModelDTO{
     final StringProperty jobProperty = new SimpleStringProperty()
     final StringProperty birthdayFormatProperty = new SimpleStringProperty()
     final StringProperty organizationNameProperty = new SimpleStringProperty()
+    final BooleanProperty isWelderDTOChangedProperty = new SimpleBooleanProperty()
 
 
     WelderDTO(Welder welder) {
@@ -56,6 +59,8 @@ class WelderDTO extends GenericModelDTO<Welder> implements ModelDTO{
                 .otherwise(birthdayProperty.get().format(DateTimeFormatter.ofPattern(DATE_FORMAT_PATTERN)))
         organizationNameProperty.bind(orgNameBinding)
         birthdayFormatProperty.bind(birthdayBinding)
+
+        bind()
     }
 
     Welder getWelder() {
@@ -127,7 +132,7 @@ class WelderDTO extends GenericModelDTO<Welder> implements ModelDTO{
         return id == null ? NULL_ID_FIELD_DEFAULT : id
     }
 
-    LongProperty getIdProperty(){
+    LongProperty getIdProperty() {
         idProperty.set(getId())
         return idProperty
     }
@@ -274,45 +279,55 @@ class WelderDTO extends GenericModelDTO<Welder> implements ModelDTO{
         return jobProperty
     }
 
-    ObjectProperty<OrganizationDTO> organizationProperty(){
+    ObjectProperty<OrganizationDTO> organizationProperty() {
         return organizationProperty
     }
 
-    ObjectProperty<Welder> originalWelderProperty(){
+    ObjectProperty<Welder> originalWelderProperty() {
         return originalWelderProperty
     }
 
-    StringProperty getBirthdayFormatProperty(){
+    StringProperty getBirthdayFormatProperty() {
         return birthdayFormatProperty
     }
 
-    StringProperty getOrganizationNameProperty(){
+    StringProperty getOrganizationNameProperty() {
         return organizationNameProperty
     }
 
-    BooleanProperty isWelderDTOChanged(){
-        Boolean result =   nameProperty.get() == originalWelderProperty.get().name &&
-                secondNameProperty.get() == originalWelderProperty.get().secondName &&
-                surnameProperty.get() == originalWelderProperty.get().surname &&
-                birthdayProperty.get() == originalWelderProperty.get().birthday &&
-                documentNumberProperty.get() == originalWelderProperty.get().documentNumber &&
-                dateBeginProperty.get() == originalWelderProperty.get().dateBegin &&
-                addressProperty.get() == originalWelderProperty.get().address &&
-                educationProperty.get() == originalWelderProperty.get().education &&
-                qualificationProperty.get() == originalWelderProperty.get().qualification &&
-                jobProperty.get() == originalWelderProperty.get().job &&
-                organizationProperty.get().organization == originalWelderProperty.get().organization
-        return new SimpleBooleanProperty(result)
-
-
+    BooleanProperty isWelderDTOChangedProperty(){
+        return isWelderDTOChangedProperty
     }
 
-    static WelderDTO defaultWelderDTO(){
+    static WelderDTO defaultWelderDTO() {
         WelderDTO result = new WelderDTO(getDefaultWelder())
         return result
     }
 
-    private static Welder getDefaultWelder(){
+    private void bind() {
+        LOGGER.debug("WELDER DTO starting binding isWelderDTOChangedProperty")
+        BooleanBinding bb = new BooleanBinding(){
+            @Override
+            protected boolean computeValue() {
+                !(nameProperty.get() == originalWelderProperty.get().name &&
+                        secondNameProperty.get() == originalWelderProperty.get().secondName &&
+                        surnameProperty.get() == originalWelderProperty.get().surname &&
+                        birthdayProperty.get() == originalWelderProperty.get().birthday &&
+                        documentNumberProperty.get() == originalWelderProperty.get().documentNumber &&
+                        dateBeginProperty.get() == originalWelderProperty.get().dateBegin &&
+                        addressProperty.get() == originalWelderProperty.get().address &&
+                        educationProperty.get() == originalWelderProperty.get().education &&
+                        qualificationProperty.get() == originalWelderProperty.get().qualification &&
+                        jobProperty.get() == originalWelderProperty.get().job &&
+                        organizationProperty.get().organization == originalWelderProperty.get().organization)
+            }
+
+        }
+        isWelderDTOChangedProperty.bind(bb)
+        LOGGER.debug("WELDER DTO binding isWelderDTOChangedProperty has been success ")
+    }
+
+    private static Welder getDefaultWelder() {
         def welder = new Welder()
         welder.name = NULL_FIELD_PLACEHOLDER
         welder.surname = NULL_FIELD_PLACEHOLDER
