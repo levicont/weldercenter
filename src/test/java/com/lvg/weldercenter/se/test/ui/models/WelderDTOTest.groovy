@@ -41,29 +41,48 @@ class WelderDTOTest extends GenericModelDTOTest{
         WelderDTO welderUI = new WelderDTO(getWelder())
 
 
-        def welder = welderUI.welder
-        assert !welderUI.isWelderDTOChangedProperty.get()
+        def welder = welderUI.getWelder()
+        assert !welderUI.isWelderDTOChangedProperty().get()
         assert welderUI.id == DTOConstants.NULL_ID_FIELD_DEFAULT
 
         welder.id == 100l
         assert welderUI.id != 100l
-        assert !welderUI.isWelderDTOChangedProperty.get()
+        assert !welderUI.isWelderDTOChangedProperty().get()
 
         welderUI.nameProperty.set("George")
         assert welderUI.nameProperty.get() != welderUI.originalWelderProperty().get().name
-        assert welderUI.isWelderDTOChangedProperty.get()
+        assert welderUI.isWelderDTOChangedProperty().get()
         welderUI.nameProperty.set("Иван")
-        LOGGER.debug("isWelderDTOChangedProperty: ${welderUI.isWelderDTOChangedProperty}")
-        assert !welderUI.isWelderDTOChangedProperty.get()
+        LOGGER.debug("isWelderDTOChangedProperty: ${welderUI.isWelderDTOChangedProperty()}")
+        assert !welderUI.isWelderDTOChangedProperty().get()
 
         welderUI.nameProperty.set("George")
-        assert welderUI.isWelderDTOChangedProperty.get()
+        assert welderUI.isWelderDTOChangedProperty().get()
         welderUI.surnameProperty.set("Johnson")
-        assert welderUI.isWelderDTOChangedProperty.get()
+        assert welderUI.isWelderDTOChangedProperty().get()
         welderUI.nameProperty.set("Иван")
-        assert welderUI.isWelderDTOChangedProperty.get()
+        assert welderUI.isWelderDTOChangedProperty().get()
         welderUI.surnameProperty.set("Иванов")
-        assert !welderUI.isWelderDTOChangedProperty.get()
+        assert !welderUI.isWelderDTOChangedProperty().get()
+
+        welderUI.surnameProperty.set("Wood")
+        assert welderUI.isWelderDTOChangedProperty().get()
+        welderUI.nameProperty.set("George")
+        assert welderUI.isWelderDTOChangedProperty().get()
+        welderUI.nameProperty.set("Иван")
+        assert welderUI.isWelderDTOChangedProperty().get()
+        welderUI.surnameProperty.set("Иванов")
+        assert !welderUI.isWelderDTOChangedProperty().get()
+
+        welderUI.organizationProperty().get().nameProperty().set('HP')
+        assert welderUI.isWelderDTOChangedProperty().get()
+        welderUI.organizationProperty().get().nameProperty().set('IBM')
+        assert !welderUI.isWelderDTOChangedProperty().get()
+
+        welderUI.organizationProperty().get().addressProperty().set('HP')
+        assert welderUI.isWelderDTOChangedProperty().get()
+        welderUI.organizationProperty().get().addressProperty().set('New-York')
+        assert !welderUI.isWelderDTOChangedProperty().get()
 
         //Exception
         welderUI.setProperty('id', 100l)

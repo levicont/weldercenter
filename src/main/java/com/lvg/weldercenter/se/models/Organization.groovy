@@ -29,6 +29,8 @@ class Organization implements Serializable{
 
         if (id != that.id) return false
         if (name != that.name) return false
+        if (address != that.address) return false
+        if (phone != that.phone) return false
 
         return true
     }
@@ -37,6 +39,8 @@ class Organization implements Serializable{
         int result
         result = (id != null ? id.hashCode() : 0)
         result = 31 * result + (name != null ? name.hashCode() : 0)
+        result = 31 * result + (address != null ? address.hashCode() : 0)
+        result = 31 * result + (phone != null ? phone.hashCode() : 0)
         return result
     }
 

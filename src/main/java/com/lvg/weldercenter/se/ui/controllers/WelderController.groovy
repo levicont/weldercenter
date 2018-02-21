@@ -164,7 +164,7 @@ class WelderController implements Initializable {
     private void bindWelderDTO(){
         LOGGER.debug("Trying to bind welderDTO to UI")
         WelderDTO welderDTO = welderDTOProperty.get()
-        isWelderChangedProperty.set(false)
+        isWelderChangedProperty.bind(welderDTO.isWelderDTOChangedProperty())
         txfName.textProperty().bindBidirectional(welderDTO.nameProperty)
         txfSecname.textProperty().bindBidirectional(welderDTO.secondNameProperty)
         txfSurname.textProperty().bindBidirectional(welderDTO.surnameProperty)
@@ -256,8 +256,6 @@ class WelderController implements Initializable {
                 allTextFields)
         ControlFXUtils.addChangeListenerToDatePickers((ChangeListener<LocalDate>) datePickerChangeListener,
                 allDatePickers)
-        ControlFXUtils.addChangeListenerToComboBoxes((ChangeListener<String>) comboBoxChangeStringListener,
-                cbJob, cbQualification, cbEducation)
         ControlFXUtils.addChangeListenerToComboBoxes((ChangeListener<OrganizationDTO>) comboBoxChangeOrganizationListener,
                 cbOrganization)
         ControlFXUtils.addChangeListenerToTextFields((ChangeListener<String>) comboBoxChangeEditorOrganizationListener,
@@ -269,8 +267,6 @@ class WelderController implements Initializable {
                 allTextFields)
         ControlFXUtils.removeChangeListenerFromDatePickers((ChangeListener<LocalDate>) datePickerChangeListener,
                 allDatePickers)
-        ControlFXUtils.removeChangeListenerFromComboBoxes((ChangeListener<String>) comboBoxChangeStringListener,
-                cbJob, cbQualification, cbEducation)
         ControlFXUtils.removeChangeListenerFromComboBoxes((ChangeListener<OrganizationDTO>) comboBoxChangeOrganizationListener,
                 cbOrganization)
         ControlFXUtils.removeChangeListenerFromTextFields((ChangeListener<String>) comboBoxChangeEditorOrganizationListener,
@@ -281,35 +277,19 @@ class WelderController implements Initializable {
     private final textFieldChangeListener = { StringProperty stringProperty, String oldValue, String newValue ->
         LOGGER.debug("ChangeListener source: ${stringProperty.class.simpleName} oldValue: ${oldValue} newValue: ${newValue}")
         if (welderDTOProperty.getValue() == null) return
-        String trimmedNewValue = newValue.trim()
-        ControlFXUtils.refreshTable(welderTableController.getWeldersTableView())
+        TableView<WelderTableViewDTO> table = welderTableController.getWeldersTableView()
+        ControlFXUtils.refreshTable(table)
 
         if (stringProperty == txfName.textProperty()) {
-            changeStringPropertyOfSelectedItem(welderTableController.getWeldersTableView(), "name", newValue)
-            isWelderChangedProperty.set(welderDTOProperty.get().isWelderDTOChangedProperty().get())
-            //isWelderChangedProperty.set(trimmedNewValue != welderDTOProperty.get().originalWelderProperty().get().name)
+            changeStringPropertyOfSelectedItem(table, "name", newValue)
             return
         }
         if (stringProperty == txfSurname.textProperty()) {
-            changeStringPropertyOfSelectedItem(welderTableController.getWeldersTableView(), "surname", newValue)
-            isWelderChangedProperty.set(welderDTOProperty.get().isWelderDTOChangedProperty().get())
-            //isWelderChangedProperty.set(trimmedNewValue != welderDTOProperty.get().originalWelderProperty().get().surname)
+            changeStringPropertyOfSelectedItem(table, "surname", newValue)
             return
         }
         if (stringProperty == txfSecname.textProperty()) {
-            changeStringPropertyOfSelectedItem(welderTableController.getWeldersTableView(), "secondName", newValue)
-            isWelderChangedProperty.set(welderDTOProperty.get().isWelderDTOChangedProperty().get())
-            //isWelderChangedProperty.set(trimmedNewValue != welderDTOProperty.get().originalWelderProperty().get().secondName)
-            return
-        }
-        if (stringProperty == txfDocNumber.textProperty()) {
-            isWelderChangedProperty.set(welderDTOProperty.get().isWelderDTOChangedProperty().get())
-            //isWelderChangedProperty.set(trimmedNewValue != welderDTOProperty.get().originalWelderProperty().get().documentNumber)
-            return
-        }
-        if (stringProperty == txfAddress.textProperty()) {
-            isWelderChangedProperty.set(welderDTOProperty.get().isWelderDTOChangedProperty().get())
-            //isWelderChangedProperty.set(trimmedNewValue != welderDTOProperty.get().originalWelderProperty().get().address)
+            changeStringPropertyOfSelectedItem(table, "secondName", newValue)
             return
         }
     }
@@ -330,7 +310,7 @@ class WelderController implements Initializable {
         StringProperty property = selectedItem.getStringProperty(propertyName)
         LOGGER.debug("changeStringPropertyOfSelectedItem: property is ${property}; property class is ${property.class}")
         property.set(value)
-        LOGGER.debug("changeStringPropertyOfSelectedItem: StringPropetryhas changed by value: ${value}. It is ${property}")
+        LOGGER.debug("changeStringPropertyOfSelectedItem: StringPropetry has changed by value: ${value}. It is ${property}")
         ControlFXUtils.refreshTable(tableView)
     }
 
@@ -343,56 +323,33 @@ class WelderController implements Initializable {
         if (dateObjectProperty == dpBirthday.valueProperty()) {
             changeStringPropertyOfSelectedItem(welderTableController.getWeldersTableView(),
                     'birthday', newValue.format(df))
-            //isWelderChangedProperty.set(newValue != welderDTOProperty.get().originalWelderProperty().get().birthday)
-            isWelderChangedProperty.set(welderDTOProperty.get().isWelderDTOChangedProperty().get())
-            return
-        }
-        if (dateObjectProperty == dpDateBegin.valueProperty()) {
-            //isWelderChangedProperty.set(newValue != welderDTOProperty.get().originalWelderProperty().get().dateBegin)
-            isWelderChangedProperty.set(welderDTOProperty.get().isWelderDTOChangedProperty().get())
-            return
-        }
-    }
-
-    private final comboBoxChangeStringListener = { ObjectProperty<String> stringObjectProperty,
-                                                   String oldValue, String newValue ->
-        LOGGER.debug("ChangeListener source: ${stringObjectProperty.class.simpleName} oldValue: ${oldValue} newValue: ${newValue}")
-        if (welderDTOProperty.getValue() == null) return
-        ControlFXUtils.refreshTable(welderTableController.getWeldersTableView())
-        if (stringObjectProperty == cbEducation.valueProperty()) {
-            //isWelderChangedProperty.set(newValue != welderDTOProperty.get().originalWelderProperty().get().education)
-            isWelderChangedProperty.set(welderDTOProperty.get().isWelderDTOChangedProperty().get())
-            return
-        }
-        if (stringObjectProperty == cbQualification.valueProperty()) {
-            //isWelderChangedProperty.set(newValue != welderDTOProperty.get().originalWelderProperty().get().qualification)
-            isWelderChangedProperty.set(welderDTOProperty.get().isWelderDTOChangedProperty().get())
-            return
-        }
-        if (stringObjectProperty == cbJob.valueProperty()) {
-            //isWelderChangedProperty.set(newValue != welderDTOProperty.get().originalWelderProperty().get().job)
-            isWelderChangedProperty.set(welderDTOProperty.get().isWelderDTOChangedProperty().get())
             return
         }
     }
 
     private final comboBoxChangeOrganizationListener = { ObjectProperty<OrganizationDTO> orgDTOObjectProperty,
                                                          OrganizationDTO oldValue, OrganizationDTO newValue ->
-        LOGGER.debug("ChangeListener source: ${orgDTOObjectProperty.class.simpleName} oldValue: ${oldValue} newValue: ${newValue}")
+        LOGGER.debug("ChangeListener Organization ComboBox: BEGIN ")
+        LOGGER.debug("ChangeListener Organization ComboBox source: ${orgDTOObjectProperty.class.simpleName} oldValue: ${oldValue} newValue: ${newValue}")
         if (welderDTOProperty.getValue() == null) return
-        if (newValue == null) return
-
-        if (orgDTOObjectProperty == cbOrganization.valueProperty()) {
-            changeStringPropertyOfSelectedItem(welderTableController.getWeldersTableView(), "organization", newValue.name)
-            isWelderChangedProperty.set(newValue.organization != welderDTOProperty.get().originalWelderProperty().get().organization)
+        LOGGER.debug("ChangeListener Organization ComboBox: welderDTOProperty not null - OK")
+        if (newValue == null) {
+            LOGGER.debug("ChangeListener Organization ComboBox: newValue is null - setting default value of OrganizationDTO")
+            orgDTOObjectProperty.setValue(OrganizationDTO.getDefaultOrganizationDTO())
+            return
         }
-
+        LOGGER.debug("ChangeListener Organization ComboBox: newValue not null - ( ${newValue} )")
+        if (orgDTOObjectProperty == cbOrganization.valueProperty()) {
+            LOGGER.debug("ChangeListener Organization ComboBox: orgDTOObjectProperty == cbOrganization.valueProperty() - OK )")
+            changeStringPropertyOfSelectedItem(welderTableController.getWeldersTableView(), "organization", newValue.name)
+        }
+        LOGGER.debug("ChangeListener Organization ComboBox: END ")
 
     }
     private final comboBoxChangeEditorOrganizationListener = { StringProperty textProperty,
                                                                String oldValue, String newValue ->
         if (!cbOrganization.isFocused()) return
-        LOGGER.debug("ChangeListener source: ${textProperty.class.simpleName} oldValue: ${oldValue} newValue: ${newValue}")
+        LOGGER.debug("ChangeListener Organization Editor source: ${textProperty.class.simpleName} oldValue: ${oldValue} newValue: ${newValue}")
 
         if (newValue == null || newValue.isEmpty() ) {
             organizationDTORepository.setFilterPredicate({e -> true})

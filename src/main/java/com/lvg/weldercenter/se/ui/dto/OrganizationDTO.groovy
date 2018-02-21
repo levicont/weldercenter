@@ -1,27 +1,39 @@
 package com.lvg.weldercenter.se.ui.dto
 
 import com.lvg.weldercenter.se.models.Organization
+import javafx.beans.property.BooleanProperty
+import javafx.beans.property.ObjectProperty
+import javafx.beans.property.SimpleBooleanProperty
+import javafx.beans.property.SimpleObjectProperty
 import javafx.beans.property.SimpleStringProperty
 import javafx.beans.property.StringProperty
+import javafx.beans.value.ChangeListener
 
 import static com.lvg.weldercenter.se.ui.dto.DTOConstants.NULL_FIELD_PLACEHOLDER
 import static com.lvg.weldercenter.se.ui.dto.DTOConstants.NULL_ID_FIELD_DEFAULT
 
 class OrganizationDTO extends GenericModelDTO<Organization> implements ModelDTO{
+    private static final String DEFAULT_ORG_NAME = ''
+    private static final String DEFAULT_ORG_ADDRESS = ''
+    private static final String DEFAULT_ORG_PHONE = ''
+
     private final Organization organization
 
     private final StringProperty nameProperty = new SimpleStringProperty()
     private final StringProperty addressProperty = new SimpleStringProperty()
     private final StringProperty phoneProperty = new SimpleStringProperty()
+    private final BooleanProperty isOrganizationDTOChanged = new SimpleBooleanProperty()
+    private final ObjectProperty<Organization> originalOrganizationProperty = new SimpleObjectProperty<>()
 
     OrganizationDTO(Organization organization){
         this.organization = organization
         validateModel(organization)
-
+        originalOrganizationProperty.set(organization)
         idProperty.set(organization.id == null ? NULL_ID_FIELD_DEFAULT: organization.id)
         nameProperty.set(organization.name)
         addressProperty.set(organization.address == null ? NULL_FIELD_PLACEHOLDER : organization.address)
         phoneProperty.set(organization.phone == null ? NULL_FIELD_PLACEHOLDER : organization.phone)
+        addListeners()
     }
 
     Organization getOrganization() {
@@ -73,6 +85,14 @@ class OrganizationDTO extends GenericModelDTO<Organization> implements ModelDTO{
         phoneProperty
     }
 
+    BooleanProperty isOrganizationDTOChanged(){
+        boolean result = !(nameProperty.get() == originalOrganizationProperty.get().name &&
+                            addressProperty.get() == originalOrganizationProperty.get().address &&
+                            phoneProperty.get() == originalOrganizationProperty.get().phone)
+        isOrganizationDTOChanged.set(result)
+        return isOrganizationDTOChanged
+    }
+
     boolean equals(o) {
         if (this.is(o)) return true
         if (o == null) return false
@@ -100,5 +120,25 @@ class OrganizationDTO extends GenericModelDTO<Organization> implements ModelDTO{
     @Override
     String toString() {
         return getOrganization().toString()
+    }
+
+    private void addListeners(){
+        nameProperty.addListener((ChangeListener<String>){observable, oldValue, newValue ->
+            update()
+        })
+        addressProperty.addListener((ChangeListener<String>){observable, oldValue, newValue ->
+            update()
+        })
+        phoneProperty.addListener((ChangeListener<String>){observable, oldValue, newValue ->
+            update()
+        })
+    }
+
+    private void update(){
+        isOrganizationDTOChanged()
+    }
+
+    static OrganizationDTO getDefaultOrganizationDTO(){
+        new OrganizationDTO(new Organization(name: DEFAULT_ORG_NAME, address: DEFAULT_ORG_ADDRESS, phone: DEFAULT_ORG_PHONE))
     }
 }
