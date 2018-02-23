@@ -133,8 +133,8 @@ class WelderController implements Initializable {
     private void initCbOrganization() {
         organizationDTORepository.loadAllDTO()
         cbOrganization.converterProperty().set(organizationDTOStringConverter)
-        LOGGER.debug("--- INIT ORGANIZATION DTO COMBO BOX: allOrganization size: ${organizationDTORepository.allDTO.value.size()}")
-        cbOrganization.setItems(organizationDTORepository.allDTO)
+        LOGGER.debug("--- INIT ORGANIZATION DTO COMBO BOX: allOrganization size: ${organizationDTORepository.getAllDTO().size()}")
+        cbOrganization.setItems(organizationDTORepository.getAllDTO())
     }
 
 
@@ -210,7 +210,7 @@ class WelderController implements Initializable {
     }
 
     @FXML
-    void saveOrganization(ActionEvent event) {
+    void saveOrganization() {
         //Show organization dialog
         OrganizationDialog dialog = new OrganizationDialog(cbOrganization.valueProperty().getValue())
         Optional<ButtonType> optional = dialog.showAndWait()
@@ -348,31 +348,40 @@ class WelderController implements Initializable {
     }
     private final comboBoxChangeEditorOrganizationListener = { StringProperty textProperty,
                                                                String oldValue, String newValue ->
+        LOGGER.debug("ChangeListener Organization Editor source: BEGIN")
         if (!cbOrganization.isFocused()) return
         LOGGER.debug("ChangeListener Organization Editor source: ${textProperty.class.simpleName} oldValue: ${oldValue} newValue: ${newValue}")
 
         if (newValue == null || newValue.isEmpty() ) {
+            LOGGER.debug("ChangeListener Organization Editor source: setting default filter to organizationDTOList...")
             organizationDTORepository.setFilterPredicate({e -> true})
+            LOGGER.debug("ChangeListener Organization Editor source: showing all organizationDTOList...")
+            if (!cbOrganization.isShowing()) {
+                cbOrganization.show()
+            }
             return
         }
-
-        organizationDTORepository.setFilterPredicate({org ->
-            if (org == null || org.name.isEmpty())
-                return true
-            String lowerCaseName = newValue.toLowerCase()
-            if (org.name.toLowerCase() == lowerCaseName )
-                return true
-            if (org.name.toLowerCase().contains(lowerCaseName))
-                return true
-
-            return false
-        })
-        LOGGER.debug(" --comboBoxChangeEditorOrganizationListener filteredList: ${organizationDTORepository.allDTO}")
-
+        LOGGER.debug("ChangeListener Organization Editor source: setting SPECIAL filter to organizationDTOList...")
+//        organizationDTORepository.setFilterPredicate({org ->
+//            if (org == null || org.nameProperty().get().isEmpty())
+//                return true
+//            String lowerCaseName = newValue.toLowerCase()
+//            String orgName = org.nameProperty().get()
+//            if (orgName.toLowerCase() == lowerCaseName )
+//                return true
+//            if (orgName.toLowerCase().contains(lowerCaseName))
+//                return true
+//            return false
+//        })
+        LOGGER.debug("ChangeListener Organization Editor: filteredList: ${organizationDTORepository.getAllDTO()}")
+        LOGGER.debug("ChangeListener Organization Editor source: showing all organizationDTOList...")
         if (!cbOrganization.isShowing()) {
             cbOrganization.show()
         }
+        LOGGER.debug("ChangeListener Organization Editor source: refreshing welders table")
         ControlFXUtils.refreshTable(welderTableController.getWeldersTableView())
+        LOGGER.debug("ChangeListener Organization Editor source: END")
+
     }
 
 

@@ -5,7 +5,6 @@ import com.lvg.weldercenter.se.ui.listeners.welderspane.LoadAllOrganizationsChan
 import com.lvg.weldercenter.se.ui.repositories.OrganizationDTORepository
 import com.lvg.weldercenter.se.ui.services.LoadingAllOrganizationsService
 import com.lvg.weldercenter.se.ui.utils.ServiceUtils
-import javafx.beans.InvalidationListener
 import javafx.beans.property.ListProperty
 import javafx.beans.property.SimpleListProperty
 import javafx.collections.FXCollections
@@ -26,19 +25,11 @@ class OrganizationDTORepositoryImpl implements OrganizationDTORepository{
     @Autowired
     LoadingAllOrganizationsService service
 
-    private ObservableList<OrganizationDTO> allData = FXCollections.observableArrayList()
+    private final ObservableList<OrganizationDTO> allData = FXCollections.observableArrayList()
     private final FilteredList<OrganizationDTO> filteredData =
             new FilteredList<>(allData, {e -> true})
     private final ListProperty<OrganizationDTO> allOrganizationListProperty =
             new SimpleListProperty<>(filteredData)
-    private final ListProperty<String> allOrganizationNamesListProperty =
-            new SimpleListProperty<>(FXCollections.observableArrayList())
-
-
-
-    OrganizationDTORepositoryImpl(){
-        initListeners()
-    }
 
     @Override
     ListProperty<OrganizationDTO> getAllDTO() {
@@ -64,23 +55,5 @@ class OrganizationDTORepositoryImpl implements OrganizationDTORepository{
         filteredData.setPredicate(predicate)
     }
 
-    @Override
-    ObservableList<String> organizationNameList() {
-        return allOrganizationNamesListProperty.get()
-    }
 
-    @Override
-    ListProperty<String> organizationNameListProperty() {
-        return allOrganizationNamesListProperty
-    }
-
-    private initListeners(){
-        allOrganizationListProperty.addListener((InvalidationListener){
-            allOrganizationNamesListProperty.get().clear()
-            allOrganizationListProperty.get().each { organizationDTO ->
-                allOrganizationNamesListProperty.get().add(organizationDTO.name)}
-        })
-
-
-    }
 }
