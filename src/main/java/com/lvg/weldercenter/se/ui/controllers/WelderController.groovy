@@ -332,13 +332,21 @@ class WelderController implements Initializable {
         LOGGER.debug("ChangeListener Organization ComboBox: BEGIN ")
         LOGGER.debug("ChangeListener Organization ComboBox source: ${orgDTOObjectProperty.class.simpleName} oldValue: ${oldValue} newValue: ${newValue}")
         if (welderDTOProperty.getValue() == null) return
+
         LOGGER.debug("ChangeListener Organization ComboBox: welderDTOProperty not null - OK")
         if (newValue == null) {
             LOGGER.debug("ChangeListener Organization ComboBox: newValue is null - setting default value of OrganizationDTO")
             orgDTOObjectProperty.setValue(OrganizationDTO.getDefaultOrganizationDTO())
             return
         }
+
+        LOGGER.debug("ChangeListener Organization Editor source: setting SPECIAL filter to organizationDTOList...")
+
+
         LOGGER.debug("ChangeListener Organization ComboBox: newValue not null - ( ${newValue} )")
+        LOGGER.debug("ChangeListener Organization ComboBox: setting SPECIAL filter to organizationDTOList...")
+
+
         if (orgDTOObjectProperty == cbOrganization.valueProperty()) {
             LOGGER.debug("ChangeListener Organization ComboBox: orgDTOObjectProperty == cbOrganization.valueProperty() - OK )")
             changeStringPropertyOfSelectedItem(welderTableController.getWeldersTableView(), "organization", newValue.name)
@@ -351,36 +359,16 @@ class WelderController implements Initializable {
         LOGGER.debug("ChangeListener Organization Editor source: BEGIN")
         if (!cbOrganization.isFocused()) return
         LOGGER.debug("ChangeListener Organization Editor source: ${textProperty.class.simpleName} oldValue: ${oldValue} newValue: ${newValue}")
-
-        if (newValue == null || newValue.isEmpty() ) {
-            LOGGER.debug("ChangeListener Organization Editor source: setting default filter to organizationDTOList...")
-            organizationDTORepository.setFilterPredicate({e -> true})
-            LOGGER.debug("ChangeListener Organization Editor source: showing all organizationDTOList...")
-            if (!cbOrganization.isShowing()) {
-                cbOrganization.show()
-            }
-            return
+        if (newValue != null && !newValue.trim().isEmpty()){
+            organizationDTORepository.setFilteredOrganizationName(newValue)
+        }else {
+            LOGGER.debug("ChangeListener Organization Editor: setting default filter to organizationDTOList...")
+//          organizationDTORepository.setFilterPredicate({e -> true})
         }
-        LOGGER.debug("ChangeListener Organization Editor source: setting SPECIAL filter to organizationDTOList...")
-//        organizationDTORepository.setFilterPredicate({org ->
-//            if (org == null || org.nameProperty().get().isEmpty())
-//                return true
-//            String lowerCaseName = newValue.toLowerCase()
-//            String orgName = org.nameProperty().get()
-//            if (orgName.toLowerCase() == lowerCaseName )
-//                return true
-//            if (orgName.toLowerCase().contains(lowerCaseName))
-//                return true
-//            return false
-//        })
-        LOGGER.debug("ChangeListener Organization Editor: filteredList: ${organizationDTORepository.getAllDTO()}")
-        LOGGER.debug("ChangeListener Organization Editor source: showing all organizationDTOList...")
-        if (!cbOrganization.isShowing()) {
+        if (!cbOrganization.isShowing()){
             cbOrganization.show()
         }
-        LOGGER.debug("ChangeListener Organization Editor source: refreshing welders table")
-        ControlFXUtils.refreshTable(welderTableController.getWeldersTableView())
-        LOGGER.debug("ChangeListener Organization Editor source: END")
+        return
 
     }
 

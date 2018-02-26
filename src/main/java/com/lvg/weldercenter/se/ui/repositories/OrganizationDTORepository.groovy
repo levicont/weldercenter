@@ -8,4 +8,5 @@ import java.util.function.Predicate
 
 interface OrganizationDTORepository extends GenericDTORepository<OrganizationDTO>{
     void setFilterPredicate(Predicate<? super OrganizationDTO> predicate)
+    void setFilteredOrganizationName(String name)
 }
