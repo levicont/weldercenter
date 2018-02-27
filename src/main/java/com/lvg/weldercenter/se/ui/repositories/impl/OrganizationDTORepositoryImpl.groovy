@@ -54,7 +54,6 @@ class OrganizationDTORepositoryImpl implements OrganizationDTORepository{
     }
 
     void setFilterPredicate(Predicate<? super OrganizationDTO> predicate){
-
         filteredData.setPredicate(predicate)
     }
 
@@ -65,10 +64,6 @@ class OrganizationDTORepositoryImpl implements OrganizationDTORepository{
 
     private class OrganizationPredicate implements Predicate<OrganizationDTO>{
         private final StringProperty checkedNameProperty = new SimpleStringProperty()
-
-        StringProperty getCheckedNameProperty() {
-            return checkedNameProperty
-        }
 
         OrganizationPredicate(String filteredName){
             checkedNameProperty.set(filteredName)
@@ -81,9 +76,11 @@ class OrganizationDTORepositoryImpl implements OrganizationDTORepository{
             LOGGER.debug("OrganizationPredicate organizationDTO name checked: ${organizationDTO.nameProperty().get()} " +
                     "with value: ${checkedNameProperty.get()}")
             String nameLowerCase = organizationDTO.nameProperty().get().toLowerCase()
-            if (nameLowerCase == 'test') return true
-            if (checkedNameProperty.get().toLowerCase().contains(nameLowerCase))
+            if (nameLowerCase.contains(checkedNameProperty.get().toLowerCase())){
+                LOGGER.debug("OrganizationPredicate organizationDTO name checked: ${nameLowerCase} contains " +
+                        "${checkedNameProperty.get()}")
                 return true
+            }
             return false
         }
     }

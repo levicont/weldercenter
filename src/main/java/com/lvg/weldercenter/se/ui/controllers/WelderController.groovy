@@ -339,14 +339,7 @@ class WelderController implements Initializable {
             orgDTOObjectProperty.setValue(OrganizationDTO.getDefaultOrganizationDTO())
             return
         }
-
-        LOGGER.debug("ChangeListener Organization Editor source: setting SPECIAL filter to organizationDTOList...")
-
-
         LOGGER.debug("ChangeListener Organization ComboBox: newValue not null - ( ${newValue} )")
-        LOGGER.debug("ChangeListener Organization ComboBox: setting SPECIAL filter to organizationDTOList...")
-
-
         if (orgDTOObjectProperty == cbOrganization.valueProperty()) {
             LOGGER.debug("ChangeListener Organization ComboBox: orgDTOObjectProperty == cbOrganization.valueProperty() - OK )")
             changeStringPropertyOfSelectedItem(welderTableController.getWeldersTableView(), "organization", newValue.name)
@@ -361,15 +354,11 @@ class WelderController implements Initializable {
         LOGGER.debug("ChangeListener Organization Editor source: ${textProperty.class.simpleName} oldValue: ${oldValue} newValue: ${newValue}")
         if (newValue != null && !newValue.trim().isEmpty()){
             organizationDTORepository.setFilteredOrganizationName(newValue)
-        }else {
-            LOGGER.debug("ChangeListener Organization Editor: setting default filter to organizationDTOList...")
-//          organizationDTORepository.setFilterPredicate({e -> true})
         }
         if (!cbOrganization.isShowing()){
             cbOrganization.show()
         }
         return
-
     }
 
 

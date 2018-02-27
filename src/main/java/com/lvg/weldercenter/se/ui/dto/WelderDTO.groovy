@@ -330,6 +330,7 @@ class WelderDTO extends GenericModelDTO<Welder> implements ModelDTO {
             update()
         })
         organizationProperty.addListener((ChangeListener<OrganizationDTO>){observable, oldName, newName ->
+            LOGGER.debug("WelderDTO organization has changed old: ${oldName}; new: ${newName}")
             update()
         })
 
