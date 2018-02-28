@@ -179,7 +179,7 @@ class WelderController implements Initializable {
         cbJob.valueProperty().bindBidirectional(welderDTO.jobProperty)
         ControlFXUtils.selectItemInCombo(welderDTO.organizationDTO, cbOrganization)
         //TODO is it really has to be bound bidirectional
-        cbOrganization.valueProperty().bindBidirectional(welderDTO.organizationProperty)
+        cbOrganization.valueProperty().bindBidirectional(welderDTO.organizationProperty())
         txfAddress.textProperty().bindBidirectional(welderDTO.addressProperty)
         LOGGER.debug("Trying to bind welderDTO to WelderTableViewDTO")
 
@@ -352,12 +352,11 @@ class WelderController implements Initializable {
         LOGGER.debug("ChangeListener Organization Editor source: BEGIN")
         if (!cbOrganization.isFocused()) return
         LOGGER.debug("ChangeListener Organization Editor source: ${textProperty.class.simpleName} oldValue: ${oldValue} newValue: ${newValue}")
-        if (newValue != null && !newValue.trim().isEmpty()){
-            organizationDTORepository.setFilteredOrganizationName(newValue)
-        }
+        organizationDTORepository.setFilteredOrganizationName(newValue)
         if (!cbOrganization.isShowing()){
             cbOrganization.show()
         }
+        LOGGER.debug("ChangeListener Organization Editor: END")
         return
     }
 

@@ -1,6 +1,7 @@
 package com.lvg.weldercenter.se.ui.dto
 
 import com.lvg.weldercenter.se.models.Welder
+import javafx.beans.InvalidationListener
 import javafx.beans.binding.StringBinding
 import javafx.beans.binding.When
 import javafx.beans.property.*
@@ -293,9 +294,16 @@ class WelderDTO extends GenericModelDTO<Welder> implements ModelDTO {
                 educationProperty.get() == originalWelderProperty.get().education &&
                 qualificationProperty.get() == originalWelderProperty.get().qualification &&
                 jobProperty.get() == originalWelderProperty.get().job &&
-                !organizationProperty.get().isOrganizationDTOChanged().get())
+                !isOrganizationPropertyChanged())
         isWelderDTOChangedProperty.set(result)
         return isWelderDTOChangedProperty
+    }
+
+    private boolean isOrganizationPropertyChanged(){
+        return  !(organizationProperty.get().id == originalWelderProperty().get().getOrganization().id &&
+                organizationProperty.get().name == originalWelderProperty().get().getOrganization().name &&
+                organizationProperty.get().address == originalWelderProperty().get().getOrganization().address &&
+                organizationProperty.get().phone == originalWelderProperty().get().getOrganization().phone)
     }
 
     private void addListeners(){
@@ -330,10 +338,10 @@ class WelderDTO extends GenericModelDTO<Welder> implements ModelDTO {
             update()
         })
         organizationProperty.addListener((ChangeListener<OrganizationDTO>){observable, oldName, newName ->
-            LOGGER.debug("WelderDTO organization has changed old: ${oldName}; new: ${newName}")
+            LOGGER.debug("WelderDTO change organization listener: organization has changed old: ${oldName}; new: ${newName}")
             update()
+            LOGGER.debug("WelderDTO change organization listener: isWelderDTOChangedProperty: ${isWelderDTOChangedProperty.get()}")
         })
-
     }
 
     private void update(){
