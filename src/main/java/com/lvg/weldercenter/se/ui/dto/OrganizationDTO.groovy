@@ -1,5 +1,6 @@
 package com.lvg.weldercenter.se.ui.dto
 
+import com.lvg.weldercenter.se.models.ModelsFactory
 import com.lvg.weldercenter.se.models.Organization
 import javafx.beans.property.BooleanProperty
 import javafx.beans.property.ObjectProperty
@@ -13,9 +14,6 @@ import static com.lvg.weldercenter.se.ui.dto.DTOConstants.NULL_FIELD_PLACEHOLDER
 import static com.lvg.weldercenter.se.ui.dto.DTOConstants.NULL_ID_FIELD_DEFAULT
 
 class OrganizationDTO extends GenericModelDTO<Organization> implements ModelDTO{
-    private static final String DEFAULT_ORG_NAME = ''
-    private static final String DEFAULT_ORG_ADDRESS = ''
-    private static final String DEFAULT_ORG_PHONE = ''
 
     private final Organization organization
 
@@ -139,6 +137,8 @@ class OrganizationDTO extends GenericModelDTO<Organization> implements ModelDTO{
     }
 
     static OrganizationDTO getDefaultOrganizationDTO(){
-        new OrganizationDTO(new Organization(name: DEFAULT_ORG_NAME, address: DEFAULT_ORG_ADDRESS, phone: DEFAULT_ORG_PHONE))
+        OrganizationDTO result = new OrganizationDTO(ModelsFactory.getDefaultOrganization())
+        result.idProperty.set(NULL_ID_FIELD_DEFAULT)
+        return result
     }
 }
