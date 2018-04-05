@@ -229,7 +229,7 @@ class WelderController implements Initializable {
 
                 cbOrganization.editor.text = organizationDTO.name
                 welderDTOProperty.value.organizationProperty().set(organizationDTO)
-
+                organizationDTORepository.saveOrganizationDTO(organizationDTO)
                 LOGGER.debug("OrganizationDTO added to combo box. value: ${cbOrganization.value} " +
                         "id:${cbOrganization.value.getId()}")
                 break
@@ -353,9 +353,8 @@ class WelderController implements Initializable {
         if (!cbOrganization.isFocused()) return
         LOGGER.debug("ChangeListener Organization Editor source: ${textProperty.class.simpleName} oldValue: ${oldValue} newValue: ${newValue}")
         organizationDTORepository.setFilteredOrganizationName(newValue)
-        if (!cbOrganization.isShowing()){
-            cbOrganization.show()
-        }
+        cbOrganization.show()
+
         LOGGER.debug("ChangeListener Organization Editor: END")
         return
     }

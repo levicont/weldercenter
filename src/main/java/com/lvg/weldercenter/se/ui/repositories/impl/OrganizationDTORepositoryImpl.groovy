@@ -53,6 +53,30 @@ class OrganizationDTORepositoryImpl implements OrganizationDTORepository{
         ServiceUtils.startService(service)
     }
 
+    @Override
+    void saveOrganizationDTO(OrganizationDTO organizationDTO) {
+        LOGGER.debug("saveOrganizationDTO: START saving organizationDTO: ${organizationDTO}")
+        Predicate<OrganizationDTO> predicate = filteredData.predicateProperty().get()
+        OrganizationDTO updatedOrganization = null
+        allData.stream().forEach({org ->
+            if (org.id == organizationDTO.id){
+                updatedOrganization = org
+            }
+        })
+
+        if (updatedOrganization != null){
+            LOGGER.debug("saveOrganizationDTO: updating existed organizationDTO: ${organizationDTO}")
+            updatedOrganization.nameProperty().set(organizationDTO.nameProperty().get())
+            updatedOrganization.addressProperty().set(organizationDTO.addressProperty().get())
+            updatedOrganization.phoneProperty().set(organizationDTO.phoneProperty().get())
+        }else {
+            LOGGER.debug("saveOrganizationDTO: adding new organizationDTO: ${organizationDTO}")
+            allData.add(organizationDTO)
+        }
+
+
+    }
+
     void setFilterPredicate(Predicate<? super OrganizationDTO> predicate){
         filteredData.setPredicate(predicate)
     }
@@ -72,16 +96,11 @@ class OrganizationDTORepositoryImpl implements OrganizationDTORepository{
         boolean test(OrganizationDTO organizationDTO) {
             if (checkedNameProperty.get() == null) return true
             if (organizationDTO == null ) return true
-            if (organizationDTO.nameProperty().get().trim().isEmpty()) return true
+            if (organizationDTO.nameProperty().get().isEmpty()) return true
             LOGGER.debug("OrganizationPredicate organizationDTO name checked: ${organizationDTO.nameProperty().get()} " +
                     "with value: ${checkedNameProperty.get()}")
             String nameLowerCase = organizationDTO.nameProperty().get().toLowerCase()
-            if (nameLowerCase.contains(checkedNameProperty.get().toLowerCase())){
-                LOGGER.debug("OrganizationPredicate organizationDTO name checked: ${nameLowerCase} contains " +
-                        "${checkedNameProperty.get()}")
-                return true
-            }
-            return false
+            return nameLowerCase.contains(checkedNameProperty.get().toLowerCase())
         }
     }
 
