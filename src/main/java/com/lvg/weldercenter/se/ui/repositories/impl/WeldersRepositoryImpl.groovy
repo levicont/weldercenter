@@ -4,8 +4,10 @@ import com.lvg.weldercenter.se.ui.dto.DTOConstants
 import com.lvg.weldercenter.se.ui.dto.WelderDTO
 import com.lvg.weldercenter.se.ui.dto.WelderTableViewDTO
 import com.lvg.weldercenter.se.ui.listeners.welderspane.LoadWeldersForTableViewChangeStateListener
+import com.lvg.weldercenter.se.ui.listeners.welderspane.SaveWelderDTOChangeStateListener
 import com.lvg.weldercenter.se.ui.repositories.WelderDTORepository
 import com.lvg.weldercenter.se.ui.services.LoadingWeldersForTableViewService
+import com.lvg.weldercenter.se.ui.services.SaveWelderDTOService
 import com.lvg.weldercenter.se.ui.utils.ServiceUtils
 import javafx.beans.property.ListProperty
 import javafx.beans.property.ObjectProperty
@@ -14,10 +16,12 @@ import javafx.beans.property.SimpleObjectProperty
 import javafx.collections.FXCollections
 import javafx.collections.ObservableList
 import javafx.collections.ObservableMap
+import javafx.collections.transformation.FilteredList
 import org.apache.log4j.Logger
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
+import java.util.function.Predicate
 import java.util.stream.Collectors
 
 @Component
@@ -29,6 +33,8 @@ class WeldersRepositoryImpl implements WelderDTORepository {
     private final ObjectProperty<WelderDTO> welderDTOProperty = new SimpleObjectProperty<>()
     private final ListProperty<WelderTableViewDTO> welderTableViewDTOListProperty =
             new SimpleListProperty<>(welderTableViewDTOObservableList)
+    private final FilteredList<WelderTableViewDTO> filteredList =
+            new FilteredList<>(welderTableViewDTOObservableList, {true})
 
     @Autowired
     LoadingWeldersForTableViewService loadingWeldersForTableViewService
@@ -36,6 +42,11 @@ class WeldersRepositoryImpl implements WelderDTORepository {
     @Autowired
     LoadWeldersForTableViewChangeStateListener loadWeldersForTableViewChangeStateListener
     private static final Logger LOGGER = Logger.getLogger(WeldersRepositoryImpl.class)
+
+    @Autowired
+    SaveWelderDTOService saveWelderDTOService
+    @Autowired
+    SaveWelderDTOChangeStateListener saveWelderDTOChangeStateListener
 
     @Override
     ListProperty<WelderTableViewDTO> welderTableViewDTOListProperty() {
@@ -63,6 +74,31 @@ class WeldersRepositoryImpl implements WelderDTORepository {
             welderTableViewDTOListProperty.add(welderTableViewDTO)
         }
         return welderDTOProperty.get()
+    }
+
+    void filter(String searchString){
+        if (searchString == null || searchString.isEmpty()){
+            welderTableViewDTOListProperty.set(welderTableViewDTOObservableList)
+            return
+        }
+        welderTableViewDTOListProperty.set(filteredList)
+        filteredList.predicateProperty().set(new Predicate<WelderTableViewDTO>() {
+            @Override
+            boolean test(WelderTableViewDTO welderTableDTO) {
+                String lowCaseString = searchString.toLowerCase()
+                return  welderTableDTO.getNameProperty().get().toLowerCase().contains(lowCaseString) ||
+                    welderTableDTO.secondNameProperty.get().toLowerCase().contains(lowCaseString) ||
+                    welderTableDTO.surnameProperty.get().toLowerCase().contains(lowCaseString) ||
+                    welderTableDTO.organizationProperty.get().toLowerCase().contains(lowCaseString)
+            }
+        })
+
+    }
+
+    void saveWelderDTO(WelderDTO welderDTO){
+       saveWelderDTOService.setWelderDTO(welderDTO)
+        saveWelderDTOService.stateProperty().addListener(saveWelderDTOChangeStateListener)
+        ServiceUtils.startService(saveWelderDTOService)
     }
 
     void removeUnsavedItems(){

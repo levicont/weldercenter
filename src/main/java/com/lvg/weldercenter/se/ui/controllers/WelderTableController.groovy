@@ -5,6 +5,8 @@ import com.lvg.weldercenter.se.ui.factories.LineNumbersCellFactory
 import com.lvg.weldercenter.se.ui.listeners.welderspane.WeldersTableViewEventHandler
 import com.lvg.weldercenter.se.ui.repositories.WelderDTORepository
 import com.lvg.weldercenter.se.ui.utils.ControlFXUtils
+import javafx.beans.value.ChangeListener
+import javafx.beans.value.ObservableValue
 import javafx.event.Event
 import javafx.fxml.FXML
 import javafx.fxml.Initializable
@@ -76,10 +78,15 @@ class WelderTableController implements Initializable{
 
     @Override
     void initialize(URL location, ResourceBundle resources) {
-        initTable()
+        init()
     }
 
-    void initTable(){
+    private void init(){
+        initTable()
+        initTxfSearch()
+    }
+
+    private void initTable(){
         LOGGER.debug("INITIALIZING WelderPane")
         id.setCellValueFactory(new PropertyValueFactory<WelderTableViewDTO,Long>('id'))
         lineNumber.setCellFactory(new LineNumbersCellFactory<WelderTableViewDTO, WelderTableViewDTO>())
@@ -89,9 +96,19 @@ class WelderTableController implements Initializable{
         birthday.setCellValueFactory(new PropertyValueFactory<WelderTableViewDTO,String>('birthday'))
         organizationName.setCellValueFactory(new PropertyValueFactory<WelderTableViewDTO,String>('organization'))
         weldersRepository.reloadWelders()
+        welderTableView.placeholderProperty().set(new Label(ControlFXUtils.EMPTY_TABLE_PLACEHOLDER))
         welderTableView.setItems(weldersRepository.welderTableViewDTOListProperty())
         welderTableView.addEventHandler(Event.ANY, weldersTableViewEventHandler)
 
+    }
+
+    private void initTxfSearch(){
+        txfSearch.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                weldersRepository.filter(newValue)
+            }
+        })
     }
 
     void refreshTable(){

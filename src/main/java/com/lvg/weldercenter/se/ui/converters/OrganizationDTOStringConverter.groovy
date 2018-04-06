@@ -26,7 +26,7 @@ class OrganizationDTOStringConverter extends StringConverter<OrganizationDTO>{
             return OrganizationDTO.getDefaultOrganizationDTO()
 
         OrganizationDTO result = null
-        repository.getAllDTO().forEach({orgDTO ->
+        repository.getAllOrganizationDTOFromDB().forEach({orgDTO ->
             if (orgDTO.nameProperty().get().toLowerCase() == string.trim().toLowerCase())
                 result = orgDTO
         })

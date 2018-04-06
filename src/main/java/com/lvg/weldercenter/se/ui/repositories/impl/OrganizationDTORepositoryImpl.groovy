@@ -77,6 +77,11 @@ class OrganizationDTORepositoryImpl implements OrganizationDTORepository{
 
     }
 
+    @Override
+    ObservableList<OrganizationDTO> getAllOrganizationDTOFromDB() {
+        return Collections.unmodifiableList(allData)
+    }
+
     void setFilterPredicate(Predicate<? super OrganizationDTO> predicate){
         filteredData.setPredicate(predicate)
     }

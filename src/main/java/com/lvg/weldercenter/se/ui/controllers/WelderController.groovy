@@ -247,6 +247,7 @@ class WelderController implements Initializable {
     @FXML
     void saveWelder(){
         LOGGER.debug("--- BEGIN SAVE WELDER ---")
+        welderDTORepository.saveWelderDTO(welderDTOProperty().get())
         Printer.logDTO(WelderDTO.class, welderDTOProperty.get())
         LOGGER.debug("--- END SAVE WELDER ---")
     }

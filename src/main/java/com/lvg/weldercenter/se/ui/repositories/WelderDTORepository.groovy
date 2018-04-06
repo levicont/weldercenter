@@ -13,4 +13,6 @@ interface WelderDTORepository {
     void updateWeldersListForTableView(ObservableList<WelderTableViewDTO> newWelderList)
     void reloadWelders()
     void removeUnsavedItems()
+    void filter(String searchString)
+    void saveWelderDTO(WelderDTO welderDTO)
 }

@@ -20,6 +20,7 @@ class ControlFXUtils {
     static final String SAVE_DIALOG_BUTTON_TEXT = 'Сохранить'
     static final String OK_DIALOG_BUTTON_TEXT = 'OK'
     static final String CANCEL_DIALOG_BUTTON_TEXT = 'Отмена'
+    static final String EMPTY_TABLE_PLACEHOLDER = 'Данные отсутствуют'
 
 
 
