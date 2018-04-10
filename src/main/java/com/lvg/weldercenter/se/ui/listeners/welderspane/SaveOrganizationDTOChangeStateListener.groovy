@@ -1,42 +1,35 @@
 package com.lvg.weldercenter.se.ui.listeners.welderspane
 
 import com.lvg.weldercenter.se.exceptions.WelderCenterException
-import com.lvg.weldercenter.se.ui.controllers.WelderController
-import com.lvg.weldercenter.se.ui.dto.WelderDTO
-import com.lvg.weldercenter.se.ui.services.SaveWelderDTOService
+import com.lvg.weldercenter.se.ui.dto.OrganizationDTO
+import com.lvg.weldercenter.se.ui.services.SaveOrganizatioDTOService
 import javafx.beans.value.ObservableValue
 import javafx.concurrent.Worker
 import org.apache.log4j.Logger
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.stereotype.Component
 
-@Component
-class SaveWelderDTOChangeStateListener extends GenericServiceChangeStateListener{
+class SaveOrganizationDTOChangeStateListener extends GenericServiceChangeStateListener{
     private static final Logger LOGGER = Logger.getLogger(SaveWelderDTOChangeStateListener.class)
 
     @Autowired
-    SaveWelderDTOService saveWelderDTOService
-
-    @Autowired
-    WelderController welderController
+    SaveOrganizatioDTOService saveOrganizationDTOService
 
     @Override
     void changed(ObservableValue<? extends Worker.State> observable, Worker.State oldValue, Worker.State newValue) {
 
         if (loadingView == null)
-            loadingView = mainFrameController.getLoadingView(saveWelderDTOService)
-        LOGGER.debug("---- SaveWelderDTO LISTENER Service state: ${newValue} ----")
+            loadingView = mainFrameController.getLoadingView(saveOrganizationDTOService)
+        LOGGER.debug("---- SaveOrganizationDTO LISTENER Service state: ${newValue} ----")
         if(newValue == Worker.State.FAILED){
             loadingView.hide()
-            throw new WelderCenterException("Saving welder process is fail")
+            throw new WelderCenterException("Saving organization process is fail")
         }
 
         if (newValue == Worker.State.SUCCEEDED){
             LOGGER.debug("-----LISTENER-START----"+getClass().simpleName)
-            WelderDTO welderDTO = saveWelderDTOService.getValue()
-            LOGGER.debug("Welder has saved: $welderDTO")
-            welderController.loadWelder(welderDTO)
-            saveWelderDTOService.stateProperty().removeListener(this)
+            OrganizationDTO organizationDTO = saveOrganizationDTOService.getValue()
+            LOGGER.debug("Organization has saved: $organizationDTO")
+            saveOrganizationDTOService.stateProperty().removeListener(this)
             loadingView.hide()
             LOGGER.debug("-----LISTENER-END----")
         }

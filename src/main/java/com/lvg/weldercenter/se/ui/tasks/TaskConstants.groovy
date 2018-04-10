@@ -10,4 +10,5 @@ interface TaskConstants {
     String ALL_JOBS_TASK_TITLE_MESSAGE = 'Получение списка профессий...'
     String ALL_ORGANIZATIONS_TASK_TITLE_MESSAGE = 'Получение списка организаций...'
     String SAVE_WELDER_DTO_TASK_TITLE_MESSAGE = 'Сохранение сварщика в базе...'
+    String SAVE_ORGANIZATION_DTO_TASK_TITLE_MESSAGE = 'Сохранение организации в базе...'
 }
