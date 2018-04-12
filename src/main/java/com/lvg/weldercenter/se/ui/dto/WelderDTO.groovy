@@ -1,7 +1,6 @@
 package com.lvg.weldercenter.se.ui.dto
 
 import com.lvg.weldercenter.se.models.Welder
-import javafx.beans.InvalidationListener
 import javafx.beans.binding.StringBinding
 import javafx.beans.binding.When
 import javafx.beans.property.*
@@ -14,7 +13,7 @@ import static com.lvg.weldercenter.se.ui.dto.DTOConstants.*
 
 class WelderDTO extends GenericModelDTO<Welder> implements ModelDTO {
 
-    private final Welder welder
+    private Welder welder
     private final LongProperty idProperty = new SimpleLongProperty(super.idProperty.get())
     private final ObjectProperty<Welder> originalWelderProperty = new SimpleObjectProperty<>()
     private final ObjectProperty<OrganizationDTO> organizationProperty = new SimpleObjectProperty<OrganizationDTO>()
@@ -33,11 +32,9 @@ class WelderDTO extends GenericModelDTO<Welder> implements ModelDTO {
     private final BooleanProperty isWelderDTOChangedProperty = new SimpleBooleanProperty()
 
 
-    WelderDTO(Welder welder) {
+    WelderDTO(final Welder welder) {
         validateModel(welder)
         originalWelderProperty.set(welder)
-        this.welder = welder
-
 
         idProperty.set(welder.id == null ? NULL_ID_FIELD_DEFAULT : welder.id)
         nameProperty.set(welder.name)
@@ -50,7 +47,7 @@ class WelderDTO extends GenericModelDTO<Welder> implements ModelDTO {
         educationProperty.set(welder.education)
         qualificationProperty.set(welder.qualification)
         jobProperty.set(welder.job)
-        this.organizationProperty.set(welder.organization != null ? new OrganizationDTO(welder.organization) :
+        organizationProperty.set(welder.organization != null ? new OrganizationDTO(welder.organization) :
                 OrganizationDTO.getDefaultOrganizationDTO())
         StringBinding orgNameBinding = new When(organizationProperty.isNull())
                 .then("")
@@ -58,6 +55,7 @@ class WelderDTO extends GenericModelDTO<Welder> implements ModelDTO {
         StringBinding birthdayBinding = new When(birthdayProperty.isNull())
                 .then('')
                 .otherwise(birthdayProperty.get().format(DateTimeFormatter.ofPattern(DATE_FORMAT_PATTERN)))
+        this.welder = welder
         organizationNameProperty.bind(orgNameBinding)
         birthdayFormatProperty.bind(birthdayBinding)
         addListeners()

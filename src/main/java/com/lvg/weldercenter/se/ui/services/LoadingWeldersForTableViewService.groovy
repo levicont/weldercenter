@@ -10,7 +10,7 @@ import org.springframework.context.ConfigurableApplicationContext
 import org.springframework.stereotype.Component
 
 @Component
-class LoadingWeldersForTableViewService extends Service<ObservableList<WelderTableViewDTO>> implements OnceStartedFlag{
+class LoadingWeldersForTableViewService extends Service<ObservableList<WelderTableViewDTO>> implements OnceStartedService{
     @Autowired
     ConfigurableApplicationContext ctx
 

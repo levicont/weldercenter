@@ -25,10 +25,11 @@ class LoadWelderByIdChangeStateListener extends GenericServiceChangeStateListene
 
         if (newValue == Worker.State.SUCCEEDED){
             LOGGER.debug("-----LISTENER-START----"+getClass().simpleName)
-            def welderUI = loadingWelderByIdService.getValue()
-            if (welderUI != null){
-                LOGGER.debug("Welder found: $welderUI")
-                welderController.loadWelder(welderUI)
+            def welderDTO = loadingWelderByIdService.getValue()
+            if (welderDTO != null){
+                LOGGER.debug("Welder found: $welderDTO")
+                LOGGER.debug("Welder has organization: ${welderDTO.getOrganizationDTO()}")
+                welderController.loadWelder(welderDTO)
                 LOGGER.debug("Welders list was updated")
             }
             loadingWelderByIdService.stateProperty().removeListener(this)

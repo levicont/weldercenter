@@ -9,7 +9,7 @@ import org.springframework.context.ConfigurableApplicationContext
 import org.springframework.stereotype.Component
 
 @Component
-class SaveWelderDTOService extends Service<WelderDTO> implements OnceStartedFlag{
+class SaveWelderDTOService extends Service<WelderDTO> implements OnceStartedService{
 
     @Autowired
     ConfigurableApplicationContext ctx

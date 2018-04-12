@@ -2,9 +2,12 @@ package com.lvg.weldercenter.se.ui.repositories.impl
 
 import com.lvg.weldercenter.se.ui.dto.OrganizationDTO
 import com.lvg.weldercenter.se.ui.listeners.welderspane.LoadAllOrganizationsChangeStateListener
+import com.lvg.weldercenter.se.ui.listeners.welderspane.SaveOrganizationDTOChangeStateListener
 import com.lvg.weldercenter.se.ui.repositories.OrganizationDTORepository
 import com.lvg.weldercenter.se.ui.services.LoadingAllOrganizationsService
+import com.lvg.weldercenter.se.ui.services.SaveOrganizatioDTOService
 import com.lvg.weldercenter.se.ui.utils.ServiceUtils
+import javafx.application.Platform
 import javafx.beans.property.ListProperty
 import javafx.beans.property.SimpleListProperty
 import javafx.beans.property.SimpleStringProperty
@@ -26,6 +29,10 @@ class OrganizationDTORepositoryImpl implements OrganizationDTORepository{
     LoadAllOrganizationsChangeStateListener listener
     @Autowired
     LoadingAllOrganizationsService service
+    @Autowired
+    SaveOrganizatioDTOService saveOrganizatioDTOService
+    @Autowired
+    SaveOrganizationDTOChangeStateListener saveOrganizationDTOChangeStateListener
 
     private final ObservableList<OrganizationDTO> allData = FXCollections.observableArrayList()
     private final FilteredList<OrganizationDTO> filteredData =
@@ -56,7 +63,11 @@ class OrganizationDTORepositoryImpl implements OrganizationDTORepository{
     @Override
     void saveOrganizationDTO(OrganizationDTO organizationDTO) {
         LOGGER.debug("saveOrganizationDTO: START saving organizationDTO: ${organizationDTO}")
-        Predicate<OrganizationDTO> predicate = filteredData.predicateProperty().get()
+        if (!validOrganizationDTO(organizationDTO)){
+            LOGGER.warn("Save OrganizationDTO: cannot save OrganizationDTO because it is not valid")
+            return
+        }
+
         OrganizationDTO updatedOrganization = null
         allData.stream().forEach({org ->
             if (org.id == organizationDTO.id){
@@ -64,17 +75,13 @@ class OrganizationDTORepositoryImpl implements OrganizationDTORepository{
             }
         })
 
-        if (updatedOrganization != null){
-            LOGGER.debug("saveOrganizationDTO: updating existed organizationDTO: ${organizationDTO}")
-            updatedOrganization.nameProperty().set(organizationDTO.nameProperty().get())
-            updatedOrganization.addressProperty().set(organizationDTO.addressProperty().get())
-            updatedOrganization.phoneProperty().set(organizationDTO.phoneProperty().get())
-        }else {
-            LOGGER.debug("saveOrganizationDTO: adding new organizationDTO: ${organizationDTO}")
-            allData.add(organizationDTO)
-        }
-
-
+        saveOrganizatioDTOService.setOrganizationDTO(organizationDTO)
+        saveOrganizatioDTOService.stateProperty().addListener(saveOrganizationDTOChangeStateListener)
+        ServiceUtils.startService(saveOrganizatioDTOService)
+    }
+    private boolean validOrganizationDTO(OrganizationDTO organizationDTO){
+        if (organizationDTO.nameProperty().get().isEmpty()) return false
+        return true
     }
 
     @Override

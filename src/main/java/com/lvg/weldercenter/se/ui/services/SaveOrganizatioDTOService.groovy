@@ -9,7 +9,7 @@ import org.springframework.context.ConfigurableApplicationContext
 import org.springframework.stereotype.Component
 
 @Component
-class SaveOrganizatioDTOService extends Service<OrganizationDTO> implements OnceStartedFlag{
+class SaveOrganizatioDTOService extends Service<OrganizationDTO> implements OnceStartedService{
 
     @Autowired
     ConfigurableApplicationContext ctx
@@ -17,7 +17,7 @@ class SaveOrganizatioDTOService extends Service<OrganizationDTO> implements Once
     private boolean startedOnce = false
     private OrganizationDTO organizationDTO
 
-    void setWelderDTO(OrganizationDTO organizationDTO){
+    void setOrganizationDTO(OrganizationDTO organizationDTO){
         this.organizationDTO = organizationDTO
     }
 

@@ -10,7 +10,7 @@ import org.springframework.context.ConfigurableApplicationContext
 import org.springframework.stereotype.Component
 
 @Component
-class LoadingAllJobsService extends Service<ObservableList<JobDTO>> implements OnceStartedFlag{
+class LoadingAllJobsService extends Service<ObservableList<JobDTO>> implements OnceStartedService{
 
     @Autowired
     ConfigurableApplicationContext ctx

@@ -9,7 +9,7 @@ import org.springframework.context.ConfigurableApplicationContext
 import org.springframework.stereotype.Component
 
 @Component
-class LoadingAllEducationsService extends Service<ObservableList<String>> implements OnceStartedFlag{
+class LoadingAllEducationsService extends Service<ObservableList<String>> implements OnceStartedService{
 
     @Autowired
     ConfigurableApplicationContext ctx

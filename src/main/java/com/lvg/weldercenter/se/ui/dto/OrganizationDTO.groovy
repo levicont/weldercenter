@@ -24,21 +24,23 @@ class OrganizationDTO extends GenericModelDTO<Organization> implements ModelDTO{
     private final ObjectProperty<Organization> originalOrganizationProperty = new SimpleObjectProperty<>()
 
     OrganizationDTO(Organization organization){
-        this.organization = organization
         validateModel(organization)
         originalOrganizationProperty.set(organization)
         idProperty.set(organization.id == null ? NULL_ID_FIELD_DEFAULT: organization.id)
         nameProperty.set(organization.name)
         addressProperty.set(organization.address == null ? NULL_FIELD_PLACEHOLDER : organization.address)
         phoneProperty.set(organization.phone == null ? NULL_FIELD_PLACEHOLDER : organization.phone)
+        this.organization = organization
         addListeners()
     }
 
     Organization getOrganization() {
+        if (ValidatorDTO.isValidOrganizationDTO(this)){
+            return null
+        }
         organization.name = getName()
         organization.address = getAddress()
         organization.phone = getPhone()
-
         return organization
     }
 
@@ -117,7 +119,8 @@ class OrganizationDTO extends GenericModelDTO<Organization> implements ModelDTO{
 
     @Override
     String toString() {
-        return getOrganization().toString()
+        return "OrganizationDTO: idProperty: ${idProperty.get()}, nameProperty: ${nameProperty.get()}, " +
+                "addressProperty: ${addressProperty.get()}"
     }
 
     private void addListeners(){

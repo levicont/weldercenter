@@ -34,7 +34,8 @@ class GetWelderByIdTask extends Task<WelderDTO>{
         LOGGER.debug("---WELDER-FOUND: ${welder}")
         LOGGER.debug("---WELDER-HAS-ORGANIZATION: ${welder.organization}")
         WelderDTO result = new WelderDTO(welder)
-        LOGGER.debug("---WELDER_UI-RECEIVED: ${result}")
+        LOGGER.debug("---WELDER_DTO-RECEIVED: ${result}")
+        LOGGER.debug("---WELDER_DTO has OrganizationDTO : ${result.organizationDTO}")
         updateValue(result)
         LOGGER.debug("---TASK-ENDED---${getClass().getSimpleName()}")
         return result

@@ -1,6 +1,6 @@
 package com.lvg.weldercenter.se.ui.services
 
-interface OnceStartedFlag {
+interface OnceStartedService {
 
     boolean isStartedOnce()
     void setStartedOnceFlag(boolean startedOnce)
