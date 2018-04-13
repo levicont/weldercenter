@@ -153,6 +153,7 @@ class WelderController implements Initializable {
             LOGGER.warn('Cannot load null welderDTO')
             return
         }
+        welderTableController.selectWelderById(welderDTO.id)
         LOGGER.debug("welderDTO has already loaded")
         Printer.logDTO(WelderDTO.class, welderDTO)
         welderDTOProperty.set(welderDTO)

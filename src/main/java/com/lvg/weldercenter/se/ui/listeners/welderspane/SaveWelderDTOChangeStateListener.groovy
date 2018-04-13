@@ -1,8 +1,10 @@
 package com.lvg.weldercenter.se.ui.listeners.welderspane
 
 import com.lvg.weldercenter.se.exceptions.WelderCenterException
+import com.lvg.weldercenter.se.repositories.WelderRepository
 import com.lvg.weldercenter.se.ui.controllers.WelderController
 import com.lvg.weldercenter.se.ui.dto.WelderDTO
+import com.lvg.weldercenter.se.ui.repositories.WelderDTORepository
 import com.lvg.weldercenter.se.ui.services.SaveWelderDTOService
 import javafx.beans.value.ObservableValue
 import javafx.concurrent.Worker
@@ -20,6 +22,9 @@ class SaveWelderDTOChangeStateListener extends GenericServiceChangeStateListener
     @Autowired
     WelderController welderController
 
+    @Autowired
+    WelderDTORepository welderDTORepository
+
     @Override
     void changed(ObservableValue<? extends Worker.State> observable, Worker.State oldValue, Worker.State newValue) {
 
@@ -35,6 +40,8 @@ class SaveWelderDTOChangeStateListener extends GenericServiceChangeStateListener
             LOGGER.debug("-----LISTENER-START----"+getClass().simpleName)
             WelderDTO welderDTO = saveWelderDTOService.getValue()
             LOGGER.debug("Welder has saved: $welderDTO")
+            welderDTORepository.reloadWelders()
+
             welderController.loadWelder(welderDTO)
             saveWelderDTOService.stateProperty().removeListener(this)
             loadingView.hide()

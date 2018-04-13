@@ -154,4 +154,15 @@ class WelderTableController implements Initializable{
     void addCopy(){
 
     }
+
+    void selectWelderById(Long id){
+        WelderTableViewDTO welderTableViewDTO = null
+        weldersRepository.welderTableViewDTOListProperty().stream().forEach({welder ->
+            if (welder.id == id) {
+                welderTableViewDTO = welder
+            }
+        })
+        if (welderTableViewDTO != null)
+            welderTableView.selectionModel.select(welderTableViewDTO)
+    }
 }
