@@ -33,12 +33,12 @@ class WelderServiceImpl implements WelderService{
             orgId = org.id
             LOGGER.debug("Saving welder: organization's id is ${orgId}")
         }
-        if (orgId == null){
+        if (orgId == null && org != null){
             LOGGER.debug("Saving welder: New organization found, saving")
             organizationRepository.save(org)
             LOGGER.debug("Saving welder: New organization has saved")
         }
-        welder.organization = org
+
         return repository.save(welder)
     }
 

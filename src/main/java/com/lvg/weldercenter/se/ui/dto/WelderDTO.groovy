@@ -1,5 +1,6 @@
 package com.lvg.weldercenter.se.ui.dto
 
+import com.lvg.weldercenter.se.models.Organization
 import com.lvg.weldercenter.se.models.Welder
 import javafx.beans.binding.StringBinding
 import javafx.beans.binding.When
@@ -298,10 +299,11 @@ class WelderDTO extends GenericModelDTO<Welder> implements ModelDTO {
     }
 
     private boolean isOrganizationPropertyChanged(){
-        return  !(organizationProperty.get().id == originalWelderProperty().get().getOrganization().id &&
-                organizationProperty.get().name == originalWelderProperty().get().getOrganization().name &&
-                organizationProperty.get().address == originalWelderProperty().get().getOrganization().address &&
-                organizationProperty.get().phone == originalWelderProperty().get().getOrganization().phone)
+        Organization originalOrganization = originalWelderProperty().get().getOrganization()
+        return  !(organizationProperty.get().id == originalOrganization.id &&
+                organizationProperty.get().name == originalOrganization.name &&
+                organizationProperty.get().address == originalOrganization.address &&
+                organizationProperty.get().phone == originalOrganization.phone)
     }
 
     private void addListeners(){

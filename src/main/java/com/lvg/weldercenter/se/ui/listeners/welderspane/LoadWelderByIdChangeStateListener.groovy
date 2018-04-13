@@ -1,6 +1,7 @@
 package com.lvg.weldercenter.se.ui.listeners.welderspane
 
 import com.lvg.weldercenter.se.ui.controllers.WelderController
+import com.lvg.weldercenter.se.ui.dto.WelderDTO
 import com.lvg.weldercenter.se.ui.services.LoadingWelderByIdService
 import javafx.beans.value.ObservableValue
 import javafx.concurrent.Worker
@@ -25,7 +26,7 @@ class LoadWelderByIdChangeStateListener extends GenericServiceChangeStateListene
 
         if (newValue == Worker.State.SUCCEEDED){
             LOGGER.debug("-----LISTENER-START----"+getClass().simpleName)
-            def welderDTO = loadingWelderByIdService.getValue()
+            WelderDTO welderDTO = loadingWelderByIdService.getValue()
             if (welderDTO != null){
                 LOGGER.debug("Welder found: $welderDTO")
                 LOGGER.debug("Welder has organization: ${welderDTO.getOrganizationDTO()}")

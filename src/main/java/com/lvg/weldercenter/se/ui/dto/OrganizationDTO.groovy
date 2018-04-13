@@ -35,8 +35,8 @@ class OrganizationDTO extends GenericModelDTO<Organization> implements ModelDTO{
     }
 
     Organization getOrganization() {
-        if (ValidatorDTO.isValidOrganizationDTO(this)){
-            return null
+        if (!ValidatorDTO.isValidOrganizationDTO(this)){
+            return ModelsFactory.getDefaultOrganization()
         }
         organization.name = getName()
         organization.address = getAddress()

@@ -20,6 +20,8 @@ class Printer {
     }
 
     private static String printWelderDTO(WelderDTO welderDTO){
+        if (welderDTO == null)
+            return "${welderDTO}"
         return "WelderDTO:\n " +
                 "\tid:             ${welderDTO.id}\n" +
                 "\tname:           ${welderDTO.name}\n" +
@@ -36,6 +38,8 @@ class Printer {
     }
 
     private static String printWelderTableViewDTO(WelderTableViewDTO welderTableViewDTO){
+        if (welderTableViewDTO == null)
+            return "${welderTableViewDTO}"
         return "WelderTableViewDTO:\n " +
                 "\tid:               ${welderTableViewDTO.id}\n" +
                 "\tname:             ${welderTableViewDTO.name}\n" +
@@ -46,6 +50,8 @@ class Printer {
     }
 
     private static String printOrganizationDTO(OrganizationDTO organizationDTO){
+        if (organizationDTO == null)
+            return "${organizationDTO}"
         return "OrganizationDTO:\n " +
                 "\tid:             ${organizationDTO.id}\n" +
                 "\tname:           ${organizationDTO.name}\n" +
