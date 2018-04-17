@@ -55,8 +55,8 @@ class Printer {
         return "OrganizationDTO:\n " +
                 "\tid:             ${organizationDTO.id}\n" +
                 "\tname:           ${organizationDTO.name}\n" +
-                "\tsecondName:     ${organizationDTO.address}\n" +
-                "\tsurname:        ${organizationDTO.phone}\n"
+                "\taddress:        ${organizationDTO.address}\n" +
+                "\tphone:          ${organizationDTO.phone}\n"
 
     }
 }

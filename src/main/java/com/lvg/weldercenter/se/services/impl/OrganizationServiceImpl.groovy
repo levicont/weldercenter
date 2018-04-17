@@ -1,13 +1,18 @@
 package com.lvg.weldercenter.se.services.impl
 
+import com.lvg.weldercenter.se.cfg.R
 import com.lvg.weldercenter.se.models.Organization
 import com.lvg.weldercenter.se.repositories.OrganizationRepository
 import com.lvg.weldercenter.se.services.OrganizationService
+
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
+
+
 @Service
 class OrganizationServiceImpl implements OrganizationService {
+
 
     @Autowired
     OrganizationRepository repository
@@ -35,5 +40,11 @@ class OrganizationServiceImpl implements OrganizationService {
     @Override
     Long count() {
         return repository.count()
+    }
+
+    private boolean isOrganizationDefault(Organization organization){
+        if (organization.name == R.ModelsConfig.DEFAULT_ORGANIZATION_NAME)
+            return true
+        return false
     }
 }

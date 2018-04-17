@@ -5,6 +5,7 @@ import com.lvg.weldercenter.se.ui.dto.WelderDTO
 import com.lvg.weldercenter.se.ui.dto.WelderTableViewDTO
 import com.lvg.weldercenter.se.ui.listeners.welderspane.LoadWeldersForTableViewChangeStateListener
 import com.lvg.weldercenter.se.ui.listeners.welderspane.SaveWelderDTOChangeStateListener
+import com.lvg.weldercenter.se.ui.repositories.OrganizationDTORepository
 import com.lvg.weldercenter.se.ui.repositories.WelderDTORepository
 import com.lvg.weldercenter.se.ui.services.LoadingWeldersForTableViewService
 import com.lvg.weldercenter.se.ui.services.SaveWelderDTOService
@@ -47,6 +48,8 @@ class WeldersRepositoryImpl implements WelderDTORepository {
     SaveWelderDTOService saveWelderDTOService
     @Autowired
     SaveWelderDTOChangeStateListener saveWelderDTOChangeStateListener
+    @Autowired
+    OrganizationDTORepository organizationDTORepository
 
     @Override
     ListProperty<WelderTableViewDTO> welderTableViewDTOListProperty() {
@@ -96,7 +99,8 @@ class WeldersRepositoryImpl implements WelderDTORepository {
     }
 
     void saveWelderDTO(WelderDTO welderDTO){
-       saveWelderDTOService.setWelderDTO(welderDTO)
+
+        saveWelderDTOService.setWelderDTO(welderDTO)
         saveWelderDTOService.stateProperty().addListener(saveWelderDTOChangeStateListener)
         ServiceUtils.startService(saveWelderDTOService)
     }

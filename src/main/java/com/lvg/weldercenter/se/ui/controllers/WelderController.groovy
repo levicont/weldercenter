@@ -1,5 +1,6 @@
 package com.lvg.weldercenter.se.ui.controllers
 
+import com.lvg.weldercenter.se.cfg.R
 import com.lvg.weldercenter.se.ui.converters.OrganizationDTOStringConverter
 import com.lvg.weldercenter.se.ui.dto.DTOConstants
 import com.lvg.weldercenter.se.ui.dto.OrganizationDTO
@@ -248,9 +249,31 @@ class WelderController implements Initializable {
     @FXML
     void saveWelder(){
         LOGGER.debug("--- BEGIN SAVE WELDER ---")
-        welderDTORepository.saveWelderDTO(welderDTOProperty().get())
+        WelderDTO savingWelderDTO = welderDTOProperty().get()
+        makeValidOrganization(savingWelderDTO)
+        welderDTORepository.saveWelderDTO(savingWelderDTO)
+        welderDTOProperty().set(savingWelderDTO)
         Printer.logDTO(WelderDTO.class, welderDTOProperty.get())
         LOGGER.debug("--- END SAVE WELDER ---")
+    }
+
+    private void makeValidOrganization(WelderDTO welderDTO){
+
+        if (isDefaultOrganizationDTO(welderDTO.organizationDTO)){
+            OrganizationDTO organizationDTO =
+                    organizationDTORepository.findOrganizationDTOByName(R.ModelsConfig.DEFAULT_ORGANIZATION_NAME)
+            if (organizationDTO != null)
+                welderDTO.organizationProperty().set(organizationDTO)
+            else welderDTO.organizationProperty().set(OrganizationDTO.getDefaultOrganizationDTO())
+        }
+    }
+
+    private boolean isDefaultOrganizationDTO(OrganizationDTO organizationDTO){
+        if (organizationDTO == null)
+            return true
+        if(organizationDTO.name == R.ModelsConfig.DEFAULT_ORGANIZATION_NAME)
+            return true
+        return false
     }
 
     private void addListeners() {

@@ -63,12 +63,14 @@ class OrganizationDTORepositoryImpl implements OrganizationDTORepository{
     @Override
     void saveOrganizationDTO(OrganizationDTO organizationDTO) {
         LOGGER.debug("saveOrganizationDTO: START saving organizationDTO: ${organizationDTO}")
+        OrganizationDTO updatedOrganization = null
         if (!validOrganizationDTO(organizationDTO)){
             LOGGER.warn("Save OrganizationDTO: cannot save OrganizationDTO because it is not valid")
+            updatedOrganization = OrganizationDTO.getDefaultOrganizationDTO()
             return
         }
 
-        OrganizationDTO updatedOrganization = null
+
         allData.stream().forEach({org ->
             if (org.id == organizationDTO.id){
                 updatedOrganization = org
@@ -87,6 +89,17 @@ class OrganizationDTORepositoryImpl implements OrganizationDTORepository{
     @Override
     ObservableList<OrganizationDTO> getAllOrganizationDTOFromDB() {
         return Collections.unmodifiableList(allData)
+    }
+
+    @Override
+    OrganizationDTO findOrganizationDTOByName(String name){
+        OrganizationDTO result = null
+        allData.forEach({ org ->
+            if (org.name == name)
+                result = org
+        })
+        return result
+
     }
 
     void setFilterPredicate(Predicate<? super OrganizationDTO> predicate){

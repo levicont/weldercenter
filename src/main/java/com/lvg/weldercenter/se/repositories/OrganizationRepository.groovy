@@ -5,4 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository
 
 interface OrganizationRepository extends JpaRepository<Organization, Long>{
     void delete(Organization organization)
+
+    List<Organization> findByNameIgnoreCase(String name)
 }
