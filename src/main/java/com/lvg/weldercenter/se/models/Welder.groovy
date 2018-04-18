@@ -51,7 +51,7 @@ class Welder implements Serializable{
     @Column(name = "JOB")
     String job
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JoinColumn(name = 'ORGANIZATION_ID', foreignKey = @ForeignKey(name = 'FK_WELDER_ORGANIZATION'))
     Organization organization
 

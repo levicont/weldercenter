@@ -7,10 +7,15 @@ import com.lvg.weldercenter.se.ui.dto.OrganizationDTO
 import com.lvg.weldercenter.se.ui.dto.WelderDTO
 import com.lvg.weldercenter.se.ui.dto.WelderTableViewDTO
 import com.lvg.weldercenter.se.ui.repositories.*
+import com.lvg.weldercenter.se.ui.services.SaveOrganizatioDTOService
 import com.lvg.weldercenter.se.ui.utils.ControlFXUtils
 import com.lvg.weldercenter.se.ui.utils.Printer
+import javafx.application.Platform
+import javafx.beans.Observable
 import javafx.beans.property.*
 import javafx.beans.value.ChangeListener
+import javafx.beans.value.ObservableValue
+import javafx.concurrent.Worker
 import javafx.event.ActionEvent
 import javafx.fxml.FXML
 import javafx.fxml.Initializable
@@ -24,6 +29,8 @@ import org.springframework.stereotype.Component
 
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+
+import static javafx.application.Platform.runLater
 
 @Component
 class WelderController implements Initializable {
@@ -48,6 +55,8 @@ class WelderController implements Initializable {
     JobDTORepository jobDTORepository
     @Autowired
     OrganizationDTORepository organizationDTORepository
+    @Autowired
+    SaveOrganizatioDTOService saveOrganizatioDTOService
 
     private WelderDTO welderDTO
     private final ObjectProperty<WelderDTO> welderDTOProperty = new SimpleObjectProperty<>(welderDTO)
@@ -229,9 +238,19 @@ class WelderController implements Initializable {
                         "old organizationDTO: ${welderDTOProperty.get().organizationDTO} " +
                         "hash: ${welderDTOProperty.get().organizationDTO.hashCode()}")
 
-                cbOrganization.editor.text = organizationDTO.name
-                welderDTOProperty.value.organizationProperty().set(organizationDTO)
                 organizationDTORepository.saveOrganizationDTO(organizationDTO)
+                runLater({
+                   saveOrganizatioDTOService
+                           .stateProperty()
+                           .addListener((ChangeListener<Worker.State>){ObservableValue<? extends Worker.State> observable, Worker.State oldValue, Worker.State newValue ->
+                        if (newValue == Worker.State.SUCCEEDED)  {
+                            cbOrganization.editor.text = organizationDTO.name
+                            welderDTOProperty.value.organizationProperty().set(organizationDTO)
+                            //TODO Listener must be removed
+                            //saveOrganizatioDTOService.stateProperty().removeListener(this)
+                        }
+                   })
+                })
                 LOGGER.debug("OrganizationDTO added to combo box. value: ${cbOrganization.value} " +
                         "id:${cbOrganization.value.getId()}")
                 break
@@ -248,30 +267,24 @@ class WelderController implements Initializable {
 
     @FXML
     void saveWelder(){
-        LOGGER.debug("--- BEGIN SAVE WELDER ---")
+        LOGGER.debug("saveWelder: --- BEGIN SAVE WELDER ---")
         WelderDTO savingWelderDTO = welderDTOProperty().get()
-        makeValidOrganization(savingWelderDTO)
-        welderDTORepository.saveWelderDTO(savingWelderDTO)
-        welderDTOProperty().set(savingWelderDTO)
-        Printer.logDTO(WelderDTO.class, welderDTOProperty.get())
-        LOGGER.debug("--- END SAVE WELDER ---")
-    }
-
-    private void makeValidOrganization(WelderDTO welderDTO){
-
-        if (isDefaultOrganizationDTO(welderDTO.organizationDTO)){
-            OrganizationDTO organizationDTO =
-                    organizationDTORepository.findOrganizationDTOByName(R.ModelsConfig.DEFAULT_ORGANIZATION_NAME)
-            if (organizationDTO != null)
-                welderDTO.organizationProperty().set(organizationDTO)
-            else welderDTO.organizationProperty().set(OrganizationDTO.getDefaultOrganizationDTO())
+        LOGGER.debug("saveWelder: start checking OrganizationDTO")
+        if (isDefaultOrganizationDTO(savingWelderDTO.getOrganizationDTO())) {
+            LOGGER.debug("saveWelder: OrganizationDTO has to be default")
+            cbOrganization.setValue(organizationDTORepository.getDefaultOrganizationDTO())
         }
+        welderDTORepository.saveWelderDTO(savingWelderDTO)
+        Printer.logDTO(WelderDTO.class, welderDTOProperty.get())
+        LOGGER.debug("saveWelder: --- END SAVE WELDER ---")
     }
 
-    private boolean isDefaultOrganizationDTO(OrganizationDTO organizationDTO){
+
+    private static boolean isDefaultOrganizationDTO(OrganizationDTO organizationDTO){
         if (organizationDTO == null)
             return true
-        if(organizationDTO.name == R.ModelsConfig.DEFAULT_ORGANIZATION_NAME)
+        if(organizationDTO.name == R.ModelsConfig.DEFAULT_ORGANIZATION_NAME ||
+            organizationDTO.name.isEmpty())
             return true
         return false
     }

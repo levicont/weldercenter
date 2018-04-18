@@ -11,5 +11,6 @@ interface OrganizationDTORepository extends GenericDTORepository<OrganizationDTO
     void setFilteredOrganizationName(String name)
     void saveOrganizationDTO(OrganizationDTO organizationDTO)
     OrganizationDTO findOrganizationDTOByName(String name)
+    OrganizationDTO getDefaultOrganizationDTO()
     ObservableList<OrganizationDTO> getAllOrganizationDTOFromDB()
 }

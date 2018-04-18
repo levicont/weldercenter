@@ -300,6 +300,10 @@ class WelderDTO extends GenericModelDTO<Welder> implements ModelDTO {
 
     private boolean isOrganizationPropertyChanged(){
         Organization originalOrganization = originalWelderProperty().get().getOrganization()
+        if (organizationProperty().get() == null && originalOrganization != null)
+            return true
+        if (organizationProperty().get() != null && originalOrganization == null)
+            return true
         return  !(organizationProperty.get().id == originalOrganization.id &&
                 organizationProperty.get().name == originalOrganization.name &&
                 organizationProperty.get().address == originalOrganization.address &&

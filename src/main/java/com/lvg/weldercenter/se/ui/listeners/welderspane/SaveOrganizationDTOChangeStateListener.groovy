@@ -2,6 +2,7 @@ package com.lvg.weldercenter.se.ui.listeners.welderspane
 
 import com.lvg.weldercenter.se.exceptions.WelderCenterException
 import com.lvg.weldercenter.se.ui.dto.OrganizationDTO
+import com.lvg.weldercenter.se.ui.repositories.OrganizationDTORepository
 import com.lvg.weldercenter.se.ui.services.SaveOrganizatioDTOService
 import javafx.beans.value.ObservableValue
 import javafx.concurrent.Worker
@@ -15,6 +16,9 @@ class SaveOrganizationDTOChangeStateListener extends GenericServiceChangeStateLi
 
     @Autowired
     SaveOrganizatioDTOService saveOrganizationDTOService
+
+    @Autowired
+    OrganizationDTORepository organizationDTORepository
 
     @Override
     void changed(ObservableValue<? extends Worker.State> observable, Worker.State oldValue, Worker.State newValue) {
@@ -31,6 +35,7 @@ class SaveOrganizationDTOChangeStateListener extends GenericServiceChangeStateLi
             LOGGER.debug("-----LISTENER-START----"+getClass().simpleName)
             OrganizationDTO organizationDTO = saveOrganizationDTOService.getValue()
             LOGGER.debug("Organization has saved: $organizationDTO")
+            //TODO organization list must be updated
             saveOrganizationDTOService.stateProperty().removeListener(this)
             loadingView.hide()
             LOGGER.debug("-----LISTENER-END----")

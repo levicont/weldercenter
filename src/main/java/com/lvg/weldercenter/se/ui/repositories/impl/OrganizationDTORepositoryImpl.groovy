@@ -1,5 +1,6 @@
 package com.lvg.weldercenter.se.ui.repositories.impl
 
+import com.lvg.weldercenter.se.cfg.R
 import com.lvg.weldercenter.se.ui.dto.OrganizationDTO
 import com.lvg.weldercenter.se.ui.listeners.welderspane.LoadAllOrganizationsChangeStateListener
 import com.lvg.weldercenter.se.ui.listeners.welderspane.SaveOrganizationDTOChangeStateListener
@@ -7,7 +8,6 @@ import com.lvg.weldercenter.se.ui.repositories.OrganizationDTORepository
 import com.lvg.weldercenter.se.ui.services.LoadingAllOrganizationsService
 import com.lvg.weldercenter.se.ui.services.SaveOrganizatioDTOService
 import com.lvg.weldercenter.se.ui.utils.ServiceUtils
-import javafx.application.Platform
 import javafx.beans.property.ListProperty
 import javafx.beans.property.SimpleListProperty
 import javafx.beans.property.SimpleStringProperty
@@ -66,7 +66,7 @@ class OrganizationDTORepositoryImpl implements OrganizationDTORepository{
         OrganizationDTO updatedOrganization = null
         if (!validOrganizationDTO(organizationDTO)){
             LOGGER.warn("Save OrganizationDTO: cannot save OrganizationDTO because it is not valid")
-            updatedOrganization = OrganizationDTO.getDefaultOrganizationDTO()
+            updatedOrganization = getDefaultOrganizationDTO()
             return
         }
 
@@ -81,8 +81,8 @@ class OrganizationDTORepositoryImpl implements OrganizationDTORepository{
         saveOrganizatioDTOService.stateProperty().addListener(saveOrganizationDTOChangeStateListener)
         ServiceUtils.startService(saveOrganizatioDTOService)
     }
-    private boolean validOrganizationDTO(OrganizationDTO organizationDTO){
-        if (organizationDTO.nameProperty().get().isEmpty()) return false
+    private static boolean validOrganizationDTO(OrganizationDTO organizationDTO){
+        if (organizationDTO == null || organizationDTO.nameProperty().get().isEmpty()) return false
         return true
     }
 
@@ -99,7 +99,18 @@ class OrganizationDTORepositoryImpl implements OrganizationDTORepository{
                 result = org
         })
         return result
+    }
 
+    @Override
+    OrganizationDTO getDefaultOrganizationDTO() {
+        LOGGER.debug("getDefaultOrganizationDTO: START to find default OrganizationDTO in DB")
+        OrganizationDTO result = findOrganizationDTOByName(R.ModelsConfig.DEFAULT_ORGANIZATION_NAME)
+        LOGGER.debug("getDefaultOrganizationDTO: lookup result is: ${result}")
+        if (null == result) {
+            LOGGER.debug("getDefaultOrganizationDTO: getting default OrganizationDTO from application settings")
+            result = OrganizationDTO.getDefaultOrganizationDTO()
+        }
+        return result
     }
 
     void setFilterPredicate(Predicate<? super OrganizationDTO> predicate){

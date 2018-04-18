@@ -1,7 +1,6 @@
 package com.lvg.weldercenter.se.ui.listeners.welderspane
 
 import com.lvg.weldercenter.se.exceptions.WelderCenterException
-import com.lvg.weldercenter.se.repositories.WelderRepository
 import com.lvg.weldercenter.se.ui.controllers.WelderController
 import com.lvg.weldercenter.se.ui.dto.WelderDTO
 import com.lvg.weldercenter.se.ui.repositories.OrganizationDTORepository

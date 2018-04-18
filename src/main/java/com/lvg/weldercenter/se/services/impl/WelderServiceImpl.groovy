@@ -1,5 +1,6 @@
 package com.lvg.weldercenter.se.services.impl
 
+import com.lvg.weldercenter.se.models.Organization
 import com.lvg.weldercenter.se.models.Welder
 import com.lvg.weldercenter.se.repositories.WelderRepository
 import com.lvg.weldercenter.se.services.OrganizationService
@@ -8,6 +9,7 @@ import com.lvg.weldercenter.se.ui.dto.WelderTableViewDTO
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
+import javax.transaction.Transactional
 import java.time.LocalDate
 
 @Service
@@ -19,7 +21,11 @@ class WelderServiceImpl implements WelderService{
     OrganizationService organizationService
 
     @Override
+    @Transactional
     Welder save(Welder welder) {
+        Organization organization = welder.organization
+        if (organization != null)
+            organizationService.save(organization)
         return repository.save(welder)
     }
 
