@@ -9,7 +9,7 @@ import org.springframework.context.ConfigurableApplicationContext
 import org.springframework.stereotype.Component
 
 @Component
-class SaveOrganizatioDTOService extends Service<OrganizationDTO> implements OnceStartedService{
+class SaveOrganizationDTOService extends Service<OrganizationDTO> implements OnceStartedService{
 
     @Autowired
     ConfigurableApplicationContext ctx

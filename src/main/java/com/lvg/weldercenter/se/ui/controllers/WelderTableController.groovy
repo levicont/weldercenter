@@ -4,9 +4,12 @@ import com.lvg.weldercenter.se.ui.dto.WelderTableViewDTO
 import com.lvg.weldercenter.se.ui.factories.LineNumbersCellFactory
 import com.lvg.weldercenter.se.ui.listeners.welderspane.WeldersTableViewEventHandler
 import com.lvg.weldercenter.se.ui.repositories.WelderDTORepository
+import com.lvg.weldercenter.se.ui.services.LoadingWeldersForTableViewService
 import com.lvg.weldercenter.se.ui.utils.ControlFXUtils
+
 import javafx.beans.value.ChangeListener
 import javafx.beans.value.ObservableValue
+import javafx.concurrent.Worker
 import javafx.event.Event
 import javafx.fxml.FXML
 import javafx.fxml.Initializable
@@ -18,7 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
 @Component
-class WelderTableController implements Initializable{
+class WelderTableController implements Initializable {
 
     private static final Logger LOGGER = Logger.getLogger(WelderTableController.class)
 
@@ -26,6 +29,8 @@ class WelderTableController implements Initializable{
     WelderDTORepository weldersRepository
     @Autowired
     WeldersTableViewEventHandler weldersTableViewEventHandler
+    @Autowired
+    LoadingWeldersForTableViewService loadingWeldersForTableViewService
 
     @FXML
     private TextField txfSearch
@@ -81,20 +86,20 @@ class WelderTableController implements Initializable{
         init()
     }
 
-    private void init(){
+    private void init() {
         initTable()
         initTxfSearch()
     }
 
-    private void initTable(){
+    private void initTable() {
         LOGGER.debug("INITIALIZING WelderPane")
-        id.setCellValueFactory(new PropertyValueFactory<WelderTableViewDTO,Long>('id'))
+        id.setCellValueFactory(new PropertyValueFactory<WelderTableViewDTO, Long>('id'))
         lineNumber.setCellFactory(new LineNumbersCellFactory<WelderTableViewDTO, WelderTableViewDTO>())
-        name.setCellValueFactory(new PropertyValueFactory<WelderTableViewDTO,String>('name'))
-        surname.setCellValueFactory(new PropertyValueFactory<WelderTableViewDTO,String>('surname'))
-        secondName.setCellValueFactory(new PropertyValueFactory<WelderTableViewDTO,String>('secondName'))
-        birthday.setCellValueFactory(new PropertyValueFactory<WelderTableViewDTO,String>('birthday'))
-        organizationName.setCellValueFactory(new PropertyValueFactory<WelderTableViewDTO,String>('organization'))
+        name.setCellValueFactory(new PropertyValueFactory<WelderTableViewDTO, String>('name'))
+        surname.setCellValueFactory(new PropertyValueFactory<WelderTableViewDTO, String>('surname'))
+        secondName.setCellValueFactory(new PropertyValueFactory<WelderTableViewDTO, String>('secondName'))
+        birthday.setCellValueFactory(new PropertyValueFactory<WelderTableViewDTO, String>('birthday'))
+        organizationName.setCellValueFactory(new PropertyValueFactory<WelderTableViewDTO, String>('organization'))
         weldersRepository.reloadWelders()
         welderTableView.placeholderProperty().set(new Label(ControlFXUtils.EMPTY_TABLE_PLACEHOLDER))
         welderTableView.setItems(weldersRepository.welderTableViewDTOListProperty())
@@ -102,7 +107,7 @@ class WelderTableController implements Initializable{
 
     }
 
-    private void initTxfSearch(){
+    private void initTxfSearch() {
         txfSearch.textProperty().addListener(new ChangeListener<String>() {
             @Override
             void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
@@ -111,58 +116,80 @@ class WelderTableController implements Initializable{
         })
     }
 
-    void refreshTable(){
+    void refreshTable() {
         weldersRepository.reloadWelders()
     }
 
-    TableView<WelderTableViewDTO> getWeldersTableView(){
+    TableView<WelderTableViewDTO> getWeldersTableView() {
         return welderTableView
     }
 
     @FXML
-    void selectFirst(){
+    void selectFirst() {
         LOGGER.debug("SELECT FIRST RECORD in weldersTableView")
         ControlFXUtils.selectFirstTableRecord(welderTableView)
 
     }
 
     @FXML
-    void selectLast(){
+    void selectLast() {
         LOGGER.debug("SELECT LAST RECORD in weldersTableView")
         ControlFXUtils.selectLastTableRecord(welderTableView)
     }
 
     @FXML
-    void selectPrevious(){
+    void selectPrevious() {
         LOGGER.debug("SELECT PREVIOUS RECORD in weldersTableView")
         ControlFXUtils.selectPrevTableRecord(welderTableView)
     }
 
     @FXML
-    void selectNext(){
+    void selectNext() {
         LOGGER.debug("SELECT NEXT RECORD in weldersTableView")
         ControlFXUtils.selectNextTableRecord(welderTableView)
     }
 
     @FXML
-    void addNew(){
+    void addNew() {
         weldersRepository.getNewWelderDTO()
         selectLast()
     }
 
     @FXML
-    void addCopy(){
+    void addCopy() {
 
     }
 
-    void selectWelderById(Long id){
-        WelderTableViewDTO welderTableViewDTO = null
-        weldersRepository.welderTableViewDTOListProperty().stream().forEach({welder ->
-            if (welder.id == id) {
-                welderTableViewDTO = welder
+    void selectWelderById(Long id) {
+        LOGGER.debug("selectWelderById: Try to find welderTableViewDTO with id: ${id}")
+        loadingWeldersForTableViewService.stateProperty().addListener(new ChangeListener<Worker.State>() {
+            @Override
+            void changed(ObservableValue<? extends Worker.State> observable, Worker.State oldValue, Worker.State newValue) {
+                if (newValue == Worker.State.SUCCEEDED) {
+                    WelderTableViewDTO welderTableViewDTO = findWelderTableViewDTOById(id)
+                    if (welderTableViewDTO != null) {
+                        LOGGER.debug("selectWelderById: requesting focus on welderTableView")
+                        welderTableView.requestFocus()
+                        LOGGER.debug("selectWelderById: selecting welderTableViewDTO: ${welderTableViewDTO}")
+                        welderTableView.selectionModel.select(welderTableViewDTO)
+                    }
+                }
+                if (newValue == Worker.State.SUCCEEDED || newValue == Worker.State.FAILED)
+                    loadingWeldersForTableViewService.stateProperty().removeListener(this)
             }
         })
-        if (welderTableViewDTO != null)
-            welderTableView.selectionModel.select(welderTableViewDTO)
+
+    }
+
+    private WelderTableViewDTO findWelderTableViewDTOById(Long id) {
+        WelderTableViewDTO welderTableViewDTO = null
+        welderTableView.items.stream().forEach(
+                { welder ->
+                    if (welder.getIdProperty().get() == id) {
+                        LOGGER.debug("selectWelderById: welderTableViewDTO has found: ${welder}")
+                        welderTableViewDTO = welder
+                    }
+                })
+        return welderTableViewDTO
     }
 }

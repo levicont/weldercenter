@@ -6,7 +6,7 @@ import com.lvg.weldercenter.se.ui.listeners.welderspane.LoadAllOrganizationsChan
 import com.lvg.weldercenter.se.ui.listeners.welderspane.SaveOrganizationDTOChangeStateListener
 import com.lvg.weldercenter.se.ui.repositories.OrganizationDTORepository
 import com.lvg.weldercenter.se.ui.services.LoadingAllOrganizationsService
-import com.lvg.weldercenter.se.ui.services.SaveOrganizatioDTOService
+import com.lvg.weldercenter.se.ui.services.SaveOrganizationDTOService
 import com.lvg.weldercenter.se.ui.utils.ServiceUtils
 import javafx.beans.property.ListProperty
 import javafx.beans.property.SimpleListProperty
@@ -30,7 +30,7 @@ class OrganizationDTORepositoryImpl implements OrganizationDTORepository{
     @Autowired
     LoadingAllOrganizationsService service
     @Autowired
-    SaveOrganizatioDTOService saveOrganizatioDTOService
+    SaveOrganizationDTOService saveOrganizatioDTOService
     @Autowired
     SaveOrganizationDTOChangeStateListener saveOrganizationDTOChangeStateListener
 

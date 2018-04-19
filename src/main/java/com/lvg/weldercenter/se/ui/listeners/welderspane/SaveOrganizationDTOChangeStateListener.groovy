@@ -3,7 +3,7 @@ package com.lvg.weldercenter.se.ui.listeners.welderspane
 import com.lvg.weldercenter.se.exceptions.WelderCenterException
 import com.lvg.weldercenter.se.ui.dto.OrganizationDTO
 import com.lvg.weldercenter.se.ui.repositories.OrganizationDTORepository
-import com.lvg.weldercenter.se.ui.services.SaveOrganizatioDTOService
+import com.lvg.weldercenter.se.ui.services.SaveOrganizationDTOService
 import javafx.beans.value.ObservableValue
 import javafx.concurrent.Worker
 import org.apache.log4j.Logger
@@ -15,7 +15,7 @@ class SaveOrganizationDTOChangeStateListener extends GenericServiceChangeStateLi
     private static final Logger LOGGER = Logger.getLogger(SaveWelderDTOChangeStateListener.class)
 
     @Autowired
-    SaveOrganizatioDTOService saveOrganizationDTOService
+    SaveOrganizationDTOService saveOrganizationDTOService
 
     @Autowired
     OrganizationDTORepository organizationDTORepository

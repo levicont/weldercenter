@@ -32,6 +32,7 @@ class SaveWelderTask extends Task<WelderDTO> implements TaskConstants{
         try {
             updateTitle(SAVE_WELDER_DTO_TASK_TITLE_MESSAGE)
             Welder welder  = welderService.save(welderDTO.getWelder())
+            LOGGER.debug("WelderDTO with id: ${welder.id} has saved in DB")
             updateMessage("WelderDTO with id: ${welder.id} has saved in DB")
             WelderDTO result = new WelderDTO(welder)
             updateValue(result)

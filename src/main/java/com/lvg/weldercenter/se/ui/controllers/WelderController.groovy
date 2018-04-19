@@ -7,11 +7,10 @@ import com.lvg.weldercenter.se.ui.dto.OrganizationDTO
 import com.lvg.weldercenter.se.ui.dto.WelderDTO
 import com.lvg.weldercenter.se.ui.dto.WelderTableViewDTO
 import com.lvg.weldercenter.se.ui.repositories.*
-import com.lvg.weldercenter.se.ui.services.SaveOrganizatioDTOService
+import com.lvg.weldercenter.se.ui.services.SaveOrganizationDTOService
+import com.lvg.weldercenter.se.ui.services.SaveWelderDTOService
 import com.lvg.weldercenter.se.ui.utils.ControlFXUtils
 import com.lvg.weldercenter.se.ui.utils.Printer
-import javafx.application.Platform
-import javafx.beans.Observable
 import javafx.beans.property.*
 import javafx.beans.value.ChangeListener
 import javafx.beans.value.ObservableValue
@@ -56,7 +55,9 @@ class WelderController implements Initializable {
     @Autowired
     OrganizationDTORepository organizationDTORepository
     @Autowired
-    SaveOrganizatioDTOService saveOrganizatioDTOService
+    SaveOrganizationDTOService saveOrganizationDTOService
+    @Autowired
+    SaveWelderDTOService saveWelderDTOService
 
     private WelderDTO welderDTO
     private final ObjectProperty<WelderDTO> welderDTOProperty = new SimpleObjectProperty<>(welderDTO)
@@ -240,16 +241,21 @@ class WelderController implements Initializable {
 
                 organizationDTORepository.saveOrganizationDTO(organizationDTO)
                 runLater({
-                   saveOrganizatioDTOService
-                           .stateProperty()
-                           .addListener((ChangeListener<Worker.State>){ObservableValue<? extends Worker.State> observable, Worker.State oldValue, Worker.State newValue ->
-                        if (newValue == Worker.State.SUCCEEDED)  {
-                            cbOrganization.editor.text = organizationDTO.name
-                            welderDTOProperty.value.organizationProperty().set(organizationDTO)
-                            //TODO Listener must be removed
-                            //saveOrganizatioDTOService.stateProperty().removeListener(this)
+                    saveOrganizationDTOService
+                            .stateProperty()
+                            .addListener(new ChangeListener<Worker.State>() {
+                        @Override
+                        void changed(ObservableValue<? extends Worker.State> observable, Worker.State oldValue, Worker.State newValue) {
+                            LOGGER.debug("saveOrganizationDTO Change Listener class: ${getClass()}: State is: ${newValue}")
+                            if (newValue == Worker.State.SUCCEEDED)  {
+                                cbOrganization.editor.text = organizationDTO.name
+                                welderDTOProperty.value.organizationProperty().set(organizationDTO)
+                            }
+                            if (newValue == Worker.State.SUCCEEDED || newValue == Worker.State.FAILED)  {
+                                saveOrganizationDTOService.stateProperty().removeListener(this)
+                            }
                         }
-                   })
+                    })
                 })
                 LOGGER.debug("OrganizationDTO added to combo box. value: ${cbOrganization.value} " +
                         "id:${cbOrganization.value.getId()}")
@@ -275,6 +281,7 @@ class WelderController implements Initializable {
             cbOrganization.setValue(organizationDTORepository.getDefaultOrganizationDTO())
         }
         welderDTORepository.saveWelderDTO(savingWelderDTO)
+        runLater(welderSavePostProcessing)
         Printer.logDTO(WelderDTO.class, welderDTOProperty.get())
         LOGGER.debug("saveWelder: --- END SAVE WELDER ---")
     }
@@ -440,6 +447,22 @@ class WelderController implements Initializable {
         ObjectProperty<OrganizationDTO> organizationDTOObjectProperty() {
             organizationDTOObjectProperty
         }
+    }
+
+    private Runnable welderSavePostProcessing = {
+            saveWelderDTOService.stateProperty().addListener(new ChangeListener<Worker.State>() {
+                @Override
+                void changed(ObservableValue<? extends Worker.State> observable, Worker.State oldValue, Worker.State newValue) {
+                    LOGGER.debug("saveWelderDTO Change Listener class: ${getClass()}: State is: ${newValue}")
+                    if (newValue == Worker.State.SUCCEEDED)  {
+                        LOGGER.debug("welderSavePostProcessing : selecting saved WelderDTO with id: ${saveWelderDTOService.valueProperty().get().id}")
+                        welderTableController.selectWelderById(saveWelderDTOService.valueProperty().get().id)
+                    }
+                    if (newValue == Worker.State.SUCCEEDED || newValue == Worker.State.FAILED)  {
+                        saveWelderDTOService.stateProperty().removeListener(this)
+                    }
+                }
+            })
     }
 
 
