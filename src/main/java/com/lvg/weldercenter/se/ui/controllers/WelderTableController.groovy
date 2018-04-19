@@ -1,16 +1,19 @@
 package com.lvg.weldercenter.se.ui.controllers
 
+import com.lvg.weldercenter.se.ui.dto.DTOConstants
+import com.lvg.weldercenter.se.ui.dto.WelderDTO
 import com.lvg.weldercenter.se.ui.dto.WelderTableViewDTO
 import com.lvg.weldercenter.se.ui.factories.LineNumbersCellFactory
-import com.lvg.weldercenter.se.ui.listeners.welderspane.WeldersTableViewEventHandler
+import com.lvg.weldercenter.se.ui.listeners.welderspane.LoadWelderByIdChangeStateListener
 import com.lvg.weldercenter.se.ui.repositories.WelderDTORepository
+import com.lvg.weldercenter.se.ui.services.LoadingWelderByIdService
 import com.lvg.weldercenter.se.ui.services.LoadingWeldersForTableViewService
 import com.lvg.weldercenter.se.ui.utils.ControlFXUtils
-
+import com.lvg.weldercenter.se.ui.utils.Printer
+import com.lvg.weldercenter.se.ui.utils.ServiceUtils
 import javafx.beans.value.ChangeListener
 import javafx.beans.value.ObservableValue
 import javafx.concurrent.Worker
-import javafx.event.Event
 import javafx.fxml.FXML
 import javafx.fxml.Initializable
 import javafx.scene.control.*
@@ -28,9 +31,13 @@ class WelderTableController implements Initializable {
     @Autowired
     WelderDTORepository weldersRepository
     @Autowired
-    WeldersTableViewEventHandler weldersTableViewEventHandler
-    @Autowired
     LoadingWeldersForTableViewService loadingWeldersForTableViewService
+    @Autowired
+    LoadingWelderByIdService loadingWelderByIdService
+    @Autowired
+    LoadWelderByIdChangeStateListener loadWelderByIdChangeStateListener
+    @Autowired
+    WelderController welderController
 
     @FXML
     private TextField txfSearch
@@ -103,7 +110,12 @@ class WelderTableController implements Initializable {
         weldersRepository.reloadWelders()
         welderTableView.placeholderProperty().set(new Label(ControlFXUtils.EMPTY_TABLE_PLACEHOLDER))
         welderTableView.setItems(weldersRepository.welderTableViewDTOListProperty())
-        welderTableView.addEventHandler(Event.ANY, weldersTableViewEventHandler)
+        welderTableView.selectionModel.selectedItemProperty().addListener(new ChangeListener<WelderTableViewDTO>() {
+            @Override
+            void changed(ObservableValue<? extends WelderTableViewDTO> observable, WelderTableViewDTO oldValue, WelderTableViewDTO newValue) {
+                doLoadSelectedWelderFromDB()
+            }
+        })
 
     }
 
@@ -191,5 +203,31 @@ class WelderTableController implements Initializable {
                     }
                 })
         return welderTableViewDTO
+    }
+
+    private void doLoadSelectedWelderFromDB() {
+        LOGGER.debug("--- BEGIN doLoadSelectedWelderFromDB ---")
+        WelderTableViewDTO selectedWelder = getWeldersTableView()
+                .selectionModel.getSelectedItem()
+        if (selectedWelder == null) {
+            welderController.welderDTOProperty().set(null)
+            LOGGER.debug("selectedWelder is null")
+            return
+        }
+
+        if (selectedWelder.id == DTOConstants.NULL_ID_FIELD_DEFAULT)  {
+            welderController.loadWelder(WelderDTO.defaultWelderDTO())
+            LOGGER.debug("selectedWelder is unsaved it has id: ${selectedWelder.id}")
+            Printer.logDTO(WelderTableViewDTO.class, selectedWelder)
+            return
+        }
+        //If we have an empty welder then we are deleting it from TableView
+        welderController.welderDTORepository.removeUnsavedItems()
+        LOGGER.debug("selectedWelder is presented in DB ")
+        Printer.logDTO(WelderTableViewDTO.class, selectedWelder)
+        LOGGER.debug("Try to start loadingWelderByIdService")
+        loadingWelderByIdService.stateProperty().addListener(loadWelderByIdChangeStateListener)
+        ServiceUtils.startService(loadingWelderByIdService)
+
     }
 }

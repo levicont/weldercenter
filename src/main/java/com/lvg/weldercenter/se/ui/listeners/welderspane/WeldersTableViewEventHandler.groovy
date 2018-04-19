@@ -65,11 +65,4 @@ class WeldersTableViewEventHandler implements EventHandler<Event> {
 
     }
 
-    private static void unbind(WelderTableViewDTO welderTableViewDTO){
-        welderTableViewDTO.nameProperty.unbind()
-        welderTableViewDTO.secondNameProperty.unbind()
-        welderTableViewDTO.surnameProperty.unbind()
-        welderTableViewDTO.birthdayProperty.unbind()
-        welderTableViewDTO.organizationProperty.unbind()
-    }
 }

@@ -112,6 +112,7 @@ class WelderTableViewDTO implements ModelDTO{
 
     boolean equals(o) {
         if (this.is(o)) return true
+        if (o == null) return false
         if (getClass() != o.class) return false
 
         WelderTableViewDTO that = (WelderTableViewDTO) o
