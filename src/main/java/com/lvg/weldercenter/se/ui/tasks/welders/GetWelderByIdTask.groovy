@@ -2,9 +2,7 @@ package com.lvg.weldercenter.se.ui.tasks.welders
 
 import com.lvg.weldercenter.se.models.Welder
 import com.lvg.weldercenter.se.services.WelderService
-import com.lvg.weldercenter.se.ui.controllers.WelderTableController
 import com.lvg.weldercenter.se.ui.dto.WelderDTO
-import com.lvg.weldercenter.se.ui.dto.WelderTableViewDTO
 import com.lvg.weldercenter.se.ui.tasks.TaskConstants
 import javafx.concurrent.Task
 import org.apache.log4j.Logger
@@ -21,16 +19,18 @@ class GetWelderByIdTask extends Task<WelderDTO>{
     @Autowired
     WelderService welderService
 
-    @Autowired
-    WelderTableController welderTableController
+    private Long id
 
+    GetWelderByIdTask(Long id){
+        super()
+        this.id = id
+    }
 
     @Override
     protected WelderDTO call() throws Exception {
         LOGGER.debug("---TASK-STARTED---${getClass().getSimpleName()}")
         updateTitle(GET_WELDER_BY_ID_TASK_TITLE_MESSAGE)
-        WelderTableViewDTO welderDTO = welderTableController.getWeldersTableView().getSelectionModel().getSelectedItem()
-        Welder welder = welderService.getFull(welderDTO.getId())
+        Welder welder = welderService.getFull(id)
         LOGGER.debug("---WELDER-FOUND: ${welder}")
         LOGGER.debug("---WELDER-HAS-ORGANIZATION: ${welder.organization}")
         WelderDTO result = new WelderDTO(welder)

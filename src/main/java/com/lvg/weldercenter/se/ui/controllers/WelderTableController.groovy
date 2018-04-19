@@ -180,8 +180,6 @@ class WelderTableController implements Initializable {
                 if (newValue == Worker.State.SUCCEEDED) {
                     WelderTableViewDTO welderTableViewDTO = findWelderTableViewDTOById(id)
                     if (welderTableViewDTO != null) {
-                        LOGGER.debug("selectWelderById: requesting focus on welderTableView")
-                        welderTableView.requestFocus()
                         LOGGER.debug("selectWelderById: selecting welderTableViewDTO: ${welderTableViewDTO}")
                         welderTableView.selectionModel.select(welderTableViewDTO)
                     }
@@ -226,6 +224,7 @@ class WelderTableController implements Initializable {
         LOGGER.debug("selectedWelder is presented in DB ")
         Printer.logDTO(WelderTableViewDTO.class, selectedWelder)
         LOGGER.debug("Try to start loadingWelderByIdService")
+        loadingWelderByIdService.setId(selectedWelder.id)
         loadingWelderByIdService.stateProperty().addListener(loadWelderByIdChangeStateListener)
         ServiceUtils.startService(loadingWelderByIdService)
 

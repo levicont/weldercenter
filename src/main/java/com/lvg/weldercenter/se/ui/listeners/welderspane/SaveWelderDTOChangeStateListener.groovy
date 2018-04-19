@@ -1,7 +1,6 @@
 package com.lvg.weldercenter.se.ui.listeners.welderspane
 
 import com.lvg.weldercenter.se.exceptions.WelderCenterException
-import com.lvg.weldercenter.se.ui.controllers.WelderController
 import com.lvg.weldercenter.se.ui.dto.WelderDTO
 import com.lvg.weldercenter.se.ui.repositories.OrganizationDTORepository
 import com.lvg.weldercenter.se.ui.repositories.WelderDTORepository
@@ -18,9 +17,6 @@ class SaveWelderDTOChangeStateListener extends GenericServiceChangeStateListener
 
     @Autowired
     SaveWelderDTOService saveWelderDTOService
-
-    @Autowired
-    WelderController welderController
 
     @Autowired
     WelderDTORepository welderDTORepository
@@ -45,7 +41,6 @@ class SaveWelderDTOChangeStateListener extends GenericServiceChangeStateListener
             LOGGER.debug("Welder has saved: $welderDTO")
             welderDTORepository.reloadWelders()
             organizationDTORepository.loadAllDTO()
-            welderController.loadWelder(welderDTO)
             saveWelderDTOService.stateProperty().removeListener(this)
             loadingView.hide()
             LOGGER.debug("-----LISTENER-END----")

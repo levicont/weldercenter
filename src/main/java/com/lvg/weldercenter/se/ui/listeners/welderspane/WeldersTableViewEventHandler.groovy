@@ -60,6 +60,7 @@ class WeldersTableViewEventHandler implements EventHandler<Event> {
         LOGGER.debug("selectedWelder is presented in DB ")
         Printer.logDTO(WelderTableViewDTO.class, selectedWelder)
         LOGGER.debug("Try to start loadingWelderByIdService")
+        loadingWelderByIdService.setId(selectedWelder.id)
         loadingWelderByIdService.stateProperty().addListener(listener)
         ServiceUtils.startService(loadingWelderByIdService)
 

@@ -15,12 +15,16 @@ class LoadingWelderByIdService extends Service<WelderDTO>implements OnceStartedS
     ConfigurableApplicationContext ctx
 
     private boolean startedOnce = false
+    private Long id
 
+    void setId(Long id){
+        this.id = id
+    }
 
 
     @Override
     protected Task<WelderDTO> createTask() {
-        return ctx.getBean(GetWelderByIdTask.class)
+        return ctx.getBean(GetWelderByIdTask.class, id)
     }
 
     @Override
