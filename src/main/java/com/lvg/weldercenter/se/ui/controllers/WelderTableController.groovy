@@ -13,7 +13,6 @@ import com.lvg.weldercenter.se.ui.utils.Printer
 import com.lvg.weldercenter.se.ui.utils.ServiceUtils
 import javafx.beans.value.ChangeListener
 import javafx.beans.value.ObservableValue
-import javafx.concurrent.Worker
 import javafx.fxml.FXML
 import javafx.fxml.Initializable
 import javafx.scene.control.*
@@ -22,6 +21,8 @@ import javafx.scene.layout.VBox
 import org.apache.log4j.Logger
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
+
+import static javafx.concurrent.Worker.State
 
 @Component
 class WelderTableController implements Initializable {
@@ -124,6 +125,9 @@ class WelderTableController implements Initializable {
             @Override
             void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
                 weldersRepository.filter(newValue)
+                selectFirst()
+                txfSearch.requestFocus()
+                txfSearch.selectEnd()
             }
         })
     }
@@ -173,18 +177,18 @@ class WelderTableController implements Initializable {
     }
 
     void selectWelderById(Long id) {
-        LOGGER.debug("selectWelderById: Try to find welderTableViewDTO with id: ${id}")
-        loadingWeldersForTableViewService.stateProperty().addListener(new ChangeListener<Worker.State>() {
+        LOGGER.debug("  ${id}")
+        loadingWeldersForTableViewService.stateProperty().addListener(new ChangeListener<State>() {
             @Override
-            void changed(ObservableValue<? extends Worker.State> observable, Worker.State oldValue, Worker.State newValue) {
-                if (newValue == Worker.State.SUCCEEDED) {
+            void changed(ObservableValue<? extends State> observable, State oldValue, State newValue) {
+                if (newValue == State.SUCCEEDED) {
                     WelderTableViewDTO welderTableViewDTO = findWelderTableViewDTOById(id)
                     if (welderTableViewDTO != null) {
                         LOGGER.debug("selectWelderById: selecting welderTableViewDTO: ${welderTableViewDTO}")
                         welderTableView.selectionModel.select(welderTableViewDTO)
                     }
                 }
-                if (newValue == Worker.State.SUCCEEDED || newValue == Worker.State.FAILED)
+                if (newValue == State.SUCCEEDED || newValue == State.FAILED)
                     loadingWeldersForTableViewService.stateProperty().removeListener(this)
             }
         })
