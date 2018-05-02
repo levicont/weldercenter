@@ -7,6 +7,7 @@ import com.lvg.weldercenter.se.ui.dto.OrganizationDTO
 import com.lvg.weldercenter.se.ui.dto.WelderDTO
 import com.lvg.weldercenter.se.ui.dto.WelderTableViewDTO
 import com.lvg.weldercenter.se.ui.repositories.*
+import com.lvg.weldercenter.se.ui.services.LoadingWelderByIdService
 import com.lvg.weldercenter.se.ui.services.SaveOrganizationDTOService
 import com.lvg.weldercenter.se.ui.services.SaveWelderDTOService
 import com.lvg.weldercenter.se.ui.utils.ControlFXUtils
@@ -58,6 +59,8 @@ class WelderController implements Initializable {
     SaveOrganizationDTOService saveOrganizationDTOService
     @Autowired
     SaveWelderDTOService saveWelderDTOService
+    @Autowired
+    LoadingWelderByIdService loadingWelderByIdService
 
     private WelderDTO welderDTO
     private final ObjectProperty<WelderDTO> welderDTOProperty = new SimpleObjectProperty<>(welderDTO)
@@ -157,20 +160,34 @@ class WelderController implements Initializable {
     }
 
 
-    void loadWelder(WelderDTO welderDTO) {
+    void loadWelder() {
+        WelderDTO welderDTO = loadingWelderByIdService.getValue()
+        loadWelderOnPane(welderDTO)
+    }
+
+    void loadNewWelder(){
+        loadWelderOnPane(WelderDTO.defaultWelderDTO())
+    }
+
+    private void loadWelderOnPane(WelderDTO welderDTO){
         LOGGER.debug("--- BEGIN loadWelder ---")
         removeListeners()
         if (welderDTO == null) {
             LOGGER.warn('Cannot load null welderDTO')
+            clearWelderPane()
             return
         }
-       // welderTableController.selectWelderById(welderDTO.id)
+        // welderTableController.selectWelderById(welderDTO.id)
         LOGGER.debug("welderDTO has already loaded")
         Printer.logDTO(WelderDTO.class, welderDTO)
         welderDTOProperty.set(welderDTO)
         bufferedWelderDTOProperty.set(welderDTO)
         addListeners()
         bindWelderDTO()
+    }
+
+    void clearWelderPane(){
+        init()
     }
 
     private void bindWelderDTO(){

@@ -30,7 +30,7 @@ class LoadWelderByIdChangeStateListener extends GenericServiceChangeStateListene
             if (welderDTO != null){
                 LOGGER.debug("Welder found: $welderDTO")
                 LOGGER.debug("Welder has organization: ${welderDTO.getOrganizationDTO()}")
-                welderController.loadWelder(welderDTO)
+                welderController.loadWelder()
                 LOGGER.debug("Welders list was updated")
             }
             loadingWelderByIdService.stateProperty().removeListener(this)
