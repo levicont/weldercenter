@@ -16,7 +16,7 @@ class SaveWelderDTOChangeStateListener extends GenericServiceChangeStateListener
     private static final Logger LOGGER = Logger.getLogger(SaveWelderDTOChangeStateListener.class)
 
     @Autowired
-    SaveWelderDTOService saveWelderDTOService
+    SaveWelderDTOService service
 
     @Autowired
     WelderDTORepository welderDTORepository
@@ -28,20 +28,21 @@ class SaveWelderDTOChangeStateListener extends GenericServiceChangeStateListener
     void changed(ObservableValue<? extends Worker.State> observable, Worker.State oldValue, Worker.State newValue) {
 
         if (loadingView == null)
-            loadingView = mainFrameController.getLoadingView(saveWelderDTOService)
+            loadingView = mainFrameController.getLoadingView(service)
         LOGGER.debug("---- SaveWelderDTO LISTENER Service state: ${newValue} ----")
         if(newValue == Worker.State.FAILED){
             loadingView.hide()
+            service.stateProperty().removeListener(this)
             throw new WelderCenterException("Saving welder process is fail")
         }
 
         if (newValue == Worker.State.SUCCEEDED){
             LOGGER.debug("-----LISTENER-START----"+getClass().simpleName)
-            WelderDTO welderDTO = saveWelderDTOService.getValue()
+            WelderDTO welderDTO = service.getValue()
             LOGGER.debug("Welder has saved: $welderDTO")
             welderDTORepository.reloadWelders()
             organizationDTORepository.loadAllDTO()
-            saveWelderDTOService.stateProperty().removeListener(this)
+            service.stateProperty().removeListener(this)
             loadingView.hide()
             LOGGER.debug("-----LISTENER-END----")
         }

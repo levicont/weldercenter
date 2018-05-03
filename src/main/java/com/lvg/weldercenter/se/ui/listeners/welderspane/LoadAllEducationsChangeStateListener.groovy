@@ -13,7 +13,7 @@ class LoadAllEducationsChangeStateListener extends GenericServiceChangeStateList
     private static final Logger LOGGER = Logger.getLogger(LoadAllEducationsChangeStateListener.class)
 
     @Autowired
-    LoadingAllEducationsService loadingAllEducationsService
+    LoadingAllEducationsService service
 
     @Autowired
     EducationDTORepository educationDTORepository
@@ -21,12 +21,15 @@ class LoadAllEducationsChangeStateListener extends GenericServiceChangeStateList
 
     @Override
     void changed(ObservableValue<? extends Worker.State> observable, Worker.State oldValue, Worker.State newValue) {
+        if (newValue == Worker.State.FAILED){
+            service.stateProperty().removeListener(this)
+        }
         if (newValue == Worker.State.SUCCEEDED){
             LOGGER.debug("-----LISTENER-START----"+getClass().simpleName)
-            def list = loadingAllEducationsService.getValue()
+            def list = service.getValue()
             LOGGER.debug("Education list was updated - list: $list")
             educationDTORepository.updateEducationDTOList(list)
-            loadingAllEducationsService.stateProperty().removeListener(this)
+            service.stateProperty().removeListener(this)
             LOGGER.debug("Education list was updated")
             LOGGER.debug("-----LISTENER-END----")
         }else {

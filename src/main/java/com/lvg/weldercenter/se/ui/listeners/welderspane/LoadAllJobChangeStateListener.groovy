@@ -13,7 +13,7 @@ class LoadAllJobChangeStateListener extends GenericServiceChangeStateListener{
     private static final Logger LOGGER = Logger.getLogger(LoadAllJobChangeStateListener.class)
 
     @Autowired
-    LoadingAllJobsService loadingAllJobsService
+    LoadingAllJobsService service
 
     @Autowired
     JobDTORepository jobDTORepository
@@ -21,12 +21,15 @@ class LoadAllJobChangeStateListener extends GenericServiceChangeStateListener{
 
     @Override
     void changed(ObservableValue<? extends Worker.State> observable, Worker.State oldValue, Worker.State newValue) {
+        if (newValue == Worker.State.FAILED){
+            service.stateProperty().removeListener(this)
+        }
         if (newValue == Worker.State.SUCCEEDED){
             LOGGER.debug("-----LISTENER-START----"+getClass().simpleName)
-            def list = loadingAllJobsService.getValue()
+            def list = service.getValue()
             LOGGER.debug("Job list was updated - list: $list")
             jobDTORepository.refreshAllDTO(list)
-            loadingAllJobsService.stateProperty().removeListener(this)
+            service.stateProperty().removeListener(this)
             LOGGER.debug("Job list was updated")
             LOGGER.debug("-----LISTENER-END----")
         }else {

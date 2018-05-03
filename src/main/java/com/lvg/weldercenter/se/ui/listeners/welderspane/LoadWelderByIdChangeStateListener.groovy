@@ -14,7 +14,7 @@ class LoadWelderByIdChangeStateListener extends GenericServiceChangeStateListene
     private static final Logger LOGGER = Logger.getLogger(LoadWelderByIdChangeStateListener.class)
 
     @Autowired
-    LoadingWelderByIdService loadingWelderByIdService
+    LoadingWelderByIdService service
 
     @Autowired
     WelderController welderController
@@ -22,18 +22,21 @@ class LoadWelderByIdChangeStateListener extends GenericServiceChangeStateListene
     @Override
     void changed(ObservableValue<? extends Worker.State> observable, Worker.State oldValue, Worker.State newValue) {
         if (loadingView == null)
-            loadingView = mainFrameController.getLoadingView(loadingWelderByIdService)
+            loadingView = mainFrameController.getLoadingView(service)
 
+        if (newValue == Worker.State.FAILED){
+            service.stateProperty().removeListener(this)
+        }
         if (newValue == Worker.State.SUCCEEDED){
             LOGGER.debug("-----LISTENER-START----"+getClass().simpleName)
-            WelderDTO welderDTO = loadingWelderByIdService.getValue()
+            WelderDTO welderDTO = service.getValue()
             if (welderDTO != null){
                 LOGGER.debug("Welder found: $welderDTO")
                 LOGGER.debug("Welder has organization: ${welderDTO.getOrganizationDTO()}")
                 welderController.loadWelder()
                 LOGGER.debug("Welders list was updated")
             }
-            loadingWelderByIdService.stateProperty().removeListener(this)
+            service.stateProperty().removeListener(this)
             loadingView.hide()
             LOGGER.debug("-----LISTENER-END----")
         }

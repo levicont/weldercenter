@@ -13,19 +13,22 @@ class LoadAllQualificationsChangeStateListener extends GenericServiceChangeState
     private static final Logger LOGGER = Logger.getLogger(LoadAllQualificationsChangeStateListener.class)
 
     @Autowired
-    LoadingAllQualificationsService loadingAllQualificationsService
+    LoadingAllQualificationsService service
 
     @Autowired
     QualificationDTORepository qualificationRepository
 
     @Override
     void changed(ObservableValue<? extends Worker.State> observable, Worker.State oldValue, Worker.State newValue) {
+        if (newValue == Worker.State.FAILED){
+            service.stateProperty().removeListener(this)
+        }
         if (newValue == Worker.State.SUCCEEDED){
             LOGGER.debug("-----LISTENER-START----"+getClass().simpleName)
-            def list = loadingAllQualificationsService.getValue()
+            def list = service.getValue()
             LOGGER.debug("Qualification list was updated - list: $list")
             qualificationRepository.updateQualificationDTOList(list)
-            loadingAllQualificationsService.stateProperty().removeListener(this)
+            service.stateProperty().removeListener(this)
             LOGGER.debug("Qualification list was updated")
             LOGGER.debug("-----LISTENER-END----")
         }else {

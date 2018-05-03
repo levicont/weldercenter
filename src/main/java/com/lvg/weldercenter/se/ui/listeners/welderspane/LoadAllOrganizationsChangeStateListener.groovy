@@ -19,6 +19,9 @@ class LoadAllOrganizationsChangeStateListener extends GenericServiceChangeStateL
 
     @Override
     void changed(ObservableValue<? extends Worker.State> observable, Worker.State oldValue, Worker.State newValue) {
+        if (newValue == Worker.State.FAILED){
+            service.stateProperty().removeListener(this)
+        }
         if (newValue == Worker.State.SUCCEEDED){
             LOGGER.debug("-----LISTENER-START----"+getClass().simpleName)
             def list = service.getValue()

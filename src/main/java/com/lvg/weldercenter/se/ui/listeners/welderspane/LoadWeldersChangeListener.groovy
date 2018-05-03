@@ -12,19 +12,22 @@ class LoadWeldersChangeListener extends GenericServiceChangeStateListener {
     private static final Logger LOGGER = Logger.getLogger(LoadWeldersChangeListener.class)
 
     @Autowired
-    LoadingWeldersService loadingWeldersService
+    LoadingWeldersService service
 
     @Override
     void changed(ObservableValue<? extends Worker.State> observable, Worker.State oldValue, Worker.State newValue) {
         if (loadingView == null)
-            loadingView = mainFrameController.getLoadingView(loadingWeldersService)
+            loadingView = mainFrameController.getLoadingView(service)
 
+        if (newValue == Worker.State.FAILED){
+            service.stateProperty().removeListener(this)
+        }
         if (newValue == Worker.State.SUCCEEDED){
             LOGGER.debug("-----LISTENER-START----"+getClass().simpleName)
-            def list = loadingWeldersService.getValue()
+            def list = service.getValue()
             LOGGER.debug("Welders list was updated - list: $list")
             //TODO Here have to be updating weldersList code
-            loadingWeldersService.stateProperty().removeListener(this)
+            service.stateProperty().removeListener(this)
             loadingView.hide()
             LOGGER.debug("Welders list was updated")
             LOGGER.debug("-----LISTENER-END----")

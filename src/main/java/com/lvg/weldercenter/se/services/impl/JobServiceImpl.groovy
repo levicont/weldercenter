@@ -6,7 +6,10 @@ import com.lvg.weldercenter.se.services.JobService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
+import javax.transaction.Transactional
+
 @Service
+@Transactional
 class JobServiceImpl implements JobService{
 
     @Autowired

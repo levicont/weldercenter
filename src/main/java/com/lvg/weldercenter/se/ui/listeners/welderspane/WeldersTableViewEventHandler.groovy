@@ -3,7 +3,6 @@ package com.lvg.weldercenter.se.ui.listeners.welderspane
 import com.lvg.weldercenter.se.ui.controllers.WelderController
 import com.lvg.weldercenter.se.ui.controllers.WelderTableController
 import com.lvg.weldercenter.se.ui.dto.DTOConstants
-import com.lvg.weldercenter.se.ui.dto.WelderDTO
 import com.lvg.weldercenter.se.ui.dto.WelderTableViewDTO
 import com.lvg.weldercenter.se.ui.services.LoadingWelderByIdService
 import com.lvg.weldercenter.se.ui.utils.ControlFXUtils
@@ -50,7 +49,7 @@ class WeldersTableViewEventHandler implements EventHandler<Event> {
         }
 //        unbind(selectedWelder)
         if (selectedWelder.id == DTOConstants.NULL_ID_FIELD_DEFAULT)  {
-            welderController.loadWelder(WelderDTO.defaultWelderDTO())
+            welderController.loadNewWelder()
             LOGGER.debug("selectedWelder is unsaved it has id: ${selectedWelder.id}")
             Printer.logDTO(WelderTableViewDTO.class, selectedWelder)
             return
