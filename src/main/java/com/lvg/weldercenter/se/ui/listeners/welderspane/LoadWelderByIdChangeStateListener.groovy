@@ -3,8 +3,6 @@ package com.lvg.weldercenter.se.ui.listeners.welderspane
 import com.lvg.weldercenter.se.ui.controllers.WelderController
 import com.lvg.weldercenter.se.ui.dto.WelderDTO
 import com.lvg.weldercenter.se.ui.services.LoadingWelderByIdService
-import javafx.beans.value.ObservableValue
-import javafx.concurrent.Worker
 import org.apache.log4j.Logger
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
@@ -14,34 +12,25 @@ class LoadWelderByIdChangeStateListener extends GenericServiceChangeStateListene
     private static final Logger LOGGER = Logger.getLogger(LoadWelderByIdChangeStateListener.class)
 
     @Autowired
-    LoadingWelderByIdService service
-
-    @Autowired
     WelderController welderController
 
-    @Override
-    void changed(ObservableValue<? extends Worker.State> observable, Worker.State oldValue, Worker.State newValue) {
-        if (loadingView == null)
-            loadingView = mainFrameController.getLoadingView(service)
-
-        if (newValue == Worker.State.FAILED){
-            service.stateProperty().removeListener(this)
-        }
-        if (newValue == Worker.State.SUCCEEDED){
-            LOGGER.debug("-----LISTENER-START----"+getClass().simpleName)
-            WelderDTO welderDTO = service.getValue()
-            if (welderDTO != null){
-                LOGGER.debug("Welder found: $welderDTO")
-                LOGGER.debug("Welder has organization: ${welderDTO.getOrganizationDTO()}")
-                welderController.loadWelder()
-                LOGGER.debug("Welders list was updated")
-            }
-            service.stateProperty().removeListener(this)
-            loadingView.hide()
-            LOGGER.debug("-----LISTENER-END----")
-        }
-        if (isShowingState(newValue)){
-            loadingView.show()
-        }
+    @Autowired
+    LoadWelderByIdChangeStateListener(LoadingWelderByIdService service) {
+        this.service = service
+        this.needToShowLoadingView = true
     }
+
+    @Override
+    void doWhenSucceeded() {
+        LOGGER.debug("-----LISTENER-START----"+getClass().simpleName)
+        WelderDTO welderDTO = (WelderDTO)service.getValue()
+        if (welderDTO != null){
+            LOGGER.debug("Welder found: $welderDTO")
+            LOGGER.debug("Welder has organization: ${welderDTO.getOrganizationDTO()}")
+            welderController.loadWelder()
+            LOGGER.debug("Welders list was updated")
+        }
+        LOGGER.debug("-----LISTENER-END----")
+    }
+
 }

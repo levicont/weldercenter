@@ -1,8 +1,8 @@
 package com.lvg.weldercenter.se.ui.listeners.welderspane
 
+import com.lvg.weldercenter.se.ui.dto.WelderTableViewDTO
 import com.lvg.weldercenter.se.ui.services.LoadingWeldersForTableViewService
-import javafx.beans.value.ObservableValue
-import javafx.concurrent.Worker
+import javafx.collections.ObservableList
 import org.apache.log4j.Logger
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
@@ -12,26 +12,19 @@ class LoadWeldersForTableViewChangeStateListener extends GenericServiceChangeSta
     private static final Logger LOGGER = Logger.getLogger(LoadWeldersForTableViewChangeStateListener.class)
 
     @Autowired
-    LoadingWeldersForTableViewService service
+    LoadWeldersForTableViewChangeStateListener(LoadingWeldersForTableViewService service) {
+        this.service = service
+        this.needToShowLoadingView = true
+    }
 
     @Override
-    void changed(ObservableValue<? extends Worker.State> observable, Worker.State oldValue, Worker.State newValue) {
-        if (loadingView == null)
-            loadingView = mainFrameController.getLoadingView(service)
-        if (newValue == Worker.State.FAILED){
-            service.stateProperty().removeListener(this)
-        }
-        if (newValue == Worker.State.SUCCEEDED){
-            LOGGER.debug("-----LISTENER-START----"+getClass().simpleName)
-            def list = service.getValue()
-            LOGGER.debug("Welders list was updated - list: $list")
-            weldersRepository.updateWeldersListForTableView(list)
-            service.stateProperty().removeListener(this)
-            loadingView.hide()
-            LOGGER.debug("Welders list was updated")
-            LOGGER.debug("-----LISTENER-END----"+getClass().simpleName)
-            return
-        }
-        isShowingState(newValue)? loadingView.show() : loadingView.hide()
+    protected void doWhenSucceeded() {
+        LOGGER.debug("-----LISTENER-START----"+getClass().simpleName)
+        ObservableList<WelderTableViewDTO> list = (ObservableList<WelderTableViewDTO>)service.getValue()
+        LOGGER.debug("Welders list was updated - list: $list")
+        weldersRepository.updateWeldersListForTableView(list)
+        LOGGER.debug("Welders list was updated")
+        LOGGER.debug("-----LISTENER-END----"+getClass().simpleName)
     }
+
 }

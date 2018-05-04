@@ -1,9 +1,9 @@
 package com.lvg.weldercenter.se.ui.listeners.welderspane
 
+import com.lvg.weldercenter.se.ui.dto.OrganizationDTO
 import com.lvg.weldercenter.se.ui.repositories.OrganizationDTORepository
 import com.lvg.weldercenter.se.ui.services.LoadingAllOrganizationsService
-import javafx.beans.value.ObservableValue
-import javafx.concurrent.Worker
+import javafx.collections.ObservableList
 import org.apache.log4j.Logger
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
@@ -14,24 +14,21 @@ class LoadAllOrganizationsChangeStateListener extends GenericServiceChangeStateL
 
     @Autowired
     OrganizationDTORepository repository
+
     @Autowired
-    LoadingAllOrganizationsService service
+    LoadAllOrganizationsChangeStateListener(LoadingAllOrganizationsService service) {
+        this.service = service
+    }
 
     @Override
-    void changed(ObservableValue<? extends Worker.State> observable, Worker.State oldValue, Worker.State newValue) {
-        if (newValue == Worker.State.FAILED){
-            service.stateProperty().removeListener(this)
-        }
-        if (newValue == Worker.State.SUCCEEDED){
-            LOGGER.debug("-----LISTENER-START----"+getClass().simpleName)
-            def list = service.getValue()
-            LOGGER.debug("Organization list was updated - list: $list")
-            repository.refreshAllDTO(list)
-            service.stateProperty().removeListener(this)
-            LOGGER.debug("Organization list was updated")
-            LOGGER.debug("-----LISTENER-END----")
-        }else {
-            LOGGER.debug("State value is ${newValue}")
-        }
+    void doWhenSucceeded() {
+        LOGGER.debug("-----LISTENER-START----"+getClass().simpleName)
+        ObservableList<OrganizationDTO> list = (ObservableList<OrganizationDTO>)service.getValue()
+        LOGGER.debug("Organization list was updated - list: $list")
+        repository.refreshAllDTO(list)
+        LOGGER.debug("Organization list was updated")
+        LOGGER.debug("-----LISTENER-END----")
     }
+
+
 }
