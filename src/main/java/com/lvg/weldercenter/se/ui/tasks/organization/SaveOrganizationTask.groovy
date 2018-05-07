@@ -5,6 +5,7 @@ import com.lvg.weldercenter.se.models.Organization
 import com.lvg.weldercenter.se.services.OrganizationService
 import com.lvg.weldercenter.se.ui.dto.OrganizationDTO
 import com.lvg.weldercenter.se.ui.tasks.TaskConstants
+import javafx.application.Platform
 import javafx.concurrent.Task
 import org.apache.log4j.Logger
 import org.springframework.beans.factory.annotation.Autowired
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Component
 class SaveOrganizationTask extends Task<OrganizationDTO> implements TaskConstants{
     private static final Logger LOGGER = Logger.getLogger(SaveOrganizationTask.class)
 
+
     @Autowired
     OrganizationService organizationService
 
@@ -24,7 +26,7 @@ class SaveOrganizationTask extends Task<OrganizationDTO> implements TaskConstant
         this.organizationDTO = organizationDTO
     }
 
-    private OrganizationDTO organizationDTO
+    private final OrganizationDTO organizationDTO
 
 
     @Override
@@ -33,9 +35,19 @@ class SaveOrganizationTask extends Task<OrganizationDTO> implements TaskConstant
             updateTitle(SAVE_ORGANIZATION_DTO_TASK_TITLE_MESSAGE)
             Organization organization  = organizationService.save(organizationDTO.getOrganization())
             updateMessage("Organization with id: ${organization.id} has saved in DB")
-            OrganizationDTO result = new OrganizationDTO(organization)
-            updateValue(result)
-            return result
+            Platform.runLater({
+                organizationDTO.organization.id = organization.id
+                organizationDTO.organization.name = organization.name
+                organizationDTO.organization.phone = organization.phone
+                organizationDTO.organization.address = organization.address
+
+                organizationDTO.name = organization.name
+                organizationDTO.phone = organization.phone
+                organizationDTO.address = organization.address
+
+            })
+
+            return organizationDTO
         }catch(Exception ex){
             LOGGER.warn("There is exception during saving organization: ${organizationDTO} ex: ${ex.getMessage()}" )
             throw new WelderCenterException(ex.getMessage())

@@ -39,7 +39,7 @@ abstract class GenericServiceChangeStateListener implements ChangeListener<Worke
 
     @Override
     void changed(ObservableValue<? extends Worker.State> observable, Worker.State oldValue, Worker.State newValue) {
-        if (loadingView == null) {
+        if (needToShowLoadingView && loadingView == null) {
             loadingView == mainFrameController.getLoadingView(service)
         }
         if (newValue == FAILED){
@@ -50,7 +50,7 @@ abstract class GenericServiceChangeStateListener implements ChangeListener<Worke
             doWhenSucceeded()
             removeListener()
         }
-        if (needToShowLoadingView && isShowingState(newValue)){
+        if (loadingView != null && needToShowLoadingView && isShowingState(newValue)){
             loadingView.hide()
         }
     }
