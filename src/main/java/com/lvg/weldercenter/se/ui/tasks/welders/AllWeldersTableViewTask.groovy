@@ -3,6 +3,9 @@ package com.lvg.weldercenter.se.ui.tasks.welders
 import com.lvg.weldercenter.se.services.WelderService
 import com.lvg.weldercenter.se.ui.dto.WelderTableViewDTO
 import com.lvg.weldercenter.se.ui.tasks.TaskConstants
+import javafx.application.Platform
+import javafx.beans.property.ReadOnlyObjectProperty
+import javafx.beans.property.ReadOnlyObjectWrapper
 import javafx.collections.FXCollections
 import javafx.collections.ObservableList
 import javafx.concurrent.Task
@@ -17,10 +20,20 @@ class AllWeldersTableViewTask extends Task<ObservableList<WelderTableViewDTO>> i
     @Autowired
     WelderService welderService
 
+    private ReadOnlyObjectWrapper<ObservableList<WelderTableViewDTO>> partialResults =
+            new ReadOnlyObjectWrapper<>(this, "partialResults",
+                    FXCollections.observableArrayList(new ArrayList<WelderTableViewDTO>()))
+
+    final ObservableList<WelderTableViewDTO> getPartialResults() {
+        return partialResults.get()
+    }
+
+    final ReadOnlyObjectProperty<ObservableList<WelderTableViewDTO>> partialResultsProperty() {
+        partialResults.getReadOnlyProperty()
+    }
 
     @Override
     protected ObservableList<WelderTableViewDTO> call() throws Exception {
-        ObservableList<WelderTableViewDTO> results = FXCollections.observableArrayList()
         updateTitle(ALL_WELDERS_TASK_TITLE_MESSAGE)
 
         long count = welderService.count()
@@ -29,16 +42,17 @@ class AllWeldersTableViewTask extends Task<ObservableList<WelderTableViewDTO>> i
 
         for(WelderTableViewDTO welder : welderService.getAllWeldersTableViewDTO()){
             if (this.isCancelled()){
+                updateMessage(TASK_CANCELED_MESSAGE)
                 break
             }
-            results.add(welder)
-            counter++
+            final WelderTableViewDTO welderTableViewDTO = welder
+            Platform.runLater({getPartialResults().add(welderTableViewDTO)})
 
+            counter++
             updateMessage("Added $counter welders to the list")
-            updateValue(FXCollections.unmodifiableObservableList(results))
             updateProgress(counter, count)
         }
-        return results
+        return partialResults.get()
     }
 
     @Override

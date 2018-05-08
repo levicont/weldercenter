@@ -4,6 +4,9 @@ import com.lvg.weldercenter.se.models.Welder
 import com.lvg.weldercenter.se.services.WelderService
 import com.lvg.weldercenter.se.ui.dto.WelderDTO
 import com.lvg.weldercenter.se.ui.tasks.TaskConstants
+import javafx.application.Platform
+import javafx.beans.property.ReadOnlyObjectProperty
+import javafx.beans.property.ReadOnlyObjectWrapper
 import javafx.collections.FXCollections
 import javafx.collections.ObservableList
 import javafx.concurrent.Task
@@ -18,30 +21,38 @@ class AllWelderTask extends Task<ObservableList<WelderDTO>> implements TaskConst
     @Autowired
     WelderService welderService
 
+    private ReadOnlyObjectWrapper<ObservableList<WelderDTO>> partialResults =
+            new ReadOnlyObjectWrapper<>(this, "partialResults",
+                    FXCollections.observableArrayList(new ArrayList<WelderDTO>()))
+
+    final ObservableList<WelderDTO> getPartialResults() {
+        return partialResults.get()
+    }
+
+    final ReadOnlyObjectProperty<ObservableList<WelderDTO>> partialResultsProperty() {
+        partialResults.getReadOnlyProperty()
+    }
+
     @Override
     protected ObservableList<WelderDTO> call() throws Exception {
-        ObservableList<WelderDTO> results = FXCollections.observableArrayList()
         updateTitle(ALL_WELDERS_TASK_TITLE_MESSAGE)
 
         long count = welderService.count()
         long counter = 0
 
-
-
         for(Welder welder : welderService.getAll()){
             if (this.isCancelled()){
+                updateMessage(TASK_CANCELED_MESSAGE)
                 break
             }
-            def welderUI = new WelderDTO(welder)
-            results.add(welderUI)
+            final WelderDTO welderDTO = new WelderDTO(welder)
+            Platform.runLater({getPartialResults().add(welderDTO)})
             counter++
 
             updateMessage("Added $counter welders to the list")
-            updateValue(FXCollections.unmodifiableObservableList(results))
             updateProgress(counter, count)
         }
-
-        return results
+        return partialResults.get()
     }
 
     @Override

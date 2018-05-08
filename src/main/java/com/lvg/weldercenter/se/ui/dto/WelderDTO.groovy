@@ -35,19 +35,8 @@ class WelderDTO extends GenericModelDTO<Welder> implements ModelDTO {
 
     WelderDTO(final Welder welder) {
         validateModel(welder)
-        originalWelderProperty.set(welder)
-
-        idProperty.set(welder.id == null ? NULL_ID_FIELD_DEFAULT : welder.id)
-        nameProperty.set(welder.name)
-        surnameProperty.set(welder.surname)
-        secondNameProperty.set(welder.secondName)
-        documentNumberProperty.set(welder.documentNumber)
-        addressProperty.set(welder.address)
-        birthdayProperty.set(welder.birthday)
-        dateBeginProperty.set(welder.dateBegin)
-        educationProperty.set(welder.education)
-        qualificationProperty.set(welder.qualification)
-        jobProperty.set(welder.job)
+        this.welder = welder
+        updateWelderDTO(welder)
         organizationProperty.set(welder.organization != null ? new OrganizationDTO(welder.organization) :
                 OrganizationDTO.getDefaultOrganizationDTO())
         StringBinding orgNameBinding = new When(organizationProperty.isNull())
@@ -56,7 +45,6 @@ class WelderDTO extends GenericModelDTO<Welder> implements ModelDTO {
         StringBinding birthdayBinding = new When(birthdayProperty.isNull())
                 .then('')
                 .otherwise(birthdayProperty.get().format(DateTimeFormatter.ofPattern(DATE_FORMAT_PATTERN)))
-        this.welder = welder
         organizationNameProperty.bind(orgNameBinding)
         birthdayFormatProperty.bind(birthdayBinding)
         addListeners()
@@ -368,6 +356,38 @@ class WelderDTO extends GenericModelDTO<Welder> implements ModelDTO {
         welder.dateBegin = DEFAULT_DATE_PLACEHOLDER
         welder.address = NULL_FIELD_PLACEHOLDER
         return welder
+    }
+
+    void updateWelderDTO(final Welder welder){
+        this.welder.id = welder.id
+        this.welder.name = welder.name
+        this.welder.secondName = welder.secondName
+        this.welder.surname = welder.surname
+        this.welder.birthday = welder.birthday
+        this.welder.documentNumber = welder.documentNumber
+        this.welder.dateBegin = welder.dateBegin
+        this.welder.education = welder.education
+        this.welder.qualification = welder.qualification
+        this.welder.job = welder.job
+        this.welder.address = welder.address
+        this.welder.organization = welder.organization
+
+        originalWelderProperty.set(welder)
+
+        idProperty.set(welder.id == null ? NULL_ID_FIELD_DEFAULT : welder.id)
+        nameProperty.set(welder.name)
+        surnameProperty.set(welder.surname)
+        secondNameProperty.set(welder.secondName)
+        documentNumberProperty.set(welder.documentNumber)
+        addressProperty.set(welder.address)
+        birthdayProperty.set(welder.birthday)
+        dateBeginProperty.set(welder.dateBegin)
+        educationProperty.set(welder.education)
+        qualificationProperty.set(welder.qualification)
+        jobProperty.set(welder.job)
+        organizationProperty.set(welder.organization != null ? new OrganizationDTO(welder.organization) :
+                OrganizationDTO.getDefaultOrganizationDTO())
+
     }
 
 

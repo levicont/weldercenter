@@ -19,7 +19,7 @@ class GetWelderByIdTask extends Task<WelderDTO>{
     @Autowired
     WelderService welderService
 
-    private Long id
+    private final Long id
 
     GetWelderByIdTask(Long id){
         super()
@@ -28,17 +28,20 @@ class GetWelderByIdTask extends Task<WelderDTO>{
 
     @Override
     protected WelderDTO call() throws Exception {
-        LOGGER.debug("---TASK-STARTED---${getClass().getSimpleName()}")
-        updateTitle(GET_WELDER_BY_ID_TASK_TITLE_MESSAGE)
-        Welder welder = welderService.getFull(id)
-        LOGGER.debug("---WELDER-FOUND: ${welder}")
-        LOGGER.debug("---WELDER-HAS-ORGANIZATION: ${welder.organization}")
-        WelderDTO result = new WelderDTO(welder)
-        LOGGER.debug("---WELDER_DTO-RECEIVED: ${result}")
-        LOGGER.debug("---WELDER_DTO has OrganizationDTO : ${result.organizationDTO}")
-        updateValue(result)
-        LOGGER.debug("---TASK-ENDED---${getClass().getSimpleName()}")
-        return result
+        try {
+            LOGGER.debug("---TASK-STARTED---${getClass().getSimpleName()}")
+            updateTitle(GET_WELDER_BY_ID_TASK_TITLE_MESSAGE)
+            final Welder welder = welderService.getFull(id)
+            LOGGER.debug("---WELDER-FOUND: ${welder}")
+            LOGGER.debug("---WELDER-HAS-ORGANIZATION: ${welder.organization}")
+            WelderDTO result = new WelderDTO(welder)
+            LOGGER.debug("---WELDER_DTO-RECEIVED: ${result}")
+            LOGGER.debug("---WELDER_DTO has OrganizationDTO : ${result.organizationDTO}")
+            LOGGER.debug("---TASK-ENDED---${getClass().getSimpleName()}")
+            return result
+        }catch (Exception ex){
+            ex.printStackTrace()
+        }
     }
 
     @Override

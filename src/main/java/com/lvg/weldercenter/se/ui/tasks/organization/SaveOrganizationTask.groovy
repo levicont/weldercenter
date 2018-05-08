@@ -33,7 +33,7 @@ class SaveOrganizationTask extends Task<OrganizationDTO> implements TaskConstant
     protected OrganizationDTO call() throws Exception {
         try {
             updateTitle(SAVE_ORGANIZATION_DTO_TASK_TITLE_MESSAGE)
-            Organization organization  = organizationService.save(organizationDTO.getOrganization())
+            final Organization organization  = organizationService.save(organizationDTO.getOrganization())
             updateMessage("Organization with id: ${organization.id} has saved in DB")
             Platform.runLater({
                 organizationDTO.organization.id = organization.id

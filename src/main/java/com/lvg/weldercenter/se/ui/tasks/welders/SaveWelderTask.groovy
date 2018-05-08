@@ -5,6 +5,7 @@ import com.lvg.weldercenter.se.models.Welder
 import com.lvg.weldercenter.se.services.WelderService
 import com.lvg.weldercenter.se.ui.dto.WelderDTO
 import com.lvg.weldercenter.se.ui.tasks.TaskConstants
+import javafx.application.Platform
 import javafx.concurrent.Task
 import org.apache.log4j.Logger
 import org.springframework.beans.factory.annotation.Autowired
@@ -24,19 +25,20 @@ class SaveWelderTask extends Task<WelderDTO> implements TaskConstants{
         this.welderDTO = welderDTO
     }
 
-    private WelderDTO welderDTO
+    private final WelderDTO welderDTO
 
 
     @Override
     protected WelderDTO call() throws Exception {
         try {
             updateTitle(SAVE_WELDER_DTO_TASK_TITLE_MESSAGE)
-            Welder welder  = welderService.save(welderDTO.getWelder())
+            final Welder welder  = welderService.save(welderDTO.getWelder())
             LOGGER.debug("WelderDTO with id: ${welder.id} has saved in DB")
             updateMessage("WelderDTO with id: ${welder.id} has saved in DB")
-            WelderDTO result = new WelderDTO(welder)
-            updateValue(result)
-            return result
+            Platform.runLater({
+                welderDTO.updateWelderDTO(welder)
+            })
+            return welderDTO
         }catch(Exception ex){
             LOGGER.warn("There is exception during saving welder: ${welderDTO} ex: ${ex.getMessage()}" )
             throw new WelderCenterException(ex.getMessage())
