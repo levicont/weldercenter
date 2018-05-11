@@ -113,6 +113,7 @@ class WelderTableController implements Initializable {
         welderTableView.selectionModel.selectedItemProperty().addListener(new ChangeListener<WelderTableViewDTO>() {
             @Override
             void changed(ObservableValue<? extends WelderTableViewDTO> observable, WelderTableViewDTO oldValue, WelderTableViewDTO newValue) {
+                LOGGER.debug("welderTableView Selected item change state listener: oldValue: ${oldValue} \n\t newValue ${newValue}")
                 doLoadSelectedWelderFromDB()
             }
         })
@@ -227,9 +228,8 @@ class WelderTableController implements Initializable {
         LOGGER.debug("selectedWelder is presented in DB ")
         Printer.logDTO(WelderTableViewDTO.class, selectedWelder)
         LOGGER.debug("Try to start loadingWelderByIdService")
-        loadingWelderByIdService.setId(selectedWelder.id)
         loadingWelderByIdService.stateProperty().addListener(loadWelderByIdChangeStateListener)
-        ServiceUtils.startService(loadingWelderByIdService)
+        ServiceUtils.startParameterService(loadingWelderByIdService, selectedWelder.id)
 
     }
 }

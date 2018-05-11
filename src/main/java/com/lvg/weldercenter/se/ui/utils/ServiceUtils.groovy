@@ -1,6 +1,7 @@
 package com.lvg.weldercenter.se.ui.utils
 
 import com.lvg.weldercenter.se.ui.services.OnceStartedService
+import com.lvg.weldercenter.se.ui.services.ParameterUIService
 import javafx.concurrent.Service
 
 class ServiceUtils {
@@ -14,6 +15,11 @@ class ServiceUtils {
             s.start()
         }
     }
+
+   static <T> void startParameterService(ParameterUIService service, T parameter){
+            service.initParameter(parameter)
+            startService(service)
+   }
 
 
 }

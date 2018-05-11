@@ -70,16 +70,14 @@ class OrganizationDTORepositoryImpl implements OrganizationDTORepository{
             return
         }
 
-
         allData.stream().forEach({org ->
             if (org.id == organizationDTO.id){
                 updatedOrganization = org
             }
         })
 
-        saveOrganizatioDTOService.setOrganizationDTO(organizationDTO)
         saveOrganizatioDTOService.stateProperty().addListener(saveOrganizationDTOChangeStateListener)
-        ServiceUtils.startService(saveOrganizatioDTOService)
+        ServiceUtils.startParameterService(saveOrganizatioDTOService, updatedOrganization)
     }
     private static boolean validOrganizationDTO(OrganizationDTO organizationDTO){
         if (organizationDTO == null || organizationDTO.nameProperty().get().isEmpty()) return false
@@ -139,6 +137,4 @@ class OrganizationDTORepositoryImpl implements OrganizationDTORepository{
             return nameLowerCase.contains(checkedNameProperty.get().toLowerCase())
         }
     }
-
-
 }

@@ -66,7 +66,6 @@ class WeldersRepositoryImpl implements WelderDTORepository {
         removeUnsavedItems()
         loadingWeldersForTableViewService.stateProperty().addListener(loadWeldersForTableViewChangeStateListener)
         ServiceUtils.startService(loadingWeldersForTableViewService)
-        LOGGER.debug("Load welders performed")
     }
 
     @Override
@@ -98,10 +97,8 @@ class WeldersRepositoryImpl implements WelderDTORepository {
     }
 
     void saveWelderDTO(WelderDTO welderDTO){
-
-        saveWelderDTOService.setWelderDTO(welderDTO)
         saveWelderDTOService.stateProperty().addListener(saveWelderDTOChangeStateListener)
-        ServiceUtils.startService(saveWelderDTOService)
+        ServiceUtils.startParameterService(saveWelderDTOService,welderDTO)
     }
 
     void removeUnsavedItems(){
