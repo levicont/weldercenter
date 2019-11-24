@@ -5,7 +5,6 @@ import com.lvg.weldercenter.se.models.Journal
 import com.lvg.weldercenter.se.models.PersonalProtocol
 import com.lvg.weldercenter.se.models.Welder
 import com.lvg.weldercenter.se.services.JournalService
-import com.lvg.weldercenter.se.services.NDTDocumentService
 import com.lvg.weldercenter.se.services.PersonalProtocolService
 import com.lvg.weldercenter.se.services.WeldPatternService
 import com.lvg.weldercenter.se.services.WelderService
@@ -41,7 +40,7 @@ class PersonalProtocolTest extends GenericModelTest{
             pp.weldPatterns.add(weldPattern)
 
             personalProtocolService.save(pp)
-            weldPatternService.save(weldPattern)
+                weldPatternService.save(weldPattern)
             PP_ID = pp.id
 
         assert PP_ID != null
