@@ -30,12 +30,12 @@ class Welder implements Serializable{
     @Column(name = "SECOND_NAME")
     String secondName
 
-    @Convert(converter = LocalDateConverter.class)
     @Column(name = "BIRTHDAY")
+    @Convert(converter = LocalDateConverter.class)
     LocalDate birthday
 
-    @Convert(converter = LocalDateConverter.class)
     @Column(name = "DATE_BEGIN")
+    @Convert(converter = LocalDateConverter.class)
     LocalDate dateBegin
 
     @Size(max = 10)

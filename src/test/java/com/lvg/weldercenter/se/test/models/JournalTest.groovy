@@ -1,92 +1,76 @@
 package com.lvg.weldercenter.se.test.models
 
 import com.lvg.weldercenter.se.models.Journal
+import com.lvg.weldercenter.se.services.JournalService
 import org.junit.Test
+import org.springframework.beans.factory.annotation.Autowired
 
 import java.time.LocalDate
 
 class JournalTest extends GenericModelTest{
-
+    @Autowired
+    JournalService service
 
     @Override
     @Test
     void insertItemTest() {
         def JOURNAL_ID
-        callInTransaction {
-            def em = EMF.createEntityManager()
+
             Journal journal = getJournal()
-            em.persist(journal)
+            service.save(journal)
             JOURNAL_ID = journal.id
-            return em
-        }
+
         assert JOURNAL_ID != null
 
-        callInTransaction {
-            def em = EMF.createEntityManager()
-            def chkJournal = em.find(Journal.class, JOURNAL_ID)
+
+            def chkJournal = service.get(JOURNAL_ID)
             assert chkJournal.id != null
             assert chkJournal.number == '17/001'
             assert chkJournal.dateBegin == LocalDate.of(2017, 05, 25)
             assert chkJournal.dateEnd == journal.dateBegin.plusWeeks(1)
-            return em
-        }
+
     }
 
     @Override
     @Test
     void updateItemTest() {
         def JOURNAL_ID
-        callInTransaction {
-            def em = EMF.createEntityManager()
+
             Journal journal = getJournal()
-            em.persist(journal)
+            service.save(journal)
             JOURNAL_ID = journal.id
-            return em
-        }
+
         assert JOURNAL_ID != null
 
-        callInTransaction {
-            def em = EMF.createEntityManager()
-            Journal journalUpd = em.find(Journal.class, JOURNAL_ID)
-            journalUpd.number = '17/002'
-            em.persist(journalUpd)
-            return em
-        }
 
-        callInTransaction {
-            def em = EMF.createEntityManager()
-            Journal chkJournal = em.find(Journal.class, JOURNAL_ID)
+            Journal journalUpd = service.get(JOURNAL_ID)
+            journalUpd.number = '17/002'
+            service.save(journalUpd)
+
+
+
+            Journal chkJournal = service.get(JOURNAL_ID)
             assert chkJournal.number == '17/002'
-            return em
-        }
+
     }
 
     @Override
     @Test
     void deleteItemTest() {
         def JOURNAL_ID
-        callInTransaction {
-            def em = EMF.createEntityManager()
+
             Journal journal = getJournal()
-            em.persist(journal)
+            service.save(journal)
             JOURNAL_ID = journal.id
-            return em
-        }
+
         assert JOURNAL_ID != null
 
-        callInTransaction {
-            def em = EMF.createEntityManager()
-            Journal journalUpd = em.find(Journal.class, JOURNAL_ID)
-            em.remove(journalUpd)
-            return em
-        }
 
-        callInTransaction {
-            def em = EMF.createEntityManager()
-            Journal chkJournal = em.find(Journal.class, JOURNAL_ID)
+            Journal journalUpd = service.get(JOURNAL_ID)
+            service.delete(journalUpd)
+
+            Journal chkJournal = service.get(JOURNAL_ID)
             assert chkJournal == null
-            return em
-        }
 
     }
 

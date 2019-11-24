@@ -1,29 +1,26 @@
 package com.lvg.weldercenter.se.test.models
 
 import com.lvg.weldercenter.se.models.Education
+import com.lvg.weldercenter.se.services.EducationService
 import org.junit.Test
+import org.springframework.beans.factory.annotation.Autowired
 
-class EducationTest extends GenericModelTest{
+class EducationTest extends GenericModelTest {
+    @Autowired
+    EducationService service
 
     @Override
     @Test
     void insertItemTest() {
         def EDUCATION_ID
-        callInTransaction {
-            def em = EMF.createEntityManager()
-            Education education = getEducation()
-            em.persist(education)
-            EDUCATION_ID = education.id
-            return em
-        }
+        Education education = getEducation()
+        service.save(education)
+        EDUCATION_ID = education.id
 
-        callInTransaction {
-            def em = EMF.createEntityManager()
-            Education chkEducation = em.find(Education.class, EDUCATION_ID)
-            assert chkEducation.id != null
-            assert chkEducation.education == 'среднее-специальное'
-            return em
-        }
+        Education chkEducation = service.get(EDUCATION_ID)
+        assert chkEducation.id != null
+        assert chkEducation.education == 'среднее-специальное'
+
     }
 
     @Override
@@ -31,29 +28,19 @@ class EducationTest extends GenericModelTest{
     void updateItemTest() {
         def EDUCATION_ID
 
-        callInTransaction {
-            def em = EMF.createEntityManager()
-            Education education = getEducation()
-            em.persist(education)
-            EDUCATION_ID = education.id
-            return em
-        }
+        Education education = getEducation()
+        service.save(education)
+        EDUCATION_ID = education.id
+
         assert EDUCATION_ID != null
 
-        callInTransaction {
-            def em = EMF.createEntityManager()
-            Education educationUpd = em.find(Education.class, EDUCATION_ID)
-            educationUpd.education = 'high'
-            em.persist(educationUpd)
-            return em
-        }
+        Education educationUpd = service.get(EDUCATION_ID)
+        educationUpd.education = 'high'
+        service.save(educationUpd)
 
-        callInTransaction {
-            def em = EMF.createEntityManager()
-            Education chkEducation = em.find(Education.class, EDUCATION_ID)
-            assert chkEducation.education == 'high'
-            return em
-        }
+
+        Education chkEducation = service.get(EDUCATION_ID)
+        assert chkEducation.education == 'high'
     }
 
     @Override
@@ -61,28 +48,17 @@ class EducationTest extends GenericModelTest{
     void deleteItemTest() {
         def EDUCATION_ID
 
-        callInTransaction {
-            def em = EMF.createEntityManager()
-            Education education = getEducation()
-            em.persist(education)
-            EDUCATION_ID = education.id
-            return em
-        }
+        Education education = getEducation()
+        service.save(education)
+        EDUCATION_ID = education.id
+
         assert EDUCATION_ID != null
 
-        callInTransaction {
-            def em = EMF.createEntityManager()
-            Education educationUpd = em.find(Education.class, EDUCATION_ID)
-            em.remove(educationUpd)
-            return em
-        }
+        Education educationUpd = service.get(EDUCATION_ID)
+        service.delete(educationUpd)
 
-        callInTransaction {
-            def em = EMF.createEntityManager()
-            Education chkEducation = em.find(Education.class, EDUCATION_ID)
-            assert chkEducation == null
-            return em
-        }
+        Education chkEducation = service.get(EDUCATION_ID)
+        assert chkEducation == null
     }
 
     @Override

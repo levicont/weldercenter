@@ -1,31 +1,30 @@
 package com.lvg.weldercenter.se.test.models
 
 import com.lvg.weldercenter.se.models.Electrode
+import com.lvg.weldercenter.se.services.ElectrodeService
 import org.junit.Test
+import org.springframework.beans.factory.annotation.Autowired
 
 class ElectrodeTest extends GenericModelTest{
+
+    @Autowired
+    ElectrodeService service
 
     @Override
     @Test
     void insertItemTest() {
         def ELECTRODE_ID
 
-        callInTransaction {
-            def em = EMF.createEntityManager()
+
             Electrode electrode = getElectrode()
-            em.persist(electrode)
+            service.save(electrode)
             ELECTRODE_ID = electrode.id
-            return em
-        }
+
         assert ELECTRODE_ID != null
 
-        callInTransaction {
-            def em = EMF.createEntityManager()
-            Electrode chkElectrode = em.find(Electrode.class, ELECTRODE_ID)
+            Electrode chkElectrode = service.get(ELECTRODE_ID)
             assert chkElectrode.id != null
             assert chkElectrode.type == 'АНО-21'
-            return em
-        }
 
 
 
@@ -35,57 +34,35 @@ class ElectrodeTest extends GenericModelTest{
     @Test
     void updateItemTest() {
         def ELECTRODE_ID
-        callInTransaction {
-            def em = EMF.createEntityManager()
+
             Electrode electrode = getElectrode()
-            em.persist(electrode)
+            service.save(electrode)
             ELECTRODE_ID = electrode.id
-            return em
-        }
+
         assert ELECTRODE_ID != null
 
-        callInTransaction {
-            def em = EMF.createEntityManager()
-            Electrode electrodeUpd = em.find(Electrode.class, ELECTRODE_ID)
+            Electrode electrodeUpd = service.get(ELECTRODE_ID)
             electrodeUpd.type = 'УОНИ'
-            em.persist(electrodeUpd)
-            return em
-        }
+            service.save(electrodeUpd)
 
-        callInTransaction {
-            def em = EMF.createEntityManager()
-            Electrode chkElectrode = em.find(Electrode.class, ELECTRODE_ID)
+            Electrode chkElectrode = service.get(ELECTRODE_ID)
             assert chkElectrode.type == 'УОНИ'
-            return em
-        }
     }
 
     @Override
     @Test
     void deleteItemTest() {
         def ELECTRODE_ID
-        callInTransaction {
-            def em = EMF.createEntityManager()
             Electrode electrode = getElectrode()
-            em.persist(electrode)
+            service.save(electrode)
             ELECTRODE_ID = electrode.id
-            return em
-        }
         assert ELECTRODE_ID != null
 
-        callInTransaction {
-            def em = EMF.createEntityManager()
-            Electrode electrodeUpd = em.find(Electrode.class, ELECTRODE_ID)
-            em.remove(electrodeUpd)
-            return em
-        }
+            Electrode electrodeUpd = service.get(ELECTRODE_ID)
+            service.delete(electrodeUpd)
 
-        callInTransaction {
-            def em = EMF.createEntityManager()
-            Electrode chkElectrode = em.find(Electrode.class, ELECTRODE_ID)
+            Electrode chkElectrode = service.get(ELECTRODE_ID)
             assert chkElectrode == null
-            return em
-        }
     }
 
     @Override

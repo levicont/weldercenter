@@ -1,9 +1,6 @@
 package com.lvg.weldercenter.se.models
 
-import com.lvg.weldercenter.se.converters.LocalDateConverter
-
 import javax.persistence.Column
-import javax.persistence.Convert
 import javax.persistence.Embeddable
 import javax.persistence.EnumType
 import javax.persistence.Enumerated
@@ -17,7 +14,6 @@ class RadiationTest implements Serializable{
     String protocolNumber
 
     @Column(name = 'RT_PROTOCOL_DATE')
-    @Convert(converter = LocalDateConverter.class)
     LocalDate protocolDate = LocalDate.now()
 
     @Column(name = 'RT_SENSITIVITY')

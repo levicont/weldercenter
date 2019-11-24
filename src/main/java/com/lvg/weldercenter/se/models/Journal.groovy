@@ -17,12 +17,12 @@ class Journal implements Serializable{
     @Column(name = 'NUMBER')
     String number
 
-    @Convert(converter = LocalDateConverter.class)
     @Column(name = 'DATE_BEGIN')
+    @Convert(converter = LocalDateConverter.class)
     LocalDate dateBegin
 
-    @Convert(converter = LocalDateConverter.class)
     @Column(name = 'DATE_END')
+    @Convert(converter = LocalDateConverter.class)
     LocalDate dateEnd
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)

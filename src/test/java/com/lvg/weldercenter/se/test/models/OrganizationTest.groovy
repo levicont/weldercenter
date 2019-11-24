@@ -1,95 +1,69 @@
 package com.lvg.weldercenter.se.test.models
 
 import com.lvg.weldercenter.se.models.Organization
+import com.lvg.weldercenter.se.services.OrganizationService
 import org.junit.Test
+import org.springframework.beans.factory.annotation.Autowired
 
 
-class OrganizationTest extends GenericModelTest{
+class OrganizationTest extends GenericModelTest {
+
+    @Autowired
+    OrganizationService service
 
     @Test
-    void insertItemTest(){
+    void insertItemTest() {
         def ORGANIZATION_ID
-        callInTransaction {
-            def em = EMF.createEntityManager()
-            Organization organization = getOrganization()
-            em.persist(organization)
-            ORGANIZATION_ID = organization.id
-            return em
-        }
+        Organization organization = getOrganization()
+        service.save(organization)
+        ORGANIZATION_ID = organization.id
         assert ORGANIZATION_ID != null
 
-        callInTransaction {
-            def em = EMF.createEntityManager()
-            Organization organization1 = em.find(Organization.class, ORGANIZATION_ID)
-            assert organization1 != null
-            assert organization1.id != null
-            assert organization1.name == 'IBM'
-            assert organization1.address == 'New-York'
-            assert organization1.phone == '(0595)466-15-59'
-            return em
-        }
+
+        Organization organization1 = service.get(ORGANIZATION_ID)
+        assert organization1 != null
+        assert organization1.id != null
+        assert organization1.name == 'IBM'
+        assert organization1.address == 'New-York'
+        assert organization1.phone == '(0595)466-15-59'
 
 
     }
 
     @Test
-    void updateItemTest(){
+    void updateItemTest() {
         def ORGANIZATION_ID
-        callInTransaction {
-            def em = EMF.createEntityManager()
-            Organization organization = getOrganization()
-            em.persist(organization)
-            ORGANIZATION_ID = organization.id
-            return em
-        }
+        Organization organization = getOrganization()
+        service.save(organization)
+        ORGANIZATION_ID = organization.id
         assert ORGANIZATION_ID != null
 
-        callInTransaction {
-            def em = EMF.createEntityManager()
-            Organization organizationUpd = em.find(Organization.class, ORGANIZATION_ID)
-            organizationUpd.name = 'Microsoft'
-            em.persist(organizationUpd)
-            return em
-        }
+        Organization organizationUpd = service.get(ORGANIZATION_ID)
+        organizationUpd.name = 'Microsoft'
+        service.save(organizationUpd)
 
-        callInTransaction {
-            def em = EMF.createEntityManager()
-            Organization chkOrganization = em.find(Organization.class, ORGANIZATION_ID)
-            assert chkOrganization.name == 'Microsoft'
-            return em
-        }
+        Organization chkOrganization = service.get(ORGANIZATION_ID)
+        assert chkOrganization.name == 'Microsoft'
     }
 
 
     @Test
-    void deleteItemTest(){
+    void deleteItemTest() {
         def ORGANIZATION_ID
-        callInTransaction {
-            def em = EMF.createEntityManager()
-            Organization organization = getOrganization()
-            em.persist(organization)
-            ORGANIZATION_ID = organization.id
-            return em
-        }
+        Organization organization = getOrganization()
+        service.save(organization)
+        ORGANIZATION_ID = organization.id
         assert ORGANIZATION_ID != null
 
-        callInTransaction {
-            def em = EMF.createEntityManager()
-            Organization organizationUpd = em.find(Organization.class, ORGANIZATION_ID)
-            em.remove(organizationUpd)
-            return em
-        }
+        Organization organizationUpd = service.get(ORGANIZATION_ID)
+        service.delete(organizationUpd)
 
-        callInTransaction {
-            def em = EMF.createEntityManager()
-            Organization chkOrganization = em.find(Organization.class, ORGANIZATION_ID)
-            assert chkOrganization == null
-            return em
-        }
+        Organization chkOrganization = service.get(ORGANIZATION_ID)
+        assert chkOrganization == null
     }
 
     @Test
-    void equalsHashCodeTest(){
+    void equalsHashCodeTest() {
         def org1 = getOrganization()
         def org2 = getOrganization()
 
@@ -110,7 +84,7 @@ class OrganizationTest extends GenericModelTest{
     }
 
     @Test
-    void toStringTest(){
+    void toStringTest() {
         def org = getOrganization()
         assert org.toString() == 'IBM, New-York, (0595)466-15-59'
     }

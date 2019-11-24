@@ -1,87 +1,69 @@
 package com.lvg.weldercenter.se.test.models
 
 import com.lvg.weldercenter.se.models.WeldWire
+import com.lvg.weldercenter.se.services.WeldWireService
 import org.junit.Test
+import org.springframework.beans.factory.annotation.Autowired
 
-class WeldWireTest extends GenericModelTest{
+class WeldWireTest extends GenericModelTest {
+
+    @Autowired
+    WeldWireService service
 
     @Override
     @Test
     void insertItemTest() {
         def WELD_WIRE_ID
-        callInTransaction {
-            def em = EMF.createEntityManager()
-            WeldWire weldWire = getWeldWire()
-            em.persist(weldWire)
-            WELD_WIRE_ID = weldWire.id
-            return em
-        }
+
+        WeldWire weldWire = getWeldWire()
+        service.save(weldWire)
+        WELD_WIRE_ID = weldWire.id
+
         assert WELD_WIRE_ID != null
 
-        callInTransaction {
-            def em = EMF.createEntityManager()
-            def weldWire1 = em.find(WeldWire.class, WELD_WIRE_ID)
-            assert weldWire1.id != null
-            assert weldWire1.type == 'св08Г2С'
-            return em
-        }
+        def weldWire1 = service.get(WELD_WIRE_ID)
+        assert weldWire1.id != null
+        assert weldWire1.type == 'св08Г2С'
+
     }
 
     @Override
     @Test
     void updateItemTest() {
         def WELD_WIRE_ID
-        callInTransaction {
-            def em = EMF.createEntityManager()
-            WeldWire weldWire = getWeldWire()
-            em.persist(weldWire)
-            WELD_WIRE_ID = weldWire.id
-            return em
-        }
+
+        WeldWire weldWire = getWeldWire()
+        service.save(weldWire)
+        WELD_WIRE_ID = weldWire.id
+
         assert WELD_WIRE_ID != null
 
-        callInTransaction {
-            def em = EMF.createEntityManager()
-            WeldWire weldWire1Upd = em.find(WeldWire.class, WELD_WIRE_ID)
-            weldWire1Upd.type = 'св08Г'
-            em.persist(weldWire1Upd)
-            return em
-        }
+        WeldWire weldWire1Upd = service.get(WELD_WIRE_ID)
+        weldWire1Upd.type = 'св08Г'
+        service.save(weldWire1Upd)
 
-        callInTransaction {
-            def em = EMF.createEntityManager()
-            WeldWire chkWeldWire = em.find(WeldWire.class, WELD_WIRE_ID)
-            assert chkWeldWire.type == 'св08Г'
-            return em
-        }
+        WeldWire chkWeldWire = service.get(WELD_WIRE_ID)
+        assert chkWeldWire.type == 'св08Г'
+
     }
 
     @Override
     @Test
     void deleteItemTest() {
         def WELD_WIRE_ID
-        callInTransaction {
-            def em = EMF.createEntityManager()
-            WeldWire weldWire = getWeldWire()
-            em.persist(weldWire)
-            WELD_WIRE_ID = weldWire.id
-            return em
-        }
+
+        WeldWire weldWire = getWeldWire()
+        service.save(weldWire)
+        WELD_WIRE_ID = weldWire.id
+
         assert WELD_WIRE_ID != null
 
-        callInTransaction {
-            def em = EMF.createEntityManager()
-            WeldWire weldWireUpd = em.find(WeldWire.class, WELD_WIRE_ID)
-            em.remove(weldWireUpd)
-            return em
-        }
+        WeldWire weldWireUpd = service.get(WELD_WIRE_ID)
+        service.delete(weldWireUpd)
 
-        callInTransaction {
-            def em = EMF.createEntityManager()
-            WeldWire chkWeldWire = em.find(WeldWire.class, WELD_WIRE_ID)
-            assert chkWeldWire == null
-            return em
-        }
+        WeldWire chkWeldWire = service.get(WELD_WIRE_ID)
+        assert chkWeldWire == null
+
     }
 
     @Override

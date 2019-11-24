@@ -15,7 +15,7 @@ abstract class GenericGUITest extends ApplicationTest implements GUIConstants{
     @BeforeClass
     static void setupClass(){
         System.setProperty("testfx.robot", "glass")
-        System.setProperty('testfx.setup.timeout', '100000')
+        //System.setProperty('testfx.setup.timeout', '100000')
         System.setProperty("java.awt.headless", "true")
         if (!FxToolkit.isFXApplicationThreadRunning()){
             launch(ApplicationFX.class)

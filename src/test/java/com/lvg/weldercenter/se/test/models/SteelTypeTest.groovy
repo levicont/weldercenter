@@ -2,90 +2,71 @@ package com.lvg.weldercenter.se.test.models
 
 import com.lvg.weldercenter.se.models.SteelGroup
 import com.lvg.weldercenter.se.models.SteelType
+import com.lvg.weldercenter.se.services.SteelTypeService
 import org.junit.Test
+import org.springframework.beans.factory.annotation.Autowired
 
 
 class SteelTypeTest extends GenericModelTest{
+
+    @Autowired
+    SteelTypeService service
 
     @Override
     @Test
     void insertItemTest() {
         def STEEL_TYPE_ID
-        callInTransaction {
-            def em = EMF.createEntityManager()
             SteelType steelType = getSteelType()
-            em.persist(steelType)
+            service.save(steelType)
             STEEL_TYPE_ID = steelType.id
-            return em
-        }
+
         assert STEEL_TYPE_ID != null
 
-        callInTransaction {
-            def em = EMF.createEntityManager()
-            SteelType steelType1 = em.find(SteelType.class, STEEL_TYPE_ID)
+            SteelType steelType1 = service.get(STEEL_TYPE_ID)
             assert steelType1.id != null
             assert steelType1.type == 'сталь 20'
-            return em
-        }
+
     }
 
     @Override
     @Test
     void updateItemTest() {
         def STEEL_TYPE_ID
-        callInTransaction {
-            def em = EMF.createEntityManager()
             SteelType steelType = getSteelType()
-            em.persist(steelType)
+            service.save(steelType)
             STEEL_TYPE_ID = steelType.id
-            return em
-        }
+
         assert STEEL_TYPE_ID != null
 
-        callInTransaction {
-            def em = EMF.createEntityManager()
-            SteelType steelTypeUpd = em.find(SteelType.class, STEEL_TYPE_ID)
+            SteelType steelTypeUpd = service.get(STEEL_TYPE_ID)
             steelTypeUpd.type = 'сталь 40'
             steelTypeUpd.steelGroup = SteelGroup.W02
-            em.persist(steelTypeUpd)
-            return em
-        }
+            service.save(steelTypeUpd)
 
-        callInTransaction {
-            def em = EMF.createEntityManager()
-            SteelType chkSteelType = em.find(SteelType.class, STEEL_TYPE_ID)
+
+            SteelType chkSteelType = service.get(STEEL_TYPE_ID)
             assert chkSteelType.type == 'сталь 40'
             assert chkSteelType.steelGroup == SteelGroup.W02
-            return em
-        }
+
     }
 
     @Override
     @Test
     void deleteItemTest() {
         def STEEL_TYPE_ID
-        callInTransaction {
-            def em = EMF.createEntityManager()
             SteelType steelType = getSteelType()
-            em.persist(steelType)
+            service.save(steelType)
             STEEL_TYPE_ID = steelType.id
-            return em
-        }
+
         assert STEEL_TYPE_ID != null
 
-        callInTransaction {
-            def em = EMF.createEntityManager()
-            SteelType steelTypeUpd = em.find(SteelType.class, STEEL_TYPE_ID)
-            em.remove(steelTypeUpd)
-            return em
-        }
+            SteelType steelTypeUpd = service.get(STEEL_TYPE_ID)
+            service.delete(steelTypeUpd)
 
-        callInTransaction {
-            def em = EMF.createEntityManager()
-            SteelType chkSteelType = em.find(SteelType.class, STEEL_TYPE_ID)
+
+            SteelType chkSteelType = service.get(STEEL_TYPE_ID)
             assert chkSteelType == null
-            return em
-        }
+
     }
 
     @Override

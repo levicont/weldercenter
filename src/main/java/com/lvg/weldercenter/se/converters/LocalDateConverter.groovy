@@ -1,22 +1,24 @@
 package com.lvg.weldercenter.se.converters
 
 import javax.persistence.AttributeConverter
-import javax.persistence.Converter
+import java.sql.Date
 import java.time.LocalDate
+import java.time.ZoneId
 
-/**
- * Created by Victor on 03.10.2017.
- */
 
-@Converter
-class LocalDateConverter implements AttributeConverter<LocalDate, java.sql.Date>{
+class LocalDateConverter implements AttributeConverter<LocalDate, Date> {
+
+    private final ZoneId DEFAULT_TIME_ZONE_ID = ZoneId.of('UTC')
+
     @Override
-    java.sql.Date convertToDatabaseColumn(LocalDate localDate) {
-        return localDate == null ? null : java.sql.Date.valueOf(localDate)
+    Date convertToDatabaseColumn(LocalDate attribute) {
+        long date = attribute.atStartOfDay(DEFAULT_TIME_ZONE_ID).toInstant().toEpochMilli()
+        Date result = new Date(date)
+        return result
     }
 
     @Override
-    LocalDate convertToEntityAttribute(java.sql.Date dbData) {
-        return dbData == null ? null : dbData.toLocalDate()
+    LocalDate convertToEntityAttribute(Date dbData) {
+        return dbData.toLocalDate()
     }
 }

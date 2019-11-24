@@ -1,3 +1,5 @@
+
+
 delete from welder;
 delete from organization;
 delete from education;

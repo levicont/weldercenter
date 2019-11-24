@@ -1,104 +1,84 @@
 package com.lvg.weldercenter.se.test.models
 
 import com.lvg.weldercenter.se.models.Welder
+import com.lvg.weldercenter.se.services.WelderService
 import org.junit.Test
+import org.springframework.beans.factory.annotation.Autowired
 
 import java.time.LocalDate
 
-class WelderTest extends GenericModelTest{
+class WelderTest extends GenericModelTest {
 
+    @Autowired
+    private WelderService welderService
 
     @Test
-    void insertItemTest(){
+    void insertItemTest() {
         def WELDER_ID
-        callInTransaction {
-            def em = EMF.createEntityManager()
-            Welder welder = getWelder()
-            em.persist(welder)
-            WELDER_ID = welder.id
-            return em
-        }
+        Welder welder = getWelder()
+        welderService.save(welder)
+        WELDER_ID = welder.id
         assert WELDER_ID != null
 
-        callInTransaction {
-            def em = EMF.createEntityManager()
-            Welder chkWelder = em.find(Welder.class, WELDER_ID)
-            def org = chkWelder.getOrganization()
-            assert chkWelder.id != null
-            assert chkWelder.name == 'Иван'
-            assert chkWelder.surname == 'Иванов'
-            assert chkWelder.secondName == 'Иванович'
-            assert chkWelder.birthday == LocalDate.of(1984,10,28)
-            assert chkWelder.dateBegin == LocalDate.of(2000,10,28)
-            assert chkWelder.documentNumber == '17-033/17'
-            assert chkWelder.address == 'Michigan City 12066'
-            assert chkWelder.education == 'среднее-специальное'
-            assert chkWelder.qualification == 'электросварщик'
-            assert chkWelder.job == 'элекросварщик'
-            assert org.id != null
-            assert org.name == 'IBM'
-            return em
-        }
+        Welder chkWelder = welderService.get(WELDER_ID)
+        def org = chkWelder.getOrganization()
+        assert chkWelder.id != null
+        assert chkWelder.id == WELDER_ID
+        assert chkWelder.name == 'Иван'
+        assert chkWelder.surname == 'Иванов'
+        assert chkWelder.secondName == 'Иванович'
+        assert chkWelder.dateBegin == LocalDate.of(2000, 10, 28)
+        assert chkWelder.birthday == LocalDate.of(1987, 10, 28)
+        assert chkWelder.documentNumber == '17-033/17'
+        assert chkWelder.address == 'Michigan City 12066'
+        assert chkWelder.education == 'среднее-специальное'
+        assert chkWelder.qualification == 'электросварщик'
+        assert chkWelder.job == 'элекросварщик'
+        assert org.id != null
+        assert org.name == 'IBM'
+
     }
 
     @Test
-    void updateItemTest(){
+    void updateItemTest() {
         def WELDER_ID
-        callInTransaction {
-            def em = EMF.createEntityManager()
-            Welder welder = getWelder()
-            em.persist(welder)
-            WELDER_ID = welder.id
-            return em
-        }
+
+        Welder welder = getWelder()
+        welderService.save(welder)
+        WELDER_ID = welder.id
+
         assert WELDER_ID != null
 
-        callInTransaction {
-            def em = EMF.createEntityManager()
-            Welder welderUpd = em.find(Welder.class, WELDER_ID)
-            welderUpd.surname = 'Петров'
-            em.persist(welderUpd)
-            return em
-        }
+        Welder welderUpd = welderService.get(WELDER_ID)
+        welderUpd.surname = 'Петров'
+        welderService.save(welderUpd)
 
-        callInTransaction {
-            def em = EMF.createEntityManager()
-            Welder chkWelder = em.find(Welder.class, WELDER_ID)
-            assert chkWelder.surname == 'Петров'
-            return em
-        }
+        Welder chkWelder = welderService.get(WELDER_ID)
+        assert chkWelder.surname == 'Петров'
+
     }
 
 
     @Test
-    void deleteItemTest(){
+    void deleteItemTest() {
         def WELDER_ID
-        callInTransaction {
-            def em = EMF.createEntityManager()
-            Welder welder = getWelder()
-            em.persist(welder)
-            WELDER_ID = welder.id
-            return em
-        }
+        Welder welder = getWelder()
+        welderService.save(welder)
+        WELDER_ID = welder.id
+
+
         assert WELDER_ID != null
+        Welder welderUpd = welderService.get(WELDER_ID)
+        welderService.delete(welderUpd)
 
-        callInTransaction {
-            def em = EMF.createEntityManager()
-            Welder welderUpd = em.find(Welder.class, WELDER_ID)
-            em.remove(welderUpd)
-            return em
-        }
+        Welder chkWelder = welderService.get(WELDER_ID)
+        assert chkWelder == null
 
-        callInTransaction {
-            def em = EMF.createEntityManager()
-            Welder chkWelder = em.find(Welder.class, WELDER_ID)
-            assert chkWelder == null
-            return em
-        }
+
     }
 
     @Test
-    void equalsHashCodeTest(){
+    void equalsHashCodeTest() {
         def welder1 = new Welder(name: 'Иван', surname: 'Иванов', secondName: 'Иванович')
         def welder2 = new Welder(name: 'Иван', surname: 'Иванов', secondName: 'Иванович')
 
@@ -119,7 +99,7 @@ class WelderTest extends GenericModelTest{
     }
 
     @Test
-    void toStringTest(){
+    void toStringTest() {
         def welder = new Welder(name: 'Иван', surname: 'Иванов', secondName: 'Иванович')
         assert welder.toString() == "Иванов Иван Иванович"
     }

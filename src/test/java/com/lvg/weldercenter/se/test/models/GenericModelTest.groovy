@@ -1,16 +1,22 @@
 package com.lvg.weldercenter.se.test.models
 
-import com.lvg.weldercenter.se.test.utils.ConnectionManager
-import com.lvg.weldercenter.se.utils.TransactionManagerSetup
+import org.junit.runner.RunWith
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.test.context.TestPropertySource
+import org.springframework.test.context.junit4.SpringRunner
 
 import javax.persistence.EntityManager
-import javax.persistence.EntityManagerFactory
-import javax.transaction.Status
-import javax.transaction.UserTransaction
+import javax.persistence.PersistenceContext
+import javax.transaction.Transactional
 
+
+@RunWith(SpringRunner.class)
+@SpringBootTest
 abstract class GenericModelTest extends ModelsGenerator{
-    protected static final TransactionManagerSetup TMS = ConnectionManager.transactionManagerSetup()
-    protected static final EntityManagerFactory EMF = ConnectionManager.entityManagerFactory()
+
+
+
 
     abstract void insertItemTest()
     abstract void updateItemTest()
@@ -24,34 +30,27 @@ abstract class GenericModelTest extends ModelsGenerator{
             em.close()
     }
 
-    private static rollbackTransaction(UserTransaction tx){
+    @Transactional
+    protected static void callInTransaction(Closure<EntityManager> closure) {
+        EntityManager em = null
         try {
-            if (tx.getStatus() == Status.STATUS_ACTIVE ||
-                    tx.getStatus() == Status.STATUS_MARKED_ROLLBACK)
-                tx.rollback()
-        }catch (Exception rbEx){
-            System.err.println 'Exception during rollback'
-            rbEx.printStackTrace(System.err)
+            em = closure.call()
+        } catch (Exception ex) {
+            ex.printStackTrace()
+        } finally {
+            closeEntityManager(em)
         }
     }
 
-    private static rollbackTransactionWithException(UserTransaction tx, Exception ex){
-        rollbackTransaction(tx)
-        throw new RuntimeException(ex)
-    }
+    private class EntityManagerFactory{
+        private javax.persistence.EntityManagerFactory entityManagerFactoryLocal
 
-    protected static void callInTransaction(Closure<EntityManager> closure) {
-        UserTransaction tx = TMS.getUserTransaction()
-        EntityManager em = null
-        try {
-            tx.begin()
-            em = closure.call()
-            tx.commit()
+        EntityManagerFactory(javax.persistence.EntityManagerFactory entityManagerFactoryLocal) {
+            this.entityManagerFactoryLocal = entityManagerFactoryLocal
+        }
 
-        } catch (Exception ex) {
-            rollbackTransactionWithException(tx, ex)
-        } finally {
-            closeEntityManager(em)
+        public javax.persistence.EntityManager createEntityManager(){
+            throw new UnsupportedOperationException('NOT Supported yet')
         }
     }
 

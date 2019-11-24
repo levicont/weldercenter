@@ -1,58 +1,56 @@
 package com.lvg.weldercenter.se.test.models
 
 import com.lvg.weldercenter.se.models.Job
+import com.lvg.weldercenter.se.services.JobService
 import org.junit.Test
+import org.springframework.beans.factory.annotation.Autowired
 
-class JobTest extends GenericModelTest{
+class JobTest extends GenericModelTest {
+
+    @Autowired
+    JobService jobService
 
     @Override
     @Test
     void insertItemTest() {
         def JOB_ID
-        callInTransaction {
-            def em = EMF.createEntityManager()
-            Job job = getJob()
-            em.persist(job)
-            JOB_ID = job.id
-            return em
-        }
 
-        callInTransaction {
-            def em = EMF.createEntityManager()
-            def chkJob = em.find(Job.class, JOB_ID)
-            assert chkJob.id != null
-            assert chkJob.name == 'электросварщик'
-            return em
-        }
+        Job job = getJob()
+        jobService.save(job)
+        JOB_ID = job.id
+
+
+
+
+
+        def chkJob = jobService.get(JOB_ID)
+        assert chkJob.id != null
+        assert chkJob.name == 'электросварщик'
+
     }
 
     @Override
     @Test
     void updateItemTest() {
         def JOB_ID
-        callInTransaction {
-            def em = EMF.createEntityManager()
-            Job job = getJob()
-            em.persist(job)
-            JOB_ID = job.id
-            return em
-        }
+
+
+        Job job = getJob()
+        jobService.save(job)
+        JOB_ID = job.id
+
         assert JOB_ID != null
 
-        callInTransaction {
-            def em = EMF.createEntityManager()
-            Job jobUpd = em.find(Job.class, JOB_ID)
-            jobUpd.name = 'газосварщик'
-            em.persist(jobUpd)
-            return em
-        }
 
-        callInTransaction {
-            def em = EMF.createEntityManager()
-            Job chkJob = em.find(Job.class, JOB_ID)
-            assert chkJob.name == 'газосварщик'
-            return em
-        }
+        Job jobUpd = jobService.get(JOB_ID)
+        jobUpd.name = 'газосварщик'
+        jobService.save(jobUpd)
+
+
+
+        Job chkJob = jobService.get(JOB_ID)
+        assert chkJob.name == 'газосварщик'
+
     }
 
     @Override
@@ -60,27 +58,19 @@ class JobTest extends GenericModelTest{
     void deleteItemTest() {
         def JOB_ID
 
-        callInTransaction {
-            def em = EMF.createEntityManager()
-            Job job = getJob()
-            em.persist(job)
-            JOB_ID = job.id
-            return em
-        }
 
-        callInTransaction {
-            def em = EMF.createEntityManager()
-            Job jobUpd = em.find(Job.class, JOB_ID)
-            em.remove(jobUpd)
-            return em
-        }
+        Job job = getJob()
+        jobService.save(job)
+        JOB_ID = job.id
 
-        callInTransaction {
-            def em = EMF.createEntityManager()
-            Job chkJob = em.find(Job.class, JOB_ID)
-            assert chkJob == null
-            return em
-        }
+
+
+        Job jobUpd = jobService.get(JOB_ID)
+        jobService.delete(jobUpd)
+
+
+        Job chkJob = jobService.get(JOB_ID)
+        assert chkJob == null
     }
 
     @Override

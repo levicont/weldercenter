@@ -2,30 +2,34 @@ package com.lvg.weldercenter.se.test.models
 
 import com.lvg.weldercenter.se.models.Curriculum
 import com.lvg.weldercenter.se.models.Section
+import com.lvg.weldercenter.se.services.CurriculumService
+import com.lvg.weldercenter.se.services.SectionService
 import org.junit.Test
+import org.springframework.beans.factory.annotation.Autowired
 
 class CurriculumTest extends GenericModelTest{
+    @Autowired
+    CurriculumService curriculumService
+    @Autowired
+    SectionService sectionService
 
     @Override
     @Test
     void insertItemTest() {
 
+
         def CURRICULUM_ID
 
-        callInTransaction {
-            def em = EMF.createEntityManager()
             Curriculum curriculum = getCurriculumWithoutSections()
-            em.persist(curriculum)
+            curriculumService.save(curriculum)
             def sections = getSections(curriculum)
             curriculum.sections.addAll(sections)
-            curriculum.sections.each {em.persist(it)}
+            curriculum.sections.each {sectionService.save(it)}
             CURRICULUM_ID = curriculum.id
-            return em
-        }
 
-        callInTransaction {
-            def em = EMF.createEntityManager()
-            Curriculum chkCurriculum = em.find(Curriculum.class, CURRICULUM_ID)
+
+
+            Curriculum chkCurriculum = curriculumService.get(CURRICULUM_ID)
             assert chkCurriculum.id != null
             assert chkCurriculum.title == 'Подготовка 20 часов'
             assert chkCurriculum.description == 'Программа подготовки сварщиков перед аттестацией - 20 часов'
@@ -37,8 +41,7 @@ class CurriculumTest extends GenericModelTest{
             assert topicOfFirstSection[0].toString() == 'Введение в дефекты'
             assert topicOfFirstSection[0].orderIndex == 0
             assert topicOfFirstSection[2].orderIndex == 2
-            return em
-        }
+
 
 
     }
@@ -48,21 +51,18 @@ class CurriculumTest extends GenericModelTest{
     void updateItemTest() {
         def CURRICULUM_ID
 
-        callInTransaction {
-            def em = EMF.createEntityManager()
+
             Curriculum curriculum = getCurriculumWithoutSections()
-            em.persist(curriculum)
+            curriculumService.save(curriculum)
             def sections = getSections(curriculum)
             curriculum.sections.addAll(sections)
-            curriculum.sections.each {em.persist(it)}
+            curriculum.sections.each {sectionService.save(it)}
             CURRICULUM_ID = curriculum.id
-            return em
-        }
+
         assert CURRICULUM_ID != null
 
-        callInTransaction {
-            def em = EMF.createEntityManager()
-            Curriculum curriculumUpd = em.find(Curriculum.class, CURRICULUM_ID)
+
+            Curriculum curriculumUpd = curriculumService.get(CURRICULUM_ID)
             curriculumUpd.title = 'Предаттестационная подготовка - 48 часов'
 
             def section = curriculumUpd.sections[0]
@@ -70,19 +70,14 @@ class CurriculumTest extends GenericModelTest{
 
             def topic = section.topics[0]
             topic.title = 'Аргон и его свойства'
+            curriculumUpd.sections.each {sectionService.save(it)}
+            curriculumService.save(curriculumUpd)
 
-            em.persist(curriculumUpd)
-            return em
-        }
 
-        callInTransaction {
-            def em = EMF.createEntityManager()
-            Curriculum chkCurriculum = em.find(Curriculum.class, CURRICULUM_ID)
+            Curriculum chkCurriculum = curriculumService.get(CURRICULUM_ID)
             assert chkCurriculum.sections[0].title == 'Дефекты аргонодуговой сварки'
             assert chkCurriculum.sections[0].topics[0].title == 'Аргон и его свойства'
             assert chkCurriculum.title == 'Предаттестационная подготовка - 48 часов'
-            return em
-        }
 
     }
 
@@ -90,36 +85,29 @@ class CurriculumTest extends GenericModelTest{
     void deleteItemTest() {
         def CURRICULUM_ID
 
-        callInTransaction {
-            def em = EMF.createEntityManager()
             Curriculum curriculum = getCurriculumWithoutSections()
-            em.persist(curriculum)
+            curriculumService.save(curriculum)
             def sections = getSections(curriculum)
             curriculum.sections.addAll(sections)
-            curriculum.sections.each {em.persist(it)}
+            curriculum.sections.each {sectionService.save(it)}
             CURRICULUM_ID = curriculum.id
-            return em
-        }
+
         assert CURRICULUM_ID != null
 
         def SECTION_ID
-        callInTransaction {
-            def em = EMF.createEntityManager()
-            Curriculum curriculumUpd = em.find(Curriculum.class, CURRICULUM_ID)
+
+            Curriculum curriculumUpd = curriculumService.get(CURRICULUM_ID)
             def section = curriculumUpd.sections[0]
             SECTION_ID = section.id
-            em.remove(curriculumUpd)
-            return em
-        }
+            curriculumService.delete(curriculumUpd)
 
-        callInTransaction {
-            def em = EMF.createEntityManager()
-            Curriculum chkCurriculum = em.find(Curriculum.class, CURRICULUM_ID)
+
+
+            Curriculum chkCurriculum = curriculumService.get(CURRICULUM_ID)
             assert chkCurriculum == null
-            Section chkSection = em.find(Section.class, SECTION_ID)
+            Section chkSection = sectionService.get(SECTION_ID)
             assert chkSection == null
-            return em
-        }
+
     }
 
     @Override

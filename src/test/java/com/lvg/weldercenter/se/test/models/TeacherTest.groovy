@@ -1,31 +1,30 @@
 package com.lvg.weldercenter.se.test.models
 
 import com.lvg.weldercenter.se.models.Teacher
+import com.lvg.weldercenter.se.services.TeacherService
 import org.junit.Test
+import org.springframework.beans.factory.annotation.Autowired
 
 class TeacherTest extends GenericModelTest{
+    @Autowired
+    TeacherService service
+
     @Override
     @Test
     void insertItemTest() {
         def TEACHER_ID
-        callInTransaction {
-            def em = EMF.createEntityManager()
+
             Teacher teacher = getTeacher()
-            em.persist(teacher)
+            service.save(teacher)
             TEACHER_ID = teacher.id
-            return em
-        }
+
         assert TEACHER_ID != null
 
-        callInTransaction {
-            def em = EMF.createEntityManager()
-            Teacher teacherChk = em.find(Teacher.class, TEACHER_ID)
+            Teacher teacherChk = service.get(TEACHER_ID)
             assert teacherChk.id != null
             assert teacherChk.name == 'Амвросий'
             assert teacherChk.surname == 'Кац'
             assert teacherChk.secondName == 'Федорович'
-            return em
-        }
 
     }
 
@@ -33,57 +32,37 @@ class TeacherTest extends GenericModelTest{
     @Test
     void updateItemTest() {
         def TEACHER_ID
-        callInTransaction {
-            def em = EMF.createEntityManager()
             Teacher teacher = getTeacher()
-            em.persist(teacher)
+        service.save(teacher)
             TEACHER_ID = teacher.id
-            return em
-        }
+
         assert TEACHER_ID != null
 
-        callInTransaction {
-            def em = EMF.createEntityManager()
-            Teacher teacherUpd = em.find(Teacher.class, TEACHER_ID)
+            Teacher teacherUpd = service.get(TEACHER_ID)
             teacherUpd.surname = 'Петров'
-            em.persist(teacherUpd)
-            return em
-        }
+            service.save(teacherUpd)
 
-        callInTransaction {
-            def em = EMF.createEntityManager()
-            Teacher chkTeacher = em.find(Teacher.class, TEACHER_ID)
+            Teacher chkTeacher = service.get(TEACHER_ID)
             assert chkTeacher.surname == 'Петров'
-            return em
-        }
+
     }
 
     @Override
     @Test
     void deleteItemTest() {
         def TEACHER_ID
-        callInTransaction {
-            def em = EMF.createEntityManager()
             Teacher teacher = getTeacher()
-            em.persist(teacher)
+            service.save(teacher)
             TEACHER_ID = teacher.id
-            return em
-        }
+
         assert TEACHER_ID != null
 
-        callInTransaction {
-            def em = EMF.createEntityManager()
-            Teacher teacherUpd = em.find(Teacher.class, TEACHER_ID)
-            em.remove(teacherUpd)
-            return em
-        }
+            Teacher teacherUpd = service.get(TEACHER_ID)
+            service.delete(teacherUpd)
 
-        callInTransaction {
-            def em = EMF.createEntityManager()
-            Teacher chkTeacher = em.find(Teacher.class, TEACHER_ID)
+            Teacher chkTeacher = service.get(TEACHER_ID)
             assert chkTeacher == null
-            return em
-        }
+
     }
 
     @Override

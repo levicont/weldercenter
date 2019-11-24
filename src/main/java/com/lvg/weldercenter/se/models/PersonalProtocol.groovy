@@ -16,8 +16,8 @@ class PersonalProtocol implements Serializable{
     @Column(name = 'ID')
     Long id
 
-    @Convert(converter = LocalDateConverter.class)
     @Column(name = 'DATE_CERTIFICATION')
+    @Convert(converter = LocalDateConverter.class)
     LocalDate dateCertification
 
     @Column(name = 'NUMBER')

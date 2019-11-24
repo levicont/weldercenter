@@ -2,89 +2,67 @@ package com.lvg.weldercenter.se.test.models
 
 import com.lvg.weldercenter.se.models.WeldMethod
 import com.lvg.weldercenter.se.models.WeldMethodType
+import com.lvg.weldercenter.se.services.WeldMethodService
 import org.junit.Test
+import org.springframework.beans.factory.annotation.Autowired
 
 class WeldMethodTest extends GenericModelTest{
+    @Autowired
+    WeldMethodService service
 
     @Override
     @Test
     void insertItemTest() {
         def WELD_METHOD_ID
-        callInTransaction {
-            def em = EMF.createEntityManager()
-            WeldMethod weldMethod = getWeldMethod()
-            em.persist(weldMethod)
+         WeldMethod weldMethod = getWeldMethod()
+            service.save(weldMethod)
             WELD_METHOD_ID = weldMethod.id
-            return em
-        }
         assert WELD_METHOD_ID != null
 
-        callInTransaction {
-            def em = EMF.createEntityManager()
-            def chkWeldMethod = em.find(WeldMethod.class, WELD_METHOD_ID)
+            def chkWeldMethod = service.get(WELD_METHOD_ID)
             assert chkWeldMethod != null
             assert chkWeldMethod.id != null
             assert chkWeldMethod.name == 'РДЭ'
             assert chkWeldMethod.code == '111'
-            return em
-        }
+
     }
 
     @Override
     @Test
     void updateItemTest() {
         def WELD_METHOD_ID
-        callInTransaction {
-            def em = EMF.createEntityManager()
             WeldMethod weldMethod = getWeldMethod()
-            em.persist(weldMethod)
+            service.save(weldMethod)
             WELD_METHOD_ID = weldMethod.id
-            return em
-        }
+
         assert WELD_METHOD_ID != null
 
-        callInTransaction {
-            def em = EMF.createEntityManager()
-            WeldMethod weldMethodUpd = em.find(WeldMethod.class, WELD_METHOD_ID)
+            WeldMethod weldMethodUpd = service.get(WELD_METHOD_ID)
             weldMethodUpd.name = 'ВИГ'
-            em.persist(weldMethodUpd)
-            return em
-        }
+            service.save(weldMethodUpd)
 
-        callInTransaction {
-            def em = EMF.createEntityManager()
-            WeldMethod chkWeldMethod = em.find(WeldMethod.class, WELD_METHOD_ID)
+
+            WeldMethod chkWeldMethod = service.get(WELD_METHOD_ID)
             assert chkWeldMethod.name == 'ВИГ'
-            return em
-        }
+
     }
 
     @Override
     @Test
     void deleteItemTest() {
         def WELD_METHOD_ID
-        callInTransaction {
-            def em = EMF.createEntityManager()
             WeldMethod weldMethod = getWeldMethod()
-            em.persist(weldMethod)
+            service.save(weldMethod)
             WELD_METHOD_ID = weldMethod.id
-            return em
-        }
+
         assert WELD_METHOD_ID != null
 
-        callInTransaction {
-            def em = EMF.createEntityManager()
-            WeldMethod weldMethodUpd = em.find(WeldMethod.class, WELD_METHOD_ID)
-            em.remove(weldMethodUpd)
-            return em
-        }
+            WeldMethod weldMethodUpd = service.get(WELD_METHOD_ID)
+            service.delete(weldMethodUpd)
 
-        callInTransaction {
-            def em = EMF.createEntityManager()
-            WeldMethod chkWeldMethod = em.find(WeldMethod.class, WELD_METHOD_ID)
+            WeldMethod chkWeldMethod = service.get(WELD_METHOD_ID)
             assert chkWeldMethod == null
-            return em
-        }
+
     }
 
     @Override

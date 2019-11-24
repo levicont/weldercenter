@@ -39,7 +39,7 @@ abstract class ModelsGenerator {
 
     static Welder getWelder() {
         def welder = new Welder(name: 'Иван', surname: 'Иванов', secondName: 'Иванович')
-        welder.birthday = LocalDate.of(1984, 10, 28)
+        welder.birthday = LocalDate.of(1987, 10, 28)
         welder.dateBegin = LocalDate.of(2000, 10, 28)
         welder.documentNumber = '17-033/17'
         welder.address = 'Michigan City 12066'

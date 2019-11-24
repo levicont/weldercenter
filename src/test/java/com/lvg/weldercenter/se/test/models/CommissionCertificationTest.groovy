@@ -2,38 +2,41 @@ package com.lvg.weldercenter.se.test.models
 
 import com.lvg.weldercenter.se.models.CommissionCertification
 import com.lvg.weldercenter.se.models.Teacher
+import com.lvg.weldercenter.se.services.CommissionCertificationService
+import com.lvg.weldercenter.se.services.TeacherService
 import org.junit.Test
+import org.springframework.beans.factory.annotation.Autowired
 
 class CommissionCertificationTest extends GenericModelTest {
+    @Autowired
+    TeacherService teacherService
+    @Autowired
+    CommissionCertificationService commissionCertificationService
 
     @Override
     @Test
     void insertItemTest() {
         def COMMISSION_ID
-        callInTransaction{
-            def em = EMF.createEntityManager()
+
             def teachers = new ArrayList<Teacher>()
             (1..4).each {teachers << getTeacher()}
-            teachers.each{em.persist(it)}
+            teachers.each{teacherService.save(it)}
             CommissionCertification commission = getCommissionCertification(teachers)
-            em.persist(commission)
+            commissionCertificationService.save(commission)
             COMMISSION_ID = commission.id
-            return em
-        }
+
 
         assert COMMISSION_ID != null
         def chkCommission = null
-        callInTransaction {
-            def em = EMF.createEntityManager()
-            chkCommission = em.find(CommissionCertification.class, COMMISSION_ID)
+
+            chkCommission = commissionCertificationService.get(COMMISSION_ID)
             assert chkCommission != null
             assert chkCommission.id == COMMISSION_ID
             assert chkCommission.safetySpecialist.surname == getTeacher().surname
             assert chkCommission.ndtSpecialist.name == getTeacher().name
             assert chkCommission.weldSpecialist.secondName == getTeacher().secondName
             assert chkCommission.head.toString() == getTeacher().toString()
-            return em
-        }
+
     }
 
     @Override
@@ -41,71 +44,58 @@ class CommissionCertificationTest extends GenericModelTest {
     void updateItemTest() {
         def COMMISSION_ID
 
-        callInTransaction {
-            def em = EMF.createEntityManager()
+
             def teachers = new ArrayList<Teacher>()
             (1..4).each {teachers << getTeacher()}
-            teachers.each{em.persist(it)}
+            teachers.each{teacherService.save(it)}
             CommissionCertification commission = getCommissionCertification(teachers)
-            em.persist(commission)
+            commissionCertificationService.save(commission)
             COMMISSION_ID = commission.id
-            return em
-        }
 
         assert COMMISSION_ID != null
 
         def updCommission
-        callInTransaction {
-            def em = EMF.createEntityManager()
-            updCommission = em.find(CommissionCertification.class, COMMISSION_ID)
+
+            updCommission = commissionCertificationService.get(COMMISSION_ID)
             def teacher = getTeachers().find { it.surname == 'Новировский' }
             assert teacher != null
             updCommission.head = teacher
-            em.persist(teacher)
-            em.persist(updCommission)
-            return em
-        }
+            teacherService.save(teacher)
+            commissionCertificationService.save(updCommission)
+
 
         def chkCommission
-        callInTransaction {
-            def em = EMF.createEntityManager()
-            chkCommission = em.find(CommissionCertification.class, COMMISSION_ID)
+
+            chkCommission = commissionCertificationService.get(COMMISSION_ID)
             assert chkCommission != null
             assert chkCommission.head != null
             assert chkCommission.head.surname == 'Новировский'
-            return em
-        }
+
     }
 
     @Override
     @Test
     void deleteItemTest() {
         def COMMISSION_ID
-        callInTransaction{
-            def em = EMF.createEntityManager()
+
             def teachers = new ArrayList<Teacher>()
             (1..4).each {teachers << getTeacher()}
-            teachers.each{em.persist(it)}
+            teachers.each{teacherService.save(it)}
             CommissionCertification commission = getCommissionCertification(teachers)
-            em.persist(commission)
+            commissionCertificationService.save(commission)
             COMMISSION_ID = commission.id
-            return em
-        }
+
         assert COMMISSION_ID != null
 
         def delCommission = null
-        callInTransaction{
-            def em = EMF.createEntityManager()
-            delCommission = em.find(CommissionCertification.class, COMMISSION_ID)
-            em.remove(delCommission)
-            return em
-        }
+
+            delCommission = commissionCertificationService.get(COMMISSION_ID)
+            commissionCertificationService.delete(delCommission)
+
         def chkCommission = null
-        callInTransaction{
-            def em = EMF.createEntityManager()
-            chkCommission = em.find(CommissionCertification.class, COMMISSION_ID)
-            return em
-        }
+
+            chkCommission = commissionCertificationService.get(COMMISSION_ID)
+
         assert chkCommission == null
 
 

@@ -1,88 +1,64 @@
 package com.lvg.weldercenter.se.test.models
 
 import com.lvg.weldercenter.se.models.Qualification
+import com.lvg.weldercenter.se.services.QualificationService
 import org.junit.Test
+import org.springframework.beans.factory.annotation.Autowired
 
 
-class QualificationTest extends GenericModelTest{
+class QualificationTest extends GenericModelTest {
+
+    @Autowired
+    QualificationService service
 
     @Override
     @Test
     void insertItemTest() {
         def QUALIFICATION_ID
-        callInTransaction {
-            def em = EMF.createEntityManager()
-            Qualification qualification = getQualification()
-            em.persist(qualification)
-            QUALIFICATION_ID = qualification.id
-            return em
-        }
+        Qualification qualification = getQualification()
+        service.save(qualification)
+        QUALIFICATION_ID = qualification.id
         assert QUALIFICATION_ID != null
 
-        callInTransaction {
-            def em = EMF.createEntityManager()
-            Qualification chkQualification = em.find(Qualification.class, QUALIFICATION_ID)
-            assert chkQualification.id != null
-            assert chkQualification.type == 'электросварщик'
-            return em
-        }
+        Qualification chkQualification = service.get(QUALIFICATION_ID)
+        assert chkQualification.id != null
+        assert chkQualification.type == 'электросварщик'
     }
 
     @Override
     @Test
     void updateItemTest() {
         def QUALIFICATION_ID
-        callInTransaction {
-            def em = EMF.createEntityManager()
-            Qualification qualification = getQualification()
-            em.persist(qualification)
-            QUALIFICATION_ID = qualification.id
-            return em
-        }
+        Qualification qualification = getQualification()
+        service.save(qualification)
+        QUALIFICATION_ID = qualification.id
         assert QUALIFICATION_ID != null
 
-        callInTransaction {
-            def em = EMF.createEntityManager()
-            Qualification qualificationUpd = em.find(Qualification.class, QUALIFICATION_ID)
-            qualificationUpd.type = 'газосварщик'
-            em.persist(qualificationUpd)
-            return em
-        }
+        Qualification qualificationUpd = service.get(QUALIFICATION_ID)
+        qualificationUpd.type = 'газосварщик'
+        service.save(qualificationUpd)
 
-        callInTransaction {
-            def em = EMF.createEntityManager()
-            Qualification chkQualification = em.find(Qualification.class, QUALIFICATION_ID)
-            assert chkQualification.type == 'газосварщик'
-            return em
-        }
+        Qualification chkQualification = service.get(QUALIFICATION_ID)
+        assert chkQualification.type == 'газосварщик'
+
     }
 
     @Override
     @Test
     void deleteItemTest() {
         def QUALIFICATION_ID
-        callInTransaction {
-            def em = EMF.createEntityManager()
-            Qualification qualification = getQualification()
-            em.persist(qualification)
-            QUALIFICATION_ID = qualification.id
-            return em
-        }
+        Qualification qualification = getQualification()
+        service.save(qualification)
+        QUALIFICATION_ID = qualification.id
+
         assert QUALIFICATION_ID != null
 
-        callInTransaction {
-            def em = EMF.createEntityManager()
-            Qualification qualificationUpd = em.find(Qualification.class, QUALIFICATION_ID)
-            em.remove(qualificationUpd)
-            return em
-        }
+        Qualification qualificationUpd = service.get(QUALIFICATION_ID)
+        service.delete(qualificationUpd)
 
-        callInTransaction {
-            def em = EMF.createEntityManager()
-            Qualification chkQualification = em.find(Qualification.class, QUALIFICATION_ID)
-            assert chkQualification == null
-            return em
-        }
+        Qualification chkQualification = service.get(QUALIFICATION_ID)
+        assert chkQualification == null
+
     }
 
     @Override

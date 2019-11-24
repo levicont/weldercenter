@@ -4,42 +4,51 @@ import com.lvg.weldercenter.se.models.AttestType
 import com.lvg.weldercenter.se.models.Journal
 import com.lvg.weldercenter.se.models.PersonalProtocol
 import com.lvg.weldercenter.se.models.Welder
+import com.lvg.weldercenter.se.services.JournalService
+import com.lvg.weldercenter.se.services.NDTDocumentService
+import com.lvg.weldercenter.se.services.PersonalProtocolService
+import com.lvg.weldercenter.se.services.WeldPatternService
+import com.lvg.weldercenter.se.services.WelderService
 import org.junit.Test
+import org.springframework.beans.factory.annotation.Autowired
 
-import javax.persistence.EntityManager
 import java.time.LocalDate
 
 class PersonalProtocolTest extends GenericModelTest{
+    @Autowired
+    PersonalProtocolService personalProtocolService
+    @Autowired
+    WelderService welderService
+    @Autowired
+    JournalService journalService
+    @Autowired
+    WeldPatternService weldPatternService
 
     @Override
     @Test
     void insertItemTest() {
         def PP_ID
-        callInTransaction {
-            def em = EMF.createEntityManager()
+       
             Welder welder = getWelder()
             Journal journal = getJournal()
 
-            em.persist(welder)
-            em.persist(journal)
+            welderService.save(welder)
+            journalService.save(journal)
 
             PersonalProtocol pp = getPersonalProtocol(welder,journal)
-            pp.ndtDocuments.each {em.persist(it)}
-            em.persist(pp)
+            personalProtocolService.save(pp)
             def weldPattern = getWeldPattern(pp)
             pp.weldPatterns.add(weldPattern)
 
-            em.persist(pp)
-            em.persist(weldPattern)
+            personalProtocolService.save(pp)
+            weldPatternService.save(weldPattern)
             PP_ID = pp.id
-            return em
-        }
+
         assert PP_ID != null
 
         def chkPP
-        callInTransaction {
-            def em = EMF.createEntityManager()
-            chkPP = em.find(PersonalProtocol.class, PP_ID)
+
+            chkPP = personalProtocolService.get(PP_ID)
 
             assert chkPP.ndtDocuments.size() == 3
             assert chkPP.weldPatterns.size() == 1
@@ -51,10 +60,6 @@ class PersonalProtocolTest extends GenericModelTest{
             assert chkPP.theoryTest.ticketNumber == '1, 2, 9'
             assert "$chkPP.attestType" == "$AttestType.PRIMARY"
 
-            return em
-        }
-
-
     }
 
     @Override
@@ -62,75 +67,50 @@ class PersonalProtocolTest extends GenericModelTest{
     void updateItemTest() {
         def PERSONAL_PROTOCOL_ID
 
-        callInTransaction {
-            EntityManager em = EMF.createEntityManager()
+
             Journal journal = getJournal()
             Welder welder = getWelder()
-            em.persist(journal)
-            em.persist(welder)
+            journalService.save(journal)
+            welderService.save(welder)
 
             def pp = getPersonalProtocol(welder, journal)
-            pp.ndtDocuments.each {em.persist(it)}
-            em.persist(pp)
+            personalProtocolService.save(pp)
             PERSONAL_PROTOCOL_ID = pp.id
 
             assert journal.id != null
             assert welder.id != null
             assert pp.id != null
 
-
-            return em
-        }
-
-        callInTransaction {
-            def em = EMF.createEntityManager()
-            PersonalProtocol ppUpd = em.find(PersonalProtocol.class, PERSONAL_PROTOCOL_ID)
+            PersonalProtocol ppUpd = personalProtocolService.get(PERSONAL_PROTOCOL_ID)
             ppUpd.number = '17/002'
-            em.persist(ppUpd)
-            return em
-        }
+            personalProtocolService.save(ppUpd)
 
-        callInTransaction {
-            def em = EMF.createEntityManager()
-            def chkPersonalProtocol = em.find(PersonalProtocol.class, PERSONAL_PROTOCOL_ID)
+
+            def chkPersonalProtocol = personalProtocolService.get(PERSONAL_PROTOCOL_ID)
             assert chkPersonalProtocol.number == '17/002'
-            return em
-        }
     }
 
     @Override
     @Test
     void deleteItemTest() {
         def PERSONAL_PROTOCOL_ID
-        callInTransaction {
-            def em = EMF.createEntityManager()
+
             Journal journal = getJournal()
             Welder welder = getWelder()
-            em.persist(journal)
-            em.persist(welder)
+            journalService.save(journal)
+            welderService.save(welder)
 
             PersonalProtocol pp = getPersonalProtocol(welder, journal)
-            pp.ndtDocuments.each {em.persist(it)}
-            em.persist(pp)
+            personalProtocolService.save(pp)
             PERSONAL_PROTOCOL_ID = pp.id
-            return em
-        }
+
         assert PERSONAL_PROTOCOL_ID != null
 
-        callInTransaction {
-            def em = EMF.createEntityManager()
-            def personalProtocolUpd = em.find(PersonalProtocol.class, PERSONAL_PROTOCOL_ID)
-            em.remove(personalProtocolUpd)
-            return em
-        }
+            def personalProtocolUpd = personalProtocolService.get(PERSONAL_PROTOCOL_ID)
+            personalProtocolService.delete(personalProtocolUpd)
 
-        callInTransaction {
-            def em = EMF.createEntityManager()
-            def chkPersonalProtocol = em.find(PersonalProtocol.class, PERSONAL_PROTOCOL_ID)
+            def chkPersonalProtocol = personalProtocolService.get(PERSONAL_PROTOCOL_ID)
             assert chkPersonalProtocol == null
-            return em
-        }
-
     }
 
     @Override
