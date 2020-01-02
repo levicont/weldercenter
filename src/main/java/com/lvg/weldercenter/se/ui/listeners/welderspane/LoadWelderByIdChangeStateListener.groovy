@@ -26,7 +26,7 @@ class LoadWelderByIdChangeStateListener extends GenericServiceChangeStateListene
         WelderDTO welderDTO = (WelderDTO)service.getValue()
         if (welderDTO != null){
             LOGGER.debug("Welder found: $welderDTO")
-            LOGGER.debug("Welder has organization: ${welderDTO.getOrganizationDTO()}")
+            LOGGER.debug("Welder has organization: ${welderDTO.getOrganization()}")
             welderController.loadWelder()
             LOGGER.debug("Welders list was updated")
         }

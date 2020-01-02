@@ -12,6 +12,6 @@ interface WelderRepository extends JpaRepository<Welder, Long>{
                         from Welder w''')
     List<Object[]> getWeldersForTableView()
 
-    @Query(value = '''Select w from Welder w left join fetch w.organization where w.id = :id''')
+    @Query(value = '''Select w from Welder w where w.id = :id''')
     Welder getFull(@Param('id')Long id)
 }

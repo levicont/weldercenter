@@ -1,5 +1,6 @@
 package com.lvg.weldercenter.se.test.services
 
+import com.lvg.weldercenter.se.models.OrganizationEmbedded
 import com.lvg.weldercenter.se.models.Welder
 import com.lvg.weldercenter.se.services.WelderService
 import com.lvg.weldercenter.se.ui.dto.DTOConstants
@@ -147,5 +148,14 @@ class WelderServiceTest extends GenericServiceTest{
         assert chkWelderList.birthday == welder.birthday.format(DateTimeFormatter.ofPattern(DTOConstants.DATE_FORMAT_PATTERN))
         assert chkWelderList.organization == welder.organization.name
 
+    }
+
+    @Test
+    void getAllOrganizationTest(){
+        Set<OrganizationEmbedded> organizations = welderService.getAllOrganization()
+        assert organizations != null
+        assert organizations.size() == 2
+        assert organizations.first() != null
+        assert organizations.first().name == 'IBM'
     }
 }

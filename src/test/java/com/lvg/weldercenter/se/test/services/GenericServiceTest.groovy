@@ -7,11 +7,12 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.TestPropertySource
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner
+import org.springframework.test.context.junit4.SpringRunner
 
-//@RunWith(SpringJUnit4ClassRunner)
+@RunWith(SpringRunner.class)
 //@TestPropertySource("classpath:test.properties")
-//@ActiveProfiles("test")
-//@SpringBootTest
+@ActiveProfiles("test")
+@SpringBootTest
 abstract class GenericServiceTest extends ModelsGenerator{
 
     @Test

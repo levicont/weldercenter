@@ -1,8 +1,9 @@
 package com.lvg.weldercenter.se.test.ui.models
 
-
+import com.lvg.weldercenter.se.models.OrganizationEmbedded
 import com.lvg.weldercenter.se.ui.dto.DTOConstants
 import com.lvg.weldercenter.se.ui.dto.WelderDTO
+import com.lvg.weldercenter.se.ui.utils.Printer
 import org.apache.log4j.Logger
 import org.junit.Test
 
@@ -22,16 +23,15 @@ class WelderDTOTest extends GenericModelDTOTest{
         assert welderUI.name == 'Иван'
         assert welderUI.surname == 'Иванов'
         assert welderUI.secondName == 'Иванович'
-        assert welderUI.birthday == LocalDate.of(1984, 10, 28)
+        assert welderUI.birthday == LocalDate.of(1987, 10, 28)
         assert welderUI.dateBegin == LocalDate.of(2000, 10, 28)
         assert welderUI.documentNumber == '17-033/17'
         assert welderUI.address == 'Michigan City 12066'
         assert welderUI.education == 'среднее-специальное'
         assert welderUI.qualification == 'электросварщик'
         assert welderUI.job == 'элекросварщик'
-        assert welderUI.organizationDTO.name == 'IBM'
-        assert welderUI.organizationName == 'IBM'
-        assert welderUI.birthdayFormat == '28.10.1984'
+        assert welderUI.organization.name == 'IBM-embedded'
+        assert welderUI.birthdayFormat == '28.10.1987'
         assert welderUI.dateBeginFormat == '28.10.2000'
 
     }
@@ -44,47 +44,37 @@ class WelderDTOTest extends GenericModelDTOTest{
         def welder = welderUI.getWelder()
         assert !welderUI.isWelderDTOChangedProperty().get()
         assert welderUI.id == DTOConstants.NULL_ID_FIELD_DEFAULT
-
-        welder.id == 100l
+        assert welder.id == null
         assert welderUI.id != 100l
         assert !welderUI.isWelderDTOChangedProperty().get()
 
         welderUI.nameProperty.set("George")
-        assert welderUI.nameProperty.get() != welderUI.originalWelderProperty().get().name
         assert welderUI.isWelderDTOChangedProperty().get()
+        //Change name back. Expected value of isWelderDTOChangedProperty is false
         welderUI.nameProperty.set("Иван")
-        LOGGER.debug("isWelderDTOChangedProperty: ${welderUI.isWelderDTOChangedProperty()}")
         assert !welderUI.isWelderDTOChangedProperty().get()
 
-        welderUI.nameProperty.set("George")
-        assert welderUI.isWelderDTOChangedProperty().get()
         welderUI.surnameProperty.set("Johnson")
         assert welderUI.isWelderDTOChangedProperty().get()
-        welderUI.nameProperty.set("Иван")
-        assert welderUI.isWelderDTOChangedProperty().get()
+        //Change surname back. Expected value of isWelderDTOChangedProperty is false
         welderUI.surnameProperty.set("Иванов")
         assert !welderUI.isWelderDTOChangedProperty().get()
 
-        welderUI.surnameProperty.set("Wood")
+
+        welderUI.organizationNameProperty.set('HP')
+        Printer.logDTO(WelderDTO.class, welderUI)
         assert welderUI.isWelderDTOChangedProperty().get()
-        welderUI.nameProperty.set("George")
-        assert welderUI.isWelderDTOChangedProperty().get()
-        welderUI.nameProperty.set("Иван")
-        assert welderUI.isWelderDTOChangedProperty().get()
-        welderUI.surnameProperty.set("Иванов")
+        //Change organization.name back. Expected value of isWelderDTOChangedProperty is false
+        welderUI.organizationNameProperty.set('IBM-embedded')
         assert !welderUI.isWelderDTOChangedProperty().get()
 
-        welderUI.organizationProperty().get().nameProperty().set('HP')
+        welderUI.organizationAddressProperty.set('Boston')
         assert welderUI.isWelderDTOChangedProperty().get()
-        welderUI.organizationProperty().get().nameProperty().set('IBM')
+        //Change organization.address back. Expected value of isWelderDTOChangedProperty is false
+        welderUI.organizationAddressProperty.set('New-York')
         assert !welderUI.isWelderDTOChangedProperty().get()
 
-        welderUI.organizationProperty().get().addressProperty().set('HP')
-        assert welderUI.isWelderDTOChangedProperty().get()
-        welderUI.organizationProperty().get().addressProperty().set('New-York')
-        assert !welderUI.isWelderDTOChangedProperty().get()
-
-        //Exception
+        //Expected Exception on readonly object
         welderUI.setProperty('id', 100l)
 
 
@@ -159,16 +149,15 @@ class WelderDTOTest extends GenericModelDTOTest{
         assert welderUI.name == 'Иван'
         assert welderUI.surname == 'Иванов'
         assert welderUI.secondName == 'Иванович'
-        assert welderUI.birthday == LocalDate.of(1984, 10, 28)
+        assert welderUI.birthday == LocalDate.of(1987, 10, 28)
         assert welderUI.dateBegin == LocalDate.of(2000, 10, 28)
         assert welderUI.documentNumber == '17-033/17'
         assert welderUI.address == 'Michigan City 12066'
         assert welderUI.education == 'среднее-специальное'
         assert welderUI.qualification == 'электросварщик'
         assert welderUI.job == 'элекросварщик'
-        assert welderUI.organizationDTO.name == 'IBM'
-        assert welderUI.organizationName == 'IBM'
-        assert welderUI.birthdayFormat == '28.10.1984'
+        assert welderUI.organization.name == 'IBM-embedded'
+        assert welderUI.birthdayFormat == '28.10.1987'
         assert welderUI.dateBeginFormat == '28.10.2000'
 
         WelderDTO clone = (WelderDTO)welderUI.clone()
@@ -176,7 +165,7 @@ class WelderDTOTest extends GenericModelDTOTest{
         clone.name = 'Паша'
         clone.surname = ''
         clone.secondName = ''
-        clone.birthday = LocalDate.of(1987, 10, 28)
+        clone.birthday = LocalDate.of(1984, 10, 28)
         clone.dateBegin = LocalDate.of(2002, 10, 28)
         clone.documentNumber = '17-000'
         clone.address = '12066'

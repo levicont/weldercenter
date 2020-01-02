@@ -1,9 +1,8 @@
 package com.lvg.weldercenter.se.services.impl
 
-import com.lvg.weldercenter.se.models.Organization
+import com.lvg.weldercenter.se.models.OrganizationEmbedded
 import com.lvg.weldercenter.se.models.Welder
 import com.lvg.weldercenter.se.repositories.WelderRepository
-import com.lvg.weldercenter.se.services.OrganizationService
 import com.lvg.weldercenter.se.services.WelderService
 import com.lvg.weldercenter.se.ui.dto.WelderTableViewDTO
 import org.springframework.beans.factory.annotation.Autowired
@@ -17,15 +16,10 @@ class WelderServiceImpl implements WelderService{
 
     @Autowired
     WelderRepository repository
-    @Autowired
-    OrganizationService organizationService
 
     @Override
     @Transactional
     Welder save(Welder welder) {
-        Organization organization = welder.organization
-        if (organization != null)
-            organizationService.save(organization)
         return repository.save(welder)
     }
 
@@ -70,6 +64,21 @@ class WelderServiceImpl implements WelderService{
     }
 
     @Override
+    Set<OrganizationEmbedded> getAllOrganization() {
+        Set<OrganizationEmbedded> result = new TreeSet<OrganizationEmbedded>(new Comparator<OrganizationEmbedded>() {
+            @Override
+            int compare(OrganizationEmbedded o1, OrganizationEmbedded o2) {
+                String orgName1 = o1.name
+                String orgName2 = o2.name
+                return orgName1.compareToIgnoreCase(orgName2)
+            }
+        })
+        getAll().forEach({welder ->
+            result.add(welder.organization)
+        })
+        return result
+    }
+
     Welder getFull(Long id) {
         return repository.getFull(id)
     }

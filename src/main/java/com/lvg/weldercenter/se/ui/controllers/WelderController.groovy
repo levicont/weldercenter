@@ -1,14 +1,15 @@
 package com.lvg.weldercenter.se.ui.controllers
 
-import com.lvg.weldercenter.se.cfg.R
-import com.lvg.weldercenter.se.ui.converters.OrganizationDTOStringConverter
+import com.lvg.weldercenter.se.models.OrganizationEmbedded
+import com.lvg.weldercenter.se.ui.converters.OrganizationEmbeddedStringConverter
 import com.lvg.weldercenter.se.ui.dto.DTOConstants
-import com.lvg.weldercenter.se.ui.dto.OrganizationDTO
 import com.lvg.weldercenter.se.ui.dto.WelderDTO
 import com.lvg.weldercenter.se.ui.dto.WelderTableViewDTO
-import com.lvg.weldercenter.se.ui.repositories.*
+import com.lvg.weldercenter.se.ui.repositories.EducationDTORepository
+import com.lvg.weldercenter.se.ui.repositories.JobDTORepository
+import com.lvg.weldercenter.se.ui.repositories.QualificationDTORepository
+import com.lvg.weldercenter.se.ui.repositories.WelderDTORepository
 import com.lvg.weldercenter.se.ui.services.LoadingWelderByIdService
-import com.lvg.weldercenter.se.ui.services.SaveOrganizationDTOService
 import com.lvg.weldercenter.se.ui.services.SaveWelderDTOService
 import com.lvg.weldercenter.se.ui.utils.ControlFXUtils
 import com.lvg.weldercenter.se.ui.utils.Printer
@@ -19,11 +20,13 @@ import javafx.concurrent.Worker
 import javafx.event.ActionEvent
 import javafx.fxml.FXML
 import javafx.fxml.Initializable
-import javafx.scene.Parent
 import javafx.scene.control.*
 import javafx.scene.layout.BorderPane
 import javafx.scene.layout.GridPane
+import javafx.util.Callback
 import org.apache.log4j.Logger
+import org.controlsfx.control.textfield.AutoCompletionBinding
+import org.controlsfx.control.textfield.TextFields
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
@@ -37,11 +40,15 @@ class WelderController implements Initializable {
     private static final Logger LOGGER = Logger.getLogger(WelderController.class)
     @Autowired
     MainFrameController mainFrameController
+    //TODO I don't remember why this statement here
+    /*
     @Autowired
     FXMLLoaderProvider fxmlLoaderProvider
 
+     */
+
     @Autowired
-    OrganizationDTOStringConverter organizationDTOStringConverter
+    OrganizationEmbeddedStringConverter organizationEmbeddedStringConverter
 
     @Autowired
     WelderDTORepository welderDTORepository
@@ -53,10 +60,6 @@ class WelderController implements Initializable {
     QualificationDTORepository qualificationRepository
     @Autowired
     JobDTORepository jobDTORepository
-    @Autowired
-    OrganizationDTORepository organizationDTORepository
-    @Autowired
-    SaveOrganizationDTOService saveOrganizationDTOService
     @Autowired
     SaveWelderDTOService saveWelderDTOService
     @Autowired
@@ -84,11 +87,16 @@ class WelderController implements Initializable {
     @FXML
     private ComboBox<String> cbQualification
     @FXML
-    private ComboBox<OrganizationDTO> cbOrganization
-    @FXML
     private ComboBox<String> cbJob
     @FXML
     private TextField txfAddress
+    @FXML
+    private TextField txfOrganizationName
+    @FXML
+    private TextField txfOrganizationAddress
+    @FXML
+    private TextField txfOrganizationPhone
+
 
     @FXML
     private Button btSave
@@ -116,11 +124,24 @@ class WelderController implements Initializable {
         initCbEducation()
         initCbQualification()
         initCbJob()
-        initCbOrganization()
         initCRUDButtons()
-        allTextFields = [txfName, txfSurname, txfSecname, txfDocNumber, txfAddress]
+        initTxfOrganizationName()
+        allTextFields = [txfName, txfSurname, txfSecname, txfDocNumber, txfAddress,
+                         txfOrganizationName, txfOrganizationAddress, txfOrganizationPhone]
         allDatePickers = [dpDateBegin, dpBirthday]
         welderDetailsPane.disableProperty().bind(welderDTOProperty.isNull())
+
+    }
+
+    //TODO init text field as autocomplete field
+    private void initTxfOrganizationName(){
+        TextFields.bindAutoCompletion(txfOrganizationName,
+                new Callback<AutoCompletionBinding.ISuggestionRequest, Collection<OrganizationEmbedded>>() {
+            @Override
+            Collection<OrganizationEmbedded> call(AutoCompletionBinding.ISuggestionRequest param) {
+                return welderDTORepository.allOrganizations
+            }
+        }, organizationEmbeddedStringConverter)
 
     }
 
@@ -144,12 +165,6 @@ class WelderController implements Initializable {
         cbJob.itemsProperty().bind(jobDTORepository.jobsNameListProperty())
     }
 
-    private void initCbOrganization() {
-        organizationDTORepository.loadAllDTO()
-        cbOrganization.converterProperty().set(organizationDTOStringConverter)
-        LOGGER.debug("--- INIT ORGANIZATION DTO COMBO BOX: allOrganization size: ${organizationDTORepository.getAllDTO().size()}")
-        cbOrganization.setItems(organizationDTORepository.getAllDTO())
-    }
 
 
     @FXML
@@ -206,9 +221,11 @@ class WelderController implements Initializable {
         cbQualification.valueProperty().bindBidirectional(welderDTO.qualificationProperty)
         ControlFXUtils.selectItemInCombo(welderDTO.job, cbJob)
         cbJob.valueProperty().bindBidirectional(welderDTO.jobProperty)
-        ControlFXUtils.selectItemInCombo(welderDTO.organizationDTO, cbOrganization)
+        txfOrganizationName.textProperty().bindBidirectional(welderDTO.organizationNameProperty)
+        txfOrganizationAddress.textProperty().bindBidirectional(welderDTO.organizationAddressProperty)
+        txfOrganizationPhone.textProperty().bindBidirectional(welderDTO.organizationPhoneProperty)
+
         //TODO is it really has to be bound bidirectional
-        cbOrganization.valueProperty().bindBidirectional(welderDTO.organizationProperty())
         txfAddress.textProperty().bindBidirectional(welderDTO.addressProperty)
         LOGGER.debug("Trying to bind welderDTO to WelderTableViewDTO")
 
@@ -224,7 +241,6 @@ class WelderController implements Initializable {
         cbEducation.valueProperty().set(null)
         cbQualification.valueProperty().set(null)
         cbJob.valueProperty().set(null)
-        cbOrganization.valueProperty().set(null)
     }
 
 
@@ -239,51 +255,6 @@ class WelderController implements Initializable {
     }
 
     @FXML
-    void saveOrganization() {
-        //Show organization dialog
-        OrganizationDialog dialog = new OrganizationDialog(cbOrganization.valueProperty().getValue())
-        Optional<ButtonType> optional = dialog.showAndWait()
-        //TODO correct adding organization to combo box when changed another
-        //TODO field instead name Save button not enabled;
-        switch (optional.get().buttonData) {
-            case ButtonBar.ButtonData.OK_DONE:
-                LOGGER.debug(" --- saveOrganization option: SAVE chosen \n" +
-                        "\t Organization: ${dialog.organizationDTOObjectProperty().getValue()}\n")
-
-                OrganizationDTO organizationDTO = dialog.organizationDTOObjectProperty().getValue()
-                LOGGER.debug("Received organizationDTO: ${organizationDTO} with id: ${organizationDTO.getId()} " +
-                        "hash:${organizationDTO.hashCode()}\n" +
-                        "old organizationDTO: ${welderDTOProperty.get().organizationDTO} " +
-                        "hash: ${welderDTOProperty.get().organizationDTO.hashCode()}")
-
-                organizationDTORepository.saveOrganizationDTO(organizationDTO)
-                runLater({
-                    saveOrganizationDTOService
-                            .stateProperty()
-                            .addListener(new ChangeListener<Worker.State>() {
-                        @Override
-                        void changed(ObservableValue<? extends Worker.State> observable, Worker.State oldValue, Worker.State newValue) {
-                            LOGGER.debug("saveOrganizationDTO Change Listener class: ${getClass()}: State is: ${newValue}")
-                            if (newValue == Worker.State.SUCCEEDED)  {
-                                cbOrganization.editor.text = organizationDTO.name
-                                welderDTOProperty.value.organizationProperty().set(organizationDTO)
-                            }
-                            if (newValue == Worker.State.SUCCEEDED || newValue == Worker.State.FAILED)  {
-                                saveOrganizationDTOService.stateProperty().removeListener(this)
-                            }
-                        }
-                    })
-                })
-                LOGGER.debug("OrganizationDTO added to combo box. value: ${cbOrganization.value} " +
-                        "id:${cbOrganization.value.getId()}")
-                break
-            case ButtonBar.ButtonData.CANCEL_CLOSE:
-                LOGGER.debug("--- saveOrganization option: CANCEL chosen")
-                break
-        }
-    }
-
-    @FXML
     void addNewWelder(){
        welderTableController.addNew()
     }
@@ -293,10 +264,7 @@ class WelderController implements Initializable {
         LOGGER.debug("saveWelder: --- BEGIN SAVE WELDER ---")
         WelderDTO savingWelderDTO = welderDTOProperty().get()
         LOGGER.debug("saveWelder: start checking OrganizationDTO")
-        if (isDefaultOrganizationDTO(savingWelderDTO.getOrganizationDTO())) {
-            LOGGER.debug("saveWelder: OrganizationDTO has to be default")
-            cbOrganization.setValue(organizationDTORepository.getDefaultOrganizationDTO())
-        }
+        //TODO process saving organization with check
         welderDTORepository.saveWelderDTO(savingWelderDTO)
         runLater(welderSavePostProcessing)
         Printer.logDTO(WelderDTO.class, welderDTOProperty.get())
@@ -304,24 +272,11 @@ class WelderController implements Initializable {
     }
 
 
-    private static boolean isDefaultOrganizationDTO(OrganizationDTO organizationDTO){
-        if (organizationDTO == null)
-            return true
-        if(organizationDTO.name == R.ModelsConfig.DEFAULT_ORGANIZATION_NAME ||
-            organizationDTO.name.isEmpty())
-            return true
-        return false
-    }
-
     private void addListeners() {
         ControlFXUtils.addChangeListenerToTextFields((ChangeListener<String>) textFieldChangeListener,
                 allTextFields)
         ControlFXUtils.addChangeListenerToDatePickers((ChangeListener<LocalDate>) datePickerChangeListener,
                 allDatePickers)
-        ControlFXUtils.addChangeListenerToComboBoxes((ChangeListener<OrganizationDTO>) comboBoxChangeOrganizationListener,
-                cbOrganization)
-        ControlFXUtils.addChangeListenerToTextFields((ChangeListener<String>) comboBoxChangeEditorOrganizationListener,
-                cbOrganization.editor)
     }
 
     private void removeListeners() {
@@ -329,10 +284,6 @@ class WelderController implements Initializable {
                 allTextFields)
         ControlFXUtils.removeChangeListenerFromDatePickers((ChangeListener<LocalDate>) datePickerChangeListener,
                 allDatePickers)
-        ControlFXUtils.removeChangeListenerFromComboBoxes((ChangeListener<OrganizationDTO>) comboBoxChangeOrganizationListener,
-                cbOrganization)
-        ControlFXUtils.removeChangeListenerFromTextFields((ChangeListener<String>) comboBoxChangeEditorOrganizationListener,
-                cbOrganization.editor)
     }
 
     //Listeners
@@ -389,40 +340,7 @@ class WelderController implements Initializable {
         }
     }
 
-    private final comboBoxChangeOrganizationListener = { ObjectProperty<OrganizationDTO> orgDTOObjectProperty,
-                                                         OrganizationDTO oldValue, OrganizationDTO newValue ->
-        LOGGER.debug("ChangeListener Organization ComboBox: BEGIN ")
-        LOGGER.debug("ChangeListener Organization ComboBox source: ${orgDTOObjectProperty.class.simpleName} oldValue: ${oldValue} newValue: ${newValue}")
-        if (welderDTOProperty.getValue() == null) return
-
-        LOGGER.debug("ChangeListener Organization ComboBox: welderDTOProperty not null - OK")
-        if (newValue == null) {
-            LOGGER.debug("ChangeListener Organization ComboBox: newValue is null - setting default value of OrganizationDTO")
-            orgDTOObjectProperty.setValue(OrganizationDTO.getDefaultOrganizationDTO())
-            return
-        }
-        LOGGER.debug("ChangeListener Organization ComboBox: newValue not null - ( ${newValue} )")
-        if (orgDTOObjectProperty == cbOrganization.valueProperty()) {
-            LOGGER.debug("ChangeListener Organization ComboBox: orgDTOObjectProperty == cbOrganization.valueProperty() - OK )")
-            changeStringPropertyOfSelectedItem(welderTableController.getWeldersTableView(), "organization", newValue.name)
-        }
-        LOGGER.debug("ChangeListener Organization ComboBox: END ")
-
-    }
-    private final comboBoxChangeEditorOrganizationListener = { StringProperty textProperty,
-                                                               String oldValue, String newValue ->
-        LOGGER.debug("ChangeListener Organization Editor source: BEGIN")
-        if (!cbOrganization.isFocused()) return
-        LOGGER.debug("ChangeListener Organization Editor source: ${textProperty.class.simpleName} oldValue: ${oldValue} newValue: ${newValue}")
-        organizationDTORepository.setFilteredOrganizationName(newValue)
-        cbOrganization.show()
-
-        LOGGER.debug("ChangeListener Organization Editor: END")
-        return
-    }
-
-
-    private class OrganizationDialog extends Dialog<ButtonType> {
+    /*private class OrganizationDialog extends Dialog<ButtonType> {
         private final ButtonType SAVE_BUTTON_TYPE = new ButtonType(ControlFXUtils.OK_DIALOG_BUTTON_TEXT,
                 ButtonBar.ButtonData.OK_DONE)
         private final ButtonType CANCEL_BUTTON_TYPE = new ButtonType(ControlFXUtils.CANCEL_DIALOG_BUTTON_TEXT,
@@ -465,6 +383,8 @@ class WelderController implements Initializable {
             organizationDTOObjectProperty
         }
     }
+
+     */
 
     private Runnable welderSavePostProcessing = {
             saveWelderDTOService.stateProperty().addListener(new ChangeListener<Worker.State>() {

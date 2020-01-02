@@ -1,6 +1,6 @@
 package com.lvg.weldercenter.se.ui.dto
 
-import com.lvg.weldercenter.se.models.Organization
+import com.lvg.weldercenter.se.models.OrganizationEmbedded
 import com.lvg.weldercenter.se.models.Welder
 import javafx.beans.binding.StringBinding
 import javafx.beans.binding.When
@@ -11,59 +11,181 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 import static com.lvg.weldercenter.se.ui.dto.DTOConstants.*
+import static com.lvg.weldercenter.se.ui.dto.DTOConstants.WelderDTOPropertiesNames.*
 
 class WelderDTO extends GenericModelDTO<Welder> implements ModelDTO {
 
-    private Welder welder
+    private Map<String, Object> originalWelderProperties = new HashMap<String, Object>()
+
     private final LongProperty idProperty = new SimpleLongProperty(super.idProperty.get())
-    private final ObjectProperty<Welder> originalWelderProperty = new SimpleObjectProperty<>()
-    private final ObjectProperty<OrganizationDTO> organizationProperty = new SimpleObjectProperty<OrganizationDTO>()
-    private final StringProperty nameProperty = new SimpleStringProperty()
-    private final StringProperty surnameProperty = new SimpleStringProperty()
-    private final StringProperty secondNameProperty = new SimpleStringProperty()
-    private final StringProperty documentNumberProperty = new SimpleStringProperty()
-    private final StringProperty addressProperty = new SimpleStringProperty()
-    private final ObjectProperty<LocalDate> birthdayProperty = new SimpleObjectProperty<>()
-    private final ObjectProperty<LocalDate> dateBeginProperty = new SimpleObjectProperty<>()
-    private final StringProperty educationProperty = new SimpleStringProperty()
-    private final StringProperty qualificationProperty = new SimpleStringProperty()
-    private final StringProperty jobProperty = new SimpleStringProperty()
-    private final StringProperty birthdayFormatProperty = new SimpleStringProperty()
-    private final StringProperty organizationNameProperty = new SimpleStringProperty()
-    private final BooleanProperty isWelderDTOChangedProperty = new SimpleBooleanProperty()
+    private final StringProperty nameProperty = new SimpleStringProperty(this, NAME__PROP_NAME)
+    private final StringProperty surnameProperty = new SimpleStringProperty(this, SURNAME_PROP_NAME)
+    private final StringProperty secondNameProperty = new SimpleStringProperty(this, SECOND_NAME_PROP_NAME)
+    private final StringProperty documentNumberProperty = new SimpleStringProperty(this, DOCUMENT_NUMBER_PROP_NAME)
+    private final StringProperty addressProperty = new SimpleStringProperty(this, ADDRESS_PROP_NAME)
+    private final ObjectProperty<LocalDate> birthdayProperty = new SimpleObjectProperty<>(this, BIRTHDAY_PROP_NAME)
+    private final ObjectProperty<LocalDate> dateBeginProperty = new SimpleObjectProperty<>(this, DATE_BEGIN_PROP_NAME)
+    private final StringProperty educationProperty = new SimpleStringProperty(this, EDUCATION_PROP_NAME)
+    private final StringProperty qualificationProperty = new SimpleStringProperty(this, QUALIFICATION_PROP_NAME)
+    private final StringProperty jobProperty = new SimpleStringProperty(this, JOB_PROP_NAME)
+    private final StringProperty birthdayFormatProperty = new SimpleStringProperty(this,BIRTHDAY_FORMAT_PROP_NAME)
+
+
+    private final StringProperty organizationNameProperty = new SimpleStringProperty(this, ORG_NAME_PROP_NAME)
+    private final StringProperty organizationAddressProperty = new SimpleStringProperty(this, ORG_ADDRESS_PROP_NAME)
+    private final StringProperty organizationPhoneProperty = new SimpleStringProperty(this, ORG_PHONE_PROP_NAME)
+    private final BooleanProperty isWelderDTOChangedProperty = new SimpleBooleanProperty(this, 'isWelderDTOChanged')
+
 
 
     WelderDTO(final Welder welder) {
         validateModel(welder)
-        this.welder = welder
-        updateWelderDTO(welder)
-        organizationProperty.set(welder.organization != null ? new OrganizationDTO(welder.organization) :
-                OrganizationDTO.getDefaultOrganizationDTO())
-        StringBinding orgNameBinding = new When(organizationProperty.isNull())
-                .then("")
-                .otherwise(organizationProperty.get().name)
+        initProperties(welder)
+        initOriginalWelderProperties(welder)
         StringBinding birthdayBinding = new When(birthdayProperty.isNull())
                 .then('')
                 .otherwise(birthdayProperty.get().format(DateTimeFormatter.ofPattern(DATE_FORMAT_PATTERN)))
-        organizationNameProperty.bind(orgNameBinding)
         birthdayFormatProperty.bind(birthdayBinding)
         addListeners()
     }
 
-    Welder getWelder() {
-        welder.organization = (organizationProperty.get() != null ? organizationProperty.get().getOrganization() : null)
-        welder.name = getName()
-        welder.surname = getSurname()
-        welder.secondName = getSecondName()
-        welder.birthday = getBirthday()
-        welder.dateBegin = getDateBegin()
-        welder.documentNumber = getDocumentNumber()
-        welder.address = getAddress()
-        welder.qualification = getQualification()
-        welder.education = getEducation()
-        welder.job = getJob()
+    void updateWelderDTO(Welder welder) {
+        initOriginalWelderProperties(welder)
+    }
 
-        return welder
+
+    private void initProperties(Welder welder){
+        idProperty.set(welder.id == null ? NULL_ID_FIELD_DEFAULT : welder.id)
+        nameProperty.set(welder.name)
+        surnameProperty.set(welder.surname)
+        secondNameProperty.set(welder.secondName)
+        documentNumberProperty.set(welder.documentNumber)
+        addressProperty.set(welder.address)
+        birthdayProperty.set(welder.birthday)
+        dateBeginProperty.set(welder.dateBegin)
+        educationProperty.set(welder.education)
+        qualificationProperty.set(welder.qualification)
+        jobProperty.set(welder.job)
+        OrganizationEmbedded org = welder.organization
+        organizationNameProperty.set(org == null ? DEFAULT_ORGANIZATION_PLACEHOLDER.name :
+                org.name)
+        organizationAddressProperty.set(org == null ? DEFAULT_ORGANIZATION_PLACEHOLDER.address :
+                org.address)
+        organizationPhoneProperty.set(org == null ? DEFAULT_ORGANIZATION_PLACEHOLDER.phone :
+                org.phone)
+    }
+
+    private void initOriginalWelderProperties(Welder welder){
+        originalWelderProperties.put(ID_PROP_NAME, welder.id)
+        originalWelderProperties.put(NAME__PROP_NAME, welder.name)
+        originalWelderProperties.put(SURNAME_PROP_NAME, welder.surname)
+        originalWelderProperties.put(SECOND_NAME_PROP_NAME, welder.secondName)
+        originalWelderProperties.put(BIRTHDAY_PROP_NAME, welder.birthday)
+        originalWelderProperties.put(DATE_BEGIN_PROP_NAME, welder.dateBegin)
+        originalWelderProperties.put(DOCUMENT_NUMBER_PROP_NAME, welder.documentNumber)
+        originalWelderProperties.put(EDUCATION_PROP_NAME, welder.education)
+        originalWelderProperties.put(JOB_PROP_NAME, welder.job)
+        originalWelderProperties.put(QUALIFICATION_PROP_NAME, welder.qualification)
+        originalWelderProperties.put(ADDRESS_PROP_NAME, welder.address)
+        originalWelderProperties.put(ORG_NAME_PROP_NAME, welder.organization != null ? welder.organization.name : null)
+        originalWelderProperties.put(ORG_ADDRESS_PROP_NAME, welder.organization != null ? welder.organization.address : null)
+        originalWelderProperties.put(ORG_PHONE_PROP_NAME, welder.organization != null ? welder.organization.phone : null)
+
+    }
+
+    BooleanProperty isWelderDTOChangedProperty(){
+        boolean result =
+                !(isEqualValuesProperties(nameProperty, originalWelderProperties.get(NAME__PROP_NAME)) &&
+                isEqualValuesProperties(secondNameProperty, originalWelderProperties.get(SECOND_NAME_PROP_NAME)) &&
+                isEqualValuesProperties(surnameProperty, originalWelderProperties.get(SURNAME_PROP_NAME)) &&
+                isEqualValuesProperties(birthdayProperty, originalWelderProperties.get(BIRTHDAY_PROP_NAME)) &&
+                isEqualValuesProperties(documentNumberProperty, originalWelderProperties.get(DOCUMENT_NUMBER_PROP_NAME)) &&
+                isEqualValuesProperties(dateBeginProperty, originalWelderProperties.get(DATE_BEGIN_PROP_NAME)) &&
+                isEqualValuesProperties(addressProperty, originalWelderProperties.get(ADDRESS_PROP_NAME)) &&
+                isEqualValuesProperties(educationProperty, originalWelderProperties.get(EDUCATION_PROP_NAME)) &&
+                isEqualValuesProperties(qualificationProperty, originalWelderProperties.get(QUALIFICATION_PROP_NAME)) &&
+                isEqualValuesProperties(jobProperty, originalWelderProperties.get(JOB_PROP_NAME)) &&
+                isEqualValuesProperties(organizationNameProperty,  originalWelderProperties.get(ORG_NAME_PROP_NAME)) &&
+                isEqualValuesProperties(organizationAddressProperty, originalWelderProperties.get(ORG_ADDRESS_PROP_NAME)) &&
+                isEqualValuesProperties(organizationPhoneProperty, originalWelderProperties.get(ORG_PHONE_PROP_NAME)) )
+        isWelderDTOChangedProperty.set(result)
+        return isWelderDTOChangedProperty
+    }
+
+    private static boolean isEqualValuesProperties(Property newProperty, Object oldValue){
+        if (newProperty == null)
+            throw new NullPointerException('Property must be not null')
+        if (newProperty instanceof StringProperty && oldValue instanceof String)
+            return newProperty.get() != null ? newProperty.get().trim() == oldValue : newProperty.get() == oldValue
+        if (newProperty instanceof ObjectProperty<LocalDate> && oldValue instanceof LocalDate)
+            return newProperty.get() == oldValue
+        throw new IllegalArgumentException("Method does not support arguments of such classes newProperty: " +
+                "${newProperty.class.getName()} and oldValue: ${oldValue.class.getName()}")
+    }
+
+    private void addListeners(){
+        nameProperty.addListener((ChangeListener<String>){observable, oldName, newName ->
+            update()
+        })
+        secondNameProperty.addListener((ChangeListener<String>){observable, oldName, newName ->
+            update()
+        })
+        surnameProperty.addListener((ChangeListener<String>){observable, oldName, newName ->
+            update()
+        })
+        birthdayProperty.addListener((ChangeListener<LocalDate>){observable, oldName, newName ->
+            update()
+        })
+        dateBeginProperty.addListener((ChangeListener<LocalDate>){observable, oldName, newName ->
+            update()
+        })
+        documentNumberProperty.addListener((ChangeListener<String>){observable, oldName, newName ->
+            update()
+        })
+        addressProperty.addListener((ChangeListener<String>){observable, oldName, newName ->
+            update()
+        })
+        educationProperty.addListener((ChangeListener<String>){observable, oldName, newName ->
+            update()
+        })
+        qualificationProperty.addListener((ChangeListener<String>){observable, oldName, newName ->
+            update()
+        })
+        jobProperty.addListener((ChangeListener<String>){observable, oldName, newName ->
+            update()
+        })
+        organizationNameProperty.addListener((ChangeListener<String>){observable, oldName, newName ->
+            update()
+        })
+        organizationAddressProperty.addListener((ChangeListener<String>){observable, oldName, newName ->
+            update()
+        })
+        organizationPhoneProperty.addListener((ChangeListener<String>){observable, oldName, newName ->
+            update()
+        })
+    }
+
+    private void update(){
+        isWelderDTOChangedProperty().get()
+    }
+
+
+
+    Welder getWelder() {
+        Welder result = new Welder()
+        result.id = originalWelderProperties.get(ID_PROP_NAME) != null ? (Long)originalWelderProperties.get(ID_PROP_NAME):null
+        result.organization = getOrganization()
+        result.name = getName()
+        result.surname = getSurname()
+        result.secondName = getSecondName()
+        result.birthday = getBirthday()
+        result.dateBegin = getDateBegin()
+        result.documentNumber = getDocumentNumber()
+        result.address = getAddress()
+        result.qualification = getQualification()
+        result.education = getEducation()
+        result.job = getJob()
+        return result
     }
 
     boolean equals(o) {
@@ -72,7 +194,6 @@ class WelderDTO extends GenericModelDTO<Welder> implements ModelDTO {
 
         WelderDTO welderDTO = (WelderDTO) o
 
-        if (organizationProperty != welderDTO.organizationProperty()) return false
         if (getAddress() != welderDTO.getAddress()) return false
         if (getBirthday() != welderDTO.getBirthday()) return false
         if (getDateBegin() != welderDTO.getDateBegin()) return false
@@ -89,7 +210,7 @@ class WelderDTO extends GenericModelDTO<Welder> implements ModelDTO {
 
     int hashCode() {
         int result
-        result = (organizationProperty() != null ? organizationProperty.hashCode() : 0)
+        result = (organizationNameProperty.get() != null ? organizationNameProperty.hashCode() : 0)
         result = 31 * result + (getName() != null ? getName().hashCode() : 0)
         result = 31 * result + (getSurname() != null ? getSurname().hashCode() : 0)
         result = 31 * result + (getSecondName() != null ? getSecondName().hashCode() : 0)
@@ -115,8 +236,8 @@ class WelderDTO extends GenericModelDTO<Welder> implements ModelDTO {
 
     @Override
     Long getId() {
-        def id = getWelder().id
-        return id == null ? NULL_ID_FIELD_DEFAULT : id
+        def id = originalWelderProperties.get(ID_PROP_NAME)
+        return id == null ? NULL_ID_FIELD_DEFAULT : (Long)id
     }
 
     String getName() {
@@ -159,8 +280,11 @@ class WelderDTO extends GenericModelDTO<Welder> implements ModelDTO {
         return jobProperty.get()
     }
 
-    OrganizationDTO getOrganizationDTO() {
-        return organizationProperty.get()
+    OrganizationEmbedded getOrganization() {
+        return organizationNameProperty.get().trim().isEmpty()? null:
+                new OrganizationEmbedded(name: organizationNameProperty.get().trim(),
+                        address: organizationAddressProperty.get().trim(),
+                        phone: organizationPhoneProperty.get().trim())
     }
 
     String getBirthdayFormat() {
@@ -173,11 +297,6 @@ class WelderDTO extends GenericModelDTO<Welder> implements ModelDTO {
         def dateBegin = getDateBegin()
         return dateBegin == null ? NULL_FIELD_PLACEHOLDER :
                 dateBegin.format(DateTimeFormatter.ofPattern(DATE_FORMAT_PATTERN))
-    }
-
-    String getOrganizationName() {
-        return organizationProperty.get() == null ? NULL_FIELD_PLACEHOLDER :
-                organizationProperty.get().name
     }
 
     void setName(String name) {
@@ -261,83 +380,16 @@ class WelderDTO extends GenericModelDTO<Welder> implements ModelDTO {
         return jobProperty
     }
 
-    ObjectProperty<OrganizationDTO> organizationProperty() {
-        return organizationProperty
+    StringProperty getOrganizationNameProperty(){
+        return organizationNameProperty
     }
 
-    ObjectProperty<Welder> originalWelderProperty() {
-        return originalWelderProperty
+    StringProperty getOrganizationAddressProperty(){
+        return organizationAddressProperty
     }
 
-
-    BooleanProperty isWelderDTOChangedProperty(){
-        boolean result = !(nameProperty.get() == originalWelderProperty.get().name &&
-                secondNameProperty.get() == originalWelderProperty.get().secondName &&
-                surnameProperty.get() == originalWelderProperty.get().surname &&
-                birthdayProperty.get() == originalWelderProperty.get().birthday &&
-                documentNumberProperty.get() == originalWelderProperty.get().documentNumber &&
-                dateBeginProperty.get() == originalWelderProperty.get().dateBegin &&
-                addressProperty.get() == originalWelderProperty.get().address &&
-                educationProperty.get() == originalWelderProperty.get().education &&
-                qualificationProperty.get() == originalWelderProperty.get().qualification &&
-                jobProperty.get() == originalWelderProperty.get().job &&
-                !isOrganizationPropertyChanged())
-        isWelderDTOChangedProperty.set(result)
-        return isWelderDTOChangedProperty
-    }
-
-    private boolean isOrganizationPropertyChanged(){
-        Organization originalOrganization = originalWelderProperty().get().getOrganization()
-        if (organizationProperty().get() == null && originalOrganization != null)
-            return true
-        if (organizationProperty().get() != null && originalOrganization == null)
-            return true
-        return  !(organizationProperty.get().id == originalOrganization.id &&
-                organizationProperty.get().name == originalOrganization.name &&
-                organizationProperty.get().address == originalOrganization.address &&
-                organizationProperty.get().phone == originalOrganization.phone)
-    }
-
-    private void addListeners(){
-        nameProperty.addListener((ChangeListener<String>){observable, oldName, newName ->
-            update()
-        })
-        secondNameProperty.addListener((ChangeListener<String>){observable, oldName, newName ->
-            update()
-        })
-        surnameProperty.addListener((ChangeListener<String>){observable, oldName, newName ->
-            update()
-        })
-        birthdayProperty.addListener((ChangeListener<LocalDate>){observable, oldName, newName ->
-            update()
-        })
-        dateBeginProperty.addListener((ChangeListener<LocalDate>){observable, oldName, newName ->
-            update()
-        })
-        documentNumberProperty.addListener((ChangeListener<String>){observable, oldName, newName ->
-            update()
-        })
-        addressProperty.addListener((ChangeListener<String>){observable, oldName, newName ->
-            update()
-        })
-        educationProperty.addListener((ChangeListener<String>){observable, oldName, newName ->
-            update()
-        })
-        qualificationProperty.addListener((ChangeListener<String>){observable, oldName, newName ->
-            update()
-        })
-        jobProperty.addListener((ChangeListener<String>){observable, oldName, newName ->
-            update()
-        })
-        organizationProperty.addListener((ChangeListener<OrganizationDTO>){observable, oldName, newName ->
-            LOGGER.debug("WelderDTO change organization listener: organization has changed old: ${oldName}; new: ${newName}")
-            update()
-            LOGGER.debug("WelderDTO change organization listener: isWelderDTOChangedProperty: ${isWelderDTOChangedProperty.get()}")
-        })
-    }
-
-    private void update(){
-        isWelderDTOChangedProperty().get()
+    StringProperty getOrganizationPhoneProperty(){
+        return organizationPhoneProperty
     }
 
     static WelderDTO defaultWelderDTO() {
@@ -358,37 +410,6 @@ class WelderDTO extends GenericModelDTO<Welder> implements ModelDTO {
         return welder
     }
 
-    void updateWelderDTO(final Welder welder){
-        this.welder.id = welder.id
-        this.welder.name = welder.name
-        this.welder.secondName = welder.secondName
-        this.welder.surname = welder.surname
-        this.welder.birthday = welder.birthday
-        this.welder.documentNumber = welder.documentNumber
-        this.welder.dateBegin = welder.dateBegin
-        this.welder.education = welder.education
-        this.welder.qualification = welder.qualification
-        this.welder.job = welder.job
-        this.welder.address = welder.address
-        this.welder.organization = welder.organization
-
-        originalWelderProperty.set(welder)
-
-        idProperty.set(welder.id == null ? NULL_ID_FIELD_DEFAULT : welder.id)
-        nameProperty.set(welder.name)
-        surnameProperty.set(welder.surname)
-        secondNameProperty.set(welder.secondName)
-        documentNumberProperty.set(welder.documentNumber)
-        addressProperty.set(welder.address)
-        birthdayProperty.set(welder.birthday)
-        dateBeginProperty.set(welder.dateBegin)
-        educationProperty.set(welder.education)
-        qualificationProperty.set(welder.qualification)
-        jobProperty.set(welder.job)
-        organizationProperty.set(welder.organization != null ? new OrganizationDTO(welder.organization) :
-                OrganizationDTO.getDefaultOrganizationDTO())
-
-    }
 
 
 }

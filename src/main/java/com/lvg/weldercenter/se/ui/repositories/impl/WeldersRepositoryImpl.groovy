@@ -1,11 +1,14 @@
 package com.lvg.weldercenter.se.ui.repositories.impl
 
+import com.lvg.weldercenter.se.models.OrganizationEmbedded
 import com.lvg.weldercenter.se.ui.dto.DTOConstants
 import com.lvg.weldercenter.se.ui.dto.WelderDTO
 import com.lvg.weldercenter.se.ui.dto.WelderTableViewDTO
+import com.lvg.weldercenter.se.ui.listeners.welderspane.LoadAllOrganizationEmbeddedChangeStateListener
 import com.lvg.weldercenter.se.ui.listeners.welderspane.LoadWeldersForTableViewChangeStateListener
 import com.lvg.weldercenter.se.ui.listeners.welderspane.SaveWelderDTOChangeStateListener
 import com.lvg.weldercenter.se.ui.repositories.WelderDTORepository
+import com.lvg.weldercenter.se.ui.services.LoadingAllOrganizationEmbeddedService
 import com.lvg.weldercenter.se.ui.services.LoadingWeldersForTableViewService
 import com.lvg.weldercenter.se.ui.services.SaveWelderDTOService
 import com.lvg.weldercenter.se.ui.utils.ServiceUtils
@@ -16,6 +19,7 @@ import javafx.beans.property.SimpleObjectProperty
 import javafx.collections.FXCollections
 import javafx.collections.ObservableList
 import javafx.collections.ObservableMap
+import javafx.collections.ObservableSet
 import javafx.collections.transformation.FilteredList
 import org.apache.log4j.Logger
 import org.springframework.beans.factory.annotation.Autowired
@@ -35,12 +39,20 @@ class WeldersRepositoryImpl implements WelderDTORepository {
             new SimpleListProperty<>(welderTableViewDTOObservableList)
     private final FilteredList<WelderTableViewDTO> filteredList =
             new FilteredList<>(welderTableViewDTOObservableList, {true})
+    private final ObservableSet<OrganizationEmbedded> organizationEmbeddedSet =
+            FXCollections.observableSet()
 
     @Autowired
     LoadingWeldersForTableViewService loadingWeldersForTableViewService
+    @Autowired
+    LoadingAllOrganizationEmbeddedService loadingAllOrganizationEmbeddedService
+
 
     @Autowired
     LoadWeldersForTableViewChangeStateListener loadWeldersForTableViewChangeStateListener
+    @Autowired
+    LoadAllOrganizationEmbeddedChangeStateListener loadAllOrganizationEmbeddedChangeStateListener
+
     private static final Logger LOGGER = Logger.getLogger(WeldersRepositoryImpl.class)
 
     @Autowired
@@ -66,6 +78,8 @@ class WeldersRepositoryImpl implements WelderDTORepository {
         removeUnsavedItems()
         loadingWeldersForTableViewService.stateProperty().addListener(loadWeldersForTableViewChangeStateListener)
         ServiceUtils.startService(loadingWeldersForTableViewService)
+        loadingAllOrganizationEmbeddedService.stateProperty().addListener(loadAllOrganizationEmbeddedChangeStateListener)
+        ServiceUtils.startService(loadingAllOrganizationEmbeddedService)
     }
 
     @Override
@@ -108,6 +122,17 @@ class WeldersRepositoryImpl implements WelderDTORepository {
         welderTableViewDTOListProperty.removeAll(removedList)
     }
 
+    @Override
+    Set<OrganizationEmbedded> getAllOrganizations() {
+        return organizationEmbeddedSet
+    }
+
+    @Override
+    void updateOrganizationEmbeddedSet(ObservableSet<OrganizationEmbedded> organizationEmbeddedSet) {
+        this.organizationEmbeddedSet.clear()
+        this.organizationEmbeddedSet.addAll(organizationEmbeddedSet)
+    }
+
     private static WelderTableViewDTO getDefaultWelderTableViewDTO() {
         new WelderTableViewDTO(DTOConstants.NULL_ID_FIELD_DEFAULT,
                 DTOConstants.NULL_FIELD_PLACEHOLDER,
@@ -116,6 +141,8 @@ class WeldersRepositoryImpl implements WelderDTORepository {
                 DTOConstants.DEFAULT_BIRTHDAY_PLACEHOLDER,
                 DTOConstants.NULL_FIELD_PLACEHOLDER)
     }
+
+
 
 
 }

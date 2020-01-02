@@ -10,6 +10,7 @@ import com.lvg.weldercenter.se.models.Journal
 import com.lvg.weldercenter.se.models.MechanicalTest
 import com.lvg.weldercenter.se.models.NDTDocument
 import com.lvg.weldercenter.se.models.Organization
+import com.lvg.weldercenter.se.models.OrganizationEmbedded
 import com.lvg.weldercenter.se.models.PersonalProtocol
 import com.lvg.weldercenter.se.models.Qualification
 import com.lvg.weldercenter.se.models.RadiationTest
@@ -37,6 +38,10 @@ abstract class ModelsGenerator {
         return new Organization(name: 'IBM', address: 'New-York', phone: '(0595)466-15-59')
     }
 
+    static OrganizationEmbedded getOrganizationEmbedded(){
+        return new OrganizationEmbedded(name: 'IBM-embedded', address: 'New-York', phone: '(000)123-456-789')
+    }
+
     static Welder getWelder() {
         def welder = new Welder(name: 'Иван', surname: 'Иванов', secondName: 'Иванович')
         welder.birthday = LocalDate.of(1987, 10, 28)
@@ -46,7 +51,7 @@ abstract class ModelsGenerator {
         welder.education = 'среднее-специальное'
         welder.qualification = 'электросварщик'
         welder.job = 'элекросварщик'
-        welder.organization = getOrganization()
+        welder.organization = getOrganizationEmbedded()
         return welder
     }
 

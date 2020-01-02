@@ -34,9 +34,7 @@ class WelderTest extends GenericModelTest {
         assert chkWelder.education == 'среднее-специальное'
         assert chkWelder.qualification == 'электросварщик'
         assert chkWelder.job == 'элекросварщик'
-        assert org.id != null
-        assert org.name == 'IBM'
-
+        assert org.name == 'IBM-embedded'
     }
 
     @Test

@@ -1,6 +1,6 @@
 package com.lvg.weldercenter.se.ui.utils
 
-
+import com.lvg.weldercenter.se.models.OrganizationEmbedded
 import com.lvg.weldercenter.se.ui.dto.ModelDTO
 import com.lvg.weldercenter.se.ui.dto.OrganizationDTO
 import com.lvg.weldercenter.se.ui.dto.WelderDTO
@@ -11,12 +11,13 @@ import org.apache.log4j.Logger
 class Printer {
     private static final Logger LOGGER = Logger.getLogger(Printer.class)
 
-    static void logDTO(Class<?> modelClass, ModelDTO modelDTO){
+    static void logDTO(Class<?> modelClass, Object modelDTO){
         String classString = "Class:\t ${modelClass.simpleName}\n"
 
         if (modelClass == WelderDTO.class) LOGGER.debug("${classString} ${printWelderDTO((WelderDTO)modelDTO)}")
         if (modelClass == WelderTableViewDTO.class) LOGGER.debug("${classString} ${printWelderTableViewDTO((WelderTableViewDTO)modelDTO)}")
         if (modelClass == OrganizationDTO.class) LOGGER.debug("${classString} ${printOrganizationDTO((OrganizationDTO)modelDTO)}")
+        if (modelClass == OrganizationEmbedded.class) LOGGER.debug("${classString} ${printOrganizationEmbedded((OrganizationEmbedded)modelDTO)}")
     }
 
     private static String printWelderDTO(WelderDTO welderDTO){
@@ -34,7 +35,7 @@ class Printer {
                 "\teducation:      ${welderDTO.education}\n" +
                 "\tqualification:  ${welderDTO.qualification}\n" +
                 "\tjob:            ${welderDTO.job}\n" +
-                "organization:     ${printOrganizationDTO(welderDTO.organizationDTO)}\n"
+                "organization:     ${welderDTO.organization}\n"
     }
 
     private static String printWelderTableViewDTO(WelderTableViewDTO welderTableViewDTO){
@@ -57,6 +58,16 @@ class Printer {
                 "\tname:           ${organizationDTO.name}\n" +
                 "\taddress:        ${organizationDTO.address}\n" +
                 "\tphone:          ${organizationDTO.phone}\n"
+
+    }
+
+    private static String printOrganizationEmbedded(OrganizationEmbedded organizationEmbedded){
+        if (organizationEmbedded == null)
+            return "${organizationEmbedded}"
+        return "OrganizationEmbedded:\n " +
+                "\tname:           ${organizationEmbedded.name}\n" +
+                "\taddress:        ${organizationEmbedded.address}\n" +
+                "\tphone:          ${organizationEmbedded.phone}\n"
 
     }
 }
