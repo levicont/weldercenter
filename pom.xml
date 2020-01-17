@@ -8,18 +8,18 @@
 	<packaging>jar</packaging>
 
 	<name>weldercenter</name>
-	<url>http://maven.apache.org</url>
+	<!--url>http://maven.apache.org</url-->
     <!--Properties which need set -->
 	<!--properties>
         <bitronix.version>2.1.4</bitronix.version>
 	</properties-->
-    <repositories>
+    <!--repositories>
         <repository>
             <id>central</id>
             <name>jcenter</name>
             <url>http://jcenter.bintray.com</url>
         </repository>
-    </repositories>
+    </repositories-->
 
     <parent>
         <groupId>org.springframework.boot</groupId>

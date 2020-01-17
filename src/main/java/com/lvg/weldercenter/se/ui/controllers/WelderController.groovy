@@ -133,13 +133,16 @@ class WelderController implements Initializable {
 
     }
 
-    //TODO init text field as autocomplete field
+    //Initialized organization name text field as autocomplete field
     private void initTxfOrganizationName(){
         TextFields.bindAutoCompletion(txfOrganizationName,
                 new Callback<AutoCompletionBinding.ISuggestionRequest, Collection<OrganizationEmbedded>>() {
             @Override
             Collection<OrganizationEmbedded> call(AutoCompletionBinding.ISuggestionRequest param) {
-                return welderDTORepository.allOrganizations
+
+                return welderDTORepository.allOrganizations.findAll {org ->
+                    org.name.contains(param.userText)
+                }
             }
         }, organizationEmbeddedStringConverter)
 
@@ -305,6 +308,10 @@ class WelderController implements Initializable {
             changeStringPropertyOfSelectedItem(table, "secondName", newValue)
             return
         }
+        if (stringProperty == txfOrganizationName.textProperty()){
+            onOrganizationSubmit()
+            return
+        }
     }
 
     private static void changeStringPropertyOfSelectedItem(TableView<WelderTableViewDTO> tableView, String propertyName, String value){
@@ -337,6 +344,18 @@ class WelderController implements Initializable {
             changeStringPropertyOfSelectedItem(welderTableController.getWeldersTableView(),
                     'birthday', newValue.format(df))
             return
+        }
+    }
+
+    private onOrganizationSubmit(){
+        //TODO this may be leak performance
+        Set<OrganizationEmbedded> organizationEmbeddedSet = welderDTORepository.allOrganizations
+        OrganizationEmbedded selectedOrg = organizationEmbeddedSet.find {org ->
+            org.name == txfOrganizationName.textProperty().value
+        }
+        if (selectedOrg != null){
+            txfOrganizationAddress.textProperty().set(selectedOrg.address)
+            txfOrganizationPhone.textProperty().set(selectedOrg.phone)
         }
     }
 
