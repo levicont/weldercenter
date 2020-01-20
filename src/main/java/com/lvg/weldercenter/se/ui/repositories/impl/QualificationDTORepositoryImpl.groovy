@@ -25,8 +25,12 @@ class QualificationDTORepositoryImpl implements QualificationDTORepository{
 
     @Override
     void loadQualifications() {
-        loadingAllQualificationsService.stateProperty().addListener(loadAllQualificationsChangeStateListener)
-        ServiceUtils.startService(loadingAllQualificationsService)
+        //TODO if qualificationList is relevant do not touch DB. Get list from buffer.
+        if(qualificationListProperty.isEmpty()){
+            loadingAllQualificationsService.stateProperty().addListener(loadAllQualificationsChangeStateListener)
+            ServiceUtils.startService(loadingAllQualificationsService)
+        }
+
     }
 
     @Override

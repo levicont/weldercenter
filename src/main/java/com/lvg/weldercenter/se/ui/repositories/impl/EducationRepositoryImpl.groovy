@@ -4,8 +4,8 @@ import com.lvg.weldercenter.se.ui.listeners.welderspane.LoadAllEducationsChangeS
 import com.lvg.weldercenter.se.ui.repositories.EducationDTORepository
 import com.lvg.weldercenter.se.ui.services.LoadingAllEducationsService
 import com.lvg.weldercenter.se.ui.utils.ServiceUtils
-import javafx.beans.property.ObjectProperty
-import javafx.beans.property.SimpleObjectProperty
+import javafx.beans.property.ListProperty
+import javafx.beans.property.SimpleListProperty
 import javafx.collections.FXCollections
 import javafx.collections.ObservableList
 import org.apache.log4j.Logger
@@ -24,8 +24,8 @@ class EducationRepositoryImpl implements EducationDTORepository{
 
 
     private ObservableList<String> allEducations = FXCollections.observableArrayList()
-    private final ObjectProperty<ObservableList<String>> allEducationsProperty =
-            new SimpleObjectProperty<ObservableList<String>>(allEducations)
+    private final ListProperty<String> allEducationsProperty =
+            new SimpleListProperty<String>(allEducations)
 
     @Override
     ObservableList<String> getAllEducationDTO() {
@@ -33,7 +33,7 @@ class EducationRepositoryImpl implements EducationDTORepository{
     }
 
     @Override
-    ObjectProperty<ObservableList<String>> getAllEducationProperty() {
+    ListProperty<String> getAllEducationProperty() {
         return allEducationsProperty
     }
 
@@ -44,8 +44,11 @@ class EducationRepositoryImpl implements EducationDTORepository{
     }
 
     void loadEducations(){
-        loadingAllEducationsService.stateProperty().addListener(loadAllEducationsChangeStateListener)
-        ServiceUtils.startService(loadingAllEducationsService)
-        LOGGER.debug("Load educations performed")
+        //TODO if educationList is relevant do not touch DB. Get list from buffer.
+        if(allEducationsProperty.isEmpty()){
+            loadingAllEducationsService.stateProperty().addListener(loadAllEducationsChangeStateListener)
+            ServiceUtils.startService(loadingAllEducationsService)
+            LOGGER.debug("Load educations performed")
+        }
     }
 }
