@@ -40,6 +40,7 @@ class JobDTORepositoryImpl implements JobDTORepository{
 
     @Override
     void loadAllDTO() {
+        //TODO if jobsNameList is relevant do not touch DB. Get list from buffer.
         loadingAllJobsService.stateProperty().addListener(loadAllJobChangeStateListener)
         ServiceUtils.startService(loadingAllJobsService)
     }
