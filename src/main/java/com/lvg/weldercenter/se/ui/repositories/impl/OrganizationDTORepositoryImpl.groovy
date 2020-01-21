@@ -30,7 +30,7 @@ class OrganizationDTORepositoryImpl implements OrganizationDTORepository{
     @Autowired
     LoadingAllOrganizationsService service
     @Autowired
-    SaveOrganizationDTOService saveOrganizatioDTOService
+    SaveOrganizationDTOService saveOrganizationDTOService
     @Autowired
     SaveOrganizationDTOChangeStateListener saveOrganizationDTOChangeStateListener
 
@@ -40,10 +40,6 @@ class OrganizationDTORepositoryImpl implements OrganizationDTORepository{
     private final ListProperty<OrganizationDTO> allOrganizationListProperty =
             new SimpleListProperty<>(filteredData)
 
-    @Override
-    ListProperty<OrganizationDTO> getAllDTO() {
-        return allOrganizationListProperty
-    }
 
     @Override
     void refreshAllDTO(ObservableList<OrganizationDTO> list) {
@@ -76,8 +72,8 @@ class OrganizationDTORepositoryImpl implements OrganizationDTORepository{
             }
         })
 
-        saveOrganizatioDTOService.stateProperty().addListener(saveOrganizationDTOChangeStateListener)
-        ServiceUtils.startParameterService(saveOrganizatioDTOService, updatedOrganization)
+        saveOrganizationDTOService.stateProperty().addListener(saveOrganizationDTOChangeStateListener)
+        ServiceUtils.startParameterService(saveOrganizationDTOService, updatedOrganization)
     }
     private static boolean validOrganizationDTO(OrganizationDTO organizationDTO){
         if (organizationDTO == null || organizationDTO.nameProperty().get().isEmpty()) return false

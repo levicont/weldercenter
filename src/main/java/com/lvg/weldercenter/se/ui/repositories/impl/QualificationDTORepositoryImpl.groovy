@@ -27,9 +27,14 @@ class QualificationDTORepositoryImpl implements QualificationDTORepository{
     void loadQualifications() {
         //TODO if qualificationList is relevant do not touch DB. Get list from buffer.
         if(qualificationListProperty.isEmpty()){
-            loadingAllQualificationsService.stateProperty().addListener(loadAllQualificationsChangeStateListener)
-            ServiceUtils.startService(loadingAllQualificationsService)
+            loadQualificationsFromDB()
         }
+
+    }
+
+    private void loadQualificationsFromDB(){
+        loadingAllQualificationsService.stateProperty().addListener(loadAllQualificationsChangeStateListener)
+        ServiceUtils.startService(loadingAllQualificationsService)
 
     }
 

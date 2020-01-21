@@ -22,10 +22,8 @@ class EducationRepositoryImpl implements EducationDTORepository{
     @Autowired
     LoadAllEducationsChangeStateListener loadAllEducationsChangeStateListener
 
-
-    private ObservableList<String> allEducations = FXCollections.observableArrayList()
     private final ListProperty<String> allEducationsProperty =
-            new SimpleListProperty<String>(allEducations)
+            new SimpleListProperty<String>(FXCollections.observableArrayList())
 
     @Override
     ObservableList<String> getAllEducationDTO() {
@@ -39,16 +37,20 @@ class EducationRepositoryImpl implements EducationDTORepository{
 
     @Override
     void updateEducationDTOList(ObservableList<String> list) {
-        allEducations.clear()
-        allEducations.addAll(list)
+        allEducationsProperty.clear()
+        allEducationsProperty.addAll(list)
     }
 
     void loadEducations(){
         //TODO if educationList is relevant do not touch DB. Get list from buffer.
         if(allEducationsProperty.isEmpty()){
-            loadingAllEducationsService.stateProperty().addListener(loadAllEducationsChangeStateListener)
-            ServiceUtils.startService(loadingAllEducationsService)
-            LOGGER.debug("Load educations performed")
+            loadEducationListFromDB()
         }
+    }
+
+    private void loadEducationListFromDB(){
+        loadingAllEducationsService.stateProperty().addListener(loadAllEducationsChangeStateListener)
+        ServiceUtils.startService(loadingAllEducationsService)
+        LOGGER.debug("Load educations performed")
     }
 }
